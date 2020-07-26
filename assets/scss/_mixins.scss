@@ -21,6 +21,7 @@
 
 
 @mixin btn-size($btn-height, $btn-line-height, $btn-border-width, $btn-font-size, $btn-padding-x) {
+  min-height: $btn-height;
   line-height: $btn-line-height;
   border: $btn-border-width solid;
   @include btn-padding($btn-height, $btn-line-height, $btn-border-width, $btn-font-size, $btn-padding-x);
@@ -54,4 +55,9 @@
         0 0 3px rgba($bg, 0.8)
     );
   }
+}
+
+@mixin root-color-property($property, $name, $before:null, $after:null){
+  //#{$property}: $before #{map_get($root, $name)} $after; - закомментировал, так как nuxt автоматически добавляет
+  #{$property}: $before var(--#{$name}) $after;
 }

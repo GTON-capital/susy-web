@@ -1,44 +1,48 @@
 $html-fz: 14px;
-$line-height-base: 1.5;
+$line-height-base: 1.3;
 $font-size-base: 1rem;
-$font-family-sans-serif:      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-$font-family-base: 'Poppins', $font-family-sans-serif;
-$body-bg: #181A29;
-$body-color: #EEECEC;
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+$font-family-base: 'Montserrat', $font-family-sans-serif;
+$font-family-cormorant: 'Cormorant', $font-family-sans-serif;
 $grid-breakpoints: (
   xs: 0,
   sm: 576px,
   md: 768px,
   lg: 992px,
-  xl: 1220px,
-  xxl: 1380px
+  xl: 1290px
 );
 
 $container-max-widths: (
   sm: 540px,
-  md: 738px,
+  md: 720px,
   lg: 960px,
-  xl: 1210px,
-  xxl: 1370px
+  xl: 1230px
 );
-$green: #44D7B6;
-$orange: #FF8E1E;
-$primary: #44D7B6;
+
+$body-bg: #FFFFFF;
+$body-color: #001A34;
+$primary: #FF0097;
+$primary-light: #FFF4FA;
+$secondary: #73979C;
+
+$headings-color: $primary;
+$headings-font-family: $font-family-cormorant;
+
 
 $btn-font-family: null;
-$btn-font-weight: null;
-$btn-height: 38px;
-$btn-font-size: 13px;
+$btn-font-weight: 700;
+$btn-height: 42px;
+$btn-font-size: $html-fz;
 $btn-padding-x: 26px;
-$btn-line-height: lh($btn-font-size, 18px);
-$btn-border-width: 0;
-$btn-border-radius: 6px;
-$btn-color: $body-color;
-$btn-bg-color: #222438;
-$btn-bg-color-hover: #323652;
+$btn-line-height: $line-height-base;
+$btn-border-width: 1px;
+$btn-border-radius: 8px;
 $btn-white-space: nowrap;
 $btn-transition: .2s;
-$btn-disabled-opacity: .5;
+$btn-disabled-opacity: .2;
+$btn-color: $body-color;
+$btn-background-color: $body-bg;
+$btn-background-color-hover: $primary-light;
 
 $link-color: inherit;
 $link-hover-color: inherit;
@@ -80,13 +84,21 @@ $headings-margin-bottom: 24px;
 $headings-font-weight: 400;
 $h3-font-size: 17px;
 
-$social-link-telegram-background: #039be5;
-$social-link-facebook-background: #3B5998;
-$social-link-linked-in-background: #007AB9;
-$social-link-twitter-background: #55ACEE;
-
 $vs-state-active-bg: #474C68;
 $vs-dropdown-vertical-offset: 11px;
 $vs-dropdown-horizontal-offset: 16px;
 $vs-border-radius: 6px;
 $vs-border-width: 0;
+
+
+$root: (
+  body-bg: $body-bg,
+  body-color: $body-color,
+  primary: $primary,
+  primary-light: $primary-light,
+  secondary: $secondary,
+  headings-color: $headings-color,
+  btn-color: $btn-color,
+  btn-background-color: $btn-background-color,
+  btn-background-color-hover: $btn-background-color-hover,
+);

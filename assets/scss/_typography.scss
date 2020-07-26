@@ -4,6 +4,7 @@ html {
 
 body {
   min-height: 100vh;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F3F9FA 90.48%);
 }
 
 .page-wrapper {
@@ -59,7 +60,6 @@ input[type="search"]::-webkit-search-results-decoration {
   height: 0;
   max-width: 0;
   opacity: 0;
-  visibility: hidden;
 }
 
 
@@ -103,11 +103,15 @@ input[type="search"]::-webkit-search-results-decoration {
 
 
 ::-webkit-scrollbar-track{
-  background: #404462;
+  background: #73979C;
 }
 ::-webkit-scrollbar-thumb{
-  background: #D8D8D8;
+  background: #F3F9F9;
 }
 ::-webkit-scrollbar{
-  width: 7px;
+  width: 8px;
+}
+
+.font-cormorant{
+  font-family: $font-family-cormorant;
 }

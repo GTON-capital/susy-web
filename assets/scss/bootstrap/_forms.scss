@@ -138,7 +138,7 @@ textarea.form-control {
     }
     .form-control-prepend{
       order: 2;
-      background: $btn-bg-color-hover;
+      background: $btn-background-color-hover;
       border-radius: $input-border-radius 0 0 $input-border-radius;
       margin-right: 2px;
       ~ .form-control{
@@ -148,7 +148,7 @@ textarea.form-control {
     }
     .form-control-append{
       order: 4;
-      background: $btn-bg-color-hover;
+      background: $btn-background-color-hover;
       border-radius: 0 $input-border-radius $input-border-radius 0;
       margin-left: 2px;
       ~ .form-control{

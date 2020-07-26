@@ -10,7 +10,7 @@ h1, h2, h3, h4, h5, h6,
   font-family: $headings-font-family;
   font-weight: $headings-font-weight;
   line-height: $headings-line-height;
-  color: $headings-color;
+  @include root-color-property(color, headings-color);
 }
 
 h1, .h1 { font-size: $h1-font-size; }
@@ -25,7 +25,7 @@ hr{
   flex: 0 0 100%;
   width: 100%;
   border: none;
-  background: #2e3148;
   margin: 0;
   padding: 0;
+  @include root-color-property(background-color, primary);
 }

@@ -1,0 +1,119 @@
+@import '../import';
+// stylelint-disable selector-no-qualifying-type
+
+//
+// Base styles
+//
+
+.btn {
+  position: relative;
+  display: inline-block;
+  font-family: $btn-font-family;
+  font-weight: $btn-font-weight;
+  font-size: $btn-font-size;
+  text-align: center;
+  text-decoration: none;
+  white-space: $btn-white-space;
+  vertical-align: middle;
+  user-select: none;
+  transition: $btn-transition;
+  border-radius: $btn-border-radius;
+  overflow: hidden;
+  @include make-col-auto();
+
+  @include btn-size(
+      $btn-height,
+      $btn-line-height,
+      $btn-border-width,
+      $btn-font-size,
+      $btn-padding-x
+  );
+  @include root-color-property(color, btn-color);
+  @include root-color-property(background-color, btn-background-color);
+  @include root-color-property(border-color, btn-background-color);
+
+  &:hover:not(:disabled) {
+    text-decoration: none;
+    @include root-color-property(color, btn-color);
+    @include root-color-property(background-color, btn-background-color-hover);
+    @include root-color-property(border-color, btn-background-color-hover);
+  }
+
+  &:focus,
+  &.focus {
+    outline: 0;
+    box-shadow: none;
+  }
+
+  // Disabled comes first so active can properly restyle
+  &.disabled,
+  &:disabled {
+    opacity: $btn-disabled-opacity;
+    box-shadow: none;
+  }
+
+  &:not(:disabled):not(.disabled) {
+    cursor: pointer;
+  }
+  b {
+    display: block;
+    position: relative;
+    font-weight: $btn-font-weight;
+  }
+  .icon{
+    margin-bottom: ($line-height-base * $font-size-base - 1rem) * -1;
+  }
+}
+
+// Future-proof disabling of clicks on `<a>` elements
+a.btn.disabled,
+fieldset:disabled a.btn {
+  pointer-events: none;
+}
+
+.btn-primary {
+  @include root-color-property(color, body-bg);
+  @include root-color-property(background-color, primary);
+  @include root-color-property(border-color, primary);
+
+  &:hover:not(:disabled) {
+    @include root-color-property(color, primary);
+    @include root-color-property(background-color, body-bg);
+    @include root-color-property(border-color, secondary);
+  }
+}
+
+.btn-secondary {
+  @include root-color-property(color, body-bg);
+  @include root-color-property(background-color, secondary);
+  @include root-color-property(border-color, secondary);
+
+  &:hover:not(:disabled) {
+    @include root-color-property(color, secondary);
+    @include root-color-property(background-color, body-bg);
+    @include root-color-property(border-color, primary);
+  }
+}
+
+//
+// Block button
+//
+
+.btn-block {
+  display: block;
+  width: 100%;
+
+  // Vertically space out multiple block buttons
+  + .btn-block {
+    margin-top: $btn-block-spacing-y;
+  }
+}
+
+// Specificity overrides
+input[type='submit'],
+input[type='reset'],
+input[type='button'] {
+  &.btn-block {
+    width: 100%;
+  }
+}

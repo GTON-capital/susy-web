@@ -9,7 +9,7 @@ export default {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    title: 'Gravity',
+    title: 'Susy',
     meta: [
       { charset: 'utf-8' },
       {
@@ -21,7 +21,7 @@ export default {
         name: 'description',
         content: process.env.npm_package_description || '',
       },
-      { name: 'msapplication-TileColor', content: '#da532c' },
+      { name: 'msapplication-TileColor', content: '#000000' },
       {
         name: 'msapplication-config',
         content: '/favicon/browserconfig.xml',
@@ -33,7 +33,12 @@ export default {
       {
         rel: 'stylesheet',
         href:
-          'https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap',
+          'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap',
+      },
+      {
+        rel: 'stylesheet',
+        href:
+          'https://fonts.googleapis.com/css2?family=Cormorant:wght@400;600;700&display=swap',
       },
       {
         rel: 'preconnect',
@@ -60,7 +65,7 @@ export default {
       {
         rel: 'mask-icon',
         href: '/favicon/safari-pinned-tab.svg',
-        color: '#181a29',
+        color: '#ff0097',
       },
       { rel: 'shortcut icon', href: '/favicon/favicon.ico' },
     ],
@@ -79,7 +84,6 @@ export default {
     { src: '~plugins/textarea-autosize', ssr: true },
     { src: '~plugins/infinite-scroll', ssr: false },
     { src: '~plugins/select', ssr: true },
-    { src: '~plugins/filepond', ssr: false },
   ],
   /*
    ** Auto import components

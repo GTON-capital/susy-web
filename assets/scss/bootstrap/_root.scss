@@ -1,0 +1,5 @@
+:root {
+  @each $rootName, $rootValue in $root {
+    --#{$rootName}: #{$rootValue};
+  }
+}
