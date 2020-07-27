@@ -4,11 +4,9 @@
       <template v-slot:header>
         Swap
       </template>
-      <template v-slot:footer>
-        <btn class="btn-primary btn-block">
-          Next
-        </btn>
-      </template>
+      <btn class="btn-primary btn-block">
+        Next
+      </btn>
     </card>
   </div>
 </template>
@@ -20,6 +18,9 @@ import Btn from '~/components/Btn'
 
 export default Vue.extend({
   components: { Card, Btn },
+  mounted() {
+    this.$store.commit('app/SET_IS_HIDE_MOBILE_TITLE', true)
+  },
 })
 </script>
 

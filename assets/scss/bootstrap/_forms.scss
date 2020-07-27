@@ -54,6 +54,8 @@
   &:disabled,
   &[readonly] {
     background-color: $input-disabled-bg;
+    border-color: $input-disabled-bg;
+    box-shadow: none!important;
     // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655.
     opacity: 1;
   }
@@ -106,9 +108,10 @@ textarea.form-control {
 //
 // Designed to help with the organization and spacing of vertical forms. For
 // horizontal forms, use the predefined grid classes.
-
+.form-control-label{
+  font-weight: 600;
+}
 .form-control-label, .form-text{
-  color: $text-muted;
   display: block;
   width: 100%;
   font-size: 13px;
@@ -117,8 +120,11 @@ textarea.form-control {
 .form-group {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: $form-group-margin-bottom;
+  margin-bottom: $form-group-margin-bottom-sm;
   font-size: $input-font-size;
+  @include media-breakpoint-up(sm){
+    margin-bottom: $form-group-margin-bottom;
+  }
   > {
     .form-control-prepend, .form-control-append{
       height: $input-height;
@@ -126,6 +132,8 @@ textarea.form-control {
       display: flex;
       align-items: center;
       justify-content: center;
+      color: white;
+      background-color: $secondary;
       ~ .form-control{
         flex-basis: 0;
         flex-grow: 1;
@@ -138,9 +146,7 @@ textarea.form-control {
     }
     .form-control-prepend{
       order: 2;
-      background: $btn-background-color-hover;
       border-radius: $input-border-radius 0 0 $input-border-radius;
-      margin-right: 2px;
       ~ .form-control{
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
@@ -148,9 +154,7 @@ textarea.form-control {
     }
     .form-control-append{
       order: 4;
-      background: $btn-background-color-hover;
       border-radius: 0 $input-border-radius $input-border-radius 0;
-      margin-left: 2px;
       ~ .form-control{
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;

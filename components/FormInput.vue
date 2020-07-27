@@ -13,6 +13,7 @@
       :id="id"
       :type="type"
       :value="value"
+      :readonly="readonly"
       class="form-control"
       @input="$emit('input', $event.target.value)"
     />
@@ -29,6 +30,11 @@ export default Vue.extend({
     type: {
       type: String,
       default: () => 'text',
+      required: false,
+    },
+    readonly: {
+      type: Boolean,
+      default: () => false,
       required: false,
     },
     value: {

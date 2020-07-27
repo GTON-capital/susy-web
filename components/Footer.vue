@@ -207,6 +207,10 @@ export default Vue.extend({
     margin-top: -6px;
     margin-bottom: -6px;
   }
+  @include media-breakpoint-down(xs) {
+    display: block;
+    width: 100%;
+  }
 }
 .footer-row,
 .footer-gravity,

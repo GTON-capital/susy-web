@@ -117,3 +117,16 @@ input[type='button'] {
     width: 100%;
   }
 }
+
+.btn-link{
+  @include root-color-property(color, primary);
+  background-color: transparent;
+  border-color: transparent;
+  text-decoration: underline;
+  &:hover:not(:disabled) {
+    @include root-color-property(color, primary);
+    background-color: transparent;
+    border-color: transparent;
+    text-decoration: none;
+  }
+}

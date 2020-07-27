@@ -111,10 +111,10 @@ input[type="search"]::-webkit-search-results-decoration {
 
 
 ::-webkit-scrollbar-track{
-  background: #73979C;
+  background: $secondary;
 }
 ::-webkit-scrollbar-thumb{
-  background: #F3F9F9;
+  background: $secondary-light;
 }
 ::-webkit-scrollbar{
   width: 8px;

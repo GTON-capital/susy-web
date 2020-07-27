@@ -24,6 +24,7 @@ $body-color: #001A34;
 $primary: #FF0097;
 $primary-light: #FFF4FA;
 $secondary: #73979C;
+$secondary-light: #F3F9F9;
 
 $headings-color: $primary;
 $headings-font-family: $font-family-cormorant;
@@ -67,14 +68,17 @@ $table-cell-padding: 10px;
 $text-muted: #878EA1;
 
 $input-height: 42px;
-$input-bg: #D8D8D8;
-$input-color: #000000;
+$input-bg: white;
+$input-color: $body-color;
+$input-border-color: #EEBCD8;
+$input-disabled-bg: #E7F2F1;
 $input-border-radius: 6px;
 $input-font-size: 13px;
-$label-margin-bottom: 5px;
-$form-group-margin-bottom: 22px;
+$label-margin-bottom: 11px;
+$form-group-margin-bottom: 24px;
+$form-group-margin-bottom-sm: 14px;
 $form-text-margin-top: 6px;
-$input-padding-x: 16px / 14px * 1rem;
+$input-padding-x: 12px / $html-fz * 1rem;
 
 $modal-content-bg: linear-gradient(185.56deg, #23263F -126.29%, #22253B 250.84%);
 
@@ -97,6 +101,7 @@ $root: (
   primary: $primary,
   primary-light: $primary-light,
   secondary: $secondary,
+  secondary-light: $secondary-light,
   headings-color: $headings-color,
   btn-color: $btn-color,
   btn-background-color: $btn-background-color,

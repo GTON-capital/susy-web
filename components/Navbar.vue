@@ -6,7 +6,10 @@
         <nuxt-link to="/" class="nav-logo responsive">
           <img class="responsive-item" src="/img/logo.svg" alt="Logo" />
         </nuxt-link>
-        <div class="nav-header font-cormorant">
+        <div
+          class="nav-header font-cormorant"
+          :class="{ 'nav-header-mobile': isHideMobileTitle }"
+        >
           Seamless <br />Crosschain Swaps
         </div>
         <div class="nav-menu-wrapper">
@@ -41,6 +44,9 @@ export default Vue.extend({
   computed: {
     isOpenNav() {
       return this.$store.getters['app/isOpenNav']
+    },
+    isHideMobileTitle() {
+      return this.$store.getters['app/isHideMobileTitle']
     },
   },
   methods: {
@@ -241,6 +247,9 @@ $nav-panel-height: 42px;
     hr {
       display: block;
     }
+  }
+  .nav-header-mobile {
+    display: none;
   }
 }
 @include media-breakpoint-down(xs) {
