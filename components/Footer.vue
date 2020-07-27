@@ -1,6 +1,6 @@
 <template>
   <footer class="footer">
-    <div class="container">
+    <div class="container footer-nav">
       <div class="footer-row">
         <div class="footer-gravity">
           <btn class="footer-gravity-btn" tag="a" to="/">
@@ -18,19 +18,25 @@
             :href="social.link"
             target="_blank"
           >
-            <b
-              ><icon :image="`/img/icons/socials/${social.icon}.svg`"></icon
-            ></b>
+            <icon :image="`/img/icons/socials/${social.icon}.svg`"></icon>
           </a>
         </div>
-        <div class="footer-link"><a href="/">Privacy Policy</a></div>
-        <div class="footer-link"><a href="/">Terms of Service</a></div>
-        <div class="footer-link">
+        <div class="footer-link font-cormorant">
+          <a href="/">Privacy Policy</a>
+        </div>
+        <div class="footer-link font-cormorant">
+          <a href="/">Terms of Service</a>
+        </div>
+        <div class="footer-link font-cormorant">
           <a class="text-primary" href="mailto:info@susy.one">info@susy.one</a>
         </div>
       </div>
     </div>
-    <div class="footer-cookies" :style="getCookiesStyle">
+    <div
+      v-if="!isDisabledCookiesBox"
+      class="footer-cookies"
+      :style="getCookiesStyle"
+    >
       <div class="footer-cookies-wrapper" :style="getWrapperCookiesStyle">
         <div class="container">
           <div ref="cookiesBox" class="footer-cookies-box">
@@ -49,13 +55,20 @@
   </footer>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
 import Icon from '~/components/Icon.vue'
 import Btn from '~/components/Btn.vue'
 
 export default Vue.extend({
   components: { Btn, Icon },
+  props: {
+    isDisabledCookiesBox: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+  },
   data: () => ({
     socials: [
       {
@@ -75,30 +88,32 @@ export default Vue.extend({
         link: '/',
       },
     ],
-    heightCookiesBox: 100,
-    isDisabledCookiesBox: false,
+    heightCookiesBox: 74,
     isCookiesBox: false,
     instanceHeightCookiesBox: undefined,
   }),
   computed: {
+    getIsCookiesBox() {
+      return this.isCookiesBox && !this.isDisabledCookiesBox
+    },
     getWrapperCookiesStyle() {
       return {
-        bottom: this.isCookiesBox ? '30px' : '-100%',
+        bottom: this.getIsCookiesBox ? '30px' : '-100%',
       }
     },
     getCookiesStyle() {
       return {
-        height: this.isCookiesBox ? this.heightCookiesBox + 30 + 'px' : '0px',
-        'min-height': this.isCookiesBox ? '100px' : '0px',
+        height: this.getIsCookiesBox ? this.heightCookiesBox + 'px' : '0px',
+        'min-height': this.getIsCookiesBox ? '74px' : '0px',
       }
     },
   },
   mounted() {
     if (!this.isDisabledCookiesBox) {
-      this.calcHeightCookiesBox()
-      this.bindHeightCookiesBox()
       setTimeout(() => {
         this.isCookiesBox = !localStorage.getItem('IS_AGREE_COOKIES')
+        this.calcHeightCookiesBox()
+        this.bindHeightCookiesBox()
       }, 2000)
     }
   },
@@ -112,7 +127,7 @@ export default Vue.extend({
       this.unbindHeightCookiesBox()
     },
     bindHeightCookiesBox() {
-      if (this.isCookiesBox && typeof window !== 'undefined') {
+      if (this.getIsCookiesBox && typeof window !== 'undefined') {
         window.addEventListener('resize', this.calcHeightCookiesBox)
       }
     },
@@ -122,7 +137,7 @@ export default Vue.extend({
       }
     },
     calcHeightCookiesBox() {
-      if (this.isCookiesBox) {
+      if (this.getIsCookiesBox) {
         clearTimeout(this.instanceHeightCookiesBox)
         // @ts-ignore: Type 'Timeout' is not assignable to type 'undefined'.
         this.instanceHeightCookiesBox = setTimeout(() => {
@@ -130,7 +145,7 @@ export default Vue.extend({
             // @ts-ignore:  Property 'getBoundingClientRect' does not exist on type 'Element | Element[] | Vue | Vue[]'
             this.heightCookiesBox = this.$refs.cookiesBox.getBoundingClientRect().height
           }
-        }, 1000)
+        }, 500)
       }
     },
   },
@@ -142,6 +157,15 @@ export default Vue.extend({
   transition: height 0.5s ease;
 }
 .footer {
+  padding-top: 42px;
+  padding-bottom: 30px;
+  @include media-breakpoint-down(xs) {
+    padding-top: 14px;
+    padding-bottom: 16px;
+  }
+}
+.footer-nav {
+  margin-bottom: 20px;
 }
 
 .footer-cookies-wrapper {
@@ -204,13 +228,69 @@ export default Vue.extend({
 }
 .footer-copyright {
   justify-content: center;
+  @include media-breakpoint-down(xs) {
+    @include make-col(1, 1);
+    order: 9;
+  }
 }
 .footer-socials {
   justify-content: space-between;
-  padding-left: 10px;
-  padding-right: 10px;
   flex: 0 0 200px;
   max-width: 200px;
+  @include media-breakpoint-down(xs) {
+    @include make-col(1, 1);
+    margin-bottom: 10px;
+    justify-content: center;
+  }
+}
+.footer-social {
+  @include media-breakpoint-down(xs) {
+    margin: 0 20px;
+    &:first-child {
+      margin-left: 0;
+    }
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+.footer-link {
+  @include media-breakpoint-down(xs) {
+    margin-bottom: 18px;
+  }
+}
+.footer-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  filter: drop-shadow(0 0 0 rgba($secondary, 0.3));
+  transition: 0.2s;
+  &:hover {
+    filter: drop-shadow(0 0 3px rgba($secondary, 0.3));
+  }
+  .icon {
+    width: 22px;
+    height: 22px;
+  }
+}
+.footer-gravity {
+  @include media-breakpoint-down(xs) {
+    margin-bottom: 10px;
+    @include make-col(1, 1);
+    justify-content: center;
+  }
+  @include media-breakpoint-down(sm) {
+    margin-bottom: 10px;
+  }
+  @include media-breakpoint-only(md) {
+    order: 9;
+    @include make-col(1, 1);
+    justify-content: center;
+    margin-top: 30px;
+  }
 }
 .footer-link {
 }
