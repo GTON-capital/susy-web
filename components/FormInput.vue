@@ -46,7 +46,7 @@ export default Vue.extend({
   data: () => ({
     id: '',
   }),
-  beforeMount() {
+  created() {
     this.id = this.getUniqueId()
   },
   methods: {

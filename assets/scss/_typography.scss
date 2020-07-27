@@ -103,21 +103,24 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 .link-invert{
-  text-decoration: none;
+  text-decoration: none!important;
   @include hover() {
-    text-decoration: underline;
+    text-decoration: underline!important;
   }
 }
 
 
 ::-webkit-scrollbar-track{
-  background: $secondary;
+  background: $secondary-light;
+  border-radius: 8px;
 }
 ::-webkit-scrollbar-thumb{
-  background: $secondary-light;
+  border-radius: 8px;
+  background: $secondary;
 }
 ::-webkit-scrollbar{
   width: 8px;
+  border-radius: 8px;
 }
 
 .font-cormorant{

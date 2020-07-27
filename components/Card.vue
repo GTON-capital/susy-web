@@ -6,6 +6,9 @@
       </div>
       <div class="card-content">
         <slot></slot>
+        <div class="card-footer">
+          <slot name="footer"></slot>
+        </div>
       </div>
     </div>
   </div>
@@ -67,5 +70,8 @@ export default Vue.extend({
     border-radius: 8px;
     padding: 18px 16px;
   }
+}
+.card-footer {
+  padding-top: 14px;
 }
 </style>

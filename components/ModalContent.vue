@@ -29,14 +29,15 @@
       </icon>
     </button>
     <div class="modal-head">
-      <slot name="head"></slot>
+      <div class="modal-container">
+        <slot name="head"></slot>
+      </div>
     </div>
     <div class="modal-body">
       <div class="modal-container">
         <slot name="body"></slot>
       </div>
     </div>
-    <hr v-if="showFooter" />
     <div v-if="showFooter" class="modal-footer">
       <div class="modal-container">
         <slot name="footer"></slot>
