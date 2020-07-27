@@ -1,5 +1,5 @@
 <template>
-  <div class="atd">
+  <div class="container">
     awd2
   </div>
 </template>
@@ -12,8 +12,4 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss">
-.atd {
-  color: var(--primary);
-}
-</style>
+<style lang="scss"></style>
