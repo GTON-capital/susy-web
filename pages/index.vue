@@ -1,14 +1,25 @@
 <template>
   <div class="container">
-    awd2
+    <card>
+      <template v-slot:header>
+        Swap
+      </template>
+      <template v-slot:footer>
+        <btn class="btn-primary btn-block">
+          Next
+        </btn>
+      </template>
+    </card>
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
+import Card from '~/components/Card'
+import Btn from '~/components/Btn'
 
 export default Vue.extend({
-  components: {},
+  components: { Card, Btn },
 })
 </script>
 

@@ -65,6 +65,7 @@ $nav-panel-height: 42px;
   flex-wrap: wrap;
   @include media-breakpoint-up(md) {
     height: 108px;
+    margin-bottom: 30px;
   }
   hr {
     display: none;
