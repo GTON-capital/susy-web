@@ -78,13 +78,7 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: [
-    { src: '~plugins/modal', ssr: false },
-    { src: '~plugins/dropdown', ssr: false },
-    { src: '~plugins/textarea-autosize', ssr: true },
-    { src: '~plugins/infinite-scroll', ssr: false },
-    { src: '~plugins/select', ssr: true },
-  ],
+  plugins: [{ src: '~plugins/modal', ssr: false }],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
