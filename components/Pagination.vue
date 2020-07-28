@@ -1,5 +1,5 @@
 <template>
-  <nav v-if="pagesCount > 1" class="pagination">
+  <nav v-if="getCountPages > 1" class="pagination">
     <ul class="pagination-list">
       <li
         class="pagination-item pagination-arrow-prev"
@@ -12,7 +12,7 @@
           ><icon image="/img/icons/back.svg"></icon
         ></a>
       </li>
-      <li v-for="(n, i) in pagesCount" :key="i" class="pagination-item">
+      <li v-for="(n, i) in getPages" :key="i" class="pagination-item">
         <a
           :class="{ active: page === n }"
           href="javascript:void(0)"
@@ -22,7 +22,7 @@
       </li>
       <li
         class="pagination-item pagination-arrow-next"
-        :class="{ 'pagination-item-disabled': !(page < pagesCount) }"
+        :class="{ 'pagination-item-disabled': !(page < getCountPages) }"
       >
         <a
           href="javascript:void(0)"
@@ -44,13 +44,62 @@ export default Vue.extend({
   components: {
     Icon,
   },
+  props: {
+    countPages: {
+      type: [Number, String],
+      required: true,
+    },
+    value: {
+      type: [Number, String],
+      default: 1,
+      required: false,
+    },
+  },
   data: () => ({
-    page: 2,
-    pagesCount: 5,
+    page: 1,
   }),
+  computed: {
+    getCountPages() {
+      return Number(this.countPages)
+    },
+    getPages() {
+      const pages = []
+      const countPages = this.getCountPages
+      let start = this.page - 2
+      if (start < 1) {
+        start = 1
+      }
+      for (let i = start; pages.length < 5; i++) {
+        if (i > countPages) {
+          break
+        }
+        pages.push(i)
+      }
+      if (pages.length < 5) {
+        for (let i = start - 1; pages.length < 5; i--) {
+          if (i < 1) {
+            break
+          }
+          pages.unshift(i)
+        }
+      }
+      return pages
+    },
+  },
+  watch: {
+    value(n) {
+      this.page = n
+    },
+  },
+  created() {
+    this.page = this.value
+  },
   methods: {
     setPage(n) {
-      this.page = n
+      if (n >= 1 && n <= this.getCountPages) {
+        this.page = n
+        this.$emit('input', n)
+      }
     },
   },
 })

@@ -17,7 +17,10 @@
           {{ valueLabel }}
         </span>
       </span>
-      <icon class="search-select-chevron" image="/img/icons/chevron.svg"></icon>
+      <icon
+        class="search-select-chevron"
+        image="/img/icons/chevron-small.svg"
+      ></icon>
     </button>
     <client-only>
       <modal :name="modalId">

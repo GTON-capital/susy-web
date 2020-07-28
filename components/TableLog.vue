@@ -54,13 +54,11 @@
 <script lang="ts">
 import Vue from 'vue'
 import Btn from '~/components/Btn.vue'
-import Icon from '~/components/Icon.vue'
 import CopyClipboard from '~/components/CopyClipboard.vue'
 
 export default Vue.extend({
   name: 'TableLog',
   components: {
-    Icon,
     Btn,
     CopyClipboard,
   },

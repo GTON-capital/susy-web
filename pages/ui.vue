@@ -17,7 +17,7 @@
           </template>
           <template v-slot:body>
             <table-log></table-log>
-            <pagination></pagination>
+            <pagination v-model="page" count-pages="10"></pagination>
           </template>
         </modal-content>
       </modal>
@@ -543,6 +543,7 @@ export default Vue.extend({
     Pagination,
   },
   data: () => ({
+    page: 1,
     wallets: [],
     walletFirst: {
       id: '1-0',
