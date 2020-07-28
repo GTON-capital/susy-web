@@ -3,6 +3,15 @@
     <template v-slot:header>
       <slot name="header"></slot>
     </template>
+    <div class="card-swap-final-body">
+      <div class="card-swap-final-top">
+        <slot name="bodyTop"></slot>
+        <hr />
+      </div>
+      <div class="card-swap-final-bottom">
+        <slot name="bodyBottom"></slot>
+      </div>
+    </div>
     <slot></slot>
     <template v-slot:footer>
       <slot name="footer"></slot>
@@ -25,12 +34,22 @@ export default Vue.extend({
 
 .card-swap-final {
   hr {
-    margin-top: $form-group-margin-bottom-sm - 11px;
-    margin-bottom: $form-group-margin-bottom-sm;
+    display: none;
     @include media-breakpoint-up(sm) {
-      margin-top: $form-group-margin-bottom - 11px;
+      display: block;
       margin-bottom: $form-group-margin-bottom;
     }
   }
+}
+.card-swap-final-body {
+  @include media-breakpoint-up(sm) {
+    padding: 24px 30px;
+    background-color: $secondary-light;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+}
+.card-swap-final-bottom {
+  background-color: $secondary-light;
 }
 </style>

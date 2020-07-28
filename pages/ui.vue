@@ -185,6 +185,76 @@
       </template>
     </card-swap>
 
+    <card-swap-final>
+      <template v-slot:header>
+        Swap
+      </template>
+      <template v-slot:bodyTop>
+        bodyTop
+      </template>
+      <template v-slot:bodyBottom>
+        <form-input value="0xEA3ed91a668B6a56751729016EBafc214dFBeB65">
+          <template v-slot:label>
+            From address
+          </template>
+        </form-input>
+        <form-input value="3PAASSqnygiyYoQuqmXpwaSUJmRkqytwPaw">
+          <template v-slot:label>
+            To address
+          </template>
+        </form-input>
+
+        <form-group-between-shift>
+          <template v-slot:left>
+            <search-select
+              :value="{
+                id: '1',
+                label: 'Ethereum',
+                icon: '/img/icons/ethereum.svg',
+              }"
+              readonly
+            >
+              <template v-slot:label>
+                Token
+                <span class="text-secondary float-right font-weight-normal">
+                  Balance: 1
+                </span>
+              </template>
+            </search-select>
+          </template>
+          <template v-slot:right>
+            <form-input value="1.1" type="number" readonly>
+              <template v-slot:label>
+                Receive
+                <span class="text-secondary float-right font-weight-normal">
+                  Gas: 100 Gwei
+                </span>
+              </template>
+              <template v-slot:append>
+                <span style="display: block; padding: 0 15px;">wETH</span>
+              </template>
+            </form-input>
+          </template>
+        </form-group-between-shift>
+      </template>
+
+      <template v-slot:footer>
+        <div style="display: flex; justify-content: center;">
+          <form-group>
+            <checkbox name="terms-of-service" checked>
+              Terms of Service
+            </checkbox>
+          </form-group>
+        </div>
+        <btn class="btn-primary btn-block">
+          Swap
+        </btn>
+        <btn class="btn-link btn-block">
+          Back
+        </btn>
+      </template>
+    </card-swap-final>
+
     <card>
       <template v-slot:header>
         Withdraw
@@ -231,11 +301,14 @@ import Btn from '~/components/Btn.vue'
 import FormInput from '~/components/FormInput.vue'
 import SimpleWrapper from '~/components/SimpleWrapper.vue'
 import CardSwap from '~/components/CardSwap.vue'
+import CardSwapFinal from '~/components/CardSwapFinal.vue'
 import SimpleWrapperSlimSm from '~/components/SimpleWrapperSlimSm.vue'
+import FormGroup from '~/components/FormGroup.vue'
 import FormGroupBetween from '~/components/FormGroupBetween.vue'
 import FormGroupBetweenShift from '~/components/FormGroupBetweenShift.vue'
 import FormGroupBetweenShift1 from '~/components/FormGroupBetweenShift1.vue'
 import SearchSelect from '~/components/SearchSelect.vue'
+import Checkbox from '~/components/Checkbox.vue'
 import Icon from '~/components/Icon.vue'
 
 export default Vue.extend({
@@ -245,12 +318,15 @@ export default Vue.extend({
     FormInput,
     SimpleWrapper,
     CardSwap,
+    CardSwapFinal,
     SimpleWrapperSlimSm,
+    FormGroup,
     FormGroupBetween,
     FormGroupBetweenShift,
     FormGroupBetweenShift1,
     SearchSelect,
     Icon,
+    Checkbox,
   },
   data: () => ({
     wallets: [],

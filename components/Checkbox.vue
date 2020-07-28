@@ -48,11 +48,12 @@ export default Vue.extend({
 .checkbox-label {
   position: relative;
   display: block;
+  padding-top: 2px;
   padding-left: 28px;
   cursor: pointer;
-  color: $text-muted;
-  font-size: 11px;
-  line-height: lh(11px, 19px);
+  color: $secondary;
+  font-size: 13px;
+  font-weight: 400;
   &:before,
   &:after {
     content: '';
@@ -64,19 +65,20 @@ export default Vue.extend({
     pointer-events: none;
   }
   &:before {
-    border: 1px solid $text-muted;
-    border-radius: 3px;
+    border: 1px solid $primary;
+    border-radius: 4px;
   }
   &:after {
     opacity: 0;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: 10px 11px;
+    background-size: 12px 10px;
     background-image: url(escape-svg(
-      'data:image/svg+xml,<svg width="10" height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.29874L5.23192 9.92739L9.46384 1" stroke="#EEECEC"/></svg>'
+      'data:image/svg+xml,<svg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.30664 4L5 8.56055L10.6777 0.654297" stroke="#FF0097"/></svg>'
     ));
   }
 }
+
 .checkbox-input:checked {
   ~ {
     .checkbox-label {

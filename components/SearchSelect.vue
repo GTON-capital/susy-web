@@ -4,7 +4,7 @@
     <button
       class="search-select btn"
       :class="searchSelectClass"
-      @click="$modal.push(modalId)"
+      @click="showModal"
     >
       <span class="search-select-value">
         <span
@@ -77,7 +77,7 @@ export default Vue.extend({
     data: {
       type: Array,
       default: () => [],
-      required: true,
+      required: false,
     },
     value: {
       type: Object,
@@ -92,6 +92,11 @@ export default Vue.extend({
     modalHeading: {
       type: String,
       default: () => 'Select ...',
+      required: false,
+    },
+    readonly: {
+      type: Boolean,
+      default: () => false,
       required: false,
     },
   },
@@ -117,6 +122,7 @@ export default Vue.extend({
     searchSelectClass() {
       return {
         'search-select--with-icon': this.valueIcon,
+        'search-select--readonly': this.readonly,
       }
     },
     valueIcon() {
@@ -136,6 +142,9 @@ export default Vue.extend({
     this.id = this.getUniqueId()
   },
   methods: {
+    showModal() {
+      !this.readonly && this.$modal.push(this.modalId)
+    },
     getUniqueId() {
       return String(Math.floor(Math.random() * 10e10))
     },
@@ -174,6 +183,18 @@ $search-select-icon-height: 32px;
   }
   .icon {
     margin-bottom: 0;
+  }
+  &.search-select--readonly {
+    cursor: auto !important;
+    border-color: $input-disabled-bg;
+    background-color: $input-disabled-bg;
+    &:hover:not(:disabled) {
+      border-color: $input-disabled-bg;
+      background-color: $input-disabled-bg;
+    }
+    .search-select-chevron {
+      display: none;
+    }
   }
 }
 .search-select-icon {
