@@ -243,7 +243,7 @@
         </template>
         <template v-slot:right>
           <btn class="btn-link link-invert btn-block">
-            Change address
+            Change wallet
           </btn>
         </template>
       </form-group-between-shift1>
