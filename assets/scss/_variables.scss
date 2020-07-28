@@ -19,12 +19,16 @@ $container-max-widths: (
   xl: 1230px
 );
 
+$green: #00DD80;
+
 $body-bg: #FFFFFF;
 $body-color: #001A34;
 $primary: #FF0097;
 $primary-light: #FFF4FA;
 $secondary: #73979C;
 $secondary-light: #F3F9F9;
+$success: $green;
+$success-light: #F3F9F9;
 
 $headings-color: $primary;
 $headings-font-family: $font-family-cormorant;
@@ -104,6 +108,8 @@ $root: (
   primary-light: $primary-light,
   secondary: $secondary,
   secondary-light: $secondary-light,
+  success: $success,
+  success-light: $success-light,
   headings-color: $headings-color,
   btn-color: $btn-color,
   btn-background-color: $btn-background-color,

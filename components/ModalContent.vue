@@ -28,7 +28,7 @@
         </svg>
       </icon>
     </button>
-    <div class="modal-head">
+    <div class="modal-head font-cormorant">
       <div class="modal-container">
         <slot name="head"></slot>
       </div>

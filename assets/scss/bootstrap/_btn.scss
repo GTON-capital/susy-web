@@ -127,6 +127,7 @@ input[type='button'] {
 }
 
 .btn-link{
+  white-space: normal;
   @include root-color-property(color, primary);
   background-color: transparent;
   border-color: transparent;

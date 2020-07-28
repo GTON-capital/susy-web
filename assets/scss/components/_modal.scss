@@ -84,7 +84,11 @@
 .modal-head{
   padding: 38px 0 28px 0;
   text-align: center;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 24px;
+  @include media-breakpoint-up(sm){
+    font-size: 28px;
+  }
 }
 .modal-body{
   padding: 0 0 44px 0;
@@ -94,8 +98,8 @@
 }
 .modal-close{
   position: absolute;
-  right: 34px;
-  top: 24px;
+  right: 14px;
+  top: 14px;
   width: 30px;
   height: 30px;
   border: none;

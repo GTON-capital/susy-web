@@ -23,9 +23,7 @@
       <modal :name="modalId">
         <modal-content :show-footer="false">
           <template v-slot:head>
-            <div class="font-cormorant search-select-modal-heading">
-              {{ modalHeading }}
-            </div>
+            {{ modalHeading }}
           </template>
           <template v-slot:body>
             <div class="search-select-container">
@@ -270,10 +268,6 @@ $search-select-icon-height: 32px;
       height: 23px;
     }
   }
-}
-.search-select-modal-heading {
-  font-weight: 600;
-  font-size: 28px;
 }
 .search-select-container {
   margin-left: auto;

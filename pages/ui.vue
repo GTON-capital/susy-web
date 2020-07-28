@@ -1,5 +1,41 @@
 <template>
   <div class="container">
+    <btn class="btn-primary" @click="$modal.push('providers')">
+      Accounts > Ethereum
+    </btn>
+    <client-only>
+      <modal name="providers">
+        <modal-content :show-footer="false">
+          <template v-slot:head>
+            <span class="text-secondary">Accounts ></span> Ethereum
+          </template>
+          <template v-slot:body>
+            <radio-provider-group style="margin-bottom: 24px;">
+              <radio-provider
+                name="provider"
+                :data="walletFirst"
+              ></radio-provider>
+              <radio-provider
+                name="provider"
+                :data="walletSecond"
+              ></radio-provider>
+              <radio-provider
+                name="provider"
+                :data="walletFirst"
+              ></radio-provider>
+            </radio-provider-group>
+            <div class="text-center">
+              <btn class="btn-link btn-block text-secondary">
+                Learn more about Ethereum wallets
+              </btn>
+              <btn class="btn-link btn-block" style="margin-top: 0;">
+                Back
+              </btn>
+            </div>
+          </template>
+        </modal-content>
+      </modal>
+    </client-only>
     <card-swap>
       <template v-slot:header>
         Swap
@@ -12,6 +48,7 @@
               v-model="walletFirst"
               :data="wallets"
               placeholder="Select a token..."
+              modal-heading="Select a token"
             >
               <template v-slot:label>
                 Origin
@@ -31,6 +68,7 @@
               v-model="walletSecond"
               :data="wallets"
               placeholder="Select a token..."
+              modal-heading="Select a token"
             >
               <template v-slot:label>
                 Destination
@@ -59,6 +97,7 @@
               v-model="walletThree"
               :data="wallets"
               placeholder="Select a token..."
+              modal-heading="Select a token"
             >
               <template v-slot:label>
                 Token
@@ -94,6 +133,7 @@
               v-model="walletFirst"
               :data="wallets"
               placeholder="Select a token..."
+              modal-heading="Select a token"
             >
               <template v-slot:label>
                 Origin
@@ -113,6 +153,7 @@
               v-model="walletSecond"
               :data="wallets"
               placeholder="Select a token..."
+              modal-heading="Select a token"
             >
               <template v-slot:label>
                 Destination
@@ -156,6 +197,7 @@
               v-model="walletThree"
               :data="wallets"
               placeholder="Select a token..."
+              modal-heading="Select a token"
             >
               <template v-slot:label>
                 Token
@@ -403,6 +445,9 @@ import SearchSelect from '~/components/SearchSelect.vue'
 import Checkbox from '~/components/Checkbox.vue'
 import Icon from '~/components/Icon.vue'
 import TransactionsIcons from '~/components/TransactionsIcons.vue'
+import ModalContent from '~/components/ModalContent.vue'
+import RadioProvider from '~/components/RadioProvider.vue'
+import RadioProviderGroup from '~/components/RadioProviderGroup.vue'
 
 export default Vue.extend({
   components: {
@@ -421,6 +466,9 @@ export default Vue.extend({
     Icon,
     TransactionsIcons,
     Checkbox,
+    ModalContent,
+    RadioProvider,
+    RadioProviderGroup,
   },
   data: () => ({
     wallets: [],
