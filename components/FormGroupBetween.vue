@@ -20,6 +20,7 @@ export default Vue.extend({
 .form-group-between {
   display: flex;
   flex-wrap: wrap;
+  margin-bottom: 6px;
   > div {
     width: 100%;
     flex: 0 0 100%;
@@ -29,7 +30,15 @@ export default Vue.extend({
       align-items: flex-end;
       justify-content: center;
     }
-    @include media-breakpoint-up(sm) {
+  }
+  .form-group {
+    margin-bottom: 8px;
+  }
+}
+@include media-breakpoint-up(sm) {
+  .form-group-between {
+    margin-bottom: 0;
+    > div {
       &:nth-child(1),
       &:nth-child(3) {
         flex-basis: 0;
@@ -42,10 +51,7 @@ export default Vue.extend({
         max-width: 80px;
       }
     }
-  }
-  .form-group {
-    margin-bottom: 8px;
-    @include media-breakpoint-up(sm) {
+    .form-group {
       margin-bottom: 0;
     }
   }

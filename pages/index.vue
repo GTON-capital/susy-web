@@ -84,7 +84,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue'
 import CardSwap from '~/components/CardSwap.vue'
 import Btn from '~/components/Btn.vue'
@@ -148,6 +148,7 @@ export default Vue.extend({
       wallets.forEach((wallet) => {
         const newWallet = { ...wallet }
         newWallet.id = newWallet.id + '-' + String(i)
+        // @ts-ignore
         this.wallets.push(newWallet)
       })
     }

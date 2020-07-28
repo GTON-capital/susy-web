@@ -1,3 +1,13 @@
 .d-inline-block{
   display: inline-block;
 }
+@include media-breakpoint-up(sm){
+  .d-sm-none{
+    display: none!important;
+  }
+}
+@include media-breakpoint-up(md){
+  .d-md-none{
+    display: none!important;
+  }
+}

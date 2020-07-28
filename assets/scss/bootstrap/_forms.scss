@@ -117,6 +117,10 @@ textarea.form-control {
   font-size: 13px;
 }
 
+.form-control-content{
+  width: 100%;
+  position: relative;
+}
 .form-group {
   display: flex;
   flex-wrap: wrap;
@@ -134,10 +138,10 @@ textarea.form-control {
       justify-content: center;
       color: white;
       background-color: $secondary;
-      ~ .form-control{
+      ~ .form-control, ~ .form-control-content{
         flex-basis: 0;
         flex-grow: 1;
-        min-width: 0;
+        min-width: 50px;
         max-width: 100%;
       }
     }
@@ -147,7 +151,7 @@ textarea.form-control {
     .form-control-prepend{
       order: 2;
       border-radius: $input-border-radius 0 0 $input-border-radius;
-      ~ .form-control{
+      ~ .form-control, ~ .form-control-content .form-control{
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
       }
@@ -155,21 +159,50 @@ textarea.form-control {
     .form-control-append{
       order: 4;
       border-radius: 0 $input-border-radius $input-border-radius 0;
-      ~ .form-control{
+      ~ .form-control, ~ .form-control-content .form-control{
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
       }
     }
-    .form-control{
+    .form-control, .form-control-content{
       order: 3;
-    }
-    .form-control-content{
-      order: 3;
-      width: 100%;
     }
     .form-text{
       order: 5;
     }
+  }
+}
+
+.form-control-icon{
+  position: absolute;
+  background: #FFFFFF;
+  border: 1px solid #EAF1F3;
+  box-shadow: 0 1px 25px #E2F1F6;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  top: $input-height / 2 - 32px / 2;
+  @include media-breakpoint-down(xs){
+    left: 12px;
+    right: auto;
+    ~ .form-control{
+      padding-left: 48px;
+    }
+  }
+  @include media-breakpoint-up(sm){
+    left: auto;
+    right: 12px;
+    ~ .form-control{
+      padding-right: 48px;
+    }
+  }
+  .icon {
+    height: 20px;
+    width: 20px;
+    margin: 0;
   }
 }
 

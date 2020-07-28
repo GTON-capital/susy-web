@@ -9,27 +9,41 @@
     <div v-if="$slots.append" class="form-control-append">
       <slot name="append"></slot>
     </div>
-    <input
-      :id="id"
-      :type="type"
-      :value="value"
-      :readonly="readonly"
-      class="form-control"
-      @input="$emit('input', $event.target.value)"
-    />
+    <div class="form-control-content">
+      <div v-if="icon" class="form-control-icon">
+        <icon :image="icon"></icon>
+      </div>
+      <input
+        :id="id"
+        :type="type"
+        :value="value"
+        :readonly="readonly"
+        class="form-control"
+        @input="$emit('input', $event.target.value)"
+      />
+    </div>
     <div v-if="$slots.text" class="form-text"><slot name="text"></slot></div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import Icon from '~/components/Icon.vue'
 
 export default Vue.extend({
   name: 'FormInput',
+  components: {
+    Icon,
+  },
   props: {
     type: {
       type: String,
       default: () => 'text',
+      required: false,
+    },
+    icon: {
+      type: String,
+      default: () => '',
       required: false,
     },
     readonly: {
