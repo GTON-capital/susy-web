@@ -14,11 +14,9 @@ export default Vue.extend({
 @import '../assets/scss/import';
 
 .simple-wrapper-slim {
-  @include media-breakpoint-up(sm) {
-    padding: 17px 20px 16px 20px;
-    background-color: $secondary-light;
-    border-radius: 8px;
-    margin-bottom: 18px;
-  }
+  padding: 17px 20px 16px 20px;
+  background-color: $secondary-light;
+  border-radius: 8px;
+  margin-bottom: 18px;
 }
 </style>

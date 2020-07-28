@@ -19,37 +19,46 @@
       </span>
       <icon class="search-select-chevron" image="/img/icons/chevron.svg"></icon>
     </button>
-    <modal :name="modalId">
-      <modal-content :show-footer="false">
-        <template v-slot:head>
-          <div class="font-cormorant search-select-modal-heading">
-            {{ modalHeading }}
-          </div>
-        </template>
-        <template v-slot:body>
-          <div class="search-select-container">
-            <div class="search-select-list">
-              <a
-                v-for="(item, key) in data"
-                :key="key"
-                href="javascript:void(0)"
-                :class="{
-                  active:
-                    currentValue && item.id && currentValue.id === item.id,
-                }"
-                :data-id="item.id"
-                @click="selectValue(item)"
-              >
-                <span v-if="item.icon" class="search-select-icon">
-                  <icon :image="item.icon"></icon>
-                </span>
-                {{ item.label }}
-              </a>
+    <client-only>
+      <modal :name="modalId">
+        <modal-content :show-footer="false">
+          <template v-slot:head>
+            <div class="font-cormorant search-select-modal-heading">
+              {{ modalHeading }}
             </div>
-          </div>
-        </template>
-      </modal-content>
-    </modal>
+          </template>
+          <template v-slot:body>
+            <div class="search-select-container">
+              <simple-wrapper-slim>
+                <search-input v-model="search">
+                  <template v-slot:label>Search name</template>
+                </search-input>
+              </simple-wrapper-slim>
+            </div>
+            <div class="search-select-container">
+              <div class="search-select-list">
+                <a
+                  v-for="(item, key) in filteredData"
+                  :key="key"
+                  href="javascript:void(0)"
+                  :class="{
+                    active:
+                      currentValue && item.id && currentValue.id === item.id,
+                  }"
+                  :data-id="item.id"
+                  @click="selectValue(item)"
+                >
+                  <span v-if="item.icon" class="search-select-icon">
+                    <icon :image="item.icon"></icon>
+                  </span>
+                  {{ item.label }}
+                </a>
+              </div>
+            </div>
+          </template>
+        </modal-content>
+      </modal>
+    </client-only>
   </form-group>
 </template>
 
@@ -58,10 +67,12 @@ import Vue from 'vue'
 import FormGroup from '~/components/FormGroup.vue'
 import Icon from '~/components/Icon.vue'
 import ModalContent from '~/components/ModalContent.vue'
+import SearchInput from '~/components/SearchInput.vue'
+import SimpleWrapperSlim from '~/components/SimpleWrapperSlim.vue'
 
 export default Vue.extend({
   name: 'SearchSelect',
-  components: { FormGroup, Icon, ModalContent },
+  components: { FormGroup, Icon, ModalContent, SearchInput, SimpleWrapperSlim },
   props: {
     data: {
       type: Array,
@@ -85,12 +96,23 @@ export default Vue.extend({
     },
   },
   data: () => ({
+    search: '',
     id: '',
     currentValue: undefined,
   }),
   computed: {
     modalId() {
       return 'search-select-modal-' + this.id
+    },
+    filteredData() {
+      const search = this.search
+      const data = this.data
+
+      return search
+        ? data.filter((value) =>
+            value.label.toLowerCase().includes(search.toLowerCase())
+          )
+        : data
     },
     searchSelectClass() {
       return {
@@ -158,8 +180,8 @@ $search-select-icon-height: 32px;
   background: #ffffff;
   border: 1px solid #eaf1f3;
   box-shadow: 0px 1px 25px #e2f1f6;
-  height: $search-select-icon-height;
   width: 100%;
+  height: $search-select-icon-height;
   max-width: $search-select-icon-height;
   flex: 0 0 $search-select-icon-height;
   display: flex;
@@ -200,9 +222,13 @@ $search-select-icon-height: 32px;
 .search-select-list {
   a {
     display: flex;
+    align-items: center;
     width: 100%;
-    height: 48px;
+    min-height: 48px;
     font-weight: 400;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    text-decoration: none !important;
     &.active {
       color: $primary;
       font-weight: 700;
@@ -214,6 +240,14 @@ $search-select-icon-height: 32px;
   }
   .search-select-icon {
     margin-right: 8px;
+    height: 42px;
+    max-width: 42px;
+    flex: 0 0 42px;
+    box-shadow: none;
+    .icon {
+      width: 23px;
+      height: 23px;
+    }
   }
 }
 .search-select-modal-heading {
@@ -221,12 +255,11 @@ $search-select-icon-height: 32px;
   font-size: 28px;
 }
 .search-select-container {
+  margin-left: auto;
+  margin-right: auto;
   overflow-x: hidden;
   overflow-y: auto;
   max-height: 350px;
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 480px;
 }
 </style>
