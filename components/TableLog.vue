@@ -27,11 +27,9 @@
         <div class="table-log-header">ID</div>
         <div class="table-log-content text-primary">
           3P9...4x
-          <icon
-            v-clipboard="() => '3P94x'"
-            class="table-log-copy"
-            image="/img/icons/copy.svg"
-          ></icon>
+          <copy-clipboard
+            value="0xEA3ed91a668B6a56751729016EBafc214dFBeB65"
+          ></copy-clipboard>
         </div>
         <div class="table-log-actions-md">
           <btn v-if="i === 1" class="btn-primary table-log-btn">Withdraw</btn>
@@ -57,12 +55,14 @@
 import Vue from 'vue'
 import Btn from '~/components/Btn.vue'
 import Icon from '~/components/Icon.vue'
+import CopyClipboard from '~/components/CopyClipboard.vue'
 
 export default Vue.extend({
   name: 'TableLog',
   components: {
     Icon,
     Btn,
+    CopyClipboard,
   },
 })
 </script>
@@ -107,11 +107,6 @@ export default Vue.extend({
     display: block;
     width: 100%;
   }
-}
-.table-log-copy {
-  margin-bottom: -0.3em;
-  cursor: pointer;
-  pointer-events: auto;
 }
 .table-log-actions {
   .table-log-header {
