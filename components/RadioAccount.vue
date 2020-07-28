@@ -1,30 +1,47 @@
 <template>
-  <div class="radio-account">
-    <input
-      :id="id"
-      :type="type"
-      :name="name"
-      :checked="checked"
-      :value="data && data.id"
-      class="hide radio-account-input"
-      @change="$emit('change', $event)"
-    />
-    <label :for="id" class="radio-account-label" aria-label="Ethereum"></label>
-    <div class="radio-account-dot"></div>
+  <div
+    class="radio-account"
+    :class="{ 'radio-account--without-value': !value }"
+  >
+    <template v-if="value">
+      <input
+        :id="id"
+        :type="type"
+        :name="name"
+        :checked="checked"
+        :value="value"
+        class="hide radio-account-input"
+        @change="$emit('change', $event)"
+      />
+      <label
+        :for="id"
+        class="radio-account-label"
+        :aria-label="wallet.label"
+      ></label>
+      <div class="radio-account-dot"></div>
+    </template>
     <label :for="id" class="radio-account-icon">
-      <icon image="/img/icons/ethereum.svg"></icon>
+      <icon :image="wallet.icon"></icon>
     </label>
     <label :for="id" class="radio-account-name">
-      Ethereum
+      {{ wallet.label }}
     </label>
     <div class="radio-account-content">
-      <div class="radio-account-content-label">Connected with Metamask</div>
-      <label :for="id" class="radio-account-content-value">
-        0x1015e2182E...6AD26FB9
-      </label>
-      <btn class="btn-circle btn-secondary-gradient radio-account-logout">
-        <icon image="/img/icons/logout.svg"></icon>
-      </btn>
+      <template v-if="value">
+        <div class="radio-account-content-label">{{ label }}</div>
+        <label :for="id" class="radio-account-content-value">
+          {{ value }}
+        </label>
+        <btn
+          class="btn-circle btn-secondary-gradient radio-account-logout"
+          @change="$emit('logout')"
+        >
+          <icon image="/img/icons/logout.svg"></icon>
+        </btn>
+      </template>
+      <template v-else>
+        <btn class="btn-primary btn-block">Connect new wallet</btn>
+      </template>
     </div>
   </div>
 </template>
@@ -52,10 +69,19 @@ export default Vue.extend({
       type: String,
       required: true,
     },
-    data: {
-      type: Object,
-      default: () => ({}),
+    label: {
+      type: String,
+      default: () => 'Connected',
       required: false,
+    },
+    value: {
+      type: String,
+      default: () => '',
+      required: false,
+    },
+    wallet: {
+      type: Object,
+      required: true,
     },
   },
   data: () => ({
@@ -233,6 +259,11 @@ export default Vue.extend({
   }
   .radio-account-dot {
     display: block;
+  }
+  .radio-account--without-value {
+    .radio-account-content {
+      padding-right: 30px;
+    }
   }
 }
 </style>

@@ -22,12 +22,22 @@
               </btn>
             </div>
             <radio-provider-group style="margin-bottom: 24px;">
-              <radio-account name="account" :data="walletFirst"></radio-account>
               <radio-account
                 name="account"
-                :data="walletSecond"
+                :wallet="walletFirst"
+                label="Connected with Metamask"
+                value="0x1015e2182E...6AD26FB9"
               ></radio-account>
-              <radio-account name="account" :data="walletFirst"></radio-account>
+              <radio-account
+                name="account"
+                :wallet="walletSecond"
+                label="Connected with Metamask"
+                value="0x1015e2182E...6AD26FB9"
+              ></radio-account>
+              <radio-account
+                name="account"
+                :wallet="walletFirst"
+              ></radio-account>
             </radio-provider-group>
             <div class="text-center">
               <btn
