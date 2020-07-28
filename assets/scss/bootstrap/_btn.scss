@@ -58,7 +58,7 @@
   b {
     display: block;
     position: relative;
-    font-weight: $btn-font-weight;
+    font-weight: inherit;
   }
   .icon{
     margin-bottom: ($line-height-base * $font-size-base - 1rem) * -1;
