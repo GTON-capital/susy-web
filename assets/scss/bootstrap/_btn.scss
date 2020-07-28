@@ -95,6 +95,14 @@ fieldset:disabled a.btn {
   }
 }
 
+.btn-secondary-gradient {
+  background: linear-gradient(0.64deg, #5D7C80 -97.93%, #FFFFFF 190.55%);
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(0.64deg, $primary 0%, $primary 100%);
+  }
+}
+
 //
 // Block button
 //
@@ -128,5 +136,21 @@ input[type='button'] {
     background-color: transparent;
     border-color: transparent;
     text-decoration: none;
+  }
+}
+
+.btn-circle{
+  padding: 0;
+  min-width: $btn-height;
+  width: $btn-height;
+  height: $btn-height;
+  border-radius: 50%;
+  .icon{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 1em;
+    height: 1em;
   }
 }

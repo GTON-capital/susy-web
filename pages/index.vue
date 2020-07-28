@@ -5,7 +5,7 @@
         Swap
       </template>
 
-      <simple-wrapper-slim>
+      <simple-wrapper-slim-sm>
         <form-group-between>
           <template v-slot:left>
             <search-select
@@ -19,7 +19,12 @@
             </search-select>
           </template>
           <template v-slot:center>
-            center
+            <button
+              class="btn btn-circle btn-secondary-gradient"
+              @click="walletRotate"
+            >
+              <icon image="/img/icons/exchange.svg"></icon>
+            </button>
           </template>
           <template v-slot:right>
             <search-select
@@ -33,7 +38,7 @@
             </search-select>
           </template>
         </form-group-between>
-      </simple-wrapper-slim>
+      </simple-wrapper-slim-sm>
 
       <btn class="btn-link btn-block link-invert">
         Connect new wallet
@@ -47,9 +52,28 @@
         </template>
       </form-input>
 
-      <simple-wrapper-slim>
-        awd
-      </simple-wrapper-slim>
+      <simple-wrapper-slim-sm>
+        <form-group-between-shift>
+          <template v-slot:left>
+            <search-select
+              v-model="walletThree"
+              :data="wallets"
+              placeholder="Select a token..."
+            >
+              <template v-slot:label>
+                Token
+              </template>
+            </search-select>
+          </template>
+          <template v-slot:right>
+            <form-input value="0" type="number">
+              <template v-slot:label>
+                Receive
+              </template>
+            </form-input>
+          </template>
+        </form-group-between-shift>
+      </simple-wrapper-slim-sm>
 
       <template v-slot:footer>
         <btn class="btn-primary btn-block" disabled>
@@ -65,24 +89,28 @@ import Vue from 'vue'
 import CardSwap from '~/components/CardSwap.vue'
 import Btn from '~/components/Btn.vue'
 import FormInput from '~/components/FormInput.vue'
-import SimpleWrapperSlim from '~/components/SimpleWrapperSlim.vue'
+import SimpleWrapperSlimSm from '~/components/SimpleWrapperSlimSm.vue'
 import FormGroupBetween from '~/components/FormGroupBetween.vue'
+import FormGroupBetweenShift from '~/components/FormGroupBetweenShift.vue'
 import SearchSelect from '~/components/SearchSelect.vue'
+import Icon from '~/components/Icon.vue'
 
 export default Vue.extend({
   components: {
     CardSwap,
     Btn,
     FormInput,
-    SimpleWrapperSlim,
+    SimpleWrapperSlimSm,
     FormGroupBetween,
+    FormGroupBetweenShift,
     SearchSelect,
+    Icon,
   },
   data: () => ({
     wallets: [],
     walletFirst: {
       id: '1-0',
-      label: 'Ethereum Ethereum Ethereum Ethereum Ethereum Ethereum',
+      label: 'Ethereum',
       icon: '/img/icons/ethereum.svg',
     },
     walletSecond: {
@@ -90,13 +118,14 @@ export default Vue.extend({
       label: 'Waves',
       icon: '/img/icons/waves.svg',
     },
+    walletThree: undefined,
   }),
   mounted() {
     this.$store.commit('app/SET_IS_HIDE_MOBILE_TITLE', false)
     const wallets = [
       {
         id: '1',
-        label: 'Ethereum Ethereum Ethereum Ethereum Ethereum Ethereum',
+        label: 'Ethereum',
         icon: '/img/icons/ethereum.svg',
       },
       {
@@ -122,6 +151,13 @@ export default Vue.extend({
         this.wallets.push(newWallet)
       })
     }
+  },
+  methods: {
+    walletRotate() {
+      const walletFirst = { ...this.walletFirst }
+      this.walletFirst = { ...this.walletSecond }
+      this.walletSecond = walletFirst
+    },
   },
 })
 </script>
