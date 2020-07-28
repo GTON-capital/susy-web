@@ -51,5 +51,10 @@ export default Vue.extend({
 }
 .card-swap-final-bottom {
   background-color: $secondary-light;
+  @include media-breakpoint-down(sm) {
+    margin-left: -$card-content-padding-x;
+    margin-right: -$card-content-padding-x;
+    padding: #{$form-group-margin-bottom-sm + 2px} $card-content-padding-x 2px $card-content-padding-x;
+  }
 }
 </style>

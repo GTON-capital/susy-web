@@ -190,7 +190,12 @@
         Swap
       </template>
       <template v-slot:bodyTop>
-        bodyTop
+        <form-group>
+          <transactions-icons
+            :left="walletFirst"
+            :right="walletSecond"
+          ></transactions-icons>
+        </form-group>
       </template>
       <template v-slot:bodyBottom>
         <form-input value="0xEA3ed91a668B6a56751729016EBafc214dFBeB65">
@@ -310,6 +315,7 @@ import FormGroupBetweenShift1 from '~/components/FormGroupBetweenShift1.vue'
 import SearchSelect from '~/components/SearchSelect.vue'
 import Checkbox from '~/components/Checkbox.vue'
 import Icon from '~/components/Icon.vue'
+import TransactionsIcons from '~/components/TransactionsIcons.vue'
 
 export default Vue.extend({
   components: {
@@ -326,6 +332,7 @@ export default Vue.extend({
     FormGroupBetweenShift1,
     SearchSelect,
     Icon,
+    TransactionsIcons,
     Checkbox,
   },
   data: () => ({

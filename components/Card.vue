@@ -68,7 +68,7 @@ export default Vue.extend({
     border: 1px solid #eaf1f3;
     box-shadow: 0 1px 25px #e2f1f6;
     border-radius: 8px;
-    padding: 18px 16px;
+    padding: 18px $card-content-padding-x;
   }
 }
 .card-footer {
