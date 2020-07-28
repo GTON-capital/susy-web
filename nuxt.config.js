@@ -78,7 +78,10 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: [{ src: '~plugins/modal', ssr: false }],
+  plugins: [
+    { src: '~plugins/modal', ssr: false },
+    { src: '~plugins/clipboard', ssr: true },
+  ],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components

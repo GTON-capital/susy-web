@@ -119,6 +119,16 @@
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  max-width: 520px + $modal-padding-x;
+  max-width: 520px + $modal-padding-x * 2;
   padding: 0 $modal-padding-x;
+}
+
+.modal-lg{
+  max-width: 910px;
+  @media (max-width: 950px) {
+    width: calc(100vw - #{$grid-gutter-width});
+  }
+  .modal-container {
+    max-width: 850px + $modal-padding-x * 2;
+  }
 }

@@ -6,7 +6,20 @@
     <btn class="btn-primary" @click="$modal.push('accounts')">
       Accounts
     </btn>
+    <btn class="btn-primary" @click="$modal.push('logs')">
+      Logs
+    </btn>
     <client-only>
+      <modal name="logs">
+        <modal-content :show-footer="false" size="lg">
+          <template v-slot:head>
+            Logs
+          </template>
+          <template v-slot:body>
+            <table-log></table-log>
+          </template>
+        </modal-content>
+      </modal>
       <modal name="accounts">
         <modal-content :show-footer="false">
           <template v-slot:head>
@@ -501,6 +514,7 @@ import ModalContent from '~/components/ModalContent.vue'
 import RadioProvider from '~/components/RadioProvider.vue'
 import RadioAccount from '~/components/RadioAccount.vue'
 import RadioProviderGroup from '~/components/RadioProviderGroup.vue'
+import TableLog from '~/components/TableLog.vue'
 
 export default Vue.extend({
   components: {
@@ -523,6 +537,7 @@ export default Vue.extend({
     RadioProvider,
     RadioAccount,
     RadioProviderGroup,
+    TableLog,
   },
   data: () => ({
     wallets: [],

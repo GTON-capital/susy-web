@@ -29,6 +29,18 @@ export default Vue.extend({
       display: flex;
       align-items: flex-end;
       justify-content: center;
+      .btn-circle {
+        @include media-breakpoint-down(sm) {
+          width: 32px;
+          height: 32px;
+          min-width: 32px;
+          min-height: 32px;
+          .icon {
+            width: 12px;
+            height: 12px;
+          }
+        }
+      }
     }
   }
   .form-group {
