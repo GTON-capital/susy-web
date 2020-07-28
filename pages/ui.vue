@@ -17,6 +17,7 @@
           </template>
           <template v-slot:body>
             <table-log></table-log>
+            <pagination></pagination>
           </template>
         </modal-content>
       </modal>
@@ -515,6 +516,7 @@ import RadioProvider from '~/components/RadioProvider.vue'
 import RadioAccount from '~/components/RadioAccount.vue'
 import RadioProviderGroup from '~/components/RadioProviderGroup.vue'
 import TableLog from '~/components/TableLog.vue'
+import Pagination from '~/components/Pagination.vue'
 
 export default Vue.extend({
   components: {
@@ -538,6 +540,7 @@ export default Vue.extend({
     RadioAccount,
     RadioProviderGroup,
     TableLog,
+    Pagination,
   },
   data: () => ({
     wallets: [],
