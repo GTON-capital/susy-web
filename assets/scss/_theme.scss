@@ -15,6 +15,11 @@
   --secondary-light: #323652;
   --success-light: var(--secondary-light);
   --hr-border-color: #3D4162;
+  --logo-height: 44px;
+  --logo-height-md: 44px;
+  --logo-width: 157px;
+  --logo-width-md: 157px;
+  --navbar-backdrop-background: var(--body-bg);
 
   &.page-wrapper, .page-wrapper{
     background: var(--body-bg);
@@ -28,5 +33,45 @@
     -webkit-background-clip: unset;
     -webkit-text-fill-color: unset;
     letter-spacing: 3.71429px;
+    @include media-breakpoint-only(md){
+      letter-spacing: normal;
+    }
+  }
+
+  .nav-burger {
+    height: 44px;
+    i {
+      left: 19px;
+      top: 16px;
+      transform: none;
+      &:nth-child(1) {
+        width: 44px;
+        top: 16px;
+      }
+      &:nth-child(2) {
+        width: 28.5px;
+        top: 25px;
+      }
+      &:nth-child(3) {
+        display: none;
+      }
+    }
+  }
+  .nav {
+    &.active {
+      .nav-burger {
+        i {
+          width: 24.59px;
+          height: 2.24px;
+          &:nth-child(1) {
+            left: calc(50% + 1px);
+            transform: rotate(-45deg) translate(-50%, -50%);
+          }
+          &:nth-child(2) {
+            transform: rotate(45deg) translate(-50%, -50%);
+          }
+        }
+      }
+    }
   }
 }

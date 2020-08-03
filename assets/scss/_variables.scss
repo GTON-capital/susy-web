@@ -54,8 +54,8 @@ $link-hover-color: inherit;
 $link-decoration: underline;
 $link-hover-decoration: none;
 
-$nav-logo-height: 51px;
-$nav-logo-width: 160.5px;
+$logo-height: 51px;
+$logo-width: 160.5px;
 
 $table-cell-padding: 13px;
 $table-color: $body-color;
@@ -114,6 +114,13 @@ $nav-header-fz-scale: 1;
 $card-background-color: var(--body-bg);
 $hr-border-color: #E4EDEF;
 
+$logo-height: 50px;
+$logo-width: 67px;
+$logo-height-md: 68px;
+$logo-width-md: 88px;
+
+$navbar-backdrop-background: rgba(50, 80, 80, 0.31);
+
 $root: (
   body-bg: $body-bg,
   body-color: $body-color,
@@ -138,4 +145,9 @@ $root: (
   nav-header-fz-scale: $nav-header-fz-scale,
   card-background-color: $card-background-color,
   hr-border-color: $hr-border-color,
+  logo-height: $logo-height,
+  logo-width: $logo-width,
+  logo-height-md: $logo-height-md,
+  logo-width-md: $logo-width-md,
+  navbar-backdrop-background: $navbar-backdrop-background,
 );

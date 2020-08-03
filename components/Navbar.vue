@@ -65,12 +65,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-$nav-logo-height: 50px;
-$nav-logo-width: 67px;
-$nav-logo-height-md: 68px;
-$nav-logo-width-md: 88px;
-$nav-panel-height: 42px;
-
 .nav {
   width: 100%;
   display: flex;
@@ -87,7 +81,7 @@ $nav-panel-height: 42px;
 }
 .nav-container {
   padding-top: 8px;
-  padding-bottom: 12px;
+  padding-bottom: 22px;
   z-index: 3;
   @include media-breakpoint-up(md) {
     padding-bottom: 0;
@@ -102,19 +96,19 @@ $nav-panel-height: 42px;
 }
 .nav-logo {
   display: block;
-  flex: 0 0 $nav-logo-width;
-  width: $nav-logo-width;
+  flex: 0 0 var(--logo-width);
+  width: var(--logo-width);
   max-width: 100%; // Reset earlier grid tiers
   @include media-breakpoint-up(md) {
-    flex: 0 0 $nav-logo-width-md;
-    width: $nav-logo-width-md;
+    flex: 0 0 var(--logo-width-md);
+    width: var(--logo-width-md);
   }
   &:before {
     content: '';
     display: block;
-    padding-top: #{$nav-logo-height / $nav-logo-width * 100%};
+    padding-top: var(--logo-height);
     @include media-breakpoint-up(md) {
-      padding-top: #{$nav-logo-height-md / $nav-logo-width-md * 100%};
+      padding-top: var(--logo-height-md);
     }
   }
 }
@@ -189,10 +183,10 @@ $nav-panel-height: 42px;
   }
 }
 .nav-menu {
-  background: #ffffff;
+  background-color: var(--body-bg);
   border: 1px solid;
   border-color: var(--base-border-color);
-  box-shadow: 0px 1px 25px #e2f1f6;
+  box-shadow: var(--base-box-shadow);
   border-radius: 8px;
   width: 158px;
   padding: 11px 0;
@@ -218,7 +212,7 @@ $nav-panel-height: 42px;
   left: 0;
   z-index: 1;
   height: 100vh;
-  background: rgba(50, 80, 80, 0.31);
+  background: var(--navbar-backdrop-background);
   backdrop-filter: blur(24.4645px);
   transition: 0.2s opacity;
   width: 0;
@@ -278,7 +272,7 @@ $nav-panel-height: 42px;
         opacity: 1;
       }
       .nav-container {
-        background: white;
+        background-color: var(--body-bg);
       }
     }
   }

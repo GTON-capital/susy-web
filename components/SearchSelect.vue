@@ -202,7 +202,7 @@ $search-select-icon-height: 32px;
   background: #ffffff;
   border: 1px solid;
   border-color: var(--base-border-color);
-  box-shadow: 0px 1px 25px #e2f1f6;
+  box-shadow: var(--base-box-shadow);
   width: 100%;
   height: $search-select-icon-height;
   max-width: $search-select-icon-height;

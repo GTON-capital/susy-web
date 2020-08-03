@@ -169,7 +169,7 @@ export default Vue.extend({
   border-radius: 50%;
   background: #ffffff;
   border: 1px solid;
-  box-shadow: 0px 1px 25px #e2f1f6;
+  box-shadow: var(--base-box-shadow);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -188,7 +188,7 @@ export default Vue.extend({
   background: #ffffff;
   border: 2px solid;
   border-color: var(--base-border-color);
-  box-shadow: 0px 1px 25px #e2f1f6;
+  box-shadow: var(--base-box-shadow);
   border-radius: 8px;
   padding: 50px 18px 15px 18px;
   width: 100%;
