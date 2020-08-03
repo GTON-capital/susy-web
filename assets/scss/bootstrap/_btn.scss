@@ -28,15 +28,15 @@
       $btn-font-size,
       $btn-padding-x
   );
-  @include root-color-property(color, btn-color);
-  @include root-color-property(background-color, btn-background-color);
-  @include root-color-property(border-color, btn-background-color);
+  color: var(--btn-color);
+  background-color: var(--btn-background-color);
+  border-color: var(--btn-background-color);
 
   &:hover:not(:disabled) {
     text-decoration: none;
-    @include root-color-property(color, btn-color);
-    @include root-color-property(background-color, btn-background-color-hover);
-    @include root-color-property(border-color, btn-background-color-hover);
+    color: var(--btn-color);
+    background-color: var(--btn-background-color-hover);
+    border-color: var(--btn-background-color-hover);
   }
 
   &:focus,
@@ -72,26 +72,26 @@ fieldset:disabled a.btn {
 }
 
 .btn-primary {
-  @include root-color-property(color, body-bg);
-  @include root-color-property(background-color, primary);
-  @include root-color-property(border-color, primary);
+  color: var(--body-bg);
+  background-color: var(--primary);
+  border-color: var(--primary);
 
   &:hover:not(:disabled) {
-    @include root-color-property(color, primary);
-    @include root-color-property(background-color, body-bg);
-    @include root-color-property(border-color, secondary);
+    color: var(--primary);
+    background-color: var(--body-bg);
+    border-color: var(--secondary);
   }
 }
 
 .btn-secondary {
-  @include root-color-property(color, body-bg);
-  @include root-color-property(background-color, secondary);
-  @include root-color-property(border-color, secondary);
+  color: var(--body-bg);
+  background-color: var(--secondary);
+  border-color: var(--secondary);
 
   &:hover:not(:disabled) {
-    @include root-color-property(color, secondary);
-    @include root-color-property(background-color, body-bg);
-    @include root-color-property(border-color, primary);
+    color: var(--secondary);
+    background-color: var(--body-bg);
+    border-color: var(--primary);
   }
 }
 
@@ -99,7 +99,7 @@ fieldset:disabled a.btn {
   background: linear-gradient(0.64deg, #5D7C80 -97.93%, #FFFFFF 190.55%);
 
   &:hover:not(:disabled) {
-    background: linear-gradient(0.64deg, $primary 0%, $primary 100%);
+    background: linear-gradient(0.64deg, var(--primary) 0%, var(--primary) 100%);
   }
 }
 
@@ -128,12 +128,12 @@ input[type='button'] {
 
 .btn-link{
   white-space: normal;
-  @include root-color-property(color, primary);
+  color: var(--primary);
   background-color: transparent;
   border-color: transparent;
   text-decoration: underline;
   &:hover:not(:disabled) {
-    @include root-color-property(color, primary);
+    color: var(--primary);
     background-color: transparent;
     border-color: transparent;
     text-decoration: none;

@@ -73,8 +73,8 @@ export default Vue.extend({
   min-height: 85px;
   background: #ffffff;
   border-radius: 8px;
-  border: 1px solid #eaf1f3;
-  box-sizing: border-box;
+  border: 1px solid;
+  border-color: var(--base-border-color);
   box-shadow: 0px 1px 25px #e2f1f6;
   &:before,
   &:after {
@@ -87,14 +87,15 @@ export default Vue.extend({
     top: 32px;
     width: 22px;
     height: 22px;
-    border: 2px solid $success;
+    border: 2px solid;
+    border-color: var(--success);
   }
   &:after {
     left: 22px;
     top: 39px;
     width: 8px;
     height: 8px;
-    background-color: $success;
+    background-color: var(--success);
     display: none;
   }
 }
@@ -107,8 +108,8 @@ export default Vue.extend({
   border-radius: 50%;
 
   background: #ffffff;
-  border: 1px solid #eaf1f3;
-  box-sizing: border-box;
+  border: 1px solid;
+  border-color: var(--base-border-color);
   box-shadow: 0px 1px 25px #e2f1f6;
   display: flex;
   justify-content: center;
@@ -122,7 +123,7 @@ export default Vue.extend({
 .radio-provider-input:checked {
   ~ {
     .radio-provider-label {
-      border-color: $success;
+      border-color: var(--success);
       &:after {
         display: block;
       }

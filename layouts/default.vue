@@ -1,5 +1,5 @@
 <template>
-  <div class="page-wrapper">
+  <div class="page-wrapper" :class="themeClass">
     <navbar-block></navbar-block>
     <main>
       <Nuxt />
@@ -16,6 +16,11 @@ export default {
   components: {
     navbarBlock,
     footerBlock,
+  },
+  computed: {
+    themeClass() {
+      return 'theme-' + this.$store.getters['theme/theme']
+    },
   },
 }
 </script>

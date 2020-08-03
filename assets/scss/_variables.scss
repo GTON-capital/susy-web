@@ -28,7 +28,7 @@ $primary-light: #FFF4FA;
 $secondary: #73979C;
 $secondary-light: #F3F9F9;
 $success: $green;
-$success-light: #F3F9F9;
+$success-light: $secondary-light;
 
 $headings-color: $primary;
 $headings-font-family: $font-family-cormorant;
@@ -101,6 +101,19 @@ $vs-border-width: 0;
 
 $card-content-padding-x: 16px;
 
+$base-box-shadow: 0 1px 25px #e2f1f6;
+$base-border-color: #eaf1f3;
+
+$nav-burger-lines-background-color: $primary;
+$nav-burger-border-color: var(--base-border-color);
+
+$nav-header-color: var(--primary);
+$nav-header-font-family: var(--headings-font-family);
+$nav-header-fz-scale: 1;
+
+$card-background-color: var(--body-bg);
+$hr-border-color: #E4EDEF;
+
 $root: (
   body-bg: $body-bg,
   body-color: $body-color,
@@ -114,4 +127,15 @@ $root: (
   btn-color: $btn-color,
   btn-background-color: $btn-background-color,
   btn-background-color-hover: $btn-background-color-hover,
+  nav-burger-lines-background-color: $nav-burger-lines-background-color,
+  nav-burger-border-color: $nav-burger-border-color,
+  base-box-shadow: $base-box-shadow,
+  base-border-color: $base-border-color,
+  nav-header-color: $nav-header-color,
+  headings-font-family: $headings-font-family,
+  font-family-base: $font-family-base,
+  nav-header-font-family: $nav-header-font-family,
+  nav-header-fz-scale: $nav-header-fz-scale,
+  card-background-color: $card-background-color,
+  hr-border-color: $hr-border-color,
 );

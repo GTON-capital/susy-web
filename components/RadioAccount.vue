@@ -147,14 +147,15 @@ export default Vue.extend({
     top: 0;
     width: 22px;
     height: 22px;
-    border: 2px solid $success;
+    border: 2px solid;
+    border-color: var(--success);
   }
   &:after {
     left: 7px;
     top: 7px;
     width: 8px;
     height: 8px;
-    background-color: $success;
+    background-color: var(--success);
     display: none;
   }
 }
@@ -167,7 +168,7 @@ export default Vue.extend({
   z-index: 10;
   border-radius: 50%;
   background: #ffffff;
-  border: 1px solid #eaf1f3;
+  border: 1px solid;
   box-shadow: 0px 1px 25px #e2f1f6;
   display: flex;
   justify-content: center;
@@ -185,7 +186,8 @@ export default Vue.extend({
 }
 .radio-account-content {
   background: #ffffff;
-  border: 2px solid #eaf1f3;
+  border: 2px solid;
+  border-color: var(--base-border-color);
   box-shadow: 0px 1px 25px #e2f1f6;
   border-radius: 8px;
   padding: 50px 18px 15px 18px;
@@ -194,13 +196,13 @@ export default Vue.extend({
 }
 .radio-account-content-label {
   font-size: 13px;
-  color: $secondary;
+  color: var(--secondary);
   margin-bottom: 7px;
   position: relative;
   z-index: 7;
 }
 .radio-account-content-value {
-  color: $primary;
+  color: var(--primary);
   font-weight: 600;
   position: relative;
   z-index: 8;
@@ -232,7 +234,7 @@ export default Vue.extend({
       }
     }
     .radio-account-content {
-      border-color: $success;
+      border-color: var(--success);
     }
   }
 }

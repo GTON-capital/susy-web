@@ -1,0 +1,32 @@
+.theme-gravity{
+  --body-bg: #181A29;
+  --primary: #44D7B6;
+  --body-color: #D8D8D8;
+  --base-box-shadow: none;
+  --nav-burger-lines-background-color: var(--body-color);
+  --nav-burger-border-color: var(--body-bg);
+  --nav-header-color: var(--body-color);
+  --font-family-base: 'Poppins', #{$font-family-sans-serif};
+  --headings-font-family: 'Poppins', #{$font-family-sans-serif};
+  --nav-header-font-family: 'Orbitron', #{$font-family-sans-serif};
+  --nav-header-fz-scale: 0.59;
+  --card-background-color: #22253B;
+  --base-border-color: #262942;
+  --secondary-light: #323652;
+  --success-light: var(--secondary-light);
+  --hr-border-color: #3D4162;
+
+  &.page-wrapper, .page-wrapper{
+    background: var(--body-bg);
+
+    @include media-breakpoint-up(sm){
+      background: url("/img/gravity/body.svg") no-repeat center 250px, var(--body-bg);
+    }
+  }
+  .nav-header{
+    background: none;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: unset;
+    letter-spacing: 3.71429px;
+  }
+}

@@ -4,15 +4,6 @@ html {
 
 body {
   min-height: 100vh;
-  background: linear-gradient(180deg, #FFFFFF 0%, #F3F9FA 90.48%);
-  @include media-breakpoint-up(sm){
-    background: url("/img/body.svg") no-repeat center 250px, linear-gradient(180deg, #FFFFFF 0%, #F3F9FA 90.48%);
-  }
-  @each $name, $width in $container-max-widths {
-    @include media-breakpoint-up($name){
-      background-size: #{$width - $grid-gutter-width} auto, 100% 100%;
-    }
-  }
 }
 
 .page-wrapper {
@@ -22,6 +13,19 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+
+  color: var(--body-color);
+  font-family: var(--font-family-base);
+  background: linear-gradient(180deg, #FFFFFF 0%, #F3F9FA 90.48%), var(--body-bg);
+
+  @include media-breakpoint-up(sm){
+    background: url("/img/susy/body.svg") no-repeat center 250px, linear-gradient(180deg, #FFFFFF 0%, #F3F9FA 90.48%);
+  }
+  @each $name, $width in $container-max-widths {
+    @include media-breakpoint-up($name){
+      background-size: #{$width - $grid-gutter-width} auto, 100% 100%;
+    }
+  }
 
   > {
     main {
@@ -111,18 +115,18 @@ input[type="search"]::-webkit-search-results-decoration {
 
 
 ::-webkit-scrollbar-track{
-  background: $secondary-light;
+  background-color: var(--secondary-light);
   border-radius: 8px;
 }
 ::-webkit-scrollbar-thumb{
   border-radius: 8px;
-  background: $secondary;
+  background-color: var(--secondary);
 }
 ::-webkit-scrollbar{
   width: 8px;
   border-radius: 8px;
 }
 
-.font-cormorant{
-  font-family: $font-family-cormorant;
+.headings-font-family{
+  font-family: var(--headings-font-family);
 }

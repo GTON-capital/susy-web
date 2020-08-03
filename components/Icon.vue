@@ -1,8 +1,10 @@
 <template>
-  <i class="icon" :style="style"><slot></slot></i>
+  <i class="icon" :style="style"
+    ><client-only><slot></slot></client-only
+  ></i>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
 
 export default Vue.extend({

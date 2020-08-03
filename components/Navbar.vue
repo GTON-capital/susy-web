@@ -4,10 +4,14 @@
     <div class="container nav-container">
       <div class="nav-content">
         <nuxt-link to="/" class="nav-logo responsive">
-          <img class="responsive-item" src="/img/logo.svg" alt="Logo" />
+          <img
+            class="responsive-item"
+            :src="`/img/${theme}/logo.svg`"
+            alt="Logo"
+          />
         </nuxt-link>
         <div
-          class="nav-header font-cormorant"
+          class="nav-header"
           :class="{ 'nav-header-mobile': isHideMobileTitle }"
         >
           Seamless <br />Crosschain Swaps
@@ -42,6 +46,9 @@ export default Vue.extend({
     footerBlock,
   },
   computed: {
+    theme() {
+      return this.$store.getters['theme/theme']
+    },
     isOpenNav() {
       return this.$store.getters['app/isOpenNav']
     },
@@ -113,17 +120,18 @@ $nav-panel-height: 42px;
 }
 .nav-header {
   line-height: 1;
-  font-size: 32px;
+  font-size: calc(32px * var(--nav-header-fz-scale));
   height: 1.1em;
-  color: $primary;
+  color: var(--nav-header-color);
+  font-family: var(--nav-header-font-family);
   background: -webkit-linear-gradient(#ff0097, #688487);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   @include media-breakpoint-up(md) {
-    font-size: 38px;
+    font-size: calc(38px * var(--nav-header-fz-scale));
   }
   @include media-breakpoint-up(lg) {
-    font-size: 44px;
+    font-size: calc(44px * var(--nav-header-fz-scale));
   }
   @include media-breakpoint-down(sm) {
     order: 5;
@@ -140,10 +148,10 @@ $nav-panel-height: 42px;
   position: relative;
   width: 82px;
   height: 42px;
-  background: #ffffff;
-  border: 1px solid #eaf1f3;
-  box-sizing: border-box;
-  box-shadow: 0 1px 25px #e2f1f6;
+  background: var(--body-bg);
+  border: 1px solid;
+  border-color: var(--nav-burger-border-color);
+  box-shadow: var(--base-box-shadow);
   border-radius: 8px;
   outline: none !important;
   i {
@@ -152,7 +160,7 @@ $nav-panel-height: 42px;
     height: 2px;
     left: 20px;
     top: 13px;
-    background-color: $primary;
+    background-color: var(--nav-burger-lines-background-color);
     border-radius: 4px;
     transform: scaleY(0.5);
     transition: 0.3s;
@@ -182,8 +190,8 @@ $nav-panel-height: 42px;
 }
 .nav-menu {
   background: #ffffff;
-  border: 1px solid #eaf1f3;
-  box-sizing: border-box;
+  border: 1px solid;
+  border-color: var(--base-border-color);
   box-shadow: 0px 1px 25px #e2f1f6;
   border-radius: 8px;
   width: 158px;

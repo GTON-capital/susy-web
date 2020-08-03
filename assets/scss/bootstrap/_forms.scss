@@ -140,7 +140,7 @@ textarea.form-control {
       align-items: center;
       justify-content: center;
       color: white;
-      background-color: $secondary;
+      background-color: var(--secondary);
       ~ .form-control, ~ .form-control-content{
         flex-basis: 0;
         flex-grow: 1;
@@ -179,8 +179,9 @@ textarea.form-control {
 .form-control-icon{
   position: absolute;
   background: #FFFFFF;
-  border: 1px solid #EAF1F3;
-  box-shadow: 0 1px 25px #E2F1F6;
+  border: 1px solid;
+  border-color: var(--base-border-color);
+  box-shadow: var(--base-box-shadow);
   width: 32px;
   height: 32px;
   display: flex;

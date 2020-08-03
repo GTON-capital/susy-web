@@ -127,7 +127,7 @@ export default Vue.extend({
     height: 24px;
     text-decoration: none !important;
     &:not(.active):not(:hover) {
-      color: $secondary;
+      color: var(--secondary);
     }
     &:hover {
       font-weight: 600;
@@ -144,7 +144,7 @@ export default Vue.extend({
     &.active {
       font-weight: 600;
       &:before {
-        background-color: $primary;
+        background-color: var(--primary);
       }
     }
   }

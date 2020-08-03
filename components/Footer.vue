@@ -4,10 +4,12 @@
       <div class="footer-row">
         <div class="footer-gravity">
           <btn class="footer-gravity-btn" tag="a" to="/">
-            <icon image="/img/icons/gravity.svg"></icon>
+            <icon>
+              <gravity-icon></gravity-icon>
+            </icon>
           </btn>
         </div>
-        <div class="footer-copyright font-cormorant">
+        <div class="footer-copyright headings-font-family">
           &copy; {{ new Date().getFullYear() }} Gravity Protocol.
         </div>
         <div class="footer-socials">
@@ -18,16 +20,18 @@
             :href="social.link"
             target="_blank"
           >
-            <icon :image="`/img/icons/socials/${social.icon}.svg`"></icon>
+            <icon>
+              <component :is="'socials-' + social.icon + '-icon'"></component>
+            </icon>
           </a>
         </div>
-        <div class="footer-link font-cormorant">
+        <div class="footer-link headings-font-family">
           <a href="/">Privacy Policy</a>
         </div>
-        <div class="footer-link font-cormorant">
+        <div class="footer-link headings-font-family">
           <a href="/">Terms of Service</a>
         </div>
-        <div class="footer-link font-cormorant">
+        <div class="footer-link headings-font-family">
           <a class="text-primary" href="mailto:info@susy.one">info@susy.one</a>
         </div>
       </div>
@@ -61,7 +65,18 @@ import Icon from '~/components/Icon.vue'
 import Btn from '~/components/Btn.vue'
 
 export default Vue.extend({
-  components: { Btn, Icon },
+  components: {
+    Btn,
+    Icon,
+    gravityIcon: () => import('~/assets/icons/gravity.svg?inline'),
+    socialsTwitterIcon: () =>
+      import('~/assets/icons/socials/twitter.svg?inline'),
+    socialsMediumIcon: () => import('~/assets/icons/socials/medium.svg?inline'),
+    socialsTelegramIcon: () =>
+      import('~/assets/icons/socials/telegram.svg?inline'),
+    socialsFacebookIcon: () =>
+      import('~/assets/icons/socials/facebook.svg?inline'),
+  },
   props: {
     isDisabledCookiesBox: {
       type: Boolean,
@@ -179,8 +194,8 @@ export default Vue.extend({
 .footer-cookies-box {
   font-weight: 400;
   border: 1px solid;
-  @include root-color-property(background-color, body-bg);
-  @include root-color-property(border-color, primary);
+  background-color: var(--body-bg);
+  border-color: var(--primary);
   min-height: 70px;
   padding: 15px;
   @include media-breakpoint-up(sm) {
@@ -247,17 +262,6 @@ export default Vue.extend({
     justify-content: center;
   }
 }
-.footer-social {
-  @include media-breakpoint-down(xs) {
-    margin: 0 20px;
-    &:first-child {
-      margin-left: 0;
-    }
-    &:last-child {
-      margin-right: 0;
-    }
-  }
-}
 .footer-link {
   @include media-breakpoint-down(xs) {
     margin-bottom: 18px;
@@ -270,14 +274,25 @@ export default Vue.extend({
   width: 42px;
   height: 42px;
   min-width: 42px;
-  filter: drop-shadow(0 0 0 rgba($secondary, 0.3));
+  color: var(--secondary);
+  transform-origin: center;
   transition: 0.2s;
   &:hover {
-    filter: drop-shadow(0 0 3px rgba($secondary, 0.3));
+    color: var(--secondary);
+    transform: scale(1.1);
   }
   .icon {
     width: 22px;
     height: 22px;
+  }
+  @include media-breakpoint-down(xs) {
+    margin: 0 20px;
+    &:first-child {
+      margin-left: 0;
+    }
+    &:last-child {
+      margin-right: 0;
+    }
   }
 }
 .footer-gravity {

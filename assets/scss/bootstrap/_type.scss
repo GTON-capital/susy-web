@@ -10,7 +10,7 @@ h1, h2, h3, h4, h5, h6,
   font-family: $headings-font-family;
   font-weight: $headings-font-weight;
   line-height: $headings-line-height;
-  @include root-color-property(color, headings-color);
+  color: var(--headings-color);
 }
 
 h1, .h1 { font-size: $h1-font-size; }
@@ -27,5 +27,5 @@ hr{
   border: none;
   margin: 0;
   padding: 0;
-  background-color: #E4EDEF;
+  background-color: var(--hr-border-color);
 }

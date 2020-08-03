@@ -200,7 +200,8 @@ $search-select-icon-height: 32px;
 }
 .search-select-icon {
   background: #ffffff;
-  border: 1px solid #eaf1f3;
+  border: 1px solid;
+  border-color: var(--base-border-color);
   box-shadow: 0px 1px 25px #e2f1f6;
   width: 100%;
   height: $search-select-icon-height;
@@ -252,12 +253,12 @@ $search-select-icon-height: 32px;
     padding-bottom: 3px;
     text-decoration: none !important;
     &.active {
-      color: $primary;
+      color: var(--primary);
       font-weight: 700;
     }
     &:hover {
-      background: $primary-light;
-      color: $primary;
+      background: var(--primary-light);
+      color: var(--primary);
     }
   }
   .search-select-icon {
