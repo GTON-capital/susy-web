@@ -9,6 +9,9 @@
     <btn class="btn-primary" @click="$modal.push('accounts')">
       Accounts
     </btn>
+    <checkbox v-model="isGravityTheme" name="is-gravity-theme">
+      Gravity Theme
+    </checkbox>
     <client-only>
       <modal name="logs">
         <modal-content :show-footer="false" size="lg">
@@ -559,6 +562,7 @@ export default Vue.extend({
     exchangeIcon: () => import('assets/icons/exchange.svg?inline'),
   },
   data: () => ({
+    isGravityTheme: false,
     page: 1,
     wallets: [],
     walletFirst: {
@@ -576,6 +580,15 @@ export default Vue.extend({
   computed: {
     theme() {
       return this.$store.getters['theme/theme']
+    },
+  },
+  watch: {
+    isGravityTheme(isGravityTheme) {
+      // eslint-disable-next-line no-console
+      console.log(isGravityTheme, isGravityTheme ? 'gravity' : 'susy')
+      this.$store.dispatch('theme/setTheme', {
+        theme: isGravityTheme ? 'gravity' : 'susy',
+      })
     },
   },
   mounted() {

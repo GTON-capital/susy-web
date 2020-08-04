@@ -233,257 +233,259 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-.footer-cookies {
-  transition: height 0.5s ease;
-}
-.footer {
-  padding-top: 42px;
-  padding-bottom: 30px;
-  @include media-breakpoint-down(xs) {
-    padding-top: 14px;
-    padding-bottom: 16px;
+.theme-gravity {
+  .footer-cookies {
+    transition: height 0.5s ease;
   }
-  font-weight: 300;
-  hr {
-    display: none;
-    @include media-breakpoint-up(md) {
-      display: block;
+  .footer {
+    padding-top: 42px;
+    padding-bottom: 30px;
+    @include media-breakpoint-down(xs) {
+      padding-top: 14px;
+      padding-bottom: 16px;
     }
-  }
-}
-.footer-nav {
-  padding-top: 25px;
-  display: block;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  color: $text-muted;
-  margin-left: -15px;
-  margin-right: -15px;
-  @include media-breakpoint-up(md) {
-    min-height: 118px;
-    display: flex;
-    padding-bottom: 25px;
-  }
-  hr {
-    position: relative;
-    top: -25px;
-    display: block;
-    @include media-breakpoint-up(md) {
+    font-weight: 300;
+    hr {
       display: none;
+      @include media-breakpoint-up(md) {
+        display: block;
+      }
     }
   }
-  .footer-contacts-email {
-    display: none;
-    @include media-breakpoint-up(lg) {
-      display: inline-block;
-    }
-  }
-}
-.footer-contacts-email {
-  @include media-breakpoint-down(xs) {
-    text-decoration: none;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-}
-.footer-nav-item {
-  display: none;
-  a {
+  .footer-nav {
+    padding-top: 25px;
     display: block;
-    padding: 15px;
-  }
-  @include media-breakpoint-up(md) {
-    display: inline-block;
-  }
-}
-.footer-nav-logo-wrapper {
-  padding-left: 15px;
-  padding-right: 15px;
-  flex: 0 0 100%;
-  width: 100%;
-  @include media-breakpoint-up(xl) {
-    flex: 0 0 auto;
-    width: auto;
-  }
-}
-.footer-nav-logo {
-  display: block;
-  flex: 0 0 $logo-width;
-  width: $logo-width;
-  max-width: 100%; // Reset earlier grid tiers
-  margin-bottom: 15px;
-  &:before {
-    padding-top: $logo-height;
-  }
-  @include media-breakpoint-up(md) {
-    margin-bottom: 21px;
-  }
-  @include media-breakpoint-up(xl) {
-    margin-bottom: 0;
-  }
-}
-.footer-cookies-wrapper {
-  position: fixed;
-  bottom: 30px;
-  left: 0;
-  width: 100%;
-  z-index: 10;
-  transition: bottom 0.5s ease;
-}
-.footer-cookies-box {
-  font-weight: 400;
-  background: $body-bg;
-  border: 1px solid #2e3148;
-  min-height: 70px;
-  padding: 15px;
-  @include media-breakpoint-up(sm) {
-    display: flex;
     align-items: center;
-    justify-content: center;
-  }
-}
-.footer-socials,
-.footer-contacts,
-.footer-social {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.footer-socials,
-.footer-contacts {
-  @include media-breakpoint-up(md) {
-    padding-bottom: 34px;
-  }
-  @include media-breakpoint-up(md) {
-    padding-bottom: 43px;
-  }
-}
-.footer-socials {
-  margin-left: -10px;
-  margin-right: -10px;
-  @include media-breakpoint-up(md) {
-    padding-top: 47px;
-    margin-left: 0;
-    margin-right: 0;
-  }
-  .footer-gravity-btn {
-    display: none;
-    @include media-breakpoint-up(lg) {
-      display: inline-block;
-    }
-  }
-}
-.footer-social {
-  justify-content: center;
-  height: 42px;
-  width: 42px;
-  min-width: 42px;
-  opacity: 0.65;
-  transition: $btn-transition;
-  @include media-breakpoint-up(md) {
-    height: 36px;
-    width: 36px;
-    min-width: 36px;
-  }
-  @media (max-width: 400px) {
-    height: 36px;
-    width: 36px;
-    min-width: 36px;
-  }
-  i {
-    height: 30px;
-    width: 30px;
-  }
-  + .footer-social {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    color: $text-muted;
+    margin-left: -15px;
+    margin-right: -15px;
     @include media-breakpoint-up(md) {
-      margin-left: auto;
+      min-height: 118px;
+      display: flex;
+      padding-bottom: 25px;
     }
-  }
-  &:hover {
-    opacity: 1;
-  }
-}
-.footer-gravity-btn {
-  margin-right: 66px;
-  padding-left: 17px;
-  padding-right: 17px;
-  i {
-    top: 5px;
-    width: 129px;
-    height: 17px;
-  }
-  b {
-    margin-top: -6px;
-    margin-bottom: -6px;
-  }
-}
-.footer-contacts {
-  justify-content: space-between;
-  margin-top: 14px;
-  @include media-breakpoint-up(lg) {
-    display: none;
-  }
-  @include media-breakpoint-up(md) {
-    margin-top: 0;
+    hr {
+      position: relative;
+      top: -25px;
+      display: block;
+      @include media-breakpoint-up(md) {
+        display: none;
+      }
+    }
+    .footer-contacts-email {
+      display: none;
+      @include media-breakpoint-up(lg) {
+        display: inline-block;
+      }
+    }
   }
   .footer-contacts-email {
     @include media-breakpoint-down(xs) {
-      color: #ffffff !important;
-      font-weight: 200;
-      font-size: 16px;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
-  .footer-contacts-email,
-  .footer-gravity-btn {
-    margin-bottom: 14px;
+  .footer-nav-item {
+    display: none;
+    a {
+      display: block;
+      padding: 15px;
+    }
     @include media-breakpoint-up(md) {
+      display: inline-block;
+    }
+  }
+  .footer-nav-logo-wrapper {
+    padding-left: 15px;
+    padding-right: 15px;
+    flex: 0 0 100%;
+    width: 100%;
+    @include media-breakpoint-up(xl) {
+      flex: 0 0 auto;
+      width: auto;
+    }
+  }
+  .footer-nav-logo {
+    display: block;
+    flex: 0 0 $logo-width;
+    width: $logo-width;
+    max-width: 100%; // Reset earlier grid tiers
+    margin-bottom: 15px;
+    &:before {
+      padding-top: $logo-height;
+    }
+    @include media-breakpoint-up(md) {
+      margin-bottom: 21px;
+    }
+    @include media-breakpoint-up(xl) {
       margin-bottom: 0;
     }
   }
-}
-.footer-copyright {
-  font-weight: 300;
-  font-size: 13px;
-  line-height: 16px;
-  color: $text-muted;
-  margin-right: 48px;
-}
-.footer-copyright-lg {
-  display: none;
-  @include media-breakpoint-up(lg) {
-    display: block;
+  .footer-cookies-wrapper {
+    position: fixed;
+    bottom: 30px;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    transition: bottom 0.5s ease;
   }
-  .footer-copyright-desc {
-    display: inline;
-  }
-}
-.footer-copyright-xs {
-  display: block;
-  padding-bottom: 24px;
-  @include media-breakpoint-up(lg) {
-    display: none;
-  }
-  @include media-breakpoint-down(xs) {
-    font-weight: 200;
-  }
-  @include media-breakpoint-up(sm) {
-    padding-bottom: 38px;
-  }
-  .footer-copyright-desc {
-    display: none;
+  .footer-cookies-box {
+    font-weight: 400;
+    background: $body-bg;
+    border: 1px solid #2e3148;
+    min-height: 70px;
+    padding: 15px;
     @include media-breakpoint-up(sm) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .footer-socials,
+  .footer-contacts,
+  .footer-social {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .footer-socials,
+  .footer-contacts {
+    @include media-breakpoint-up(md) {
+      padding-bottom: 34px;
+    }
+    @include media-breakpoint-up(md) {
+      padding-bottom: 43px;
+    }
+  }
+  .footer-socials {
+    margin-left: -10px;
+    margin-right: -10px;
+    @include media-breakpoint-up(md) {
+      padding-top: 47px;
+      margin-left: 0;
+      margin-right: 0;
+    }
+    .footer-gravity-btn {
+      display: none;
+      @include media-breakpoint-up(lg) {
+        display: inline-block;
+      }
+    }
+  }
+  .footer-social {
+    justify-content: center;
+    height: 42px;
+    width: 42px;
+    min-width: 42px;
+    opacity: 0.65;
+    transition: $btn-transition;
+    @include media-breakpoint-up(md) {
+      height: 36px;
+      width: 36px;
+      min-width: 36px;
+    }
+    @media (max-width: 400px) {
+      height: 36px;
+      width: 36px;
+      min-width: 36px;
+    }
+    i {
+      height: 30px;
+      width: 30px;
+    }
+    + .footer-social {
+      @include media-breakpoint-up(md) {
+        margin-left: auto;
+      }
+    }
+    &:hover {
+      opacity: 1;
+    }
+  }
+  .footer-gravity-btn {
+    margin-right: 66px;
+    padding-left: 17px;
+    padding-right: 17px;
+    i {
+      top: 5px;
+      width: 129px;
+      height: 17px;
+    }
+    b {
+      margin-top: -6px;
+      margin-bottom: -6px;
+    }
+  }
+  .footer-contacts {
+    justify-content: space-between;
+    margin-top: 14px;
+    @include media-breakpoint-up(lg) {
+      display: none;
+    }
+    @include media-breakpoint-up(md) {
+      margin-top: 0;
+    }
+    .footer-contacts-email {
+      @include media-breakpoint-down(xs) {
+        color: #ffffff !important;
+        font-weight: 200;
+        font-size: 16px;
+      }
+    }
+    .footer-contacts-email,
+    .footer-gravity-btn {
+      margin-bottom: 14px;
+      @include media-breakpoint-up(md) {
+        margin-bottom: 0;
+      }
+    }
+  }
+  .footer-copyright {
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 16px;
+    color: $text-muted;
+    margin-right: 48px;
+  }
+  .footer-copyright-lg {
+    display: none;
+    @include media-breakpoint-up(lg) {
+      display: block;
+    }
+    .footer-copyright-desc {
       display: inline;
     }
   }
-}
-.footer-cookies-btn {
-  margin-top: 19px;
-  @include media-breakpoint-up(sm) {
-    margin-top: 0;
-    margin-left: 33px;
+  .footer-copyright-xs {
+    display: block;
+    padding-bottom: 24px;
+    @include media-breakpoint-up(lg) {
+      display: none;
+    }
+    @include media-breakpoint-down(xs) {
+      font-weight: 200;
+    }
+    @include media-breakpoint-up(sm) {
+      padding-bottom: 38px;
+    }
+    .footer-copyright-desc {
+      display: none;
+      @include media-breakpoint-up(sm) {
+        display: inline;
+      }
+    }
   }
-  --primary: $text-muted;
+  .footer-cookies-btn {
+    margin-top: 19px;
+    @include media-breakpoint-up(sm) {
+      margin-top: 0;
+      margin-left: 33px;
+    }
+    --primary: $text-muted;
+  }
 }
 </style>

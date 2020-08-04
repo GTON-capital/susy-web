@@ -5,7 +5,7 @@
       :name="name"
       :checked="checked"
       class="hide checkbox-input"
-      @change="$emit('change', $event)"
+      @change="$emit('input', $event.target.checked)"
     />
     <span class="checkbox-label">
       <slot></slot>

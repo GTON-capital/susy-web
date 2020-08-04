@@ -168,149 +168,151 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-.footer-cookies {
-  transition: height 0.5s ease;
-}
-.footer {
-  padding-top: 42px;
-  padding-bottom: 30px;
-  @include media-breakpoint-down(xs) {
-    padding-top: 14px;
-    padding-bottom: 16px;
+.theme-susy {
+  .footer-cookies {
+    transition: height 0.5s ease;
   }
-}
-.footer-nav {
-  margin-bottom: 20px;
-}
+  .footer {
+    padding-top: 42px;
+    padding-bottom: 30px;
+    @include media-breakpoint-down(xs) {
+      padding-top: 14px;
+      padding-bottom: 16px;
+    }
+  }
+  .footer-nav {
+    margin-bottom: 20px;
+  }
 
-.footer-cookies-wrapper {
-  position: fixed;
-  bottom: 30px;
-  left: 0;
-  width: 100%;
-  z-index: 10;
-  transition: bottom 0.5s ease;
-}
-.footer-cookies-box {
-  font-weight: 400;
-  border: 1px solid;
-  background-color: $body-bg;
-  border-color: $primary;
-  min-height: 70px;
-  padding: 15px;
-  @include media-breakpoint-up(sm) {
+  .footer-cookies-wrapper {
+    position: fixed;
+    bottom: 30px;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    transition: bottom 0.5s ease;
+  }
+  .footer-cookies-box {
+    font-weight: 400;
+    border: 1px solid;
+    background-color: $body-bg;
+    border-color: $primary;
+    min-height: 70px;
+    padding: 15px;
+    @include media-breakpoint-up(sm) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .footer-cookies-btn {
+    margin-top: 19px;
+    @include media-breakpoint-up(sm) {
+      margin-top: 0;
+      margin-left: 33px;
+    }
+  }
+  .footer-gravity-btn {
+    padding-left: 14px;
+    padding-right: 14px;
+    i {
+      width: 195px;
+      height: 29px;
+    }
+    b {
+      margin-top: -6px;
+      margin-bottom: -6px;
+    }
+    @include media-breakpoint-down(xs) {
+      display: block;
+      width: 100%;
+    }
+  }
+  .footer-row,
+  .footer-gravity,
+  .footer-copyright,
+  .footer-socials {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-gravity,
+  .footer-copyright,
+  .footer-socials,
+  .footer-link {
+    @include make-col-ready(0);
+    @include make-col-auto();
+  }
+  .footer-gravity {
+  }
+  .footer-copyright {
+    justify-content: center;
+    @include media-breakpoint-down(xs) {
+      @include make-col(1, 1);
+      order: 9;
+    }
+  }
+  .footer-socials {
+    justify-content: space-between;
+    flex: 0 0 200px;
+    max-width: 200px;
+    @include media-breakpoint-down(xs) {
+      @include make-col(1, 1);
+      margin-bottom: 10px;
+      justify-content: center;
+    }
+  }
+  .footer-link {
+    @include media-breakpoint-down(xs) {
+      margin-bottom: 18px;
+    }
+  }
+  .footer-social {
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-}
-.footer-cookies-btn {
-  margin-top: 19px;
-  @include media-breakpoint-up(sm) {
-    margin-top: 0;
-    margin-left: 33px;
-  }
-}
-.footer-gravity-btn {
-  padding-left: 14px;
-  padding-right: 14px;
-  i {
-    width: 195px;
-    height: 29px;
-  }
-  b {
-    margin-top: -6px;
-    margin-bottom: -6px;
-  }
-  @include media-breakpoint-down(xs) {
-    display: block;
-    width: 100%;
-  }
-}
-.footer-row,
-.footer-gravity,
-.footer-copyright,
-.footer-socials {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-}
-.footer-gravity,
-.footer-copyright,
-.footer-socials,
-.footer-link {
-  @include make-col-ready(0);
-  @include make-col-auto();
-}
-.footer-gravity {
-}
-.footer-copyright {
-  justify-content: center;
-  @include media-breakpoint-down(xs) {
-    @include make-col(1, 1);
-    order: 9;
-  }
-}
-.footer-socials {
-  justify-content: space-between;
-  flex: 0 0 200px;
-  max-width: 200px;
-  @include media-breakpoint-down(xs) {
-    @include make-col(1, 1);
-    margin-bottom: 10px;
-    justify-content: center;
-  }
-}
-.footer-link {
-  @include media-breakpoint-down(xs) {
-    margin-bottom: 18px;
-  }
-}
-.footer-social {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  min-width: 42px;
-  color: $secondary;
-  transform-origin: center;
-  transition: 0.2s;
-  &:hover {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
     color: $secondary;
-    transform: scale(1.1);
-  }
-  .icon {
-    height: 30px;
-    width: 30px;
-  }
-  @include media-breakpoint-down(xs) {
-    margin: 0 20px;
-    &:first-child {
-      margin-left: 0;
+    transform-origin: center;
+    transition: 0.2s;
+    &:hover {
+      color: $secondary;
+      transform: scale(1.1);
     }
-    &:last-child {
-      margin-right: 0;
+    .icon {
+      height: 30px;
+      width: 30px;
+    }
+    @include media-breakpoint-down(xs) {
+      margin: 0 20px;
+      &:first-child {
+        margin-left: 0;
+      }
+      &:last-child {
+        margin-right: 0;
+      }
     }
   }
-}
-.footer-gravity {
-  @include media-breakpoint-down(xs) {
-    margin-bottom: 10px;
-    @include make-col(1, 1);
-    justify-content: center;
+  .footer-gravity {
+    @include media-breakpoint-down(xs) {
+      margin-bottom: 10px;
+      @include make-col(1, 1);
+      justify-content: center;
+    }
+    @include media-breakpoint-down(sm) {
+      margin-bottom: 10px;
+    }
+    @include media-breakpoint-only(md) {
+      order: 9;
+      @include make-col(1, 1);
+      justify-content: center;
+      margin-top: 30px;
+    }
   }
-  @include media-breakpoint-down(sm) {
-    margin-bottom: 10px;
+  .footer-link {
   }
-  @include media-breakpoint-only(md) {
-    order: 9;
-    @include make-col(1, 1);
-    justify-content: center;
-    margin-top: 30px;
-  }
-}
-.footer-link {
 }
 </style>

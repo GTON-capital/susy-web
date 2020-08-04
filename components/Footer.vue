@@ -1,6 +1,7 @@
 <template>
   <component
     :is="theme + '-footer'"
+    :key="theme"
     :is-disabled-cookies-box="isDisabledCookiesBox"
   ></component>
 </template>
