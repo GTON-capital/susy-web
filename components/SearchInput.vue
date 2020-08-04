@@ -64,7 +64,7 @@
   </form-group>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
 import FormGroup from '~/components/FormGroup.vue'
 import Icon from '~/components/Icon.vue'
@@ -115,9 +115,9 @@ $search-input-height: 35px;
   outline: none !important;
   width: 34px;
   height: 100%;
-  color: $primary;
+  color: $search-input-submit-color;
   &:hover {
-    color: $primary;
+    color: $search-input-submit-color;
   }
 }
 .search-input-clear {

@@ -244,6 +244,23 @@ $checkbox-label-image: var(--checkbox-label-image);
 
 $transactions-icons-arrow-color: var(--transactions-icons-arrow-color);
 
+$search-input-submit-color: var(--search-input-submit-color);
+$search-select-list-item-hover-background: var(--search-select-list-item-hover-background);
+
+$card-header-font-weight: var(--card-header-font-weight);
+$card-header-font-size: var(--card-header-font-size);
+$card-header-font-size-md: var(--card-header-font-size-md);
+
+$table-log-color: var(--table-log-color);
+$table-log-background-color: var(--table-log-background-color);
+$table-log-even-background-color: var(--table-log-even-background-color);
+$table-log-border-color: var(--table-log-border-color);
+$table-log-content-color: var(--table-log-content-color);;
+
+$pagination-item-color: var(--pagination-item-color);
+$pagination-item-arrow-color: var(--pagination-item-arrow-color);
+$pagination-item-arrow-hover-color: var(--pagination-item-arrow-hover-color);
+
 $root: (
   green: #00DD80,
   body-bg: #FFFFFF,
@@ -289,4 +306,17 @@ $root: (
   transactions-icons-arrow-color: $secondary,
   modal-backdrop-background: rgba(50, 80, 80, 0.31),
   modal-close-color: $secondary,
+  search-select-list-item-hover-background: $primary-light,
+  search-input-submit-color: $primary,
+  card-header-font-weight: 600,
+  card-header-font-size: 32px,
+  card-header-font-size-md: 28px,
+  table-log-background-color: white,
+  table-log-even-background-color: $secondary-light,
+  table-log-border-color: $hr-border-color,
+  table-log-content-color: $secondary,
+  table-log-color: inherit,
+  pagination-item-color: $secondary,
+  pagination-item-arrow-color: $primary,
+  pagination-item-arrow-hover-color: $secondary,
 );

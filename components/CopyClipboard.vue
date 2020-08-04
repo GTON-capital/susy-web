@@ -3,8 +3,9 @@
     <icon
       v-clipboard="() => value"
       v-clipboard:success="clipboardSuccessHandler"
-      image="/img/icons/copy.svg"
-    ></icon>
+    >
+      <copy-icon></copy-icon>
+    </icon>
     <div
       role="tooltip"
       class="tooltip fade bs-tooltip-top"
@@ -18,7 +19,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
 import Icon from '~/components/Icon.vue'
 
@@ -26,6 +27,7 @@ export default Vue.extend({
   name: 'CopyClipboard',
   components: {
     Icon,
+    copyIcon: () => import('assets/icons/copy.svg?inline'),
   },
   props: {
     value: {
@@ -66,7 +68,7 @@ export default Vue.extend({
     left: 50%;
     bottom: calc(100% + 5px);
     transform: translateX(-50%);
-    font-weight: 600;
+    font-weight: $card-header-font-weight;
     transition: 0.3s;
     .arrow {
       left: 50%;

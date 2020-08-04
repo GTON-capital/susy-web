@@ -36,12 +36,24 @@
   --search-select-chevron-color: #23263E;
   --wrapper-icon-rounded-border-background: linear-gradient(150deg, #D2B7FF 0%, #4200C0 34.37%, #FF5E00 100%);
   --btn-link-color: var(--white-100);
-  --checkbox-label-color: $text-muted;
-  --checkbox-label-border-color: $text-muted;
+  --checkbox-label-color: #{$text-muted};
+  --checkbox-label-border-color: #{$text-muted};
   --checkbox-label-image: url('data:image/svg+xml,%3csvg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg"%3e%3cpath d="M1.30664 4L5 8.56055L10.6777 0.654297" stroke="%23EEECEC"/%3e%3c/svg%3e');
-  --transactions-icons-arrow-color: #EEECEC;
+  --transactions-icons-arrow-color: var(--white-100);
   --modal-backdrop-background: rgba(19, 20, 35, 0.95);
   --modal-close-color: var(--body-color);
+  --search-select-list-item-hover-background: none;
+  --search-input-submit-color: var(--white-100);
+  --card-header-font-size: 23px;
+  --card-header-font-size-md: 20px;
+  --card-header-font-weight: 400;
+  --table-log-background-color: var(--secondary-light);
+  --table-log-border-color: var(--table-log-background-color);
+  --table-log-even-background-color: #424663;
+  --table-log-content-color: var(--white-100);
+  --table-log-color: #{$text-muted};
+  --pagination-item-color: #{$text-muted};
+  --pagination-item-arrow-hover-color: var(--white-100);
 
   .modal-backdrop{
     backdrop-filter: none;
@@ -161,6 +173,23 @@
   }
   .card-swap-final-body, .simple-wrapper-slim-sm, .simple-wrapper{
     --input-disabled-bg: #424663;
+  }
 
+  .headings-font-family{
+    @include media-breakpoint-down(md){
+      --headings-font-family: 'Orbitron', #{$font-family-sans-serif};
+    }
+  }
+
+  .search-input {
+    --input-bg: #424663;
+    --input-border-color: #424663;
+    --input-color: var(--white-100);
+    .form-control-label{
+      color: var(--white-100);
+    }
+    .search-input-clear{
+      --secondary: var(--white-100);
+    }
   }
 }

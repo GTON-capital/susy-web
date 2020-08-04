@@ -23,7 +23,7 @@
     </button>
     <client-only>
       <modal :name="modalId">
-        <modal-content :show-footer="false">
+        <modal-content :show-footer="false" class="search-select-model">
           <template v-slot:head>
             {{ modalHeading }}
           </template>
@@ -267,7 +267,7 @@ $search-select-icon-height: 32px;
       font-weight: 700;
     }
     &:hover {
-      background: $primary-light;
+      background: $search-select-list-item-hover-background;
       color: $primary;
     }
   }

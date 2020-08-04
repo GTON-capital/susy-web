@@ -252,7 +252,12 @@
           </form-input>
         </template>
         <template v-slot:right>
-          <btn class="btn-link link-invert btn-block">
+          <btn
+            class="btn-link link-invert btn-block"
+            :class="{
+              'text-primary': theme === 'gravity',
+            }"
+          >
             Change address
           </btn>
         </template>
@@ -574,7 +579,7 @@ export default Vue.extend({
     },
   },
   mounted() {
-    this.$store.commit('app/SET_IS_HIDE_MOBILE_TITLE', true)
+    this.$store.commit('app/SET_IS_HIDE_MOBILE_TITLE', false)
     const wallets = [
       {
         id: '1',

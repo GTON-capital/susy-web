@@ -52,15 +52,15 @@ export default Vue.extend({
   }
 }
 .card-header {
-  font-weight: 600;
+  font-weight: $card-header-font-weight;
   text-align: center;
   margin-bottom: 10px;
   width: 100%;
   line-height: 1;
-  font-size: 32px;
+  font-size: $card-header-font-size;
   @include media-breakpoint-up(md) {
     margin-bottom: 28px;
-    font-size: 28px;
+    font-size: $card-header-font-size-md;
   }
 }
 .card-content {

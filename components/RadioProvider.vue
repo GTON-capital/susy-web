@@ -17,7 +17,7 @@
   </label>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
 import Icon from '~/components/Icon.vue'
 

@@ -72,6 +72,7 @@ export default Vue.extend({
   width: 100%;
   font-size: 13px;
   margin-bottom: 24px;
+  color: $table-log-color;
 }
 .table-log-td {
   display: flex;
@@ -83,15 +84,15 @@ export default Vue.extend({
 }
 .table-log-header {
   display: block;
-  font-weight: 600;
+  font-weight: $card-header-font-weight;
 }
 .table-log-content {
-  color: $secondary;
+  color: $table-log-content-color;
   text-align: right;
 }
 .table-log-tr {
   border: 1px solid;
-  border-color: $hr-border-color;
+  border-color: $table-log-border-color;
   border-radius: 8px;
   padding: 20px;
   + .table-log-tr {
@@ -118,9 +119,9 @@ export default Vue.extend({
 @include media-breakpoint-up(md) {
   .table-log {
     border: 1px solid;
-    border-color: $hr-border-color;
+    border-color: $table-log-border-color;
     border-radius: 8px;
-    background-color: white;
+    background-color: $table-log-background-color;
   }
   .table-log-td {
     padding: 20px 10px;
@@ -181,9 +182,9 @@ export default Vue.extend({
       }
     }
     &:nth-child(even) {
-      background-color: $secondary-light;
+      background-color: $table-log-even-background-color;
       border: 1px solid;
-      border-color: $hr-border-color;
+      border-color: $table-log-border-color;
       border-radius: 8px;
       margin-left: -1px;
       margin-right: -1px;

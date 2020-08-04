@@ -9,8 +9,11 @@
           href="javascript:void(0)"
           aria-label="Back"
           @click="setPage(page - 1)"
-          ><icon image="/img/icons/back.svg"></icon
-        ></a>
+        >
+          <icon>
+            <back-icon></back-icon>
+          </icon>
+        </a>
       </li>
       <li v-for="(n, i) in getPages" :key="i" class="pagination-item">
         <a
@@ -28,8 +31,11 @@
           href="javascript:void(0)"
           aria-label="Next"
           @click="setPage(page + 1)"
-          ><icon image="/img/icons/forward.svg"></icon
-        ></a>
+        >
+          <icon>
+            <forward-icon></forward-icon>
+          </icon>
+        </a>
       </li>
     </ul>
   </nav>
@@ -43,6 +49,8 @@ export default Vue.extend({
   name: 'Pagination',
   components: {
     Icon,
+    backIcon: () => import('assets/icons/back.svg?inline'),
+    forwardIcon: () => import('assets/icons/forward.svg?inline'),
   },
   props: {
     countPages: {
@@ -127,7 +135,7 @@ export default Vue.extend({
     height: 24px;
     text-decoration: none !important;
     &:not(.active):not(:hover) {
-      color: $secondary;
+      color: $pagination-item-color;
     }
     &:hover {
       font-weight: 600;
@@ -151,6 +159,12 @@ export default Vue.extend({
 }
 .pagination-arrow-prev,
 .pagination-arrow-next {
+  a {
+    color: $pagination-item-arrow-color !important;
+    &:hover {
+      color: $pagination-item-arrow-hover-color !important;
+    }
+  }
   .icon {
     width: 16px;
     height: 16px;
