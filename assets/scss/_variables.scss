@@ -22,19 +22,12 @@ $dt-font-weight: $font-weight-bold;
 //
 // Quickly modify global styling by enabling or disabling optional features.
 
-$enable-caret: true;
 $enable-rounded: true;
 $enable-shadows: false;
-$enable-gradients: false;
 $enable-transitions: true;
 $enable-prefers-reduced-motion-media-query: true;
-$enable-hover-media-query: false; // Deprecated, no longer affects any compiled CSS
 $enable-grid-classes: true;
 $enable-pointer-cursor-for-buttons: true;
-$enable-print-styles: true;
-$enable-responsive-font-sizes: false;
-$enable-validation-icons: true;
-$enable-deprecation-messages: true;
 
 // Grid columns
 //
@@ -156,6 +149,7 @@ $input-bg: var(--input-bg);
 $input-color: var(--input-color);
 $input-border-color: var(--input-border-color);
 $input-disabled-bg: var(--input-disabled-bg);
+$input-disabled-color: var(--input-disabled-color);
 $input-border-radius: 8px;
 $input-font-size: 13px;
 $input-padding-x: 12px / $html-fz * 1rem;
@@ -166,16 +160,10 @@ $input-line-height: $input-btn-line-height;
 $input-border-width: $input-btn-border-width;
 $input-transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 
-$input-btn-focus-color: rgba(#FF0097, .25);
-$input-btn-focus-width: .2rem;
-$input-btn-focus-box-shadow: 0 0 0 $input-btn-focus-width $input-btn-focus-color;
-
 $input-box-shadow: inset 0 1px 1px rgba($black, .075);
 $input-focus-bg: $input-bg;
-$input-focus-border-color: #ff3fb2;
+$input-focus-border-color: var(--primary);
 $input-focus-color: $input-color;
-$input-focus-width: $input-btn-focus-width;
-$input-focus-box-shadow: $input-btn-focus-box-shadow;
 
 $input-placeholder-color: $gray-600;
 $input-plaintext-color: $body-color;
@@ -281,4 +269,5 @@ $root: (
   input-color: var(--body-color),
   input-border-color: #EEBCD8,
   input-disabled-bg: #E7F2F1,
+  input-disabled-color: var(--input-color),
 );

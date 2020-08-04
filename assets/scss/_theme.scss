@@ -2,10 +2,11 @@
   --body-bg: #181A29;
   --primary: #44D7B6;
   --body-color: #D8D8D8;
+  --white-100: #EEECEC;
   --base-box-shadow: none;
-  --nav-burger-lines-background-color: $body-color;
-  --nav-burger-border-color: $body-bg;
-  --nav-header-color: $body-color;
+  --nav-burger-lines-background-color: var(--body-color);
+  --nav-burger-border-color: var(--body-bg);
+  --nav-header-color: var(--body-color);
   --font-family-base: 'Poppins', #{$font-family-sans-serif};
   --headings-font-family: 'Poppins', #{$font-family-sans-serif};
   --nav-header-font-family: 'Orbitron', #{$font-family-sans-serif};
@@ -18,44 +19,47 @@
   --logo-height-md: 44px;
   --logo-width: 157px;
   --logo-width-md: 157px;
-  --navbar-backdrop-background: $body-bg;
+  --navbar-backdrop-background: var(--body-bg);
   --btn-font-weight: 400;
   --btn-disabled-opacity: 0.39;
-  --input-bg: $body-color;
+  --input-bg: var(--body-color);
   --input-color: #000000;
-  --input-border-color: $input-bg;
-  --input-disabled-bg: $secondary-light;
+  --input-border-color: var(--input-bg);
+  --input-disabled-bg: var(--secondary-light);
+  --input-disabled-color: var(--white-100);
 
   &.page-wrapper, .page-wrapper{
-    background: $body-bg;
+    background: var(--body-bg);
 
     @include media-breakpoint-up(sm){
-      background: url("/img/gravity/body.svg") no-repeat center 250px, $body-bg;
+      background: url("/img/gravity/body.svg") no-repeat center 250px, var(--body-bg);
     }
   }
 
   .btn-primary {
-    color: $primary;
+    color: var(--primary);
     background-color: transparent;
+    border-color: var(--primary);
 
     &:hover:not(:disabled) {
       color: #000000;
-      background-color: #EEECEC;
+      background-color: var(--white-100);
+      border-color: var(--white-100);
     }
     &.disabled,
     &:disabled {
-      color: $body-color;
+      color: var(--body-color);
       border-color: $text-muted;
     }
   }
 
   .btn-secondary-gradient {
-    background: $primary;
-    border-color: $primary;
+    background: var(--primary);
+    border-color: var(--primary);
     color: #FFFFFF;
     &:hover:not(:disabled) {
-      background: #EEECEC;
-      border-color: #EEECEC;
+      background: var(--white-100);
+      border-color: var(--white-100);
       color: #000000;
     }
   }
