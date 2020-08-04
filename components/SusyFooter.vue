@@ -69,11 +69,13 @@ export default Vue.extend({
   components: {
     Btn,
     Icon,
-    gravityIcon: () => import('assets/icons/gravity.svg'),
-    socialsTwitterIcon: () => import('assets/icons/socials/twitter.svg'),
-    socialsMediumIcon: () => import('assets/icons/socials/medium.svg'),
-    socialsTelegramIcon: () => import('assets/icons/socials/telegram.svg'),
-    socialsFacebookIcon: () => import('assets/icons/socials/facebook.svg'),
+    gravityIcon: () => import('assets/icons/gravity.svg?inline'),
+    socialsTwitterIcon: () => import('assets/icons/socials/twitter.svg?inline'),
+    socialsMediumIcon: () => import('assets/icons/socials/medium.svg?inline'),
+    socialsTelegramIcon: () =>
+      import('assets/icons/socials/telegram.svg?inline'),
+    socialsFacebookIcon: () =>
+      import('assets/icons/socials/facebook.svg?inline'),
   },
   props: {
     isDisabledCookiesBox: {

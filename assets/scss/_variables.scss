@@ -49,6 +49,7 @@ $btn-color: $body-color;
 $btn-background-color: $body-bg;
 $btn-background-color-hover: $primary-light;
 
+
 $link-color: inherit;
 $link-hover-color: inherit;
 $link-decoration: underline;
@@ -132,6 +133,8 @@ $root: (
   success-light: $success-light,
   headings-color: $headings-color,
   btn-color: $btn-color,
+  btn-font-weight: $btn-font-weight,
+  btn-disabled-opacity: $btn-disabled-opacity,
   btn-background-color: $btn-background-color,
   btn-background-color-hover: $btn-background-color-hover,
   nav-burger-lines-background-color: $nav-burger-lines-background-color,
@@ -150,4 +153,8 @@ $root: (
   logo-height-md: $logo-height-md,
   logo-width-md: $logo-width-md,
   navbar-backdrop-background: $navbar-backdrop-background,
+  input-bg: $input-bg,
+  input-color: $input-color,
+  input-border-color: $input-border-color,
+  input-disabled-bg: $input-disabled-bg,
 );

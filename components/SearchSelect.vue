@@ -173,10 +173,10 @@ $search-select-icon-height: 32px;
   font-weight: 400;
   white-space: normal;
   text-align: left;
-  border-color: $input-border-color;
+  border-color: var(--input-border-color);
   background-color: white;
   &:hover:not(:disabled) {
-    border-color: $input-border-color;
+    border-color: var(--input-border-color);
     background-color: white;
   }
   &.search-select--with-icon {
@@ -187,11 +187,11 @@ $search-select-icon-height: 32px;
   }
   &.search-select--readonly {
     cursor: auto !important;
-    border-color: $input-disabled-bg;
-    background-color: $input-disabled-bg;
+    border-color: var(--input-disabled-bg);
+    background-color: var(--input-disabled-bg);
     &:hover:not(:disabled) {
-      border-color: $input-disabled-bg;
-      background-color: $input-disabled-bg;
+      border-color: var(--input-disabled-bg);
+      background-color: var(--input-disabled-bg);
     }
     .search-select-chevron {
       display: none;

@@ -9,7 +9,7 @@
   position: relative;
   display: inline-block;
   font-family: $btn-font-family;
-  font-weight: $btn-font-weight;
+  font-weight: var(--btn-font-weight);
   font-size: $btn-font-size;
   text-align: center;
   text-decoration: none;
@@ -48,7 +48,7 @@
   // Disabled comes first so active can properly restyle
   &.disabled,
   &:disabled {
-    opacity: $btn-disabled-opacity;
+    opacity: var(--btn-disabled-opacity);
     box-shadow: none;
   }
 
@@ -78,20 +78,8 @@ fieldset:disabled a.btn {
 
   &:hover:not(:disabled) {
     color: var(--primary);
-    background-color: var(--body-bg);
+    background-color: transparent;
     border-color: var(--secondary);
-  }
-}
-
-.btn-secondary {
-  color: var(--body-bg);
-  background-color: var(--secondary);
-  border-color: var(--secondary);
-
-  &:hover:not(:disabled) {
-    color: var(--secondary);
-    background-color: var(--body-bg);
-    border-color: var(--primary);
   }
 }
 

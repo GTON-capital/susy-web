@@ -20,6 +20,12 @@
   --logo-width: 157px;
   --logo-width-md: 157px;
   --navbar-backdrop-background: var(--body-bg);
+  --btn-font-weight: 400;
+  --btn-disabled-opacity: 0.39;
+  --input-bg: var(--body-color);
+  --input-color: #000000;
+  --input-border-color: var(--input-bg);
+  --input-disabled-bg: var(--secondary-light);
 
   &.page-wrapper, .page-wrapper{
     background: var(--body-bg);
@@ -28,6 +34,35 @@
       background: url("/img/gravity/body.svg") no-repeat center 250px, var(--body-bg);
     }
   }
+
+  .btn-primary {
+    color: var(--primary);
+    background-color: transparent;
+    border-color: var(--primary);
+
+    &:hover:not(:disabled) {
+      color: #000000;
+      background-color: #EEECEC;
+      border-color: #EEECEC;
+    }
+    &.disabled,
+    &:disabled {
+      color: var(--body-color);
+      border-color: $text-muted;
+    }
+  }
+
+  .btn-secondary-gradient {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #FFFFFF;
+    &:hover:not(:disabled) {
+      background: #EEECEC;
+      border-color: #EEECEC;
+      color: #000000;
+    }
+  }
+
   .nav-header{
     background: none;
     -webkit-background-clip: unset;

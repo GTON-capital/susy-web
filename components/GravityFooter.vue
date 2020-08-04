@@ -31,7 +31,7 @@
         <div class="footer-nav-item"><a href="/">Privacy policy</a></div>
         <div class="footer-nav-item"><a href="/">Terms & Conditions</a></div>
         <div class="footer-nav-item footer-contacts-email">
-          <a href="mailto:oracle@gravity.tech" class="text-green">
+          <a href="mailto:oracle@gravity.tech" class="text-primary">
             oracle@gravity.tech
           </a>
         </div>
@@ -40,9 +40,12 @@
     <hr />
     <div class="container">
       <div class="footer-socials">
-        <btn tag="a" href="/" class="footer-socials-btn">
-          <icon image="/img/icons/ventuary-lab.svg"></icon>
-        </btn>
+        <div class="footer-copyright">
+          &copy; {{ new Date().getFullYear() }} Gravity Protocol.
+          <span class="footer-copyright-lg"
+            >Oracles and Cross-chain Communication Network</span
+          >
+        </div>
         <a
           v-for="(social, key) in socials"
           :key="key"
@@ -56,21 +59,15 @@
         </a>
       </div>
       <div class="footer-contacts">
-        <btn tag="a" href="/" class="footer-socials-btn">
+        <btn tag="a" href="/" class="footer-gravity-btn">
           <icon image="/img/icons/ventuary-lab.svg"></icon>
         </btn>
         <a
-          class="text-green footer-contacts-email"
+          class="text-primary footer-contacts-email"
           href="mailto:oracle@gravity.tech"
         >
           oracle@gravity.tech
         </a>
-      </div>
-      <div class="footer-copyright">
-        &copy; {{ new Date().getFullYear() }} Gravity Protocol.
-        <span class="footer-copyright-lg"
-          >Oracles and Cross-chain Communication Network</span
-        >
       </div>
     </div>
     <div class="footer-cookies" :style="getCookiesStyle">
@@ -102,15 +99,18 @@ export default Vue.extend({
   components: {
     Btn,
     Icon,
-    gravityIcon: () => import('assets/icons/gravity.svg'),
-    socialsTwitterIcon: () => import('assets/icons/socials/twitter.svg'),
-    socialsMediumIcon: () => import('assets/icons/socials/medium.svg'),
-    socialsTelegramIcon: () => import('assets/icons/socials/telegram.svg'),
-    socialsFacebookIcon: () => import('assets/icons/socials/facebook.svg'),
-    socialsLinkedInIcon: () => import('assets/icons/socials/linked-in.svg'),
-    socialsDiscordIcon: () => import('assets/icons/socials/discord.svg'),
-    socialsRedditIcon: () => import('assets/icons/socials/reddit.svg'),
-    socialsGithubIcon: () => import('assets/icons/socials/github.svg'),
+    gravityIcon: () => import('assets/icons/gravity.svg?inline'),
+    socialsTwitterIcon: () => import('assets/icons/socials/twitter.svg?inline'),
+    socialsMediumIcon: () => import('assets/icons/socials/medium.svg?inline'),
+    socialsTelegramIcon: () =>
+      import('assets/icons/socials/telegram.svg?inline'),
+    socialsFacebookIcon: () =>
+      import('assets/icons/socials/facebook.svg?inline'),
+    socialsLinkedInIcon: () =>
+      import('assets/icons/socials/linked-in.svg?inline'),
+    socialsDiscordIcon: () => import('assets/icons/socials/discord.svg?inline'),
+    socialsRedditIcon: () => import('assets/icons/socials/reddit.svg?inline'),
+    socialsGithubIcon: () => import('assets/icons/socials/github.svg?inline'),
   },
   data: () => ({
     socials: [
@@ -225,7 +225,7 @@ export default Vue.extend({
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  color: #878ea1;
+  color: $text-muted;
   margin-left: -15px;
   margin-right: -15px;
   @include media-breakpoint-up(md) {
@@ -334,7 +334,7 @@ export default Vue.extend({
     margin-left: 0;
     margin-right: 0;
   }
-  .footer-socials-btn {
+  .footer-gravity-btn {
     display: none;
     @include media-breakpoint-up(lg) {
       display: inline-block;
@@ -343,19 +343,19 @@ export default Vue.extend({
 }
 .footer-social {
   justify-content: center;
-  height: 50px;
-  width: 50px;
-  min-width: 50px;
+  height: 42px;
+  width: 42px;
+  min-width: 42px;
   opacity: 0.65;
   transition: $btn-transition;
   @include media-breakpoint-up(md) {
-    height: 42px;
-    width: 42px;
-    min-width: 42px;
+    height: 36px;
+    width: 36px;
+    min-width: 36px;
   }
   i {
-    height: 32px;
-    width: 32px;
+    height: 26px;
+    width: 26px;
   }
   + .footer-social {
     @include media-breakpoint-up(md) {
@@ -366,12 +366,17 @@ export default Vue.extend({
     opacity: 1;
   }
 }
-.footer-socials-btn {
+.footer-gravity-btn {
   margin-right: 66px;
+  padding-left: 14px;
+  padding-right: 14px;
   i {
-    top: 3px;
-    width: 129px;
-    height: 17px;
+    width: 195px;
+    height: 29px;
+  }
+  b {
+    margin-top: -6px;
+    margin-bottom: -6px;
   }
 }
 .footer-contacts {
@@ -391,7 +396,7 @@ export default Vue.extend({
     }
   }
   .footer-contacts-email,
-  .footer-socials-btn {
+  .footer-gravity-btn {
     margin-bottom: 14px;
     @include media-breakpoint-up(md) {
       margin-bottom: 0;
@@ -399,13 +404,11 @@ export default Vue.extend({
   }
 }
 .footer-copyright {
-  padding-bottom: 24px;
-  @include media-breakpoint-down(xs) {
-    font-weight: 200;
-  }
-  @include media-breakpoint-up(sm) {
-    padding-bottom: 38px;
-  }
+  font-weight: 300;
+  font-size: 13px;
+  line-height: 16px;
+  color: $text-muted;
+  margin-right: 48px;
 }
 .footer-cookies-btn {
   margin-top: 19px;
