@@ -1,5 +1,5 @@
 <template>
-  <div class="page-wrapper" :class="wrapperClass">
+  <div class="page-wrapper">
     <navbar-block></navbar-block>
     <main>
       <Nuxt />
@@ -21,12 +21,17 @@ export default {
     isOpenNav() {
       return this.$store.getters['app/isOpenNav']
     },
-    wrapperClass() {
-      const classes = {}
-      classes['theme-' + this.$store.getters['theme/theme']] = true
-      classes['page-wrapper-overflow-hidden'] = this.isOpenNav
-      return classes
-    },
+  },
+  head() {
+    let className = 'theme-' + this.$store.getters['theme/theme']
+    if (this.isOpenNav) {
+      className += ' html-overflow-hidden'
+    }
+    return {
+      htmlAttrs: {
+        class: className,
+      },
+    }
   },
 }
 </script>

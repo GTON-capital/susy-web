@@ -199,8 +199,10 @@ $tooltip-arrow-width: .8rem;
 $tooltip-arrow-height: .4rem;
 $tooltip-arrow-color: $tooltip-bg;
 
-$modal-content-bg: white;
+$modal-content-bg: var(--card-background-color);
 $modal-padding-x: 10px;
+$modal-backdrop-background: var(--modal-backdrop-background);
+$modal-close-color: var(--modal-close-color);
 
 $red: #FF1C1C;
 
@@ -285,4 +287,6 @@ $root: (
   checkbox-label-border-color: $primary,
   checkbox-label-image: url('data:image/svg+xml,%3csvg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg"%3e%3cpath d="M1.30664 4L5 8.56055L10.6777 0.654297" stroke="%23FF0097"/%3e%3c/svg%3e'),
   transactions-icons-arrow-color: $secondary,
+  modal-backdrop-background: rgba(50, 80, 80, 0.31),
+  modal-close-color: $secondary,
 );

@@ -24,9 +24,9 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(50, 80, 80, 0.31);
+  background: $modal-backdrop-background;
   backdrop-filter: blur(24.4645px);
-  z-index: 1000;
+  z-index: $zindex-modal-backdrop;
 }
 
 .modal-backdrop-enter-active,
@@ -48,7 +48,7 @@
   left: 0;
   right: 0;
   height: 100%;
-  z-index: 1001;
+  z-index: $zindex-modal-backdrop + 1;
 }
 
 .modal-content {
@@ -106,7 +106,7 @@
   border: none;
   background: transparent;
   outline: none!important;
-  color: $secondary;
+  color: $modal-close-color;
   &:hover{
     color: $primary;
   }

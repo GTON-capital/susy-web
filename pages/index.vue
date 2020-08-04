@@ -44,7 +44,10 @@
 
       <btn
         class="btn-link btn-block"
-        :class="{ 'link-invert': theme === 'susy' }"
+        :class="{
+          'link-invert': theme === 'susy',
+          'text-primary': theme === 'gravity',
+        }"
       >
         Connect new wallet
       </btn>

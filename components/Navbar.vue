@@ -82,7 +82,7 @@ export default Vue.extend({
 .nav-container {
   padding-top: 20px;
   padding-bottom: 22px;
-  z-index: 3;
+  z-index: $zindex-modal-backdrop - 10;
   @include media-breakpoint-up(md) {
     padding-bottom: 0;
   }
@@ -195,7 +195,7 @@ export default Vue.extend({
   top: calc(100% + 4px);
   pointer-events: none;
   opacity: 0;
-  z-index: 20;
+  z-index: $zindex-modal-backdrop - 5;
   transition: 0.2s;
   @include media-breakpoint-up(sm) {
     transform: translateY(20px);
@@ -210,7 +210,7 @@ export default Vue.extend({
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: $zindex-modal-backdrop - 20;
   height: 100vh;
   background: $navbar-backdrop-background;
   backdrop-filter: blur(24.4645px);

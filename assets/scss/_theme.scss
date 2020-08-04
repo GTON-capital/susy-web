@@ -40,8 +40,24 @@
   --checkbox-label-border-color: $text-muted;
   --checkbox-label-image: url('data:image/svg+xml,%3csvg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg"%3e%3cpath d="M1.30664 4L5 8.56055L10.6777 0.654297" stroke="%23EEECEC"/%3e%3c/svg%3e');
   --transactions-icons-arrow-color: #EEECEC;
+  --modal-backdrop-background: rgba(19, 20, 35, 0.95);
+  --modal-close-color: var(--body-color);
 
-  &.page-wrapper, .page-wrapper{
+  .modal-backdrop{
+    backdrop-filter: none;
+  }
+  .modal-head{
+    color: var(--white-100);
+    font-size: 20px;
+    font-weight: normal;
+  }
+  .modal-content, .card{
+    .text-secondary{
+      color: $text-muted!important;
+    }
+  }
+
+  .page-wrapper{
     background: var(--body-bg);
 
     @include media-breakpoint-up(sm){
