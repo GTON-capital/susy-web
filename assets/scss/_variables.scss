@@ -111,7 +111,8 @@ $btn-disabled-opacity: var(--btn-disabled-opacity);
 $btn-color: var(--btn-color);
 $btn-background-color: var(--btn-background-color);
 $btn-background-color-hover: var(--btn-background-color-hover);
-
+$btn-block-spacing-y: .5rem;
+$btn-link-color: var(--btn-link-color);
 
 $link-color: inherit;
 $link-hover-color: inherit;
@@ -173,7 +174,6 @@ $form-group-margin-bottom: 24px;
 $form-group-margin-bottom-sm: 14px;
 $form-text-margin-top: 6px;
 
-$btn-block-spacing-y: .5rem;
 
 $zindex-dropdown: 1000;
 $zindex-sticky: 1020;
@@ -233,6 +233,14 @@ $logo-height-md: var(--logo-height-md);
 $logo-width-md: var(--logo-width-md);
 
 $navbar-backdrop-background: var(--navbar-backdrop-background);
+$search-select-chevron-color: var(--search-select-chevron-color);
+$wrapper-icon-rounded-border-background: var(--wrapper-icon-rounded-border-background);
+
+$checkbox-label-color: var(--checkbox-label-color);
+$checkbox-label-border-color: var(--checkbox-label-border-color);
+$checkbox-label-image: var(--checkbox-label-image);
+
+$transactions-icons-arrow-color: var(--transactions-icons-arrow-color);
 
 $root: (
   green: #00DD80,
@@ -247,9 +255,9 @@ $root: (
   base-box-shadow: 0 1px 25px #e2f1f6,
   base-border-color: #eaf1f3,
   font-family-base: $font-family-montserrat,
-  btn-color: var(--body-color),
   btn-font-weight: 700,
   btn-disabled-opacity: .2,
+  btn-color: var(--body-color),
   btn-background-color: var(--body-bg),
   btn-background-color-hover: var(--primary-light),
   nav-burger-lines-background-color: var(--primary),
@@ -270,4 +278,11 @@ $root: (
   input-border-color: #EEBCD8,
   input-disabled-bg: #E7F2F1,
   input-disabled-color: var(--input-color),
+  search-select-chevron-color: $primary,
+  wrapper-icon-rounded-border-background: $base-border-color,
+  btn-link-color: $primary,
+  checkbox-label-color: $secondary,
+  checkbox-label-border-color: $primary,
+  checkbox-label-image: url('data:image/svg+xml,%3csvg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg"%3e%3cpath d="M1.30664 4L5 8.56055L10.6777 0.654297" stroke="%23FF0097"/%3e%3c/svg%3e'),
+  transactions-icons-arrow-color: $secondary,
 );

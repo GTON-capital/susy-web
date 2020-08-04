@@ -9,7 +9,7 @@
       <span class="search-select-value">
         <span
           v-if="valueIcon"
-          class="search-select-value-icon search-select-icon"
+          class="search-select-value-icon search-select-icon wrapper-icon-rounded"
         >
           <icon :image="valueIcon"></icon>
         </span>
@@ -17,10 +17,9 @@
           {{ valueLabel }}
         </span>
       </span>
-      <icon
-        class="search-select-chevron"
-        image="/img/icons/chevron-small.svg"
-      ></icon>
+      <icon class="search-select-chevron">
+        <chevron-small-icon></chevron-small-icon>
+      </icon>
     </button>
     <client-only>
       <modal :name="modalId">
@@ -49,7 +48,10 @@
                   :data-id="item.id"
                   @click="selectValue(item)"
                 >
-                  <span v-if="item.icon" class="search-select-icon">
+                  <span
+                    v-if="item.icon"
+                    class="search-select-icon wrapper-icon-rounded"
+                  >
                     <icon :image="item.icon"></icon>
                   </span>
                   {{ item.label }}
@@ -73,7 +75,14 @@ import SimpleWrapperSlim from '~/components/SimpleWrapperSlim.vue'
 
 export default Vue.extend({
   name: 'SearchSelect',
-  components: { FormGroup, Icon, ModalContent, SearchInput, SimpleWrapperSlim },
+  components: {
+    FormGroup,
+    Icon,
+    ModalContent,
+    SearchInput,
+    SimpleWrapperSlim,
+    chevronSmallIcon: () => import('assets/icons/chevron-small.svg?inline'),
+  },
   props: {
     data: {
       type: Array,
@@ -174,10 +183,12 @@ $search-select-icon-height: 32px;
   white-space: normal;
   text-align: left;
   border-color: $input-border-color;
-  background-color: white;
+  background-color: $input-bg;
+  color: $input-color;
   &:hover:not(:disabled) {
     border-color: $input-border-color;
-    background-color: white;
+    background-color: $input-bg;
+    color: $input-color;
   }
   &.search-select--with-icon {
     padding-left: 48px;
@@ -189,9 +200,11 @@ $search-select-icon-height: 32px;
     cursor: auto !important;
     border-color: $input-disabled-bg;
     background-color: $input-disabled-bg;
+    color: $input-disabled-color;
     &:hover:not(:disabled) {
       border-color: $input-disabled-bg;
       background-color: $input-disabled-bg;
+      color: $input-disabled-color;
     }
     .search-select-chevron {
       display: none;
@@ -199,9 +212,6 @@ $search-select-icon-height: 32px;
   }
 }
 .search-select-icon {
-  background: #ffffff;
-  border: 1px solid;
-  border-color: $base-border-color;
   box-shadow: $base-box-shadow;
   width: 100%;
   height: $search-select-icon-height;
@@ -210,7 +220,6 @@ $search-select-icon-height: 32px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 50%;
   .icon {
     height: 20px;
     width: 20px;
@@ -237,6 +246,7 @@ $search-select-icon-height: 32px;
 .search-select-chevron {
   display: block;
   position: absolute;
+  color: $search-select-chevron-color;
   top: $input-height/2 - $search-select-chevron-height/2;
   right: 14px;
   width: $search-select-chevron-width;

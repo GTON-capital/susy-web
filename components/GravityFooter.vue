@@ -40,9 +40,9 @@
     <hr />
     <div class="container">
       <div class="footer-socials">
-        <div class="footer-copyright">
+        <div class="footer-copyright footer-copyright-lg">
           &copy; {{ new Date().getFullYear() }} Gravity Protocol.
-          <span class="footer-copyright-lg"
+          <span class="footer-copyright-desc"
             >Oracles and Cross-chain Communication Network</span
           >
         </div>
@@ -59,8 +59,10 @@
         </a>
       </div>
       <div class="footer-contacts">
-        <btn tag="a" href="/" class="footer-gravity-btn">
-          <icon image="/img/icons/ventuary-lab.svg"></icon>
+        <btn v-if="false" tag="a" href="/" class="footer-gravity-btn">
+          <icon>
+            <ventuary-lab-icon></ventuary-lab-icon>
+          </icon>
         </btn>
         <a
           class="text-primary footer-contacts-email"
@@ -69,8 +71,18 @@
           oracle@gravity.tech
         </a>
       </div>
+      <div class="footer-copyright footer-copyright-xs">
+        &copy; {{ new Date().getFullYear() }} Gravity Protocol.
+        <span class="footer-copyright-desc"
+          >Oracles and Cross-chain Communication Network</span
+        >
+      </div>
     </div>
-    <div class="footer-cookies" :style="getCookiesStyle">
+    <div
+      v-if="!isDisabledCookiesBox"
+      class="footer-cookies"
+      :style="getCookiesStyle"
+    >
       <div class="footer-cookies-wrapper" :style="getWrapperCookiesStyle">
         <div class="container">
           <div ref="cookiesBox" class="footer-cookies-box">
@@ -99,7 +111,7 @@ export default Vue.extend({
   components: {
     Btn,
     Icon,
-    gravityIcon: () => import('assets/icons/gravity.svg?inline'),
+    ventuaryLabIcon: () => import('assets/icons/ventuary-lab.svg?inline'),
     socialsTwitterIcon: () => import('assets/icons/socials/twitter.svg?inline'),
     socialsMediumIcon: () => import('assets/icons/socials/medium.svg?inline'),
     socialsTelegramIcon: () =>
@@ -111,6 +123,13 @@ export default Vue.extend({
     socialsDiscordIcon: () => import('assets/icons/socials/discord.svg?inline'),
     socialsRedditIcon: () => import('assets/icons/socials/reddit.svg?inline'),
     socialsGithubIcon: () => import('assets/icons/socials/github.svg?inline'),
+  },
+  props: {
+    isDisabledCookiesBox: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
   },
   data: () => ({
     socials: [
@@ -152,24 +171,31 @@ export default Vue.extend({
     instanceHeightCookiesBox: undefined,
   }),
   computed: {
+    getIsCookiesBox() {
+      return this.isCookiesBox && !this.isDisabledCookiesBox
+    },
     getWrapperCookiesStyle() {
       return {
-        bottom: this.isCookiesBox ? '30px' : '-100%',
+        bottom: this.getIsCookiesBox ? '30px' : '-100%',
       }
     },
     getCookiesStyle() {
       return {
-        height: this.isCookiesBox ? this.heightCookiesBox + 30 + 'px' : '0px',
-        'min-height': this.isCookiesBox ? '100px' : '0px',
+        height: this.getIsCookiesBox
+          ? this.heightCookiesBox + 30 + 'px'
+          : '0px',
+        'min-height': this.getIsCookiesBox ? '100px' : '0px',
       }
     },
   },
   mounted() {
-    setTimeout(() => {
-      this.isCookiesBox = !localStorage.getItem('IS_AGREE_COOKIES')
-      this.calcHeightCookiesBox()
-      this.bindHeightCookiesBox()
-    }, 2000)
+    if (!this.isDisabledCookiesBox) {
+      setTimeout(() => {
+        this.isCookiesBox = !localStorage.getItem('IS_AGREE_COOKIES')
+        this.calcHeightCookiesBox()
+        this.bindHeightCookiesBox()
+      }, 2000)
+    }
   },
   beforeDestroy() {
     this.unbindHeightCookiesBox()
@@ -181,7 +207,7 @@ export default Vue.extend({
       this.unbindHeightCookiesBox()
     },
     bindHeightCookiesBox() {
-      if (this.isCookiesBox && typeof window !== 'undefined') {
+      if (this.getIsCookiesBox && typeof window !== 'undefined') {
         window.addEventListener('resize', this.calcHeightCookiesBox)
       }
     },
@@ -191,7 +217,7 @@ export default Vue.extend({
       }
     },
     calcHeightCookiesBox() {
-      if (this.isCookiesBox) {
+      if (this.getIsCookiesBox) {
         clearTimeout(this.instanceHeightCookiesBox)
         // @ts-ignore: Type 'Timeout' is not assignable to type 'undefined'.
         this.instanceHeightCookiesBox = setTimeout(() => {
@@ -211,6 +237,12 @@ export default Vue.extend({
   transition: height 0.5s ease;
 }
 .footer {
+  padding-top: 42px;
+  padding-bottom: 30px;
+  @include media-breakpoint-down(xs) {
+    padding-top: 14px;
+    padding-bottom: 16px;
+  }
   font-weight: 300;
   hr {
     display: none;
@@ -248,6 +280,14 @@ export default Vue.extend({
     }
   }
 }
+.footer-contacts-email {
+  @include media-breakpoint-down(xs) {
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
 .footer-nav-item {
   display: none;
   a {
@@ -275,13 +315,13 @@ export default Vue.extend({
   max-width: 100%; // Reset earlier grid tiers
   margin-bottom: 15px;
   &:before {
-    padding-top: $logo-width;
+    padding-top: $logo-height;
   }
   @include media-breakpoint-up(md) {
     margin-bottom: 21px;
   }
   @include media-breakpoint-up(xl) {
-    margin-bottom: 14px;
+    margin-bottom: 0;
   }
 }
 .footer-cookies-wrapper {
@@ -302,12 +342,6 @@ export default Vue.extend({
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-}
-.footer-copyright-lg {
-  display: none;
-  @include media-breakpoint-up(sm) {
-    display: inline;
   }
 }
 .footer-socials,
@@ -353,9 +387,14 @@ export default Vue.extend({
     width: 36px;
     min-width: 36px;
   }
+  @media (max-width: 400px) {
+    height: 36px;
+    width: 36px;
+    min-width: 36px;
+  }
   i {
-    height: 26px;
-    width: 26px;
+    height: 30px;
+    width: 30px;
   }
   + .footer-social {
     @include media-breakpoint-up(md) {
@@ -368,11 +407,12 @@ export default Vue.extend({
 }
 .footer-gravity-btn {
   margin-right: 66px;
-  padding-left: 14px;
-  padding-right: 14px;
+  padding-left: 17px;
+  padding-right: 17px;
   i {
-    width: 195px;
-    height: 29px;
+    top: 5px;
+    width: 129px;
+    height: 17px;
   }
   b {
     margin-top: -6px;
@@ -410,11 +450,40 @@ export default Vue.extend({
   color: $text-muted;
   margin-right: 48px;
 }
+.footer-copyright-lg {
+  display: none;
+  @include media-breakpoint-up(lg) {
+    display: block;
+  }
+  .footer-copyright-desc {
+    display: inline;
+  }
+}
+.footer-copyright-xs {
+  display: block;
+  padding-bottom: 24px;
+  @include media-breakpoint-up(lg) {
+    display: none;
+  }
+  @include media-breakpoint-down(xs) {
+    font-weight: 200;
+  }
+  @include media-breakpoint-up(sm) {
+    padding-bottom: 38px;
+  }
+  .footer-copyright-desc {
+    display: none;
+    @include media-breakpoint-up(sm) {
+      display: inline;
+    }
+  }
+}
 .footer-cookies-btn {
   margin-top: 19px;
   @include media-breakpoint-up(sm) {
     margin-top: 0;
     margin-left: 33px;
   }
+  --primary: $text-muted;
 }
 </style>

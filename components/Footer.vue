@@ -1,5 +1,8 @@
 <template>
-  <component :is="theme + '-footer'"></component>
+  <component
+    :is="theme + '-footer'"
+    :is-disabled-cookies-box="isDisabledCookiesBox"
+  ></component>
 </template>
 
 <script>
@@ -10,6 +13,13 @@ export default Vue.extend({
   components: {
     SusyFooter: () => import('~/components/SusyFooter.vue'),
     GravityFooter: () => import('~/components/GravityFooter.vue'),
+  },
+  props: {
+    isDisabledCookiesBox: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
   },
   computed: {
     theme() {

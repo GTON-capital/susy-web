@@ -282,8 +282,8 @@ export default Vue.extend({
     transform: scale(1.1);
   }
   .icon {
-    width: 22px;
-    height: 22px;
+    height: 30px;
+    width: 30px;
   }
   @include media-breakpoint-down(xs) {
     margin: 0 20px;

@@ -51,7 +51,7 @@ export default Vue.extend({
   padding-top: 2px;
   padding-left: 28px;
   cursor: pointer;
-  color: $secondary;
+  color: $checkbox-label-color;
   font-size: 13px;
   font-weight: 400;
   &:before,
@@ -66,7 +66,7 @@ export default Vue.extend({
   }
   &:before {
     border: 1px solid;
-    border-color: $primary;
+    border-color: $checkbox-label-border-color;
     border-radius: 4px;
   }
   &:after {
@@ -74,9 +74,7 @@ export default Vue.extend({
     background-position: center;
     background-repeat: no-repeat;
     background-size: 12px 10px;
-    background-image: url(escape-svg(
-      'data:image/svg+xml,<svg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.30664 4L5 8.56055L10.6777 0.654297" stroke="#FF0097"/></svg>'
-    ));
+    background-image: $checkbox-label-image;
   }
 }
 

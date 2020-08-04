@@ -119,12 +119,12 @@ input[type='button'] {
 
 .btn-link{
   white-space: normal;
-  color: $primary;
+  color: $btn-link-color;
   background-color: transparent;
   border-color: transparent;
   text-decoration: underline;
   &:hover:not(:disabled) {
-    color: $primary;
+    color: $btn-link-color;
     background-color: transparent;
     border-color: transparent;
     text-decoration: none;

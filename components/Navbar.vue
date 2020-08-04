@@ -80,7 +80,7 @@ export default Vue.extend({
   }
 }
 .nav-container {
-  padding-top: 8px;
+  padding-top: 20px;
   padding-bottom: 22px;
   z-index: 3;
   @include media-breakpoint-up(md) {

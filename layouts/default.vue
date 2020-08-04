@@ -1,5 +1,5 @@
 <template>
-  <div class="page-wrapper" :class="themeClass">
+  <div class="page-wrapper" :class="wrapperClass">
     <navbar-block></navbar-block>
     <main>
       <Nuxt />
@@ -18,8 +18,14 @@ export default {
     footerBlock,
   },
   computed: {
-    themeClass() {
-      return 'theme-' + this.$store.getters['theme/theme']
+    isOpenNav() {
+      return this.$store.getters['app/isOpenNav']
+    },
+    wrapperClass() {
+      const classes = {}
+      classes['theme-' + this.$store.getters['theme/theme']] = true
+      classes['page-wrapper-overflow-hidden'] = this.isOpenNav
+      return classes
     },
   },
 }
