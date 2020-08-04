@@ -9,7 +9,7 @@
       <span class="search-select-value">
         <span
           v-if="valueIcon"
-          class="search-select-value-icon search-select-icon wrapper-icon-rounded"
+          class="search-select-value-icon search-select-icon wrapper-icon-circle"
         >
           <icon :image="valueIcon"></icon>
         </span>
@@ -50,7 +50,7 @@
                 >
                   <span
                     v-if="item.icon"
-                    class="search-select-icon wrapper-icon-rounded"
+                    class="search-select-icon wrapper-icon-circle"
                   >
                     <icon :image="item.icon"></icon>
                   </span>

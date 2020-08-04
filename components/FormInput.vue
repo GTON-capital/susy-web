@@ -10,7 +10,7 @@
       <slot name="append"></slot>
     </div>
     <div class="form-control-content">
-      <div v-if="icon" class="form-control-icon wrapper-icon-rounded">
+      <div v-if="icon" class="form-control-icon wrapper-icon-circle">
         <icon :image="icon"></icon>
       </div>
       <input

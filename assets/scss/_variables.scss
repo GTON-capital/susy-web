@@ -97,6 +97,15 @@ $h6-font-size: $font-size-base;
 
 $border-radius: .25rem;
 
+$border-width: 1px;
+$input-btn-border-radius: 8px;
+$input-btn-padding-y: .375rem;
+$input-btn-padding-x: .75rem;
+$input-btn-font-family: null;
+$input-btn-font-size: $font-size-base;
+$input-btn-line-height: $line-height-base;
+$input-btn-border-width: $border-width;
+
 $btn-font-family: null;
 $btn-font-weight: var(--btn-font-weight);
 $btn-height: 42px;
@@ -104,7 +113,7 @@ $btn-font-size: $html-fz;
 $btn-padding-x: 26px;
 $btn-line-height: $line-height-base;
 $btn-border-width: 1px;
-$btn-border-radius: 8px;
+$btn-border-radius: $input-btn-border-radius;
 $btn-white-space: nowrap;
 $btn-transition: .2s;
 $btn-disabled-opacity: var(--btn-disabled-opacity);
@@ -136,14 +145,7 @@ $table-cell-padding: 10px;
 
 $text-muted: #878EA1;
 
-$border-width: 1px;
 
-$input-btn-padding-y: .375rem;
-$input-btn-padding-x: .75rem;
-$input-btn-font-family: null;
-$input-btn-font-size: $font-size-base;
-$input-btn-line-height: $line-height-base;
-$input-btn-border-width: $border-width;
 
 $input-height: 42px;
 $input-bg: var(--input-bg);
@@ -151,7 +153,7 @@ $input-color: var(--input-color);
 $input-border-color: var(--input-border-color);
 $input-disabled-bg: var(--input-disabled-bg);
 $input-disabled-color: var(--input-disabled-color);
-$input-border-radius: 8px;
+$input-border-radius: $input-btn-border-radius;
 $input-font-size: 13px;
 $input-padding-x: 12px / $html-fz * 1rem;
 $input-padding-y: $input-btn-padding-y;
@@ -236,7 +238,9 @@ $logo-width-md: var(--logo-width-md);
 
 $navbar-backdrop-background: var(--navbar-backdrop-background);
 $search-select-chevron-color: var(--search-select-chevron-color);
-$wrapper-icon-rounded-border-background: var(--wrapper-icon-rounded-border-background);
+$wrapper-icon-circle-border-background: var(--wrapper-icon-circle-border-background);
+$wrapper-box-rounded-border-background: var(--wrapper-box-rounded-border-background);
+$wrapper-box-rounded-background: var(--wrapper-box-rounded-background);
 
 $checkbox-label-color: var(--checkbox-label-color);
 $checkbox-label-border-color: var(--checkbox-label-border-color);
@@ -298,7 +302,9 @@ $root: (
   input-disabled-bg: #E7F2F1,
   input-disabled-color: var(--input-color),
   search-select-chevron-color: $primary,
-  wrapper-icon-rounded-border-background: $base-border-color,
+  wrapper-icon-circle-border-background: $base-border-color,
+  wrapper-box-rounded-border-background: $base-border-color,
+  wrapper-box-rounded-background: white,
   btn-link-color: $primary,
   checkbox-label-color: $secondary,
   checkbox-label-border-color: $primary,

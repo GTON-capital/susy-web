@@ -1,7 +1,7 @@
 <template>
   <div class="transactions-icons">
     <div class="transactions-icons-left">
-      <div class="transactions-icons-icon wrapper-icon-rounded">
+      <div class="transactions-icons-icon wrapper-icon-circle">
         <icon :image="left.icon"></icon>
       </div>
       <div>{{ left.label }}</div>
@@ -12,7 +12,7 @@
       </icon>
     </div>
     <div class="transactions-icons-right">
-      <div class="transactions-icons-icon wrapper-icon-rounded">
+      <div class="transactions-icons-icon wrapper-icon-circle">
         <icon :image="right.icon"></icon>
       </div>
       <div>{{ right.label }}</div>
