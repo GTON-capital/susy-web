@@ -96,36 +96,36 @@ export default Vue.extend({
 }
 .nav-logo {
   display: block;
-  flex: 0 0 var(--logo-width);
-  width: var(--logo-width);
+  flex: 0 0 $logo-width;
+  width: $logo-width;
   max-width: 100%; // Reset earlier grid tiers
   @include media-breakpoint-up(md) {
-    flex: 0 0 var(--logo-width-md);
-    width: var(--logo-width-md);
+    flex: 0 0 $logo-width-md;
+    width: $logo-width-md;
   }
   &:before {
     content: '';
     display: block;
-    padding-top: var(--logo-height);
+    padding-top: $logo-height;
     @include media-breakpoint-up(md) {
-      padding-top: var(--logo-height-md);
+      padding-top: $logo-height-md;
     }
   }
 }
 .nav-header {
   line-height: 1;
-  font-size: calc(32px * var(--nav-header-fz-scale));
+  font-size: calc(32px * #{$nav-header-fz-scale});
   height: 1.1em;
-  color: var(--nav-header-color);
-  font-family: var(--nav-header-font-family);
+  color: $nav-header-color;
+  font-family: $nav-header-font-family;
   background: -webkit-linear-gradient(#ff0097, #688487);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   @include media-breakpoint-up(md) {
-    font-size: calc(38px * var(--nav-header-fz-scale));
+    font-size: calc(38px * #{$nav-header-fz-scale});
   }
   @include media-breakpoint-up(lg) {
-    font-size: calc(44px * var(--nav-header-fz-scale));
+    font-size: calc(44px * #{$nav-header-fz-scale});
   }
   @include media-breakpoint-down(sm) {
     order: 5;
@@ -142,10 +142,10 @@ export default Vue.extend({
   position: relative;
   width: 82px;
   height: 42px;
-  background: var(--body-bg);
+  background: $body-bg;
   border: 1px solid;
-  border-color: var(--nav-burger-border-color);
-  box-shadow: var(--base-box-shadow);
+  border-color: $nav-burger-border-color;
+  box-shadow: $base-box-shadow;
   border-radius: 8px;
   outline: none !important;
   i {
@@ -154,7 +154,7 @@ export default Vue.extend({
     height: 2px;
     left: 20px;
     top: 13px;
-    background-color: var(--nav-burger-lines-background-color);
+    background-color: $nav-burger-lines-background-color;
     border-radius: 4px;
     transform: scaleY(0.5);
     transition: 0.3s;
@@ -183,10 +183,10 @@ export default Vue.extend({
   }
 }
 .nav-menu {
-  background-color: var(--body-bg);
+  background-color: $body-bg;
   border: 1px solid;
-  border-color: var(--base-border-color);
-  box-shadow: var(--base-box-shadow);
+  border-color: $base-border-color;
+  box-shadow: $base-box-shadow;
   border-radius: 8px;
   width: 158px;
   padding: 11px 0;
@@ -212,7 +212,7 @@ export default Vue.extend({
   left: 0;
   z-index: 1;
   height: 100vh;
-  background: var(--navbar-backdrop-background);
+  background: $navbar-backdrop-background;
   backdrop-filter: blur(24.4645px);
   transition: 0.2s opacity;
   width: 0;
@@ -272,7 +272,7 @@ export default Vue.extend({
         opacity: 1;
       }
       .nav-container {
-        background-color: var(--body-bg);
+        background-color: $body-bg;
       }
     }
   }

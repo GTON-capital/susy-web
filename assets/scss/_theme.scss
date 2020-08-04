@@ -3,9 +3,9 @@
   --primary: #44D7B6;
   --body-color: #D8D8D8;
   --base-box-shadow: none;
-  --nav-burger-lines-background-color: var(--body-color);
-  --nav-burger-border-color: var(--body-bg);
-  --nav-header-color: var(--body-color);
+  --nav-burger-lines-background-color: $body-color;
+  --nav-burger-border-color: $body-bg;
+  --nav-header-color: $body-color;
   --font-family-base: 'Poppins', #{$font-family-sans-serif};
   --headings-font-family: 'Poppins', #{$font-family-sans-serif};
   --nav-header-font-family: 'Orbitron', #{$font-family-sans-serif};
@@ -13,48 +13,45 @@
   --card-background-color: #22253B;
   --base-border-color: #262942;
   --secondary-light: #323652;
-  --success-light: var(--secondary-light);
   --hr-border-color: #3D4162;
   --logo-height: 44px;
   --logo-height-md: 44px;
   --logo-width: 157px;
   --logo-width-md: 157px;
-  --navbar-backdrop-background: var(--body-bg);
+  --navbar-backdrop-background: $body-bg;
   --btn-font-weight: 400;
   --btn-disabled-opacity: 0.39;
-  --input-bg: var(--body-color);
+  --input-bg: $body-color;
   --input-color: #000000;
-  --input-border-color: var(--input-bg);
-  --input-disabled-bg: var(--secondary-light);
+  --input-border-color: $input-bg;
+  --input-disabled-bg: $secondary-light;
 
   &.page-wrapper, .page-wrapper{
-    background: var(--body-bg);
+    background: $body-bg;
 
     @include media-breakpoint-up(sm){
-      background: url("/img/gravity/body.svg") no-repeat center 250px, var(--body-bg);
+      background: url("/img/gravity/body.svg") no-repeat center 250px, $body-bg;
     }
   }
 
   .btn-primary {
-    color: var(--primary);
+    color: $primary;
     background-color: transparent;
-    border-color: var(--primary);
 
     &:hover:not(:disabled) {
       color: #000000;
       background-color: #EEECEC;
-      border-color: #EEECEC;
     }
     &.disabled,
     &:disabled {
-      color: var(--body-color);
+      color: $body-color;
       border-color: $text-muted;
     }
   }
 
   .btn-secondary-gradient {
-    background: var(--primary);
-    border-color: var(--primary);
+    background: $primary;
+    border-color: $primary;
     color: #FFFFFF;
     &:hover:not(:disabled) {
       background: #EEECEC;

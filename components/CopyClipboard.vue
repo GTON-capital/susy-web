@@ -72,11 +72,11 @@ export default Vue.extend({
       left: 50%;
       transform: translateX(-50%);
       &:before {
-        border-top-color: var(--primary);
+        border-top-color: $primary;
       }
     }
     .tooltip-inner {
-      background-color: var(--primary);
+      background-color: $primary;
     }
   }
 }

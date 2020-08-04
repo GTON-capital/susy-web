@@ -115,9 +115,9 @@ $search-input-height: 35px;
   outline: none !important;
   width: 34px;
   height: 100%;
-  color: var(--primary);
+  color: $primary;
   &:hover {
-    color: var(--primary);
+    color: $primary;
   }
 }
 .search-input-clear {
@@ -129,9 +129,9 @@ $search-input-height: 35px;
   border: none;
   background: transparent;
   outline: none !important;
-  color: var(--secondary);
+  color: $secondary;
   &:hover {
-    color: var(--primary);
+    color: $primary;
   }
   .icon {
     position: absolute;

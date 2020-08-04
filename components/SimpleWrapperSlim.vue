@@ -15,7 +15,7 @@ export default Vue.extend({
 
 .simple-wrapper-slim {
   padding: 17px 20px 16px 20px;
-  background-color: var(--secondary-light);
+  background-color: $secondary-light;
   border-radius: 8px;
   margin-bottom: 18px;
 }

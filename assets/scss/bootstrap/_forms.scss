@@ -13,15 +13,14 @@
   font-size: $input-font-size;
   font-weight: $input-font-weight;
   line-height: $input-line-height;
-  color: var(--input-color);
-  background-color: var(--input-bg);
+  color: $input-color;
+  background-color: $input-bg;
   background-clip: padding-box;
-  border: $input-border-width solid var(--input-border-color);
+  border: $input-border-width solid $input-border-color;
 
   // Note: This has no effect on <select>s in some browsers, due to the limited stylability of `<select>`s in CSS.
   @include border-radius($input-border-radius, 0);
 
-  @include box-shadow($input-box-shadow);
   @include transition($input-transition);
 
   // Unstyle the caret on `<select>`s in IE10+.
@@ -33,11 +32,17 @@
   // Remove select outline from select box in FF
   &:-moz-focusring {
     color: transparent;
-    text-shadow: 0 0 0 var(--input-color);
+    text-shadow: 0 0 0 $input-color;
   }
 
   // Customize the `:focus` state to imitate native WebKit styles.
-  @include form-control-focus($ignore-warning: true);
+  &:focus {
+    color: $input-focus-color;
+    background-color: $input-focus-bg;
+    border-color: $input-focus-border-color;
+    outline: 0;
+    @include box-shadow($input-box-shadow, $input-focus-box-shadow);
+  }
 
   // Placeholder
   &::placeholder {
@@ -53,8 +58,8 @@
   // don't honor that edge case; we style them as disabled anyway.
   &:disabled,
   &[readonly] {
-    background-color: var(--input-disabled-bg);
-    border-color: var(--input-disabled-bg);
+    background-color: $input-disabled-bg;
+    border-color: $input-disabled-bg;
     box-shadow: none!important;
     // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655.
     opacity: 1;
@@ -80,8 +85,8 @@ select.form-control {
     // in IE and (under certain conditions) Edge, as it looks bad and cannot be made to
     // match the appearance of the native widget.
     // See https://github.com/twbs/bootstrap/issues/19398.
-    color: var(--input-color);
-    background-color: var(--input-bg);
+    color: $input-color;
+    background-color: $input-bg;
   }
 }
 
@@ -140,7 +145,7 @@ textarea.form-control {
       align-items: center;
       justify-content: center;
       color: white;
-      background-color: var(--secondary);
+      background-color: $secondary;
       ~ .form-control, ~ .form-control-content{
         flex-basis: 0;
         flex-grow: 1;
@@ -180,8 +185,8 @@ textarea.form-control {
   position: absolute;
   background: #FFFFFF;
   border: 1px solid;
-  border-color: var(--base-border-color);
-  box-shadow: var(--base-box-shadow);
+  border-color: $base-border-color;
+  box-shadow: $base-box-shadow;
   width: 32px;
   height: 32px;
   display: flex;
@@ -215,57 +220,3 @@ textarea.form-control {
   margin-top: $form-text-margin-top;
 }
 
-
-
-// Checkboxes and radios
-//
-// Indent the labels to position radios/checkboxes as hanging controls.
-
-.form-check {
-  position: relative;
-  display: block;
-  padding-left: $form-check-input-gutter;
-}
-
-.form-check-input {
-  position: absolute;
-  margin-top: $form-check-input-margin-y;
-  margin-left: -$form-check-input-gutter;
-
-  // Use [disabled] and :disabled for workaround https://github.com/twbs/bootstrap/issues/28247
-  &[disabled] ~ .form-check-label,
-  &:disabled ~ .form-check-label {
-    color: $text-muted;
-  }
-}
-
-.form-check-label {
-  margin-bottom: 0; // Override default `<label>` bottom margin
-}
-
-.form-check-inline {
-  display: inline-flex;
-  align-items: center;
-  padding-left: 0; // Override base .form-check
-  margin-right: $form-check-inline-margin-x;
-
-  // Undo .form-check-input defaults and add some `margin-right`.
-  .form-check-input {
-    position: static;
-    margin-top: 0;
-    margin-right: $form-check-inline-input-margin-x;
-    margin-left: 0;
-  }
-}
-
-
-// Form validation
-//
-// Provide feedback to users when form field values are valid or invalid. Works
-// primarily for client-side validation via scoped `:invalid` and `:valid`
-// pseudo-classes but also includes `.is-invalid` and `.is-valid` classes for
-// server side validation.
-
-@each $state, $data in $form-validation-states {
-  @include form-validation-state($state, map-get($data, color), map-get($data, icon));
-}

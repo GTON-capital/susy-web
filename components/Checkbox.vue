@@ -51,7 +51,7 @@ export default Vue.extend({
   padding-top: 2px;
   padding-left: 28px;
   cursor: pointer;
-  color: var(--secondary);
+  color: $secondary;
   font-size: 13px;
   font-weight: 400;
   &:before,
@@ -66,7 +66,7 @@ export default Vue.extend({
   }
   &:before {
     border: 1px solid;
-    border-color: var(--primary);
+    border-color: $primary;
     border-radius: 4px;
   }
   &:after {

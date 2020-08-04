@@ -79,8 +79,8 @@ export default Vue.extend({
 .transactions-icons-icon {
   background: #ffffff;
   border: 1px solid;
-  border-color: var(--base-border-color);
-  box-shadow: var(--base-box-shadow);
+  border-color: $base-border-color;
+  box-shadow: $base-box-shadow;
   width: 32px;
   height: 32px;
   display: flex;

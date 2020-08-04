@@ -16,7 +16,7 @@ export default Vue.extend({
 .simple-wrapper {
   @include media-breakpoint-up(sm) {
     padding: 17px 30px;
-    background-color: var(--secondary-light);
+    background-color: $secondary-light;
     border-radius: 8px;
     margin-bottom: 20px;
   }

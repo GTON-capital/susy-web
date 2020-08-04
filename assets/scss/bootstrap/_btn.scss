@@ -9,7 +9,7 @@
   position: relative;
   display: inline-block;
   font-family: $btn-font-family;
-  font-weight: var(--btn-font-weight);
+  font-weight: $btn-font-weight;
   font-size: $btn-font-size;
   text-align: center;
   text-decoration: none;
@@ -28,15 +28,15 @@
       $btn-font-size,
       $btn-padding-x
   );
-  color: var(--btn-color);
-  background-color: var(--btn-background-color);
-  border-color: var(--btn-background-color);
+  color: $btn-color;
+  background-color: $btn-background-color;
+  border-color: $btn-background-color;
 
   &:hover:not(:disabled) {
     text-decoration: none;
-    color: var(--btn-color);
-    background-color: var(--btn-background-color-hover);
-    border-color: var(--btn-background-color-hover);
+    color: $btn-color;
+    background-color: $btn-background-color-hover;
+    border-color: $btn-background-color-hover;
   }
 
   &:focus,
@@ -48,7 +48,7 @@
   // Disabled comes first so active can properly restyle
   &.disabled,
   &:disabled {
-    opacity: var(--btn-disabled-opacity);
+    opacity: $btn-disabled-opacity;
     box-shadow: none;
   }
 
@@ -72,22 +72,25 @@ fieldset:disabled a.btn {
 }
 
 .btn-primary {
-  color: var(--body-bg);
-  background-color: var(--primary);
-  border-color: var(--primary);
+  color: $body-bg;
+  background-color: $primary;
+  border-color: $primary;
 
   &:hover:not(:disabled) {
-    color: var(--primary);
+    color: $primary;
     background-color: transparent;
-    border-color: var(--secondary);
+    border-color: $secondary;
   }
 }
 
 .btn-secondary-gradient {
+  color: white;
   background: linear-gradient(0.64deg, #5D7C80 -97.93%, #FFFFFF 190.55%);
+  border-width: 0;
 
   &:hover:not(:disabled) {
-    background: linear-gradient(0.64deg, var(--primary) 0%, var(--primary) 100%);
+    color: white;
+    background: linear-gradient(0.64deg, $primary 0%, $primary 100%);
   }
 }
 
@@ -116,12 +119,12 @@ input[type='button'] {
 
 .btn-link{
   white-space: normal;
-  color: var(--primary);
+  color: $primary;
   background-color: transparent;
   border-color: transparent;
   text-decoration: underline;
   &:hover:not(:disabled) {
-    color: var(--primary);
+    color: $primary;
     background-color: transparent;
     border-color: transparent;
     text-decoration: none;

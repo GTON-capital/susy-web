@@ -86,12 +86,12 @@ export default Vue.extend({
   font-weight: 600;
 }
 .table-log-content {
-  color: var(--secondary);
+  color: $secondary;
   text-align: right;
 }
 .table-log-tr {
   border: 1px solid;
-  border-color: var(--hr-border-color);
+  border-color: $hr-border-color;
   border-radius: 8px;
   padding: 20px;
   + .table-log-tr {
@@ -118,7 +118,7 @@ export default Vue.extend({
 @include media-breakpoint-up(md) {
   .table-log {
     border: 1px solid;
-    border-color: var(--hr-border-color);
+    border-color: $hr-border-color;
     border-radius: 8px;
     background-color: white;
   }
@@ -181,9 +181,9 @@ export default Vue.extend({
       }
     }
     &:nth-child(even) {
-      background-color: var(--secondary-light);
+      background-color: $secondary-light;
       border: 1px solid;
-      border-color: var(--hr-border-color);
+      border-color: $hr-border-color;
       border-radius: 8px;
       margin-left: -1px;
       margin-right: -1px;

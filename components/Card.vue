@@ -27,10 +27,10 @@ export default Vue.extend({
 
 .card {
   @include media-breakpoint-up(md) {
-    background-color: var(--card-background-color);
+    background-color: $card-background-color;
     border: 1px solid;
-    border-color: var(--base-border-color);
-    box-shadow: var(--base-box-shadow);
+    border-color: $base-border-color;
+    box-shadow: $base-box-shadow;
     border-radius: 18px;
     max-width: 660px;
     margin-left: auto;
@@ -65,10 +65,10 @@ export default Vue.extend({
 }
 .card-content {
   @include media-breakpoint-down(sm) {
-    background-color: var(--card-background-color);
+    background-color: $card-background-color;
     border: 1px solid;
-    border-color: var(--base-border-color);
-    box-shadow: var(--base-box-shadow);
+    border-color: $base-border-color;
+    box-shadow: $base-box-shadow;
     border-radius: 8px;
     padding: 18px $card-content-padding-x;
   }

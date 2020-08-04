@@ -194,8 +194,8 @@ export default Vue.extend({
 .footer-cookies-box {
   font-weight: 400;
   border: 1px solid;
-  background-color: var(--body-bg);
-  border-color: var(--primary);
+  background-color: $body-bg;
+  border-color: $primary;
   min-height: 70px;
   padding: 15px;
   @include media-breakpoint-up(sm) {
@@ -274,11 +274,11 @@ export default Vue.extend({
   width: 42px;
   height: 42px;
   min-width: 42px;
-  color: var(--secondary);
+  color: $secondary;
   transform-origin: center;
   transition: 0.2s;
   &:hover {
-    color: var(--secondary);
+    color: $secondary;
     transform: scale(1.1);
   }
   .icon {

@@ -14,9 +14,9 @@ body {
   display: flex;
   flex-direction: column;
 
-  color: var(--body-color);
-  font-family: var(--font-family-base);
-  background: linear-gradient(180deg, #FFFFFF 0%, #F3F9FA 90.48%), var(--body-bg);
+  color: $body-color;
+  font-family: $font-family-base;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F3F9FA 90.48%), $body-bg;
 
   @include media-breakpoint-up(sm){
     background: url("/img/susy/body.svg") no-repeat center 250px, linear-gradient(180deg, #FFFFFF 0%, #F3F9FA 90.48%);
@@ -115,12 +115,12 @@ input[type="search"]::-webkit-search-results-decoration {
 
 
 ::-webkit-scrollbar-track{
-  background-color: var(--secondary-light);
+  background-color: $secondary-light;
   border-radius: 8px;
 }
 ::-webkit-scrollbar-thumb{
   border-radius: 8px;
-  background-color: var(--secondary);
+  background-color: $secondary;
 }
 ::-webkit-scrollbar{
   width: 8px;
@@ -128,5 +128,5 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 .headings-font-family{
-  font-family: var(--headings-font-family);
+  font-family: $headings-font-family;
 }

@@ -44,13 +44,13 @@ export default Vue.extend({
 .card-swap-final-body {
   @include media-breakpoint-up(sm) {
     padding: 24px 30px;
-    background-color: var(--secondary-light);
+    background-color: $secondary-light;
     border-radius: 8px;
     margin-bottom: 20px;
   }
 }
 .card-swap-final-bottom {
-  background-color: var(--secondary-light);
+  background-color: $secondary-light;
   @include media-breakpoint-down(sm) {
     margin-left: -$card-content-padding-x;
     margin-right: -$card-content-padding-x;

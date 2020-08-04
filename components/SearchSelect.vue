@@ -173,10 +173,10 @@ $search-select-icon-height: 32px;
   font-weight: 400;
   white-space: normal;
   text-align: left;
-  border-color: var(--input-border-color);
+  border-color: $input-border-color;
   background-color: white;
   &:hover:not(:disabled) {
-    border-color: var(--input-border-color);
+    border-color: $input-border-color;
     background-color: white;
   }
   &.search-select--with-icon {
@@ -187,11 +187,11 @@ $search-select-icon-height: 32px;
   }
   &.search-select--readonly {
     cursor: auto !important;
-    border-color: var(--input-disabled-bg);
-    background-color: var(--input-disabled-bg);
+    border-color: $input-disabled-bg;
+    background-color: $input-disabled-bg;
     &:hover:not(:disabled) {
-      border-color: var(--input-disabled-bg);
-      background-color: var(--input-disabled-bg);
+      border-color: $input-disabled-bg;
+      background-color: $input-disabled-bg;
     }
     .search-select-chevron {
       display: none;
@@ -201,8 +201,8 @@ $search-select-icon-height: 32px;
 .search-select-icon {
   background: #ffffff;
   border: 1px solid;
-  border-color: var(--base-border-color);
-  box-shadow: var(--base-box-shadow);
+  border-color: $base-border-color;
+  box-shadow: $base-box-shadow;
   width: 100%;
   height: $search-select-icon-height;
   max-width: $search-select-icon-height;
@@ -253,12 +253,12 @@ $search-select-icon-height: 32px;
     padding-bottom: 3px;
     text-decoration: none !important;
     &.active {
-      color: var(--primary);
+      color: $primary;
       font-weight: 700;
     }
     &:hover {
-      background: var(--primary-light);
-      color: var(--primary);
+      background: $primary-light;
+      color: $primary;
     }
   }
   .search-select-icon {

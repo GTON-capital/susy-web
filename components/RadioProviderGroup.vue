@@ -18,7 +18,7 @@ export default Vue.extend({
   flex-direction: column;
   border-radius: 8px;
   @include media-breakpoint-up(sm) {
-    background-color: var(--success-light);
+    background-color: $secondary-light;
     padding: 32px 30px;
   }
 }

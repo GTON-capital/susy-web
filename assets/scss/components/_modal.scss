@@ -62,7 +62,7 @@
   background: $modal-content-bg;
   transform: translateY(0);
   border: 1px solid;
-  border-color: var(--base-border-color);
+  border-color: $base-border-color;
   border-radius: 18px;
   @media (max-width: 700px) {
     width: calc(100vw - #{$grid-gutter-width});
@@ -106,9 +106,9 @@
   border: none;
   background: transparent;
   outline: none!important;
-  color: var(--secondary);
+  color: $secondary;
   &:hover{
-    color: var(--primary);
+    color: $primary;
   }
   .icon{
     width: 13px;

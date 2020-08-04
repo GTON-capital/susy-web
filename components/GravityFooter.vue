@@ -270,12 +270,12 @@ export default Vue.extend({
 }
 .footer-nav-logo {
   display: block;
-  flex: 0 0 var(--logo-width);
-  width: var(--logo-width);
+  flex: 0 0 $logo-width;
+  width: $logo-width;
   max-width: 100%; // Reset earlier grid tiers
   margin-bottom: 15px;
   &:before {
-    padding-top: var(--logo-width);
+    padding-top: $logo-width;
   }
   @include media-breakpoint-up(md) {
     margin-bottom: 21px;
@@ -294,7 +294,7 @@ export default Vue.extend({
 }
 .footer-cookies-box {
   font-weight: 400;
-  background: var(--body-bg);
+  background: $body-bg;
   border: 1px solid #2e3148;
   min-height: 70px;
   padding: 15px;
