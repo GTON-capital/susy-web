@@ -23,14 +23,31 @@ export default {
     },
   },
   head() {
-    let className = 'theme-' + this.$store.getters['theme/theme']
+    const themes = this.$store.getters['theme/themes']
+    const themeName = this.$store.getters['theme/theme']
+    const theme = themes[themeName]
+    let className = 'theme-' + themeName
     if (this.isOpenNav) {
       className += ' html-overflow-hidden'
     }
+    let title = 'Susy'
+
+    switch (themeName) {
+      case 'susy':
+        title = 'Susy'
+        break
+      case 'gravity':
+        title = 'Gravity'
+        break
+    }
+
     return {
+      title,
       htmlAttrs: {
         class: className,
       },
+      meta: theme.head.meta,
+      link: theme.head.link,
     }
   },
 }

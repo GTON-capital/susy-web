@@ -6,18 +6,6 @@ const THEME = 'susy' // susy, gravity
 // themes - Для возможности переключения тем прямо в приложении
 // просто добавьте имеющиеся темы и переключайте в store/theme.js
 const themes = { susy, gravity }
-const theme = themes[THEME]
-
-let title = 'Susy'
-
-switch (THEME) {
-  case 'susy':
-    title = 'Susy'
-    break
-  case 'gravity':
-    title = 'Gravity'
-    break
-}
 
 export default {
   /*
@@ -34,7 +22,6 @@ export default {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    title,
     meta: [
       { charset: 'utf-8' },
       {
@@ -46,9 +33,7 @@ export default {
         name: 'description',
         content: process.env.npm_package_description || '',
       },
-      ...theme.head.meta,
     ],
-    link: [...theme.head.link],
   },
   /*
    ** Global CSS
