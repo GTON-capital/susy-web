@@ -13,9 +13,8 @@
         <div
           class="nav-header"
           :class="{ 'nav-header-mobile': isHideMobileTitle }"
-        >
-          Seamless <br />Crosschain Swaps
-        </div>
+          v-html="navbarTitle"
+        ></div>
         <div class="nav-menu-wrapper">
           <button
             class="nav-burger"
@@ -51,6 +50,9 @@ export default Vue.extend({
     },
     isOpenNav() {
       return this.$store.getters['app/isOpenNav']
+    },
+    navbarTitle() {
+      return this.$store.getters['app/navbarTitle']
     },
     isHideMobileTitle() {
       return this.$store.getters['app/isHideMobileTitle']

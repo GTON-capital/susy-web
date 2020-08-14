@@ -1,9 +1,15 @@
 .d-inline-block{
-  display: inline-block;
+  display: inline-block!important;
+}
+.d-none{
+  display: none!important;
 }
 @include media-breakpoint-up(sm){
   .d-sm-none{
     display: none!important;
+  }
+  .d-sm-block{
+    display: block!important;
   }
 }
 @include media-breakpoint-up(md){
