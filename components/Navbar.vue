@@ -20,18 +20,52 @@
           <template v-else> Seamless <br />Crosschain Swaps </template>
         </div>
         <div class="nav-menu-wrapper">
-          <button
-            class="nav-burger"
-            :class="{ active: isOpenNav }"
-            aria-label="Menu"
-            @click="isOpenNavToggle"
-          >
-            <i></i><i></i><i></i>
-          </button>
-          <div class="nav-menu">
-            <nuxt-link class="nav-menu-item link-invert" to="/">FAQ</nuxt-link>
-            <nuxt-link class="nav-menu-item link-invert" to="/">Docs</nuxt-link>
-            <footer-block :is-disabled-cookies-box="true"></footer-block>
+          <div class="nav-dropdown d-none d-lg-block">
+            <btn
+              v-click-outside="clickOutsideMode"
+              class="nav-dropdown-toggle"
+              type="button"
+              :class="{ active: isOpenNavMode }"
+              @click="isOpenNavMode = !isOpenNavMode"
+            >
+              <span class="text-body headings-font-family">Intrachain</span>
+              <icon class="dropdown-caret">
+                <caret-icon></caret-icon>
+              </icon>
+            </btn>
+            <div class="nav-menu">
+              <nuxt-link class="nav-menu-item link-invert" to="/"
+                >Intrachain</nuxt-link
+              >
+              <nuxt-link class="nav-menu-item link-invert" to="/"
+                >Swap</nuxt-link
+              >
+            </div>
+          </div>
+          <div v-click-outside="clickOutside" class="nav-dropdown">
+            <button
+              class="nav-burger"
+              :class="{ active: isOpenNav }"
+              aria-label="Menu"
+              @click="isOpenNavToggle"
+            >
+              <i></i><i></i><i></i>
+            </button>
+            <div class="nav-menu nav-menu--main">
+              <nuxt-link class="nav-menu-item link-invert d-lg-none" to="/"
+                >Intrachain</nuxt-link
+              >
+              <nuxt-link class="nav-menu-item link-invert d-lg-none" to="/"
+                >Swap</nuxt-link
+              >
+              <nuxt-link class="nav-menu-item link-invert" to="/"
+                >FAQ</nuxt-link
+              >
+              <nuxt-link class="nav-menu-item link-invert" to="/"
+                >Docs</nuxt-link
+              >
+              <footer-block :is-disabled-cookies-box="true"></footer-block>
+            </div>
           </div>
         </div>
         <hr />
@@ -40,15 +74,23 @@
   </nav>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
 import footerBlock from '~/components/Footer.vue'
+import Btn from '~/components/Btn.vue'
+import Icon from '~/components/Icon.vue'
 
 export default Vue.extend({
   name: 'Navbar',
   components: {
     footerBlock,
+    Btn,
+    Icon,
+    CaretIcon: () => import('~/assets/icons/caret.svg?inline'),
   },
+  data: () => ({
+    isOpenNavMode: false,
+  }),
   computed: {
     theme() {
       return this.$store.getters['theme/theme']
@@ -67,11 +109,27 @@ export default Vue.extend({
     isOpenNavToggle() {
       this.$store.dispatch('app/isOpenNavToggle')
     },
+    clickOutside() {
+      if (window.innerWidth >= 576 && this.isOpenNav) {
+        this.$store.dispatch('app/isOpenNavToggle')
+      }
+    },
+    clickOutsideMode() {
+      if (window.innerWidth >= 576 && this.isOpenNavMode) {
+        this.isOpenNavMode = false
+      }
+    },
   },
 })
 </script>
 
 <style lang="scss">
+@mixin nav-main-opened() {
+  transform: translateY(0px);
+  pointer-events: auto;
+  opacity: 1;
+}
+
 .nav {
   width: 100%;
   display: flex;
@@ -143,6 +201,12 @@ export default Vue.extend({
   }
   br {
     display: none;
+  }
+}
+.nav-dropdown {
+  position: relative;
+  + .nav-dropdown {
+    margin-left: 14px;
   }
 }
 .nav-burger {
@@ -226,12 +290,37 @@ export default Vue.extend({
   pointer-events: none;
   opacity: 0;
 }
+.nav-dropdown-toggle {
+  padding-left: 14px;
+  padding-right: 10px;
+  background: $body-bg;
+  border-color: $nav-burger-border-color;
+  box-shadow: $base-box-shadow !important;
+  color: $primary;
+  &:hover:not(:disabled) {
+    background: $body-bg;
+    border-color: $nav-burger-border-color;
+    color: $primary;
+  }
+  border-radius: 8px;
+  font-size: 16px;
+  b {
+    margin-top: -1px;
+    margin-bottom: -1px;
+  }
+  &.active {
+    .dropdown-caret {
+      transform: rotate(180deg);
+    }
+    ~ .nav-menu {
+      @include nav-main-opened();
+    }
+  }
+}
 .nav {
   &.active {
-    .nav-menu {
-      transform: translateY(0px);
-      pointer-events: auto;
-      opacity: 1;
+    .nav-menu--main {
+      @include nav-main-opened();
     }
     .nav-burger {
       i {
@@ -262,7 +351,7 @@ export default Vue.extend({
   }
 }
 @include media-breakpoint-down(xs) {
-  .nav-menu {
+  .nav-menu--main {
     top: calc(100% + 14px);
     border-radius: 0;
     width: 100vw;

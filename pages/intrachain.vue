@@ -405,7 +405,9 @@
                   aria-haspopup="true"
                   aria-expanded="false"
                 >
-                  <span class="text-body">Add Liquidity</span>
+                  <span class="text-body font-weight-normal"
+                    >Add Liquidity</span
+                  >
                   <icon class="dropdown-caret">
                     <caret-icon></caret-icon>
                   </icon>
@@ -527,7 +529,7 @@
         </template>
 
         <simple-wrapper-slim-sm>
-          <form-group-between-shift-invert>
+          <form-group-between-shift-invert1>
             <template v-slot:left>
               <search-select
                 v-model="walletThree"
@@ -542,37 +544,37 @@
               </search-select>
             </template>
             <template v-slot:right>
-              <form-input-without-label style="justify-content: flex-end;">
-                <div class="dropdown">
-                  <btn
-                    id="dropdownMenuButton3"
-                    v-dropdown
-                    class="btn-link dropdown-toggle"
-                    style="padding: 0;"
-                    type="button"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
+              <div class="dropdown">
+                <btn
+                  id="dropdownMenuButton3"
+                  v-dropdown
+                  class="btn-link dropdown-toggle"
+                  style="padding: 0;"
+                  type="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <span class="text-body font-weight-normal"
+                    >Add Liquidity</span
                   >
-                    <span class="text-body">Add Liquidity</span>
-                    <icon class="dropdown-caret">
-                      <caret-icon></caret-icon>
-                    </icon>
-                  </btn>
-                  <div
-                    class="dropdown-menu dropdown-menu-center dropdown-menu-sm-right"
-                    aria-labelledby="dropdownMenuButton3"
-                  >
-                    <a class="dropdown-item" href="#">Explorer</a>
-                    <a class="dropdown-item" href="#">Node control panel</a>
-                    <a class="dropdown-item" href="#">FAQ</a>
-                    <a class="dropdown-item" href="#">Docs</a>
-                    <a class="dropdown-item" href="#">Log out</a>
-                  </div>
+                  <icon class="dropdown-caret">
+                    <caret-icon></caret-icon>
+                  </icon>
+                </btn>
+                <div
+                  class="dropdown-menu dropdown-menu-center dropdown-menu-sm-right"
+                  aria-labelledby="dropdownMenuButton3"
+                >
+                  <a class="dropdown-item" href="#">Explorer</a>
+                  <a class="dropdown-item" href="#">Node control panel</a>
+                  <a class="dropdown-item" href="#">FAQ</a>
+                  <a class="dropdown-item" href="#">Docs</a>
+                  <a class="dropdown-item" href="#">Log out</a>
                 </div>
-              </form-input-without-label>
+              </div>
             </template>
-          </form-group-between-shift-invert>
+          </form-group-between-shift-invert1>
         </simple-wrapper-slim-sm>
 
         <br class="d-sm-none" />
@@ -702,7 +704,7 @@
         </template>
 
         <simple-wrapper-slim-sm>
-          <form-group-between-shift-invert>
+          <form-group-between-shift-invert1>
             <template v-slot:left>
               <search-select
                 v-model="walletThree"
@@ -717,37 +719,37 @@
               </search-select>
             </template>
             <template v-slot:right>
-              <form-input-without-label style="justify-content: flex-end;">
-                <div class="dropdown">
-                  <btn
-                    id="dropdownMenuButton4"
-                    v-dropdown
-                    class="btn-link dropdown-toggle"
-                    style="padding: 0;"
-                    type="button"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
+              <div class="dropdown">
+                <btn
+                  id="dropdownMenuButton4"
+                  v-dropdown
+                  class="btn-link dropdown-toggle"
+                  style="padding: 0;"
+                  type="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <span class="text-body font-weight-normal"
+                    >Remove Liquidity</span
                   >
-                    <span class="text-body">Remove Liquidity</span>
-                    <icon class="dropdown-caret">
-                      <caret-icon></caret-icon>
-                    </icon>
-                  </btn>
-                  <div
-                    class="dropdown-menu dropdown-menu-center dropdown-menu-sm-right"
-                    aria-labelledby="dropdownMenuButton4"
-                  >
-                    <a class="dropdown-item" href="#">Explorer</a>
-                    <a class="dropdown-item" href="#">Node control panel</a>
-                    <a class="dropdown-item" href="#">FAQ</a>
-                    <a class="dropdown-item" href="#">Docs</a>
-                    <a class="dropdown-item" href="#">Log out</a>
-                  </div>
+                  <icon class="dropdown-caret">
+                    <caret-icon></caret-icon>
+                  </icon>
+                </btn>
+                <div
+                  class="dropdown-menu dropdown-menu-center dropdown-menu-sm-right"
+                  aria-labelledby="dropdownMenuButton4"
+                >
+                  <a class="dropdown-item" href="#">Explorer</a>
+                  <a class="dropdown-item" href="#">Node control panel</a>
+                  <a class="dropdown-item" href="#">FAQ</a>
+                  <a class="dropdown-item" href="#">Docs</a>
+                  <a class="dropdown-item" href="#">Log out</a>
                 </div>
-              </form-input-without-label>
+              </div>
             </template>
-          </form-group-between-shift-invert>
+          </form-group-between-shift-invert1>
         </simple-wrapper-slim-sm>
 
         <br class="d-sm-none" />
@@ -1181,7 +1183,7 @@ export default {
     TableLogIntrachain,
     TableLogPools,
     Pagination,
-    CaretIcon: () => import('assets/icons/caret.svg?inline'),
+    CaretIcon: () => import('~/assets/icons/caret.svg?inline'),
   },
   data: () => ({
     isGravityTheme: false,

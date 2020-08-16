@@ -17,3 +17,12 @@
     display: none!important;
   }
 }
+
+@include media-breakpoint-up(lg){
+  .d-lg-none{
+    display: none!important;
+  }
+  .d-lg-block{
+    display: block!important;
+  }
+}
