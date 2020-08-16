@@ -161,8 +161,10 @@ export default Vue.extend({
 .pagination-arrow-next {
   a {
     color: $pagination-item-arrow-color !important;
-    &:hover {
-      color: $pagination-item-arrow-hover-color !important;
+    @media (hover: hover) {
+      &:hover {
+        color: $pagination-item-arrow-hover-color !important;
+      }
     }
   }
   .icon {

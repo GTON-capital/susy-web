@@ -1076,11 +1076,14 @@
       </card-swap-final>
     </div>
     <div>
-      <btn class="btn-primary" @click="$modal.push('logs')">
-        Logs
+      <btn class="btn-primary" @click="$modal.push('logs-intrachain')">
+        Logs Intrachain
+      </btn>
+      <btn class="btn-primary" @click="$modal.push('logs-pools')">
+        Logs Pools
       </btn>
       <client-only>
-        <modal name="logs">
+        <modal name="logs-intrachain">
           <modal-content :show-footer="false" size="md">
             <template v-slot:head>
               Logs
@@ -1088,6 +1091,27 @@
             <template v-slot:body>
               <table-log-intrachain></table-log-intrachain>
               <pagination v-model="page" count-pages="10"></pagination>
+              <div class="text-center">
+                <btn class="btn-link">
+                  Back
+                </btn>
+              </div>
+            </template>
+          </modal-content>
+        </modal>
+        <modal name="logs-pools">
+          <modal-content :show-footer="false" size="md">
+            <template v-slot:head>
+              Pools
+            </template>
+            <template v-slot:body>
+              <table-log-pools></table-log-pools>
+              <pagination v-model="page" count-pages="10"></pagination>
+              <div class="text-center">
+                <btn class="btn-link">
+                  Back
+                </btn>
+              </div>
             </template>
           </modal-content>
         </modal>
@@ -1114,6 +1138,7 @@ import Checkbox from '~/components/Checkbox'
 import TransactionsIcons from '~/components/TransactionsIcons'
 import ModalContent from '~/components/ModalContent'
 import TableLogIntrachain from '~/components/TableLogIntrachain'
+import TableLogPools from '~/components/TableLogPools'
 import Pagination from '~/components/Pagination'
 
 const defaultTab = 'swap'
@@ -1137,6 +1162,7 @@ export default {
     TransactionsIcons,
     ModalContent,
     TableLogIntrachain,
+    TableLogPools,
     Pagination,
   },
   data: () => ({
