@@ -70,6 +70,7 @@ export default Vue.extend({
       return {
         'modal-tiny': this.size === 'tiny',
         'modal-sm': this.size === 'sm',
+        'modal-md': this.size === 'md',
         'modal-lg': this.size === 'lg',
       }
     },

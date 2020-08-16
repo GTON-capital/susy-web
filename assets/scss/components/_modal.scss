@@ -133,3 +133,13 @@
     max-width: 850px + $modal-padding-x * 2;
   }
 }
+
+.modal-md{
+  max-width: 760px;
+  @include media-breakpoint-down(sm){
+    width: calc(100vw - #{$grid-gutter-width});
+  }
+  .modal-container {
+    max-width: 700px + $modal-padding-x * 2;
+  }
+}

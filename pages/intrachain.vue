@@ -1075,6 +1075,24 @@
         </template>
       </card-swap-final>
     </div>
+    <div>
+      <btn class="btn-primary" @click="$modal.push('logs')">
+        Logs
+      </btn>
+      <client-only>
+        <modal name="logs">
+          <modal-content :show-footer="false" size="md">
+            <template v-slot:head>
+              Logs
+            </template>
+            <template v-slot:body>
+              <table-log-intrachain></table-log-intrachain>
+              <pagination v-model="page" count-pages="10"></pagination>
+            </template>
+          </modal-content>
+        </modal>
+      </client-only>
+    </div>
   </div>
 </template>
 
@@ -1094,6 +1112,9 @@ import CardSwapFinal from '~/components/CardSwapFinal'
 import FormGroup from '~/components/FormGroup'
 import Checkbox from '~/components/Checkbox'
 import TransactionsIcons from '~/components/TransactionsIcons'
+import ModalContent from '~/components/ModalContent'
+import TableLogIntrachain from '~/components/TableLogIntrachain'
+import Pagination from '~/components/Pagination'
 
 const defaultTab = 'swap'
 
@@ -1114,6 +1135,9 @@ export default {
     FormGroup,
     Checkbox,
     TransactionsIcons,
+    ModalContent,
+    TableLogIntrachain,
+    Pagination,
   },
   data: () => ({
     defaultTab,

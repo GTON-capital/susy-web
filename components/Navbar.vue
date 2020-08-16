@@ -45,6 +45,7 @@ import Vue from 'vue'
 import footerBlock from '~/components/Footer.vue'
 
 export default Vue.extend({
+  name: 'Navbar',
   components: {
     footerBlock,
   },
