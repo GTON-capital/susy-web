@@ -6,12 +6,12 @@
       </div>
       <div>{{ left.label }}</div>
     </div>
-    <div class="transactions-icons-arrow">
+    <div v-if="right" class="transactions-icons-arrow">
       <icon>
         <vs-icon></vs-icon>
       </icon>
     </div>
-    <div class="transactions-icons-right">
+    <div v-if="right" class="transactions-icons-right">
       <div class="transactions-icons-icon wrapper-icon-circle">
         <icon :image="right.icon"></icon>
       </div>
@@ -37,7 +37,8 @@ export default Vue.extend({
     },
     right: {
       type: Object,
-      required: true,
+      default: null,
+      required: false,
     },
   },
 })

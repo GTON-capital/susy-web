@@ -15,6 +15,7 @@ export default Vue.extend({
 
 .simple-wrapper-slim-sm {
   @include media-breakpoint-up(sm) {
+    --input-disabled-bg: #{$input-disabled-gray-bg};
     padding: 17px 20px 16px 20px;
     background-color: $secondary-light;
     border-radius: 8px;

@@ -23,7 +23,7 @@ export default Vue.extend({
     width: 100%;
     flex: 0 0 100%;
     max-width: 100%;
-    @include media-breakpoint-up(md) {
+    @include media-breakpoint-up(sm) {
       padding-bottom: $form-group-margin-bottom;
       &:nth-child(1) {
         flex-basis: 0;

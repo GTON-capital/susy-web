@@ -152,6 +152,7 @@ $input-bg: var(--input-bg);
 $input-color: var(--input-color);
 $input-border-color: var(--input-border-color);
 $input-disabled-bg: var(--input-disabled-bg);
+$input-disabled-gray-bg: var(--input-disabled-gray-bg);
 $input-disabled-color: var(--input-disabled-color);
 $input-border-radius: $input-btn-border-radius;
 $input-font-size: 13px;
@@ -299,7 +300,8 @@ $root: (
   input-bg: white,
   input-color: var(--body-color),
   input-border-color: #EEBCD8,
-  input-disabled-bg: #E7F2F1,
+  input-disabled-bg: $secondary-light,
+  input-disabled-gray-bg: #E7F2F1,
   input-disabled-color: var(--input-color),
   search-select-chevron-color: $primary,
   wrapper-icon-circle-border-background: $base-border-color,
