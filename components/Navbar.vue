@@ -13,8 +13,12 @@
         <div
           class="nav-header"
           :class="{ 'nav-header-mobile': isHideMobileTitle }"
-          v-html="navbarTitle"
-        ></div>
+        >
+          <template v-if="$route.name === 'intrachain'">
+            Seamless Intrachain <br />Swaps
+          </template>
+          <template v-else> Seamless <br />Crosschain Swaps </template>
+        </div>
         <div class="nav-menu-wrapper">
           <button
             class="nav-burger"

@@ -94,6 +94,18 @@ fieldset:disabled a.btn {
   }
 }
 
+.btn-success {
+  color: $white;
+  background-color: $success;
+  border-color: $success;
+
+  &:hover:not(:disabled) {
+    color: $success;
+    background-color: transparent;
+    border-color: $secondary;
+  }
+}
+
 //
 // Block button
 //

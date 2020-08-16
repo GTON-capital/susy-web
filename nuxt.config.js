@@ -44,6 +44,7 @@ export default {
    ** https://nuxtjs.org/guide/plugins
    */
   plugins: [
+    { src: '~plugins/dropdown', ssr: false },
     { src: '~plugins/modal', ssr: false },
     { src: '~plugins/clipboard', ssr: true },
   ],

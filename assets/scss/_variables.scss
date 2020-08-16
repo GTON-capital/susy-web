@@ -139,12 +139,11 @@ $table-max-height: 600px;
 $table-border-width: 1px;
 $table-border-color: #323652;
 $table-border-radius: 6px;
-$table-caption-color: #C1C2C9;
+$table-caption-color: #c1c2c9;
 $table-cell-padding: 10px;
 $table-cell-padding: 10px;
 
-$text-muted: #878EA1;
-
+$text-muted: #878ea1;
 
 
 $input-height: 42px;
@@ -207,11 +206,11 @@ $modal-padding-x: 10px;
 $modal-backdrop-background: var(--modal-backdrop-background);
 $modal-close-color: var(--modal-close-color);
 
-$red: #FF1C1C;
+$red: #ff1c1c;
 
 $h3-font-size: 17px;
 
-$vs-state-active-bg: #474C68;
+$vs-state-active-bg: #474c68;
 $vs-dropdown-vertical-offset: 11px;
 $vs-dropdown-horizontal-offset: 16px;
 $vs-border-radius: 6px;
@@ -266,14 +265,62 @@ $pagination-item-color: var(--pagination-item-color);
 $pagination-item-arrow-color: var(--pagination-item-arrow-color);
 $pagination-item-arrow-hover-color: var(--pagination-item-arrow-hover-color);
 
+
+$caret-width: .3em;
+$caret-vertical-align: $caret-width * .85;
+$caret-spacing: $caret-width * .85;
+$enable-deprecation-messages: false;
+$enable-gradients: false;
+$enable-caret: true;
+$spacer: 1rem;
+$component-active-color: $white;
+$component-active-bg: $primary;
+$nav-divider-margin-y: $spacer / 2;
+
+// Dropdowns
+//
+// Dropdown menu container and contents.
+
+$dropdown-min-width: 10rem;
+$dropdown-padding-y: .5rem;
+$dropdown-spacer: .125rem;
+$dropdown-font-size: $font-size-base;
+$dropdown-color: $body-color;
+$dropdown-bg: $white;
+$dropdown-border-color: rgba($black, .15);
+$dropdown-border-radius: $border-radius;
+$dropdown-border-width: $border-width;
+$dropdown-inner-border-radius: subtract($dropdown-border-radius, $dropdown-border-width);
+$dropdown-divider-bg: $gray-200;
+$dropdown-divider-margin-y: $nav-divider-margin-y;
+$dropdown-box-shadow: 0 .5rem 1rem rgba($black, .175);
+
+$dropdown-link-color: $gray-900;
+$dropdown-link-hover-color: darken($gray-900, 5%);
+$dropdown-link-hover-bg: $gray-100;
+
+$dropdown-link-active-color: $component-active-color;
+$dropdown-link-active-bg: $component-active-bg;
+
+$dropdown-link-disabled-color: $gray-600;
+
+$dropdown-item-padding-y: .25rem;
+$dropdown-item-padding-x: 1.5rem;
+
+$dropdown-header-color: $gray-600;
+$dropdown-header-padding: $dropdown-padding-y $dropdown-item-padding-x;
+
+
+// Root
+
 $root: (
-  green: #00DD80,
-  body-bg: #FFFFFF,
-  body-color: #001A34,
-  primary: #FF0097,
-  primary-light: #FFF4FA,
-  secondary: #73979C,
-  secondary-light: #F3F9F9,
+  green: #00dd80,
+  body-bg: #ffffff,
+  body-color: #001a34,
+  primary: #ff0097,
+  primary-light: #fff4fa,
+  secondary: #73979c,
+  secondary-light: #f3f9f9,
   success: var(--green),
   headings-color: var(--primary),
   base-box-shadow: 0 1px 25px #e2f1f6,
@@ -291,7 +338,7 @@ $root: (
   nav-header-font-family: var(--headings-font-family),
   nav-header-fz-scale: 1,
   card-background-color: var(--body-bg),
-  hr-border-color: #E4EDEF,
+  hr-border-color: #e4edef,
   logo-height: 50px,
   logo-width: 67px,
   logo-height-md: 68px,
@@ -299,9 +346,9 @@ $root: (
   navbar-backdrop-background: rgba(50, 80, 80, 0.31),
   input-bg: white,
   input-color: var(--body-color),
-  input-border-color: #EEBCD8,
+  input-border-color: #eebcd8,
   input-disabled-bg: $secondary-light,
-  input-disabled-gray-bg: #E7F2F1,
+  input-disabled-gray-bg: #e7f2f1,
   input-disabled-color: var(--input-color),
   search-select-chevron-color: $primary,
   wrapper-icon-circle-border-background: $base-border-color,

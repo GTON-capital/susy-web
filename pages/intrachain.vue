@@ -11,101 +11,88 @@
     >
     </tabs>
 
-    <card-swap>
-      <template v-slot:header>
-        Swap
-      </template>
+    <div v-if="tab === defaultTab">
+      <card-swap>
+        <template v-slot:header>
+          Swap
+        </template>
 
-      <simple-wrapper-slim-sm>
-        <search-select
-          v-model="walletThree"
-          :data="wallets"
-          placeholder="Select a token..."
-          modal-heading="Select a token"
-          style="margin-bottom: 0;"
+        <simple-wrapper-slim-sm>
+          <search-select
+            v-model="walletThree"
+            :data="wallets"
+            placeholder="Select a token..."
+            modal-heading="Select a token"
+            style="margin-bottom: 0;"
+          >
+            <template v-slot:label>
+              Blockchain
+            </template>
+          </search-select>
+        </simple-wrapper-slim-sm>
+
+        <btn
+          class="btn-link btn-block"
+          :class="{
+            'link-invert': theme === 'susy',
+            'text-primary': theme === 'gravity',
+          }"
         >
-          <template v-slot:label>
-            Blockchain
-          </template>
-        </search-select>
-      </simple-wrapper-slim-sm>
-
-      <btn
-        class="btn-link btn-block"
-        :class="{
-          'link-invert': theme === 'susy',
-          'text-primary': theme === 'gravity',
-        }"
-      >
-        Connect new wallet
-      </btn>
-      <hr class="d-sm-none" />
-      <br class="d-none d-sm-block" />
-      <simple-wrapper-slim-sm>
-        <form-group-between-shift-invert>
-          <template v-slot:left>
-            <search-select
-              v-model="walletThree"
-              :data="wallets"
-              placeholder="Select a token..."
-              modal-heading="Select a token"
-              style="margin-bottom: 14px;"
-            >
-              <template v-slot:label>
-                Send
-              </template>
-            </search-select>
-          </template>
-          <template v-slot:right>
-            <form-input-without-label>
-              <form-input value="0" type="number" style="margin-bottom: 14px;">
-              </form-input>
-            </form-input-without-label>
-          </template>
-        </form-group-between-shift-invert>
-        <form-group-between-shift-invert>
-          <template v-slot:left>
-            <search-select
-              v-model="walletThree"
-              :data="wallets"
-              placeholder="Select a token..."
-              modal-heading="Select a token"
-            >
-              <template v-slot:label>
-                Token
-              </template>
-            </search-select>
-          </template>
-          <template v-slot:right>
-            <form-input-without-label>
-              <form-input
-                value="0"
-                type="number"
-                style="margin-bottom: 0;"
-              ></form-input>
-            </form-input-without-label>
-          </template>
-        </form-group-between-shift-invert>
-      </simple-wrapper-slim-sm>
-      <list-data class="d-none d-sm-block">
-        <list-data-item>
-          Exchange rate:
-          <template v-slot:value>—</template>
-        </list-data-item>
-        <list-data-item>
-          Current pool size:
-          <template v-slot:value>—</template>
-        </list-data-item>
-        <list-data-item>
-          Your pool share (50%):
-          <template v-slot:value>—</template>
-        </list-data-item>
-      </list-data>
-      <template v-slot:footer>
-        <btn class="btn-primary btn-block" disabled>
-          Next
+          Connect new wallet
         </btn>
-        <list-data class="d-sm-none" style="margin-top: 14px;">
+        <hr class="d-sm-none" />
+        <br class="d-none d-sm-block" />
+        <simple-wrapper-slim-sm>
+          <form-group-between-shift-invert>
+            <template v-slot:left>
+              <search-select
+                v-model="walletThree"
+                :data="wallets"
+                placeholder="Select a token..."
+                modal-heading="Select a token"
+                style="margin-bottom: 14px;"
+              >
+                <template v-slot:label>
+                  Send
+                </template>
+              </search-select>
+            </template>
+            <template v-slot:right>
+              <form-input-without-label>
+                <form-input
+                  value="0"
+                  type="number"
+                  style="margin-bottom: 14px;"
+                >
+                </form-input>
+              </form-input-without-label>
+            </template>
+          </form-group-between-shift-invert>
+          <form-group-between-shift-invert>
+            <template v-slot:left>
+              <search-select
+                v-model="walletThree"
+                :data="wallets"
+                placeholder="Select a token..."
+                modal-heading="Select a token"
+              >
+                <template v-slot:label>
+                  Token
+                </template>
+              </search-select>
+            </template>
+            <template v-slot:right>
+              <form-input-without-label>
+                <form-input
+                  value="0"
+                  type="number"
+                  style="margin-bottom: 0;"
+                ></form-input>
+              </form-input-without-label>
+            </template>
+          </form-group-between-shift-invert>
+        </simple-wrapper-slim-sm>
+        <list-data class="d-none d-sm-block">
           <list-data-item>
             Exchange rate:
             <template v-slot:value>—</template>
@@ -114,135 +101,135 @@
             Current pool size:
             <template v-slot:value>—</template>
           </list-data-item>
-          <list-data-item style="margin-bottom: 0;">
+          <list-data-item>
             Your pool share (50%):
             <template v-slot:value>—</template>
           </list-data-item>
         </list-data>
-      </template>
-    </card-swap>
+        <template v-slot:footer>
+          <btn class="btn-primary btn-block" disabled>
+            Next
+          </btn>
+          <list-data class="d-sm-none" style="margin-top: 14px;">
+            <list-data-item>
+              Exchange rate:
+              <template v-slot:value>—</template>
+            </list-data-item>
+            <list-data-item>
+              Current pool size:
+              <template v-slot:value>—</template>
+            </list-data-item>
+            <list-data-item style="margin-bottom: 0;">
+              Your pool share (50%):
+              <template v-slot:value>—</template>
+            </list-data-item>
+          </list-data>
+        </template>
+      </card-swap>
 
-    <card-swap>
-      <template v-slot:header>
-        Swap
-      </template>
+      <card-swap>
+        <template v-slot:header>
+          Swap
+        </template>
 
-      <simple-wrapper-slim-sm>
-        <search-select
-          v-model="walletThree"
-          :data="wallets"
-          placeholder="Select a token..."
-          modal-heading="Select a token"
-          style="margin-bottom: 0;"
-        >
-          <template v-slot:label>
-            Blockchain
-          </template>
-        </search-select>
-      </simple-wrapper-slim-sm>
-
-      <br class="d-sm-none" />
-
-      <form-group-between-shift1>
-        <template v-slot:left>
-          <form-input
-            value="0x1015e2182E...6AD26FB9"
-            readonly
-            icon="/img/icons/metamask.svg"
+        <simple-wrapper-slim-sm>
+          <search-select
+            v-model="walletThree"
+            :data="wallets"
+            placeholder="Select a token..."
+            modal-heading="Select a token"
+            style="margin-bottom: 0;"
           >
             <template v-slot:label>
-              From address
+              Blockchain
             </template>
-          </form-input>
-        </template>
-        <template v-slot:right>
-          <btn
-            class="btn-link link-invert btn-block"
-            :class="{
-              'text-primary': theme === 'gravity',
-            }"
-          >
-            Change
-          </btn>
-        </template>
-      </form-group-between-shift1>
+          </search-select>
+        </simple-wrapper-slim-sm>
 
-      <hr class="d-sm-none" style="margin: 0 0 14px 0;" />
+        <br class="d-sm-none" />
 
-      <simple-wrapper-slim-sm>
-        <form-group-between-shift-invert>
+        <form-group-between-shift1>
           <template v-slot:left>
-            <search-select
-              v-model="walletThree"
-              :data="wallets"
-              placeholder="Select a token..."
-              modal-heading="Select a token"
-              style="margin-bottom: 14px;"
+            <form-input
+              value="0x1015e2182E...6AD26FB9"
+              readonly
+              icon="/img/icons/metamask.svg"
             >
               <template v-slot:label>
-                Send
-                <span class="text-secondary float-right font-weight-normal">
-                  Balance: 1
-                </span>
-              </template>
-            </search-select>
-          </template>
-          <template v-slot:right>
-            <form-input value="0" type="number" style="margin-bottom: 14px;">
-              <template v-slot:label>
-                <span class="text-secondary float-right font-weight-normal">
-                  Gas: 100 Gwei
-                </span>
+                From address
               </template>
             </form-input>
           </template>
-        </form-group-between-shift-invert>
-        <form-group-between-shift-invert>
-          <template v-slot:left>
-            <search-select
-              v-model="walletThree"
-              :data="wallets"
-              placeholder="Select a token..."
-              modal-heading="Select a token"
-            >
-              <template v-slot:label>
-                Receive
-                <span class="text-secondary float-right font-weight-normal">
-                  Price: - ETH per BAND
-                </span>
-              </template>
-            </search-select>
-          </template>
           <template v-slot:right>
-            <form-input-without-label>
-              <form-input
-                value="0"
-                type="number"
-                style="margin-bottom: 0;"
-              ></form-input>
-            </form-input-without-label>
+            <btn
+              class="btn-link link-invert btn-block"
+              :class="{
+                'text-primary': theme === 'gravity',
+              }"
+            >
+              Change
+            </btn>
           </template>
-        </form-group-between-shift-invert>
-      </simple-wrapper-slim-sm>
-      <list-data class="d-none d-sm-block">
-        <list-data-item>
-          Exchange rate:
-          <template v-slot:value>0.10 TRX = 0.3 BTT</template>
-        </list-data-item>
-        <list-data-item>
-          Current pool size:
-          <template v-slot:value>0.5 TRX = 1 BTT</template>
-        </list-data-item>
-        <list-data-item>
-          Your pool share (50%):
-          <template v-slot:value>0.2 TRX = 0.2 BTT</template>
-        </list-data-item>
-      </list-data>
-      <template v-slot:footer>
-        <btn class="btn-primary btn-block">
-          Next
-        </btn>
-        <list-data class="d-sm-none" style="margin-top: 14px;">
+        </form-group-between-shift1>
+
+        <hr class="d-sm-none" style="margin: 0 0 14px 0;" />
+
+        <simple-wrapper-slim-sm>
+          <form-group-between-shift-invert>
+            <template v-slot:left>
+              <search-select
+                v-model="walletThree"
+                :data="wallets"
+                placeholder="Select a token..."
+                modal-heading="Select a token"
+                style="margin-bottom: 14px;"
+              >
+                <template v-slot:label>
+                  Send
+                  <span class="text-secondary float-right font-weight-normal">
+                    Balance: 1
+                  </span>
+                </template>
+              </search-select>
+            </template>
+            <template v-slot:right>
+              <form-input value="0" type="number" style="margin-bottom: 14px;">
+                <template v-slot:label>
+                  <span class="text-secondary float-right font-weight-normal">
+                    Gas: 100 Gwei
+                  </span>
+                </template>
+              </form-input>
+            </template>
+          </form-group-between-shift-invert>
+          <form-group-between-shift-invert>
+            <template v-slot:left>
+              <search-select
+                v-model="walletThree"
+                :data="wallets"
+                placeholder="Select a token..."
+                modal-heading="Select a token"
+              >
+                <template v-slot:label>
+                  Receive
+                  <span class="text-secondary float-right font-weight-normal">
+                    Price: - ETH per BAND
+                  </span>
+                </template>
+              </search-select>
+            </template>
+            <template v-slot:right>
+              <form-input-without-label>
+                <form-input
+                  value="0"
+                  type="number"
+                  style="margin-bottom: 0;"
+                ></form-input>
+              </form-input-without-label>
+            </template>
+          </form-group-between-shift-invert>
+        </simple-wrapper-slim-sm>
+        <list-data class="d-none d-sm-block">
           <list-data-item>
             Exchange rate:
             <template v-slot:value>0.10 TRX = 0.3 BTT</template>
@@ -251,120 +238,843 @@
             Current pool size:
             <template v-slot:value>0.5 TRX = 1 BTT</template>
           </list-data-item>
-          <list-data-item style="margin-bottom: 0;">
+          <list-data-item>
             Your pool share (50%):
             <template v-slot:value>0.2 TRX = 0.2 BTT</template>
           </list-data-item>
         </list-data>
-      </template>
-    </card-swap>
+        <template v-slot:footer>
+          <btn class="btn-primary btn-block">
+            Next
+          </btn>
+          <list-data class="d-sm-none" style="margin-top: 14px;">
+            <list-data-item>
+              Exchange rate:
+              <template v-slot:value>0.10 TRX = 0.3 BTT</template>
+            </list-data-item>
+            <list-data-item>
+              Current pool size:
+              <template v-slot:value>0.5 TRX = 1 BTT</template>
+            </list-data-item>
+            <list-data-item style="margin-bottom: 0;">
+              Your pool share (50%):
+              <template v-slot:value>0.2 TRX = 0.2 BTT</template>
+            </list-data-item>
+          </list-data>
+        </template>
+      </card-swap>
 
-    <card-swap-final>
-      <template v-slot:header>
-        Swap
-      </template>
-      <template v-slot:bodyTop>
-        <form-group>
-          <transactions-icons :left="walletFirst"></transactions-icons>
-        </form-group>
-      </template>
-      <template v-slot:bodyBottom>
-        <form-group>
-          <template v-slot:label>
-            From address
-          </template>
-          <div class="text-truncate">
-            0xEA3ed91a668B6a56751729016EBafc214dFBeB65
+      <card-swap-final>
+        <template v-slot:header>
+          Swap
+        </template>
+        <template v-slot:bodyTop>
+          <form-group>
+            <transactions-icons :left="walletFirst"></transactions-icons>
+          </form-group>
+        </template>
+        <template v-slot:bodyBottom>
+          <form-group>
+            <template v-slot:label>
+              From address
+            </template>
+            <div class="text-truncate">
+              0xEA3ed91a668B6a56751729016EBafc214dFBeB65
+            </div>
+          </form-group>
+
+          <form-group-between-shift-invert>
+            <template v-slot:left>
+              <search-select
+                :value="{
+                  id: '1',
+                  label: 'Ethereum',
+                  icon: '/img/icons/ethereum.svg',
+                }"
+                readonly
+                style="margin-bottom: 14px;"
+              >
+                <template v-slot:label>
+                  Send
+                </template>
+              </search-select>
+            </template>
+            <template v-slot:right>
+              <form-input
+                value="1.1"
+                type="number"
+                readonly
+                style="margin-bottom: 14px;"
+              >
+                <template v-slot:label>
+                  <span class="text-secondary float-right font-weight-normal">
+                    Gas: 100 Gwei
+                  </span>
+                </template>
+              </form-input>
+            </template>
+          </form-group-between-shift-invert>
+
+          <form-group-between-shift-invert>
+            <template v-slot:left>
+              <search-select
+                :value="{
+                  id: '1',
+                  label: 'Ethereum',
+                  icon: '/img/icons/ethereum.svg',
+                }"
+                readonly
+              >
+                <template v-slot:label>
+                  Send
+                </template>
+              </search-select>
+            </template>
+            <template v-slot:right>
+              <form-input-without-label>
+                <form-input value="1.1" type="number" readonly> </form-input>
+              </form-input-without-label>
+            </template>
+          </form-group-between-shift-invert>
+        </template>
+
+        <br class="d-sm-none" />
+        <list-data>
+          <list-data-item>
+            Exchange rate:
+            <template v-slot:value>0.10 TRX = 0.3 BTT</template>
+          </list-data-item>
+          <list-data-item>
+            Current pool size:
+            <template v-slot:value>0.5 TRX = 1 BTT</template>
+          </list-data-item>
+          <list-data-item>
+            Your pool share (50%):
+            <template v-slot:value>0.2 TRX = 0.2 BTT</template>
+          </list-data-item>
+        </list-data>
+
+        <template v-slot:footer>
+          <div style="display: flex; justify-content: center;">
+            <form-group>
+              <checkbox name="terms-of-service" checked>
+                Terms of Service
+              </checkbox>
+            </form-group>
           </div>
-        </form-group>
+          <btn class="btn-primary btn-block">
+            Swap
+          </btn>
+          <btn class="btn-link btn-block">
+            Back
+          </btn>
+        </template>
+      </card-swap-final>
+    </div>
 
-        <form-group-between-shift-invert>
+    <div v-else-if="tab === 'pools'">
+      <card-swap>
+        <template v-slot:header>
+          Pools
+        </template>
+
+        <simple-wrapper-slim-sm>
+          <form-group-between-shift-invert>
+            <template v-slot:left>
+              <search-select
+                v-model="walletThree"
+                :data="wallets"
+                placeholder="Select a token..."
+                modal-heading="Select a token"
+                style="margin-bottom: 0;"
+              >
+                <template v-slot:label>
+                  Blockchain
+                </template>
+              </search-select>
+            </template>
+            <template v-slot:right>
+              <form-input-without-label style="justify-content: flex-end;">
+                <div class="dropdown">
+                  <btn
+                    id="dropdownMenuButton2"
+                    v-dropdown
+                    class="btn-link dropdown-toggle"
+                    type="button"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    nodes
+                  </btn>
+                  <div
+                    class="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton2"
+                  >
+                    <a class="dropdown-item" href="#">Explorer</a>
+                    <a class="dropdown-item" href="#">Node control panel</a>
+                    <a class="dropdown-item" href="#">FAQ</a>
+                    <a class="dropdown-item" href="#">Docs</a>
+                    <a class="dropdown-item" href="#">Log out</a>
+                  </div>
+                </div>
+              </form-input-without-label>
+            </template>
+          </form-group-between-shift-invert>
+        </simple-wrapper-slim-sm>
+
+        <btn
+          class="btn-link btn-block"
+          :class="{
+            'link-invert': theme === 'susy',
+            'text-primary': theme === 'gravity',
+          }"
+        >
+          Connect new wallet
+        </btn>
+        <hr class="d-sm-none" />
+        <br class="d-none d-sm-block" />
+        <simple-wrapper-slim-sm>
+          <form-group-between-shift-invert>
+            <template v-slot:left>
+              <search-select
+                v-model="walletThree"
+                :data="wallets"
+                placeholder="Select a token..."
+                modal-heading="Select a token"
+                style="margin-bottom: 14px;"
+              >
+                <template v-slot:label>
+                  Input
+                </template>
+              </search-select>
+            </template>
+            <template v-slot:right>
+              <form-input-without-label>
+                <form-input
+                  value="0"
+                  type="number"
+                  style="margin-bottom: 14px;"
+                >
+                </form-input>
+              </form-input-without-label>
+            </template>
+          </form-group-between-shift-invert>
+          <form-group-between-shift-invert>
+            <template v-slot:left>
+              <search-select
+                v-model="walletThree"
+                :data="wallets"
+                placeholder="Select a token..."
+                modal-heading="Select a token"
+              >
+                <template v-slot:label>
+                  Input
+                </template>
+              </search-select>
+            </template>
+            <template v-slot:right>
+              <form-input-without-label>
+                <form-input
+                  value="0"
+                  type="number"
+                  style="margin-bottom: 0;"
+                ></form-input>
+              </form-input-without-label>
+            </template>
+          </form-group-between-shift-invert>
+        </simple-wrapper-slim-sm>
+        <list-data class="d-none d-sm-block">
+          <list-data-item>
+            Exchange rate:
+            <template v-slot:value>—</template>
+          </list-data-item>
+          <list-data-item>
+            Current pool size:
+            <template v-slot:value>—</template>
+          </list-data-item>
+          <list-data-item>
+            Your pool share (50%):
+            <template v-slot:value>—</template>
+          </list-data-item>
+        </list-data>
+        <template v-slot:footer>
+          <btn class="btn-primary btn-block" disabled>
+            Next
+          </btn>
+          <list-data class="d-sm-none" style="margin-top: 14px;">
+            <list-data-item>
+              Exchange rate:
+              <template v-slot:value>—</template>
+            </list-data-item>
+            <list-data-item>
+              Current pool size:
+              <template v-slot:value>—</template>
+            </list-data-item>
+            <list-data-item style="margin-bottom: 0;">
+              Your pool share (50%):
+              <template v-slot:value>—</template>
+            </list-data-item>
+          </list-data>
+        </template>
+      </card-swap>
+
+      <card-swap>
+        <template v-slot:header>
+          Pools
+        </template>
+
+        <simple-wrapper-slim-sm>
+          <form-group-between-shift-invert>
+            <template v-slot:left>
+              <search-select
+                v-model="walletThree"
+                :data="wallets"
+                placeholder="Select a token..."
+                modal-heading="Select a token"
+                style="margin-bottom: 0;"
+              >
+                <template v-slot:label>
+                  Blockchain
+                </template>
+              </search-select>
+            </template>
+            <template v-slot:right>
+              <form-input-without-label style="justify-content: flex-end;">
+                <div class="dropdown">
+                  <btn
+                    id="dropdownMenuButton3"
+                    v-dropdown
+                    class="btn-link dropdown-toggle"
+                    type="button"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    nodes
+                  </btn>
+                  <div
+                    class="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton3"
+                  >
+                    <a class="dropdown-item" href="#">Explorer</a>
+                    <a class="dropdown-item" href="#">Node control panel</a>
+                    <a class="dropdown-item" href="#">FAQ</a>
+                    <a class="dropdown-item" href="#">Docs</a>
+                    <a class="dropdown-item" href="#">Log out</a>
+                  </div>
+                </div>
+              </form-input-without-label>
+            </template>
+          </form-group-between-shift-invert>
+        </simple-wrapper-slim-sm>
+
+        <br class="d-sm-none" />
+
+        <form-group-between-shift1>
           <template v-slot:left>
-            <search-select
-              :value="{
-                id: '1',
-                label: 'Ethereum',
-                icon: '/img/icons/ethereum.svg',
-              }"
-              readonly
-              style="margin-bottom: 14px;"
-            >
-              <template v-slot:label>
-                Send
-              </template>
-            </search-select>
-          </template>
-          <template v-slot:right>
             <form-input
-              value="1.1"
-              type="number"
+              value="0x1015e2182E...6AD26FB9"
               readonly
-              style="margin-bottom: 14px;"
+              icon="/img/icons/metamask.svg"
             >
               <template v-slot:label>
-                <span class="text-secondary float-right font-weight-normal">
-                  Gas: 100 Gwei
-                </span>
+                From address
               </template>
             </form-input>
           </template>
-        </form-group-between-shift-invert>
-
-        <form-group-between-shift-invert>
-          <template v-slot:left>
-            <search-select
-              :value="{
-                id: '1',
-                label: 'Ethereum',
-                icon: '/img/icons/ethereum.svg',
+          <template v-slot:right>
+            <btn
+              class="btn-link link-invert btn-block"
+              :class="{
+                'text-primary': theme === 'gravity',
               }"
+            >
+              Change
+            </btn>
+          </template>
+        </form-group-between-shift1>
+
+        <hr class="d-sm-none" style="margin: 0 0 14px 0;" />
+
+        <simple-wrapper-slim-sm>
+          <form-group-between-shift-invert>
+            <template v-slot:left>
+              <search-select
+                v-model="walletThree"
+                :data="wallets"
+                placeholder="Select a token..."
+                modal-heading="Select a token"
+                style="margin-bottom: 14px;"
+              >
+                <template v-slot:label>
+                  Input
+                  <span class="text-secondary float-right font-weight-normal">
+                    Pool Balance: 1
+                  </span>
+                </template>
+              </search-select>
+            </template>
+            <template v-slot:right>
+              <form-input value="0" type="number" style="margin-bottom: 14px;">
+                <template v-slot:label>
+                  <span class="text-secondary float-right font-weight-normal">
+                    Gas: 100 Gwei
+                  </span>
+                </template>
+              </form-input>
+            </template>
+          </form-group-between-shift-invert>
+          <form-group-between-shift-invert>
+            <template v-slot:left>
+              <search-select
+                v-model="walletThree"
+                :data="wallets"
+                placeholder="Select a token..."
+                modal-heading="Select a token"
+              >
+                <template v-slot:label>
+                  Input
+                  <span class="text-secondary float-right font-weight-normal">
+                    Pool Balance: 1
+                  </span>
+                </template>
+              </search-select>
+            </template>
+            <template v-slot:right>
+              <form-input-without-label>
+                <form-input
+                  value="0"
+                  type="number"
+                  style="margin-bottom: 0;"
+                ></form-input>
+              </form-input-without-label>
+            </template>
+          </form-group-between-shift-invert>
+        </simple-wrapper-slim-sm>
+        <list-data class="d-none d-sm-block">
+          <list-data-item>
+            Exchange rate:
+            <template v-slot:value>0.10 TRX = 0.3 BTT</template>
+          </list-data-item>
+          <list-data-item>
+            Current pool size:
+            <template v-slot:value>0.5 TRX = 1 BTT</template>
+          </list-data-item>
+          <list-data-item>
+            Your pool share (50%):
+            <template v-slot:value>0.2 TRX = 0.2 BTT</template>
+          </list-data-item>
+        </list-data>
+        <template v-slot:footer>
+          <btn class="btn-success btn-block">
+            Add Liquidity
+          </btn>
+          <btn class="btn-link btn-block">
+            Pools
+          </btn>
+          <list-data class="d-sm-none" style="margin-top: 14px;">
+            <list-data-item>
+              Exchange rate:
+              <template v-slot:value>0.10 TRX = 0.3 BTT</template>
+            </list-data-item>
+            <list-data-item>
+              Current pool size:
+              <template v-slot:value>0.5 TRX = 1 BTT</template>
+            </list-data-item>
+            <list-data-item style="margin-bottom: 0;">
+              Your pool share (50%):
+              <template v-slot:value>0.2 TRX = 0.2 BTT</template>
+            </list-data-item>
+          </list-data>
+        </template>
+      </card-swap>
+
+      <card-swap>
+        <template v-slot:header>
+          Pools
+        </template>
+
+        <simple-wrapper-slim-sm>
+          <form-group-between-shift-invert>
+            <template v-slot:left>
+              <search-select
+                v-model="walletThree"
+                :data="wallets"
+                placeholder="Select a token..."
+                modal-heading="Select a token"
+                style="margin-bottom: 0;"
+              >
+                <template v-slot:label>
+                  Blockchain
+                </template>
+              </search-select>
+            </template>
+            <template v-slot:right>
+              <form-input-without-label style="justify-content: flex-end;">
+                <div class="dropdown">
+                  <btn
+                    id="dropdownMenuButton4"
+                    v-dropdown
+                    class="btn-link dropdown-toggle"
+                    type="button"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    nodes
+                  </btn>
+                  <div
+                    class="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton4"
+                  >
+                    <a class="dropdown-item" href="#">Explorer</a>
+                    <a class="dropdown-item" href="#">Node control panel</a>
+                    <a class="dropdown-item" href="#">FAQ</a>
+                    <a class="dropdown-item" href="#">Docs</a>
+                    <a class="dropdown-item" href="#">Log out</a>
+                  </div>
+                </div>
+              </form-input-without-label>
+            </template>
+          </form-group-between-shift-invert>
+        </simple-wrapper-slim-sm>
+
+        <br class="d-sm-none" />
+
+        <form-group-between-shift1>
+          <template v-slot:left>
+            <form-input
+              value="0x1015e2182E...6AD26FB9"
               readonly
+              icon="/img/icons/metamask.svg"
             >
               <template v-slot:label>
-                Send
+                From address
               </template>
-            </search-select>
+            </form-input>
           </template>
           <template v-slot:right>
-            <form-input-without-label>
-              <form-input value="1.1" type="number" readonly> </form-input>
-            </form-input-without-label>
+            <btn
+              class="btn-link link-invert btn-block"
+              :class="{
+                'text-primary': theme === 'gravity',
+              }"
+            >
+              Change
+            </btn>
           </template>
-        </form-group-between-shift-invert>
-      </template>
+        </form-group-between-shift1>
 
-      <br class="d-sm-none" />
-      <list-data>
-        <list-data-item>
-          Exchange rate:
-          <template v-slot:value>0.10 TRX = 0.3 BTT</template>
-        </list-data-item>
-        <list-data-item>
-          Current pool size:
-          <template v-slot:value>0.5 TRX = 1 BTT</template>
-        </list-data-item>
-        <list-data-item>
-          Your pool share (50%):
-          <template v-slot:value>0.2 TRX = 0.2 BTT</template>
-        </list-data-item>
-      </list-data>
+        <hr class="d-sm-none" style="margin: 0 0 14px 0;" />
 
-      <template v-slot:footer>
-        <div style="display: flex; justify-content: center;">
+        <simple-wrapper-slim-sm>
+          <form-group-between-shift-invert>
+            <template v-slot:left>
+              <search-select
+                v-model="walletThree"
+                :data="wallets"
+                placeholder="Select a token..."
+                modal-heading="Select a token"
+                style="margin-bottom: 14px;"
+              >
+                <template v-slot:label>
+                  Input
+                  <span class="text-secondary float-right font-weight-normal">
+                    Pool Balance: 1
+                  </span>
+                </template>
+              </search-select>
+            </template>
+            <template v-slot:right>
+              <form-input value="0" type="number" style="margin-bottom: 14px;">
+                <template v-slot:label>
+                  <span class="text-secondary float-right font-weight-normal">
+                    Gas: 100 Gwei
+                  </span>
+                </template>
+              </form-input>
+            </template>
+          </form-group-between-shift-invert>
+          <form-group-between-shift-invert>
+            <template v-slot:left>
+              <search-select
+                v-model="walletThree"
+                :data="wallets"
+                placeholder="Select a token..."
+                modal-heading="Select a token"
+              >
+                <template v-slot:label>
+                  Input
+                  <span class="text-secondary float-right font-weight-normal">
+                    Pool Balance: 1
+                  </span>
+                </template>
+              </search-select>
+            </template>
+            <template v-slot:right>
+              <form-input-without-label>
+                <form-input
+                  value="0"
+                  type="number"
+                  style="margin-bottom: 0;"
+                ></form-input>
+              </form-input-without-label>
+            </template>
+          </form-group-between-shift-invert>
+        </simple-wrapper-slim-sm>
+        <list-data class="d-none d-sm-block">
+          <list-data-item>
+            Exchange rate:
+            <template v-slot:value>0.10 TRX = 0.3 BTT</template>
+          </list-data-item>
+          <list-data-item>
+            Current pool size:
+            <template v-slot:value>0.5 TRX = 1 BTT</template>
+          </list-data-item>
+          <list-data-item>
+            Your pool share (50%):
+            <template v-slot:value>0.2 TRX = 0.2 BTT</template>
+          </list-data-item>
+        </list-data>
+        <template v-slot:footer>
+          <btn class="btn-primary btn-block">
+            Remove Liquidity
+          </btn>
+          <btn class="btn-link btn-block">
+            Pools
+          </btn>
+          <list-data class="d-sm-none" style="margin-top: 14px;">
+            <list-data-item>
+              Exchange rate:
+              <template v-slot:value>0.10 TRX = 0.3 BTT</template>
+            </list-data-item>
+            <list-data-item>
+              Current pool size:
+              <template v-slot:value>0.5 TRX = 1 BTT</template>
+            </list-data-item>
+            <list-data-item style="margin-bottom: 0;">
+              Your pool share (50%):
+              <template v-slot:value>0.2 TRX = 0.2 BTT</template>
+            </list-data-item>
+          </list-data>
+        </template>
+      </card-swap>
+
+      <card-swap-final>
+        <template v-slot:header>
+          Pools
+        </template>
+        <template v-slot:bodyTop>
           <form-group>
-            <checkbox name="terms-of-service" checked>
-              Terms of Service
-            </checkbox>
+            <transactions-icons :left="walletFirst"></transactions-icons>
           </form-group>
-        </div>
-        <btn class="btn-primary btn-block">
-          Swap
-        </btn>
-        <btn class="btn-link btn-block">
-          Back
-        </btn>
-      </template>
-    </card-swap-final>
+        </template>
+        <template v-slot:bodyBottom>
+          <form-group>
+            <template v-slot:label>
+              From address
+            </template>
+            <div class="text-truncate">
+              0xEA3ed91a668B6a56751729016EBafc214dFBeB65
+            </div>
+          </form-group>
+
+          <form-group-between-shift-invert>
+            <template v-slot:left>
+              <search-select
+                :value="{
+                  id: '1',
+                  label: 'Ethereum',
+                  icon: '/img/icons/ethereum.svg',
+                }"
+                readonly
+                style="margin-bottom: 14px;"
+              >
+                <template v-slot:label>
+                  Input
+                </template>
+              </search-select>
+            </template>
+            <template v-slot:right>
+              <form-input
+                value="1.1"
+                type="number"
+                readonly
+                style="margin-bottom: 14px;"
+              >
+                <template v-slot:label>
+                  <span class="text-secondary float-right font-weight-normal">
+                    Gas: 100 Gwei
+                  </span>
+                </template>
+              </form-input>
+            </template>
+          </form-group-between-shift-invert>
+
+          <form-group-between-shift-invert>
+            <template v-slot:left>
+              <search-select
+                :value="{
+                  id: '1',
+                  label: 'Ethereum',
+                  icon: '/img/icons/ethereum.svg',
+                }"
+                readonly
+              >
+                <template v-slot:label>
+                  Input
+                </template>
+              </search-select>
+            </template>
+            <template v-slot:right>
+              <form-input-without-label>
+                <form-input value="1.1" type="number" readonly> </form-input>
+              </form-input-without-label>
+            </template>
+          </form-group-between-shift-invert>
+        </template>
+
+        <br class="d-sm-none" />
+        <list-data>
+          <list-data-item>
+            Exchange rate:
+            <template v-slot:value>0.10 TRX = 0.3 BTT</template>
+          </list-data-item>
+          <list-data-item>
+            Current pool size:
+            <template v-slot:value>0.5 TRX = 1 BTT</template>
+          </list-data-item>
+          <list-data-item>
+            Your pool share (50%):
+            <template v-slot:value>0.2 TRX = 0.2 BTT</template>
+          </list-data-item>
+        </list-data>
+
+        <template v-slot:footer>
+          <div style="display: flex; justify-content: center;">
+            <form-group>
+              <checkbox name="terms-of-service" checked>
+                Terms of Service
+              </checkbox>
+            </form-group>
+          </div>
+          <btn class="btn-success btn-block">
+            Add Liquidity
+          </btn>
+          <btn class="btn-link btn-block">
+            Back
+          </btn>
+        </template>
+      </card-swap-final>
+
+      <card-swap-final>
+        <template v-slot:header>
+          Pools
+        </template>
+        <template v-slot:bodyTop>
+          <form-group>
+            <transactions-icons :left="walletFirst"></transactions-icons>
+          </form-group>
+        </template>
+        <template v-slot:bodyBottom>
+          <form-group>
+            <template v-slot:label>
+              From address
+            </template>
+            <div class="text-truncate">
+              0xEA3ed91a668B6a56751729016EBafc214dFBeB65
+            </div>
+          </form-group>
+
+          <form-group-between-shift-invert>
+            <template v-slot:left>
+              <search-select
+                :value="{
+                  id: '1',
+                  label: 'Ethereum',
+                  icon: '/img/icons/ethereum.svg',
+                }"
+                readonly
+                style="margin-bottom: 14px;"
+              >
+                <template v-slot:label>
+                  Send
+                </template>
+              </search-select>
+            </template>
+            <template v-slot:right>
+              <form-input
+                value="1.1"
+                type="number"
+                readonly
+                style="margin-bottom: 14px;"
+              >
+                <template v-slot:label>
+                  <span class="text-secondary float-right font-weight-normal">
+                    Gas: 100 Gwei
+                  </span>
+                </template>
+              </form-input>
+            </template>
+          </form-group-between-shift-invert>
+
+          <form-group-between-shift-invert>
+            <template v-slot:left>
+              <search-select
+                :value="{
+                  id: '1',
+                  label: 'Ethereum',
+                  icon: '/img/icons/ethereum.svg',
+                }"
+                readonly
+              >
+                <template v-slot:label>
+                  Receive
+                </template>
+              </search-select>
+            </template>
+            <template v-slot:right>
+              <form-input-without-label>
+                <form-input value="1.1" type="number" readonly> </form-input>
+              </form-input-without-label>
+            </template>
+          </form-group-between-shift-invert>
+        </template>
+
+        <br class="d-sm-none" />
+        <list-data>
+          <list-data-item>
+            Exchange rate:
+            <template v-slot:value>0.10 TRX = 0.3 BTT</template>
+          </list-data-item>
+          <list-data-item>
+            Current pool size:
+            <template v-slot:value>0.5 TRX = 1 BTT</template>
+          </list-data-item>
+          <list-data-item>
+            Your pool share (50%):
+            <template v-slot:value>0.2 TRX = 0.2 BTT</template>
+          </list-data-item>
+        </list-data>
+
+        <template v-slot:footer>
+          <div style="display: flex; justify-content: center;">
+            <form-group>
+              <checkbox name="terms-of-service" checked>
+                Terms of Service
+              </checkbox>
+            </form-group>
+          </div>
+          <btn class="btn-primary btn-block">
+            Remove Liquidity
+          </btn>
+          <btn class="btn-link btn-block">
+            Back
+          </btn>
+        </template>
+      </card-swap-final>
+    </div>
   </div>
 </template>
 
@@ -383,7 +1093,6 @@ import FormGroupBetweenShift1 from '~/components/FormGroupBetweenShift1'
 import CardSwapFinal from '~/components/CardSwapFinal'
 import FormGroup from '~/components/FormGroup'
 import Checkbox from '~/components/Checkbox'
-import FormGroupBetweenShift from '~/components/FormGroupBetweenShift'
 import TransactionsIcons from '~/components/TransactionsIcons'
 
 const defaultTab = 'swap'
@@ -404,7 +1113,6 @@ export default {
     CardSwapFinal,
     FormGroup,
     Checkbox,
-    FormGroupBetweenShift,
     TransactionsIcons,
   },
   data: () => ({
@@ -440,10 +1148,6 @@ export default {
     this.tab = this.$route.query.tab || defaultTab
   },
   mounted() {
-    this.$store.commit(
-      'app/SET_NAVBAR_TITLE',
-      'Seamless Intrachain <br />Swaps'
-    )
     this.$store.commit('app/SET_IS_HIDE_MOBILE_TITLE', false)
     const wallets = [
       {
