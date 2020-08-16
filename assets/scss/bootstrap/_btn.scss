@@ -63,6 +63,10 @@
   .icon{
     margin-bottom: ($line-height-base * $font-size-base - 1rem) * -1;
   }
+  &.dropdown-toggle{
+    font-weight: 400;
+    text-decoration: none;
+  }
 }
 
 // Future-proof disabling of clicks on `<a>` elements

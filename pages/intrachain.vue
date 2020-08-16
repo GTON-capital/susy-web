@@ -379,7 +379,7 @@
         </template>
 
         <simple-wrapper-slim-sm>
-          <form-group-between-shift-invert>
+          <form-group-between-shift-invert1>
             <template v-slot:left>
               <search-select
                 v-model="walletThree"
@@ -394,33 +394,35 @@
               </search-select>
             </template>
             <template v-slot:right>
-              <form-input-without-label style="justify-content: flex-end;">
-                <div class="dropdown">
-                  <btn
-                    id="dropdownMenuButton2"
-                    v-dropdown
-                    class="btn-link dropdown-toggle"
-                    type="button"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    nodes
-                  </btn>
-                  <div
-                    class="dropdown-menu"
-                    aria-labelledby="dropdownMenuButton2"
-                  >
-                    <a class="dropdown-item" href="#">Explorer</a>
-                    <a class="dropdown-item" href="#">Node control panel</a>
-                    <a class="dropdown-item" href="#">FAQ</a>
-                    <a class="dropdown-item" href="#">Docs</a>
-                    <a class="dropdown-item" href="#">Log out</a>
-                  </div>
+              <div class="dropdown">
+                <btn
+                  id="dropdownMenuButton2"
+                  v-dropdown
+                  class="btn-link dropdown-toggle"
+                  style="padding: 0;"
+                  type="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <span class="text-body">Add Liquidity</span>
+                  <icon class="dropdown-caret">
+                    <caret-icon></caret-icon>
+                  </icon>
+                </btn>
+                <div
+                  class="dropdown-menu dropdown-menu-center dropdown-menu-sm-right"
+                  aria-labelledby="dropdownMenuButton2"
+                >
+                  <a class="dropdown-item" href="#">Explorer</a>
+                  <a class="dropdown-item" href="#">Node control panel</a>
+                  <a class="dropdown-item" href="#">FAQ</a>
+                  <a class="dropdown-item" href="#">Docs</a>
+                  <a class="dropdown-item" href="#">Log out</a>
                 </div>
-              </form-input-without-label>
+              </div>
             </template>
-          </form-group-between-shift-invert>
+          </form-group-between-shift-invert1>
         </simple-wrapper-slim-sm>
 
         <btn
@@ -546,15 +548,19 @@
                     id="dropdownMenuButton3"
                     v-dropdown
                     class="btn-link dropdown-toggle"
+                    style="padding: 0;"
                     type="button"
                     data-toggle="dropdown"
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    nodes
+                    <span class="text-body">Add Liquidity</span>
+                    <icon class="dropdown-caret">
+                      <caret-icon></caret-icon>
+                    </icon>
                   </btn>
                   <div
-                    class="dropdown-menu"
+                    class="dropdown-menu dropdown-menu-center dropdown-menu-sm-right"
                     aria-labelledby="dropdownMenuButton3"
                   >
                     <a class="dropdown-item" href="#">Explorer</a>
@@ -717,15 +723,19 @@
                     id="dropdownMenuButton4"
                     v-dropdown
                     class="btn-link dropdown-toggle"
+                    style="padding: 0;"
                     type="button"
                     data-toggle="dropdown"
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    nodes
+                    <span class="text-body">Remove Liquidity</span>
+                    <icon class="dropdown-caret">
+                      <caret-icon></caret-icon>
+                    </icon>
                   </btn>
                   <div
-                    class="dropdown-menu"
+                    class="dropdown-menu dropdown-menu-center dropdown-menu-sm-right"
                     aria-labelledby="dropdownMenuButton4"
                   >
                     <a class="dropdown-item" href="#">Explorer</a>
@@ -1076,6 +1086,9 @@
       </card-swap-final>
     </div>
     <div>
+      <checkbox v-model="isGravityTheme" name="is-gravity-theme">
+        Gravity Theme
+      </checkbox>
       <btn class="btn-primary" @click="$modal.push('logs-intrachain')">
         Logs Intrachain
       </btn>
@@ -1127,6 +1140,7 @@ import FormInput from '~/components/FormInput'
 import CardSwap from '~/components/CardSwap'
 import SimpleWrapperSlimSm from '~/components/SimpleWrapperSlimSm'
 import FormGroupBetweenShiftInvert from '~/components/FormGroupBetweenShiftInvert'
+import FormGroupBetweenShiftInvert1 from '~/components/FormGroupBetweenShiftInvert1'
 import SearchSelect from '~/components/SearchSelect'
 import ListData from '~/components/ListData'
 import ListDataItem from '~/components/ListDataItem'
@@ -1140,16 +1154,19 @@ import ModalContent from '~/components/ModalContent'
 import TableLogIntrachain from '~/components/TableLogIntrachain'
 import TableLogPools from '~/components/TableLogPools'
 import Pagination from '~/components/Pagination'
+import Icon from '~/components/Icon'
 
 const defaultTab = 'swap'
 
 export default {
   components: {
+    Icon,
     Btn,
     FormInput,
     CardSwap,
     SimpleWrapperSlimSm,
     FormGroupBetweenShiftInvert,
+    FormGroupBetweenShiftInvert1,
     SearchSelect,
     Tabs,
     ListData,
@@ -1164,8 +1181,10 @@ export default {
     TableLogIntrachain,
     TableLogPools,
     Pagination,
+    CaretIcon: () => import('assets/icons/caret.svg?inline'),
   },
   data: () => ({
+    isGravityTheme: false,
     defaultTab,
     tab: defaultTab,
     page: 1,
@@ -1188,6 +1207,13 @@ export default {
     },
   },
   watch: {
+    isGravityTheme(isGravityTheme) {
+      // eslint-disable-next-line no-console
+      console.log(isGravityTheme, isGravityTheme ? 'gravity' : 'susy')
+      this.$store.dispatch('theme/setTheme', {
+        theme: isGravityTheme ? 'gravity' : 'susy',
+      })
+    },
     $route(to) {
       // @ts-ignore
       this.tab = to.query.tab || defaultTab
