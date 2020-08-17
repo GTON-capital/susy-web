@@ -34,11 +34,14 @@
               </icon>
             </btn>
             <div class="nav-menu">
-              <nuxt-link class="nav-menu-item link-invert" to="/"
+              <nuxt-link class="nav-menu-item link-invert" to="/intrachain"
                 >Intrachain</nuxt-link
               >
               <nuxt-link class="nav-menu-item link-invert" to="/"
                 >Swap</nuxt-link
+              >
+              <nuxt-link class="nav-menu-item link-invert" to="/ui"
+                >UI</nuxt-link
               >
             </div>
           </div>
@@ -52,11 +55,16 @@
               <i></i><i></i><i></i>
             </button>
             <div class="nav-menu nav-menu--main">
-              <nuxt-link class="nav-menu-item link-invert d-lg-none" to="/"
+              <nuxt-link
+                class="nav-menu-item link-invert d-lg-none"
+                to="/intrachain"
                 >Intrachain</nuxt-link
               >
               <nuxt-link class="nav-menu-item link-invert d-lg-none" to="/"
                 >Swap</nuxt-link
+              >
+              <nuxt-link class="nav-menu-item link-invert d-lg-none" to="/ui"
+                >UI</nuxt-link
               >
               <nuxt-link class="nav-menu-item link-invert" to="/"
                 >FAQ</nuxt-link
