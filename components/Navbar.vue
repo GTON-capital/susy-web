@@ -194,6 +194,12 @@ export default Vue.extend({
   background: -webkit-linear-gradient(#ff0097, #688487);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  @include media-breakpoint-up(xl) {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
   @include media-breakpoint-up(md) {
     font-size: calc(38px * #{$nav-header-fz-scale});
   }
