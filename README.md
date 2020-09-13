@@ -1,2 +1,2 @@
-# gravity-explorer-ui
-Gravity Explorer UI Client
+# gravity-susy-ui
+Gravity SuSy UI Client

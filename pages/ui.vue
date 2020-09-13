@@ -255,13 +255,8 @@
           </form-input>
         </template>
         <template v-slot:right>
-          <btn
-            class="btn-link link-invert btn-block"
-            :class="{
-              'text-primary': theme === 'gravity',
-            }"
-          >
-            Change address
+          <btn class="btn-link link-invert btn-block">
+            Change wallet
           </btn>
         </template>
       </form-group-between-shift1>
