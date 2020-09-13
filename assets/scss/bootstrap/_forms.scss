@@ -21,7 +21,6 @@
   // Note: This has no effect on <select>s in some browsers, due to the limited stylability of `<select>`s in CSS.
   @include border-radius($input-border-radius, 0);
 
-  @include box-shadow($input-box-shadow);
   @include transition($input-transition);
 
   // Unstyle the caret on `<select>`s in IE10+.
@@ -37,7 +36,12 @@
   }
 
   // Customize the `:focus` state to imitate native WebKit styles.
-  @include form-control-focus($ignore-warning: true);
+  &:focus {
+    color: $input-focus-color;
+    background-color: $input-focus-bg;
+    border-color: $input-focus-border-color;
+    outline: 0;
+  }
 
   // Placeholder
   &::placeholder {
@@ -55,6 +59,7 @@
   &[readonly] {
     background-color: $input-disabled-bg;
     border-color: $input-disabled-bg;
+    color: $input-disabled-color;
     box-shadow: none!important;
     // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655.
     opacity: 1;
@@ -178,9 +183,7 @@ textarea.form-control {
 
 .form-control-icon{
   position: absolute;
-  background: #FFFFFF;
-  border: 1px solid #EAF1F3;
-  box-shadow: 0 1px 25px #E2F1F6;
+  box-shadow: $base-box-shadow;
   width: 32px;
   height: 32px;
   display: flex;
@@ -214,57 +217,3 @@ textarea.form-control {
   margin-top: $form-text-margin-top;
 }
 
-
-
-// Checkboxes and radios
-//
-// Indent the labels to position radios/checkboxes as hanging controls.
-
-.form-check {
-  position: relative;
-  display: block;
-  padding-left: $form-check-input-gutter;
-}
-
-.form-check-input {
-  position: absolute;
-  margin-top: $form-check-input-margin-y;
-  margin-left: -$form-check-input-gutter;
-
-  // Use [disabled] and :disabled for workaround https://github.com/twbs/bootstrap/issues/28247
-  &[disabled] ~ .form-check-label,
-  &:disabled ~ .form-check-label {
-    color: $text-muted;
-  }
-}
-
-.form-check-label {
-  margin-bottom: 0; // Override default `<label>` bottom margin
-}
-
-.form-check-inline {
-  display: inline-flex;
-  align-items: center;
-  padding-left: 0; // Override base .form-check
-  margin-right: $form-check-inline-margin-x;
-
-  // Undo .form-check-input defaults and add some `margin-right`.
-  .form-check-input {
-    position: static;
-    margin-top: 0;
-    margin-right: $form-check-inline-input-margin-x;
-    margin-left: 0;
-  }
-}
-
-
-// Form validation
-//
-// Provide feedback to users when form field values are valid or invalid. Works
-// primarily for client-side validation via scoped `:invalid` and `:valid`
-// pseudo-classes but also includes `.is-invalid` and `.is-valid` classes for
-// server side validation.
-
-@each $state, $data in $form-validation-states {
-  @include form-validation-state($state, map-get($data, color), map-get($data, icon));
-}

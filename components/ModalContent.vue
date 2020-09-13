@@ -28,7 +28,7 @@
         </svg>
       </icon>
     </button>
-    <div class="modal-head font-cormorant">
+    <div class="modal-head headings-font-family">
       <div class="modal-container">
         <slot name="head"></slot>
       </div>
@@ -46,7 +46,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
 import Icon from '~/components/Icon.vue'
 
@@ -70,6 +70,7 @@ export default Vue.extend({
       return {
         'modal-tiny': this.size === 'tiny',
         'modal-sm': this.size === 'sm',
+        'modal-md': this.size === 'md',
         'modal-lg': this.size === 'lg',
       }
     },

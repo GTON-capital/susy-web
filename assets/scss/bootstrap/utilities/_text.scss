@@ -12,14 +12,17 @@
 .text-center { text-align: center !important; }
 
 .text-primary{
-  color: var(--primary) !important;
+  color: $primary !important;
 }
 .text-secondary{
-  color: var(--secondary) !important;
+  color: $secondary !important;
 }
 .float-right{
   float: right!important;
 }
 .font-weight-normal{
   font-weight: normal!important;
+}
+.text-body{
+  color: $body-color !important;
 }

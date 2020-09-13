@@ -24,5 +24,6 @@ export const actions = {
 // Getters
 export const getters = {
   isOpenNav: (state) => state.isOpenNav,
+  navbarTitle: (state) => state.navbarTitle,
   isHideMobileTitle: (state) => state.isHideMobileTitle,
 }

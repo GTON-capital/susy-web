@@ -57,7 +57,3 @@
   }
 }
 
-@mixin root-color-property($property, $name, $before:null, $after:null){
-  //#{$property}: $before #{map_get($root, $name)} $after; - закомментировал, так как nuxt автоматически добавляет
-  #{$property}: $before var(--#{$name}) $after;
-}

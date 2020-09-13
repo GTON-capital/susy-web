@@ -14,6 +14,7 @@ export default Vue.extend({
 @import '../assets/scss/import';
 
 .simple-wrapper-slim {
+  --input-disabled-bg: #{$input-disabled-gray-bg};
   padding: 17px 20px 16px 20px;
   background-color: $secondary-light;
   border-radius: 8px;

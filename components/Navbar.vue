@@ -4,27 +4,76 @@
     <div class="container nav-container">
       <div class="nav-content">
         <nuxt-link to="/" class="nav-logo responsive">
-          <img class="responsive-item" src="/img/logo.svg" alt="Logo" />
+          <img
+            class="responsive-item"
+            :src="`/img/${theme}/logo.svg`"
+            alt="Logo"
+          />
         </nuxt-link>
         <div
-          class="nav-header font-cormorant"
+          class="nav-header"
           :class="{ 'nav-header-mobile': isHideMobileTitle }"
         >
-          Seamless <br />Crosschain Swaps
+          <template v-if="$route.name === 'intrachain'">
+            Seamless Intrachain <br />Swaps
+          </template>
+          <template v-else> Seamless <br />Crosschain Swaps </template>
         </div>
         <div class="nav-menu-wrapper">
-          <button
-            class="nav-burger"
-            :class="{ active: isOpenNav }"
-            aria-label="Menu"
-            @click="isOpenNavToggle"
-          >
-            <i></i><i></i><i></i>
-          </button>
-          <div class="nav-menu">
-            <nuxt-link class="nav-menu-item link-invert" to="/">FAQ</nuxt-link>
-            <nuxt-link class="nav-menu-item link-invert" to="/">Docs</nuxt-link>
-            <footer-block :is-disabled-cookies-box="true"></footer-block>
+          <div class="nav-dropdown d-none d-lg-block">
+            <btn
+              v-click-outside="clickOutsideMode"
+              class="nav-dropdown-toggle"
+              type="button"
+              :class="{ active: isOpenNavMode }"
+              @click="isOpenNavMode = !isOpenNavMode"
+            >
+              <span class="text-body headings-font-family">Intrachain</span>
+              <icon class="dropdown-caret">
+                <caret-icon></caret-icon>
+              </icon>
+            </btn>
+            <div class="nav-menu">
+              <nuxt-link class="nav-menu-item link-invert" to="/intrachain"
+                >Intrachain</nuxt-link
+              >
+              <nuxt-link class="nav-menu-item link-invert" to="/"
+                >Swap</nuxt-link
+              >
+              <nuxt-link class="nav-menu-item link-invert" to="/ui"
+                >UI</nuxt-link
+              >
+            </div>
+          </div>
+          <div v-click-outside="clickOutside" class="nav-dropdown">
+            <button
+              class="nav-burger"
+              :class="{ active: isOpenNav }"
+              aria-label="Menu"
+              @click="isOpenNavToggle"
+            >
+              <i></i><i></i><i></i>
+            </button>
+            <div class="nav-menu nav-menu--main">
+              <nuxt-link
+                class="nav-menu-item link-invert d-lg-none"
+                to="/intrachain"
+                >Intrachain</nuxt-link
+              >
+              <nuxt-link class="nav-menu-item link-invert d-lg-none" to="/"
+                >Swap</nuxt-link
+              >
+              <nuxt-link class="nav-menu-item link-invert d-lg-none" to="/ui"
+                >UI</nuxt-link
+              >
+              <nuxt-link class="nav-menu-item link-invert" to="/"
+                >FAQ</nuxt-link
+              >
+              <nuxt-link class="nav-menu-item link-invert" to="/"
+                >Docs</nuxt-link
+              >
+              <footer-block :is-disabled-cookies-box="true"></footer-block>
+            </div>
           </div>
         </div>
         <hr />
@@ -33,17 +82,32 @@
   </nav>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
 import footerBlock from '~/components/Footer.vue'
+import Btn from '~/components/Btn.vue'
+import Icon from '~/components/Icon.vue'
 
 export default Vue.extend({
+  name: 'Navbar',
   components: {
     footerBlock,
+    Btn,
+    Icon,
+    CaretIcon: () => import('~/assets/icons/caret.svg?inline'),
   },
+  data: () => ({
+    isOpenNavMode: false,
+  }),
   computed: {
+    theme() {
+      return this.$store.getters['theme/theme']
+    },
     isOpenNav() {
       return this.$store.getters['app/isOpenNav']
+    },
+    navbarTitle() {
+      return this.$store.getters['app/navbarTitle']
     },
     isHideMobileTitle() {
       return this.$store.getters['app/isHideMobileTitle']
@@ -53,16 +117,26 @@ export default Vue.extend({
     isOpenNavToggle() {
       this.$store.dispatch('app/isOpenNavToggle')
     },
+    clickOutside() {
+      if (window.innerWidth >= 576 && this.isOpenNav) {
+        this.$store.dispatch('app/isOpenNavToggle')
+      }
+    },
+    clickOutsideMode() {
+      if (window.innerWidth >= 576 && this.isOpenNavMode) {
+        this.isOpenNavMode = false
+      }
+    },
   },
 })
 </script>
 
 <style lang="scss">
-$nav-logo-height: 50px;
-$nav-logo-width: 67px;
-$nav-logo-height-md: 68px;
-$nav-logo-width-md: 88px;
-$nav-panel-height: 42px;
+@mixin nav-main-opened() {
+  transform: translateY(0px);
+  pointer-events: auto;
+  opacity: 1;
+}
 
 .nav {
   width: 100%;
@@ -79,9 +153,9 @@ $nav-panel-height: 42px;
   }
 }
 .nav-container {
-  padding-top: 8px;
-  padding-bottom: 12px;
-  z-index: 3;
+  padding-top: 20px;
+  padding-bottom: 22px;
+  z-index: $zindex-modal-backdrop - 10;
   @include media-breakpoint-up(md) {
     padding-bottom: 0;
   }
@@ -95,35 +169,42 @@ $nav-panel-height: 42px;
 }
 .nav-logo {
   display: block;
-  flex: 0 0 $nav-logo-width;
-  width: $nav-logo-width;
+  flex: 0 0 $logo-width;
+  width: $logo-width;
   max-width: 100%; // Reset earlier grid tiers
   @include media-breakpoint-up(md) {
-    flex: 0 0 $nav-logo-width-md;
-    width: $nav-logo-width-md;
+    flex: 0 0 $logo-width-md;
+    width: $logo-width-md;
   }
   &:before {
     content: '';
     display: block;
-    padding-top: #{$nav-logo-height / $nav-logo-width * 100%};
+    padding-top: $logo-height;
     @include media-breakpoint-up(md) {
-      padding-top: #{$nav-logo-height-md / $nav-logo-width-md * 100%};
+      padding-top: $logo-height-md;
     }
   }
 }
 .nav-header {
   line-height: 1;
-  font-size: 32px;
+  font-size: calc(32px * #{$nav-header-fz-scale});
   height: 1.1em;
-  color: $primary;
+  color: $nav-header-color;
+  font-family: $nav-header-font-family;
   background: -webkit-linear-gradient(#ff0097, #688487);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  @include media-breakpoint-up(xl) {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
   @include media-breakpoint-up(md) {
-    font-size: 38px;
+    font-size: calc(38px * #{$nav-header-fz-scale});
   }
   @include media-breakpoint-up(lg) {
-    font-size: 44px;
+    font-size: calc(44px * #{$nav-header-fz-scale});
   }
   @include media-breakpoint-down(sm) {
     order: 5;
@@ -136,14 +217,20 @@ $nav-panel-height: 42px;
     display: none;
   }
 }
+.nav-dropdown {
+  position: relative;
+  + .nav-dropdown {
+    margin-left: 14px;
+  }
+}
 .nav-burger {
   position: relative;
   width: 82px;
   height: 42px;
-  background: #ffffff;
-  border: 1px solid #eaf1f3;
-  box-sizing: border-box;
-  box-shadow: 0 1px 25px #e2f1f6;
+  background: $body-bg;
+  border: 1px solid;
+  border-color: $nav-burger-border-color;
+  box-shadow: $base-box-shadow;
   border-radius: 8px;
   outline: none !important;
   i {
@@ -152,7 +239,7 @@ $nav-panel-height: 42px;
     height: 2px;
     left: 20px;
     top: 13px;
-    background-color: $primary;
+    background-color: $nav-burger-lines-background-color;
     border-radius: 4px;
     transform: scaleY(0.5);
     transition: 0.3s;
@@ -181,10 +268,10 @@ $nav-panel-height: 42px;
   }
 }
 .nav-menu {
-  background: #ffffff;
-  border: 1px solid #eaf1f3;
-  box-sizing: border-box;
-  box-shadow: 0px 1px 25px #e2f1f6;
+  background-color: $body-bg;
+  border: 1px solid;
+  border-color: $base-border-color;
+  box-shadow: $base-box-shadow;
   border-radius: 8px;
   width: 158px;
   padding: 11px 0;
@@ -193,7 +280,7 @@ $nav-panel-height: 42px;
   top: calc(100% + 4px);
   pointer-events: none;
   opacity: 0;
-  z-index: 20;
+  z-index: $zindex-modal-backdrop - 5;
   transition: 0.2s;
   @include media-breakpoint-up(sm) {
     transform: translateY(20px);
@@ -208,21 +295,46 @@ $nav-panel-height: 42px;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: $zindex-modal-backdrop - 20;
   height: 100vh;
-  background: rgba(50, 80, 80, 0.31);
+  background: $navbar-backdrop-background;
   backdrop-filter: blur(24.4645px);
   transition: 0.2s opacity;
   width: 0;
   pointer-events: none;
   opacity: 0;
 }
+.nav-dropdown-toggle {
+  padding-left: 14px;
+  padding-right: 10px;
+  background: $body-bg;
+  border-color: $nav-burger-border-color;
+  box-shadow: $base-box-shadow !important;
+  color: $primary;
+  &:hover:not(:disabled) {
+    background: $body-bg;
+    border-color: $nav-burger-border-color;
+    color: $primary;
+  }
+  border-radius: 8px;
+  font-size: 16px;
+  b {
+    margin-top: -1px;
+    margin-bottom: -1px;
+  }
+  &.active {
+    .dropdown-caret {
+      transform: rotate(180deg);
+    }
+    ~ .nav-menu {
+      @include nav-main-opened();
+    }
+  }
+}
 .nav {
   &.active {
-    .nav-menu {
-      transform: translateY(0px);
-      pointer-events: auto;
-      opacity: 1;
+    .nav-menu--main {
+      @include nav-main-opened();
     }
     .nav-burger {
       i {
@@ -253,7 +365,7 @@ $nav-panel-height: 42px;
   }
 }
 @include media-breakpoint-down(xs) {
-  .nav-menu {
+  .nav-menu--main {
     top: calc(100% + 14px);
     border-radius: 0;
     width: 100vw;
@@ -270,7 +382,7 @@ $nav-panel-height: 42px;
         opacity: 1;
       }
       .nav-container {
-        background: white;
+        background-color: $body-bg;
       }
     }
   }

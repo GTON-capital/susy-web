@@ -23,7 +23,9 @@
               class="btn btn-circle btn-secondary-gradient"
               @click="walletRotate"
             >
-              <icon image="/img/icons/exchange.svg"></icon>
+              <icon>
+                <exchange-icon></exchange-icon>
+              </icon>
             </button>
           </template>
           <template v-slot:right>
@@ -40,7 +42,13 @@
         </form-group-between>
       </simple-wrapper-slim-sm>
 
-      <btn class="btn-link btn-block link-invert">
+      <btn
+        class="btn-link btn-block"
+        :class="{
+          'link-invert': theme === 'susy',
+          'text-primary': theme === 'gravity',
+        }"
+      >
         Connect new wallet
       </btn>
 
@@ -84,7 +92,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
 import CardSwap from '~/components/CardSwap.vue'
 import Btn from '~/components/Btn.vue'
@@ -105,6 +113,7 @@ export default Vue.extend({
     FormGroupBetweenShift,
     SearchSelect,
     Icon,
+    exchangeIcon: () => import('assets/icons/exchange.svg?inline'),
   },
   data: () => ({
     wallets: [],
@@ -120,6 +129,11 @@ export default Vue.extend({
     },
     walletThree: undefined,
   }),
+  computed: {
+    theme() {
+      return this.$store.getters['theme/theme']
+    },
+  },
   mounted() {
     this.$store.commit('app/SET_IS_HIDE_MOBILE_TITLE', false)
     const wallets = [

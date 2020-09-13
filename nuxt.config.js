@@ -1,15 +1,27 @@
+import susy from './themes/susy'
+import gravity from './themes/gravity'
+
+const THEME = 'susy' // susy, gravity
+// Comment:cvaize
+// themes - Для возможности переключения тем прямо в приложении
+// просто добавьте имеющиеся темы и переключайте в store/theme.js
+const themes = { susy, gravity }
+
 export default {
   /*
    ** Nuxt rendering mode
    ** See https://nuxtjs.org/api/configuration-mode
    */
   mode: 'universal',
+  env: {
+    theme: THEME,
+    themes,
+  },
   /*
    ** Headers of the page
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    title: 'Susy',
     meta: [
       { charset: 'utf-8' },
       {
@@ -21,53 +33,6 @@ export default {
         name: 'description',
         content: process.env.npm_package_description || '',
       },
-      { name: 'msapplication-TileColor', content: '#000000' },
-      {
-        name: 'msapplication-config',
-        content: '/favicon/browserconfig.xml',
-      },
-      { name: 'theme-color', content: '#ffffff' },
-    ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      {
-        rel: 'stylesheet',
-        href:
-          'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap',
-      },
-      {
-        rel: 'stylesheet',
-        href:
-          'https://fonts.googleapis.com/css2?family=Cormorant:wght@400;600;700&display=swap',
-      },
-      {
-        rel: 'preconnect',
-        href: 'https://fonts.gstatic.com/',
-      },
-      {
-        rel: 'apple-touch-icon',
-        sizes: '180x180',
-        href: '/favicon/apple-touch-icon.png',
-      },
-      {
-        rel: 'icon',
-        type: 'image/png',
-        sizes: '32x32',
-        href: '/favicon/favicon-32x32.png',
-      },
-      {
-        rel: 'icon',
-        type: 'image/png',
-        sizes: '16x16',
-        href: '/favicon/favicon-16x16.png',
-      },
-      { rel: 'manifest', href: '/favicon/site.webmanifest' },
-      {
-        rel: 'mask-icon',
-        href: '/favicon/safari-pinned-tab.svg',
-        color: '#ff0097',
-      },
-      { rel: 'shortcut icon', href: '/favicon/favicon.ico' },
     ],
   },
   /*
@@ -79,6 +44,8 @@ export default {
    ** https://nuxtjs.org/guide/plugins
    */
   plugins: [
+    { src: '~plugins/dropdown', ssr: false },
+    { src: '~plugins/click-outside', ssr: false },
     { src: '~plugins/modal', ssr: false },
     { src: '~plugins/clipboard', ssr: true },
   ],
@@ -96,6 +63,7 @@ export default {
    */
   modules: [
     '@nuxtjs/style-resources',
+    '@nuxtjs/svg',
     ['nuxt-lazy-load', { directiveOnly: true }],
   ],
   /*

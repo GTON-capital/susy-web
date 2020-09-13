@@ -18,9 +18,26 @@
         class="radio-account-label"
         :aria-label="wallet.label"
       ></label>
-      <div class="radio-account-dot"></div>
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 22 22"
+        fill="transparent"
+        xmlns="http://www.w3.org/2000/svg"
+        class="radio-account-dot"
+      >
+        <circle
+          cx="11"
+          cy="11"
+          r="10"
+          fill="transparent"
+          stroke="#00DD80"
+          stroke-width="2"
+        />
+        <circle cx="11" cy="11" r="4" fill="#00DD80" />
+      </svg>
     </template>
-    <label :for="id" class="radio-account-icon">
+    <label :for="id" class="radio-account-icon wrapper-icon-circle">
       <icon :image="wallet.icon"></icon>
     </label>
     <label :for="id" class="radio-account-name">
@@ -36,7 +53,9 @@
           class="btn-circle btn-secondary-gradient radio-account-logout"
           @change="$emit('logout')"
         >
-          <icon image="/img/icons/logout.svg"></icon>
+          <icon>
+            <logout-icon></logout-icon>
+          </icon>
         </btn>
       </template>
       <template v-else>
@@ -46,14 +65,18 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
 import Icon from '~/components/Icon.vue'
 import Btn from '~/components/Btn.vue'
 
 export default Vue.extend({
   name: 'RadioAccount',
-  components: { Icon, Btn },
+  components: {
+    Icon,
+    Btn,
+    logoutIcon: () => import('assets/icons/logout.svg?inline'),
+  },
   props: {
     type: {
       type: String,
@@ -136,26 +159,10 @@ export default Vue.extend({
   top: 21px;
   width: 22px;
   height: 22px;
-  &:before,
-  &:after {
-    content: '';
-    position: absolute;
-    border-radius: 50%;
-  }
-  &:before {
-    left: 0;
-    top: 0;
-    width: 22px;
-    height: 22px;
-    border: 2px solid $success;
-  }
-  &:after {
-    left: 7px;
-    top: 7px;
-    width: 8px;
-    height: 8px;
-    background-color: $success;
-    display: none;
+  circle {
+    &:nth-child(2) {
+      display: none;
+    }
   }
 }
 .radio-account-icon {
@@ -166,9 +173,7 @@ export default Vue.extend({
   height: 32px;
   z-index: 10;
   border-radius: 50%;
-  background: #ffffff;
-  border: 1px solid #eaf1f3;
-  box-shadow: 0px 1px 25px #e2f1f6;
+  box-shadow: $base-box-shadow;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -185,8 +190,9 @@ export default Vue.extend({
 }
 .radio-account-content {
   background: #ffffff;
-  border: 2px solid #eaf1f3;
-  box-shadow: 0px 1px 25px #e2f1f6;
+  border: 2px solid;
+  border-color: $base-border-color;
+  box-shadow: $base-box-shadow;
   border-radius: 8px;
   padding: 50px 18px 15px 18px;
   width: 100%;
@@ -227,8 +233,10 @@ export default Vue.extend({
 .radio-account-input:checked {
   ~ {
     .radio-account-dot {
-      &:after {
-        display: block;
+      circle {
+        &:nth-child(2) {
+          display: block;
+        }
       }
     }
     .radio-account-content {

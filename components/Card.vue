@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-wrapper">
-      <div class="card-header font-cormorant">
+      <div class="card-header headings-font-family">
         <slot name="header"></slot>
       </div>
       <div class="card-content">
@@ -27,9 +27,10 @@ export default Vue.extend({
 
 .card {
   @include media-breakpoint-up(md) {
-    background: #ffffff;
-    border: 1px solid #eaf1f3;
-    box-shadow: 0 1px 25px #e2f1f6;
+    background-color: $card-background-color;
+    border: 1px solid;
+    border-color: $base-border-color;
+    box-shadow: $base-box-shadow;
     border-radius: 18px;
     max-width: 660px;
     margin-left: auto;
@@ -51,22 +52,23 @@ export default Vue.extend({
   }
 }
 .card-header {
-  font-weight: 600;
+  font-weight: $card-header-font-weight;
   text-align: center;
   margin-bottom: 10px;
   width: 100%;
   line-height: 1;
-  font-size: 32px;
+  font-size: $card-header-font-size;
   @include media-breakpoint-up(md) {
     margin-bottom: 28px;
-    font-size: 28px;
+    font-size: $card-header-font-size-md;
   }
 }
 .card-content {
   @include media-breakpoint-down(sm) {
-    background: #ffffff;
-    border: 1px solid #eaf1f3;
-    box-shadow: 0 1px 25px #e2f1f6;
+    background-color: $card-background-color;
+    border: 1px solid;
+    border-color: $base-border-color;
+    box-shadow: $base-box-shadow;
     border-radius: 8px;
     padding: 18px $card-content-padding-x;
   }

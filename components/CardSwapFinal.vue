@@ -43,6 +43,7 @@ export default Vue.extend({
 }
 .card-swap-final-body {
   @include media-breakpoint-up(sm) {
+    --input-disabled-bg: #{$input-disabled-gray-bg};
     padding: 24px 30px;
     background-color: $secondary-light;
     border-radius: 8px;
@@ -52,6 +53,7 @@ export default Vue.extend({
 .card-swap-final-bottom {
   background-color: $secondary-light;
   @include media-breakpoint-down(sm) {
+    --input-disabled-bg: #{$input-disabled-gray-bg};
     margin-left: -$card-content-padding-x;
     margin-right: -$card-content-padding-x;
     padding: #{$form-group-margin-bottom-sm + 2px} $card-content-padding-x 2px $card-content-padding-x;

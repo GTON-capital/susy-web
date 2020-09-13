@@ -3,12 +3,15 @@
     <btn class="btn-primary" @click="$modal.push('providers')">
       Accounts > Ethereum
     </btn>
-    <btn class="btn-primary" @click="$modal.push('accounts')">
-      Accounts
-    </btn>
     <btn class="btn-primary" @click="$modal.push('logs')">
       Logs
     </btn>
+    <btn class="btn-primary" @click="$modal.push('accounts')">
+      Accounts
+    </btn>
+    <checkbox v-model="isGravityTheme" name="is-gravity-theme">
+      Gravity Theme
+    </checkbox>
     <client-only>
       <modal name="logs">
         <modal-content :show-footer="false" size="lg">
@@ -126,7 +129,9 @@
               class="btn btn-circle btn-secondary-gradient"
               @click="walletRotate"
             >
-              <icon image="/img/icons/exchange.svg"></icon>
+              <icon>
+                <exchange-icon></exchange-icon>
+              </icon>
             </button>
           </template>
           <template v-slot:right>
@@ -144,7 +149,13 @@
         </form-group-between>
       </simple-wrapper-slim-sm>
 
-      <btn class="btn-link btn-block link-invert">
+      <btn
+        class="btn-link btn-block"
+        :class="{
+          'link-invert': theme === 'susy',
+          'text-primary': theme === 'gravity',
+        }"
+      >
         Connect new wallet
       </btn>
 
@@ -211,7 +222,9 @@
               class="btn btn-circle btn-secondary-gradient"
               @click="walletRotate"
             >
-              <icon image="/img/icons/exchange.svg"></icon>
+              <icon>
+                <exchange-icon></exchange-icon>
+              </icon>
             </button>
           </template>
           <template v-slot:right>
@@ -494,7 +507,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
 import Card from '~/components/Card.vue'
 import Btn from '~/components/Btn.vue'
@@ -541,8 +554,10 @@ export default Vue.extend({
     RadioProviderGroup,
     TableLog,
     Pagination,
+    exchangeIcon: () => import('assets/icons/exchange.svg?inline'),
   },
   data: () => ({
+    isGravityTheme: false,
     page: 1,
     wallets: [],
     walletFirst: {
@@ -557,8 +572,22 @@ export default Vue.extend({
     },
     walletThree: undefined,
   }),
+  computed: {
+    theme() {
+      return this.$store.getters['theme/theme']
+    },
+  },
+  watch: {
+    isGravityTheme(isGravityTheme) {
+      // eslint-disable-next-line no-console
+      console.log(isGravityTheme, isGravityTheme ? 'gravity' : 'susy')
+      this.$store.dispatch('theme/setTheme', {
+        theme: isGravityTheme ? 'gravity' : 'susy',
+      })
+    },
+  },
   mounted() {
-    this.$store.commit('app/SET_IS_HIDE_MOBILE_TITLE', true)
+    this.$store.commit('app/SET_IS_HIDE_MOBILE_TITLE', false)
     const wallets = [
       {
         id: '1',

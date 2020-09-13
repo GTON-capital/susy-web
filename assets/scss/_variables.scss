@@ -1,9 +1,41 @@
 $html-fz: 14px;
 $line-height-base: 1.3;
 $font-size-base: 1rem;
+$font-size-lg: $font-size-base * 1.25;
+$font-size-sm: $font-size-base * .875;
 $font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-$font-family-base: 'Montserrat', $font-family-sans-serif;
+$font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+$font-family-base: var(--font-family-base);
 $font-family-cormorant: 'Cormorant', $font-family-sans-serif;
+$font-family-montserrat: 'Montserrat', $font-family-sans-serif;
+$font-weight-lighter: lighter;
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-bold: 700;
+$font-weight-bolder: bolder;
+$font-weight-base: $font-weight-normal;
+$paragraph-margin-bottom: 1rem;
+$dt-font-weight: $font-weight-bold;
+
+
+// Options
+//
+// Quickly modify global styling by enabling or disabling optional features.
+
+$enable-rounded: true;
+$enable-shadows: false;
+$enable-transitions: true;
+$enable-prefers-reduced-motion-media-query: true;
+$enable-grid-classes: true;
+$enable-pointer-cursor-for-buttons: true;
+
+// Grid columns
+//
+// Set the number of columns and specify the width of the gutters.
+
+$grid-columns: 12;
+$grid-gutter-width: 30px;
+$grid-row-columns: 6;
 $grid-breakpoints: (
   xs: 0,
   sm: 576px,
@@ -19,43 +51,85 @@ $container-max-widths: (
   xl: 1230px
 );
 
-$green: #00DD80;
+// Characters which are escaped by the escape-svg function
+$escaped-characters: (
+    ("<", "%3c"),
+    (">", "%3e"),
+    ("#", "%23"),
+    ("(", "%28"),
+    (")", "%29"),
+);
 
-$body-bg: #FFFFFF;
-$body-color: #001A34;
-$primary: #FF0097;
-$primary-light: #FFF4FA;
-$secondary: #73979C;
-$secondary-light: #F3F9F9;
-$success: $green;
-$success-light: #F3F9F9;
+$green: var(--green);
+$white: #fff;
+$gray-100: #f8f9fa;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #6c757d;
+$gray-700: #495057;
+$gray-800: #343a40;
+$gray-900: #212529;
+$black: #000;
 
-$headings-color: $primary;
-$headings-font-family: $font-family-cormorant;
+$body-bg: var(--body-bg);
+$body-color: var(--body-color);
+$primary: var(--primary);
+$primary-light: var(--primary-light);
+$secondary: var(--secondary);
+$secondary-light: var(--secondary-light);
+$success: var(--success);
 
+$headings-color: var(--headings-color);
+$headings-font-family: var(--headings-font-family);
+$headings-margin-bottom: 24px;
+$headings-font-weight: 400;
+$headings-line-height: 1.2;
+
+
+$h1-font-size: $font-size-base * 2.5;
+$h2-font-size: $font-size-base * 2;
+$h3-font-size: $font-size-base * 1.75;
+$h4-font-size: $font-size-base * 1.5;
+$h5-font-size: $font-size-base * 1.25;
+$h6-font-size: $font-size-base;
+
+$border-radius: .25rem;
+
+$border-width: 1px;
+$input-btn-border-radius: 8px;
+$input-btn-padding-y: .375rem;
+$input-btn-padding-x: .75rem;
+$input-btn-font-family: null;
+$input-btn-font-size: $font-size-base;
+$input-btn-line-height: $line-height-base;
+$input-btn-border-width: $border-width;
 
 $btn-font-family: null;
-$btn-font-weight: 700;
+$btn-font-weight: var(--btn-font-weight);
 $btn-height: 42px;
 $btn-font-size: $html-fz;
 $btn-padding-x: 26px;
 $btn-line-height: $line-height-base;
 $btn-border-width: 1px;
-$btn-border-radius: 8px;
+$btn-border-radius: $input-btn-border-radius;
 $btn-white-space: nowrap;
 $btn-transition: .2s;
-$btn-disabled-opacity: .2;
-$btn-color: $body-color;
-$btn-background-color: $body-bg;
-$btn-background-color-hover: $primary-light;
+$btn-disabled-opacity: var(--btn-disabled-opacity);
+$btn-color: var(--btn-color);
+$btn-background-color: var(--btn-background-color);
+$btn-background-color-hover: var(--btn-background-color-hover);
+$btn-block-spacing-y: .5rem;
+$btn-link-color: var(--btn-link-color);
 
 $link-color: inherit;
 $link-hover-color: inherit;
 $link-decoration: underline;
 $link-hover-decoration: none;
 
-$nav-logo-height: 51px;
-$nav-logo-width: 160.5px;
+$logo-height: 51px;
+$logo-width: 160.5px;
 
 $table-cell-padding: 13px;
 $table-color: $body-color;
@@ -65,35 +139,78 @@ $table-max-height: 600px;
 $table-border-width: 1px;
 $table-border-color: #323652;
 $table-border-radius: 6px;
-$table-caption-color: #C1C2C9;
+$table-caption-color: #c1c2c9;
 $table-cell-padding: 10px;
 $table-cell-padding: 10px;
 
-$text-muted: #878EA1;
+$text-muted: #878ea1;
+
 
 $input-height: 42px;
-$input-bg: white;
-$input-color: $body-color;
-$input-border-color: #EEBCD8;
-$input-disabled-bg: #E7F2F1;
-$input-border-radius: 8px;
+$input-bg: var(--input-bg);
+$input-color: var(--input-color);
+$input-border-color: var(--input-border-color);
+$input-disabled-bg: var(--input-disabled-bg);
+$input-disabled-gray-bg: var(--input-disabled-gray-bg);
+$input-disabled-color: var(--input-disabled-color);
+$input-border-radius: $input-btn-border-radius;
 $input-font-size: 13px;
+$input-padding-x: 12px / $html-fz * 1rem;
+$input-padding-y: $input-btn-padding-y;
+$input-font-family: $input-btn-font-family;
+$input-font-weight: $font-weight-base;
+$input-line-height: $input-btn-line-height;
+$input-border-width: $input-btn-border-width;
+$input-transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+
+$input-box-shadow: inset 0 1px 1px rgba($black, .075);
+$input-focus-bg: $input-bg;
+$input-focus-border-color: var(--primary);
+$input-focus-color: $input-color;
+
+$input-placeholder-color: $gray-600;
+$input-plaintext-color: $body-color;
+
 $label-margin-bottom: 11px;
 $form-group-margin-bottom: 24px;
 $form-group-margin-bottom-sm: 14px;
 $form-text-margin-top: 6px;
-$input-padding-x: 12px / $html-fz * 1rem;
 
-$modal-content-bg: white;
+
+$zindex-dropdown: 1000;
+$zindex-sticky: 1020;
+$zindex-fixed: 1030;
+$zindex-modal-backdrop: 1040;
+$zindex-modal: 1050;
+$zindex-popover: 1060;
+$zindex-tooltip: 1070;
+
+// Tooltips
+
+$tooltip-font-size: $font-size-sm;
+$tooltip-max-width: 200px;
+$tooltip-color: $white;
+$tooltip-bg: $black;
+$tooltip-border-radius: $border-radius;
+$tooltip-opacity: .9;
+$tooltip-padding-y: .25rem;
+$tooltip-padding-x: .5rem;
+$tooltip-margin: 0;
+
+$tooltip-arrow-width: .8rem;
+$tooltip-arrow-height: .4rem;
+$tooltip-arrow-color: $tooltip-bg;
+
+$modal-content-bg: var(--card-background-color);
 $modal-padding-x: 10px;
+$modal-backdrop-background: var(--modal-backdrop-background);
+$modal-close-color: var(--modal-close-color);
 
-$red: #FF1C1C;
+$red: #ff1c1c;
 
-$headings-margin-bottom: 24px;
-$headings-font-weight: 400;
 $h3-font-size: 17px;
 
-$vs-state-active-bg: #474C68;
+$vs-state-active-bg: #474c68;
 $vs-dropdown-vertical-offset: 11px;
 $vs-dropdown-horizontal-offset: 16px;
 $vs-border-radius: 6px;
@@ -101,17 +218,160 @@ $vs-border-width: 0;
 
 $card-content-padding-x: 16px;
 
+$base-box-shadow: var(--base-box-shadow);
+$base-border-color: var(--base-border-color);
+
+$nav-burger-lines-background-color: var(--nav-burger-lines-background-color);
+$nav-burger-border-color: var(--nav-burger-border-color);
+
+$nav-header-color: var(--nav-header-color);
+$nav-header-font-family: var(--nav-header-font-family);
+$nav-header-fz-scale: var(--nav-header-fz-scale);
+
+$card-background-color: var(--card-background-color);
+$hr-border-color: var(--hr-border-color);
+
+$logo-height: var(--logo-height);
+$logo-width: var(--logo-width);
+$logo-height-md: var(--logo-height-md);
+$logo-width-md: var(--logo-width-md);
+
+$navbar-backdrop-background: var(--navbar-backdrop-background);
+$search-select-chevron-color: var(--search-select-chevron-color);
+$wrapper-icon-circle-border-background: var(--wrapper-icon-circle-border-background);
+$wrapper-box-rounded-border-background: var(--wrapper-box-rounded-border-background);
+$wrapper-box-rounded-background: var(--wrapper-box-rounded-background);
+
+$checkbox-label-color: var(--checkbox-label-color);
+$checkbox-label-border-color: var(--checkbox-label-border-color);
+$checkbox-label-image: var(--checkbox-label-image);
+
+$transactions-icons-arrow-color: var(--transactions-icons-arrow-color);
+
+$search-input-submit-color: var(--search-input-submit-color);
+$search-select-list-item-hover-background: var(--search-select-list-item-hover-background);
+
+$card-header-font-weight: var(--card-header-font-weight);
+$card-header-font-size: var(--card-header-font-size);
+$card-header-font-size-md: var(--card-header-font-size-md);
+
+$table-log-color: var(--table-log-color);
+$table-log-background-color: var(--table-log-background-color);
+$table-log-even-background-color: var(--table-log-even-background-color);
+$table-log-border-color: var(--table-log-border-color);
+$table-log-content-color: var(--table-log-content-color);
+
+$pagination-item-color: var(--pagination-item-color);
+$pagination-item-arrow-color: var(--pagination-item-arrow-color);
+$pagination-item-arrow-hover-color: var(--pagination-item-arrow-hover-color);
+
+
+$caret-width: .3em;
+$caret-vertical-align: $caret-width * .85;
+$caret-spacing: $caret-width * .85;
+$enable-deprecation-messages: false;
+$enable-gradients: false;
+$enable-caret: true;
+$spacer: 1rem;
+$component-active-color: $white;
+$component-active-bg: $primary;
+$nav-divider-margin-y: $spacer / 2;
+
+// Dropdowns
+//
+// Dropdown menu container and contents.
+
+$dropdown-min-width: 10rem;
+$dropdown-padding-y: 11px;
+$dropdown-spacer: .125rem;
+$dropdown-font-size: $font-size-base;
+$dropdown-color: $body-color;
+$dropdown-bg: $body-bg;
+$dropdown-border-color: $base-border-color;
+$dropdown-border-radius: 8px;
+$dropdown-border-width: $border-width;
+$dropdown-inner-border-radius: subtract($dropdown-border-radius, $dropdown-border-width);
+$dropdown-divider-bg: $gray-200;
+$dropdown-divider-margin-y: $nav-divider-margin-y;
+$dropdown-box-shadow: $base-box-shadow;
+
+$dropdown-link-color: inherit;
+$dropdown-link-hover-color: inherit;
+$dropdown-link-hover-bg: $dropdown-bg;
+
+$dropdown-link-active-color: $component-active-color;
+$dropdown-link-active-bg: $component-active-bg;
+
+$dropdown-link-disabled-color: $gray-600;
+
+$dropdown-item-padding-y: 7px;
+$dropdown-item-padding-x: 27px;
+
+$dropdown-header-color: $gray-600;
+$dropdown-header-padding: $dropdown-padding-y $dropdown-item-padding-x;
+
+
+// Root
+
 $root: (
-  body-bg: $body-bg,
-  body-color: $body-color,
-  primary: $primary,
-  primary-light: $primary-light,
-  secondary: $secondary,
-  secondary-light: $secondary-light,
-  success: $success,
-  success-light: $success-light,
-  headings-color: $headings-color,
-  btn-color: $btn-color,
-  btn-background-color: $btn-background-color,
-  btn-background-color-hover: $btn-background-color-hover,
+  green: #00dd80,
+  body-bg: #ffffff,
+  body-color: #001a34,
+  primary: #ff0097,
+  primary-light: #fff4fa,
+  secondary: #73979c,
+  secondary-light: #f3f9f9,
+  success: var(--green),
+  headings-color: var(--primary),
+  base-box-shadow: 0 1px 25px #e2f1f6,
+  base-border-color: #eaf1f3,
+  font-family-base: $font-family-montserrat,
+  btn-font-weight: 700,
+  btn-disabled-opacity: .2,
+  btn-color: var(--body-color),
+  btn-background-color: var(--body-bg),
+  btn-background-color-hover: var(--primary-light),
+  nav-burger-lines-background-color: var(--primary),
+  nav-burger-border-color: var(--base-border-color),
+  nav-header-color: var(--primary),
+  headings-font-family: $font-family-cormorant,
+  nav-header-font-family: var(--headings-font-family),
+  nav-header-fz-scale: 1,
+  card-background-color: var(--body-bg),
+  hr-border-color: #e4edef,
+  logo-height: 50px,
+  logo-width: 67px,
+  logo-height-md: 68px,
+  logo-width-md: 88px,
+  navbar-backdrop-background: rgba(50, 80, 80, 0.31),
+  input-bg: white,
+  input-color: var(--body-color),
+  input-border-color: #eebcd8,
+  input-disabled-bg: $secondary-light,
+  input-disabled-gray-bg: #e7f2f1,
+  input-disabled-color: var(--input-color),
+  search-select-chevron-color: $primary,
+  wrapper-icon-circle-border-background: $base-border-color,
+  wrapper-box-rounded-border-background: $base-border-color,
+  wrapper-box-rounded-background: white,
+  btn-link-color: $primary,
+  checkbox-label-color: $secondary,
+  checkbox-label-border-color: $primary,
+  checkbox-label-image: url('data:image/svg+xml,%3csvg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg"%3e%3cpath d="M1.30664 4L5 8.56055L10.6777 0.654297" stroke="%23FF0097"/%3e%3c/svg%3e'),
+  transactions-icons-arrow-color: $secondary,
+  modal-backdrop-background: rgba(50, 80, 80, 0.31),
+  modal-close-color: $secondary,
+  search-select-list-item-hover-background: $primary-light,
+  search-input-submit-color: $primary,
+  card-header-font-weight: 600,
+  card-header-font-size: 32px,
+  card-header-font-size-md: 28px,
+  table-log-background-color: white,
+  table-log-even-background-color: $secondary-light,
+  table-log-border-color: $hr-border-color,
+  table-log-content-color: $secondary,
+  table-log-color: inherit,
+  pagination-item-color: $secondary,
+  pagination-item-arrow-color: $primary,
+  pagination-item-arrow-hover-color: $secondary,
 );

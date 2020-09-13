@@ -1,16 +1,18 @@
 <template>
   <div class="transactions-icons">
     <div class="transactions-icons-left">
-      <div class="transactions-icons-icon">
+      <div class="transactions-icons-icon wrapper-icon-circle">
         <icon :image="left.icon"></icon>
       </div>
       <div>{{ left.label }}</div>
     </div>
-    <div class="transactions-icons-arrow">
-      <icon image="/img/icons/vs-secondary.svg"></icon>
+    <div v-if="right" class="transactions-icons-arrow">
+      <icon>
+        <vs-icon></vs-icon>
+      </icon>
     </div>
-    <div class="transactions-icons-right">
-      <div class="transactions-icons-icon">
+    <div v-if="right" class="transactions-icons-right">
+      <div class="transactions-icons-icon wrapper-icon-circle">
         <icon :image="right.icon"></icon>
       </div>
       <div>{{ right.label }}</div>
@@ -18,13 +20,16 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
 import Icon from '~/components/Icon.vue'
 
 export default Vue.extend({
   name: 'TransactionsIcons',
-  components: { Icon },
+  components: {
+    Icon,
+    vsIcon: () => import('assets/icons/vs.svg?inline'),
+  },
   props: {
     left: {
       type: Object,
@@ -32,7 +37,8 @@ export default Vue.extend({
     },
     right: {
       type: Object,
-      required: true,
+      default: null,
+      required: false,
     },
   },
 })
@@ -65,6 +71,7 @@ export default Vue.extend({
   flex-direction: column;
 }
 .transactions-icons-arrow {
+  color: $transactions-icons-arrow-color;
   width: 100%;
   flex: 0 0 50px;
   max-width: 50px;
@@ -77,9 +84,7 @@ export default Vue.extend({
   }
 }
 .transactions-icons-icon {
-  background: #ffffff;
-  border: 1px solid #eaf1f3;
-  box-shadow: 0 1px 25px #e2f1f6;
+  box-shadow: $base-box-shadow;
   width: 32px;
   height: 32px;
   display: flex;
