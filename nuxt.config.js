@@ -1,7 +1,7 @@
 import susy from './themes/susy'
 import gravity from './themes/gravity'
 
-const THEME = 'susy' // susy, gravity
+const THEME = 'gravity' // susy, gravity
 // Comment:cvaize
 // themes - Для возможности переключения тем прямо в приложении
 // просто добавьте имеющиеся темы и переключайте в store/theme.js
