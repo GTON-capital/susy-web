@@ -56,32 +56,8 @@ import Btn from '~/components/Btn.vue'
 
 import Keeper from '~/services/wallets/Keeper'
 import Web3WalletConnector from '~/services/wallets/Web3'
+import { Wallets, WalletState, ExtensionWallet, WalletProvider } from '~/store/wallet/types'
 
-interface ExtensionWallet {
-  wallet: {
-    id: string
-    label: string
-    icon: string
-  }
-  provider: string
-  isConnected: boolean
-  label: string
-  value?: string
-  checked?: boolean
-}
-
-type Wallets = {
-  [key: string]: ExtensionWallet;
-  metamask: ExtensionWallet;
-  keeper: ExtensionWallet;
-}
-
-enum WalletProvider {
-  Metamask = 'metamask',
-  WavesKeeper = 'keeper',
-}
-
-// export default Vue.extend({
 export default {
   name: 'ConnectWalletModal',
   props: ['wavesKeeper'],
@@ -93,58 +69,26 @@ export default {
     RadioProviderGroup,
   },
   data: function () {
-    return {
-      wallets: {
-        [WalletProvider.Metamask]: {
-          wallet: {
-            id: '1-0',
-            label: 'Ethereum',
-            icon: '/img/icons/metamask.svg',
-          },
-          provider: WalletProvider.Metamask,
-          isConnected: false,
-          label: 'Connect with Metamask',
-        },
-        [WalletProvider.WavesKeeper]: {
-          wallet: {
-            id: '2-0',
-            label: 'Waves',
-            icon: '/img/icons/waves.svg',
-          },
-          provider: WalletProvider.WavesKeeper,
-          isConnected: false,
-          label: 'Connect with Keeper',
-        },
-      } as Wallets,
-    }
+    return {}
+  },
+  computed: {
+    wallets: function (): WalletState {
+      console.log({ state: this.$store })
+      // @ts-ignore
+      return this.$store.state.wallet
+    },
   },
   methods: {
     connectKeeper: function () {},
     handleChange: function (wallet: ExtensionWallet) {
-      this.updateWalletData(wallet.provider as WalletProvider, { checked: true })
-    },
-    updateWalletData: function (
-      provider: WalletProvider,
-      body: Partial<ExtensionWallet>
-    ) {
-      console.log({ provider, body })
-      const { wallets } = this
-
-      for (const wallet of Object.keys(wallets)) {
-        wallets[wallet].checked = false
-      }
-
-      this.wallets = {
-        ...wallets,
-        [provider]: {
-          ...this.wallets[provider],
-          ...body,
-        },
-      }
+      this.$store.commit('wallet/updateWalletData', {
+        provider: wallet.provider as WalletProvider,
+        body: { checked: true },
+      })
     },
     handleLogout: function (wallet: ExtensionWallet) {
       const existing = Object.keys(this.wallets)
-      let walletToEnable: WalletProvider | undefined;
+      let walletToEnable: WalletProvider | undefined
 
       for (const existingWallet of existing) {
         if (wallet.provider !== existingWallet) {
@@ -153,13 +97,19 @@ export default {
         }
       }
 
-      this.updateWalletData(wallet.provider as WalletProvider, { checked: false, isConnected: false, value: "" })
+      this.$store.commit('wallet/updateWalletData', {
+        provider: wallet.provider as WalletProvider,
+        body: { checked: false, isConnected: false, value: '' },
+      })
 
       if (!walletToEnable) {
         return
       }
 
-      this.updateWalletData(walletToEnable, { checked: true })
+      this.$store.commit('wallet/updateWalletData', {
+        provider: walletToEnable,
+        body: { checked: true },
+      })
     },
     handleConnect: async function (wallet: ExtensionWallet) {
       // console.log({ data }, 'connect occured')
@@ -172,24 +122,29 @@ export default {
           return
         }
 
-        this.updateWalletData(wallet.provider, {
-          isConnected: true,
-          value: window.web3.eth.accounts.givenProvider.selectedAddress,
-          checked: true,
+        this.$store.commit('wallet/updateWalletData', {
+          provider: wallet.provider,
+          body: {
+            isConnected: true,
+            value: window.web3.eth.accounts.givenProvider.selectedAddress,
+            checked: true,
+          },
         })
 
         return
       }
 
       if (wallet.provider === WalletProvider.WavesKeeper) {
-        // const keeper = (this.wavesKeeper as Keeper)
         const keeper = new Keeper()
         const address = await keeper.getAddress()
 
-        this.updateWalletData(wallet.provider, {
-          isConnected: true,
-          value: address as string,
-          checked: true,
+        this.$store.commit('wallet/updateWalletData', {
+          provider: wallet.provider,
+          body: {
+            isConnected: true,
+            value: address as string,
+            checked: true,
+          },
         })
       }
     },
