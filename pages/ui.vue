@@ -13,103 +13,14 @@
       Gravity Theme
     </checkbox>
     <client-only>
-      <modal name="logs">
-        <modal-content :show-footer="false" size="lg">
-          <template v-slot:head>
-            Logs
-          </template>
-          <template v-slot:body>
-            <table-log></table-log>
-            <pagination v-model="page" count-pages="10"></pagination>
-          </template>
-        </modal-content>
-      </modal>
-      <modal name="accounts">
-        <modal-content :show-footer="false">
-          <template v-slot:head>
-            Accounts
-          </template>
-          <template v-slot:body>
-            <div
-              class="text-center"
-              style="margin-top: -28px; margin-bottom: 20px;"
-            >
-              <btn class="btn-link text-secondary font-weight-normal">
-                Logout of all wallets
-              </btn>
-            </div>
-            <radio-provider-group style="margin-bottom: 24px;">
-              <radio-account
-                name="account"
-                :wallet="walletFirst"
-                label="Connected with Metamask"
-                value="0x1015e2182E...6AD26FB9"
-              ></radio-account>
-              <radio-account
-                name="account"
-                :wallet="walletSecond"
-                label="Connected with Metamask"
-                value="0x1015e2182E...6AD26FB9"
-              ></radio-account>
-              <radio-account
-                name="account"
-                :wallet="walletFirst"
-              ></radio-account>
-            </radio-provider-group>
-            <div class="text-center">
-              <btn
-                class="btn-link"
-                style="padding-left: 22px; padding-right: 22px;"
-              >
-                Back
-              </btn>
-              <btn
-                class="btn-link text-secondary"
-                style="padding-left: 22px; padding-right: 22px;"
-              >
-                Logs
-              </btn>
-            </div>
-          </template>
-        </modal-content>
-      </modal>
-      <modal name="providers">
-        <modal-content :show-footer="false">
-          <template v-slot:head>
-            <span class="text-secondary">Accounts ></span> Ethereum
-          </template>
-          <template v-slot:body>
-            <radio-provider-group style="margin-bottom: 24px;">
-              <radio-provider
-                name="provider"
-                :data="walletFirst"
-              ></radio-provider>
-              <radio-provider
-                name="provider"
-                :data="walletSecond"
-              ></radio-provider>
-              <radio-provider
-                name="provider"
-                :data="walletFirst"
-              ></radio-provider>
-            </radio-provider-group>
-            <div class="text-center">
-              <btn class="btn-link btn-block text-secondary">
-                Learn more about Ethereum wallets
-              </btn>
-              <btn class="btn-link btn-block" style="margin-top: 0;">
-                Back
-              </btn>
-            </div>
-          </template>
-        </modal-content>
-      </modal>
+      <ActionLogsModal :page="page"/>
+      <ConnectWalletModal :walletSecond="walletSecond" :walletFirst="walletFirst" />
+      <WalletProvider  :walletSecond="walletSecond" :walletFirst="walletFirst" />
     </client-only>
     <card-swap>
       <template v-slot:header>
         Swap
       </template>
-
       <simple-wrapper-slim-sm>
         <form-group-between>
           <template v-slot:left>
@@ -468,7 +379,7 @@
       </template>
     </card-swap-final>
 
-    <card>
+    <WithdrawCard>
       <template v-slot:header>
         Withdraw
       </template>
@@ -503,18 +414,18 @@
           Back
         </btn>
       </template>
-    </card>
+    </WithdrawCard>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import Card from '~/components/Card.vue'
+import WithdrawCard from '~/components/swap/WithdrawCard.vue'
 import Btn from '~/components/Btn.vue'
 import FormInput from '~/components/FormInput.vue'
 import SimpleWrapper from '~/components/SimpleWrapper.vue'
-import CardSwap from '~/components/CardSwap.vue'
-import CardSwapFinal from '~/components/CardSwapFinal.vue'
+import CardSwap from '~/components/swap/CardSwap'
+import CardSwapFinal from '~/components/swap/CardSwapFinal.vue'
 import SimpleWrapperSlimSm from '~/components/SimpleWrapperSlimSm.vue'
 import FormGroup from '~/components/FormGroup.vue'
 import FormGroupBetween from '~/components/FormGroupBetween.vue'
@@ -524,16 +435,20 @@ import SearchSelect from '~/components/SearchSelect.vue'
 import Checkbox from '~/components/Checkbox.vue'
 import Icon from '~/components/Icon.vue'
 import TransactionsIcons from '~/components/TransactionsIcons.vue'
-import ModalContent from '~/components/ModalContent.vue'
+// import ModalContent from '~/components/ModalContent.vue'
 import RadioProvider from '~/components/RadioProvider.vue'
-import RadioAccount from '~/components/RadioAccount.vue'
+// import RadioAccount from '~/components/RadioAccount.vue'
 import RadioProviderGroup from '~/components/RadioProviderGroup.vue'
 import TableLog from '~/components/TableLog.vue'
 import Pagination from '~/components/Pagination.vue'
+import ConnectWalletModal from '~/components/modal/ConnectWallet'
+import WalletProvider from '~/components/modal/WalletProvider'
+import ActionLogsModal from '~/components/modal/ActionLogsModal'
+
 
 export default Vue.extend({
   components: {
-    Card,
+    WithdrawCard,
     Btn,
     FormInput,
     SimpleWrapper,
@@ -548,12 +463,13 @@ export default Vue.extend({
     Icon,
     TransactionsIcons,
     Checkbox,
-    ModalContent,
     RadioProvider,
-    RadioAccount,
     RadioProviderGroup,
     TableLog,
     Pagination,
+    ConnectWalletModal,
+    WalletProvider,
+    ActionLogsModal,
     exchangeIcon: () => import('assets/icons/exchange.svg?inline'),
   },
   data: () => ({

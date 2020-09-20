@@ -18,12 +18,12 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'Card',
+  name: 'WithdrawCard',
 })
 </script>
 
 <style lang="scss">
-@import '../assets/scss/import';
+@import '../../assets/scss/import';
 
 .card {
   @include media-breakpoint-up(md) {

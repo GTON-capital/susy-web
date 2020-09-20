@@ -12,7 +12,7 @@
 
 <script>
 import Vue from 'vue'
-import Card from '~/components/Card.vue'
+import Card from './WithdrawCard'
 
 export default Vue.extend({
   name: 'CardSwap',
@@ -21,7 +21,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import '../assets/scss/import';
+@import '../../assets/scss/import';
 
 .card-swap {
   .card-header {
