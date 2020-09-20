@@ -4,7 +4,6 @@
       <template v-slot:header>
         Swap
       </template>
-
       <simple-wrapper-slim-sm>
         <form-group-between>
           <template v-slot:left>
@@ -48,6 +47,7 @@
           'link-invert': theme === 'susy',
           'text-primary': theme === 'gravity',
         }"
+        @click="onWalletConnect"
       >
         Connect new wallet
       </btn>
@@ -94,7 +94,7 @@
 
 <script>
 import Vue from 'vue'
-import CardSwap from '~/components/CardSwap.vue'
+import CardSwap from '~/components/swap/CardSwap'
 import Btn from '~/components/Btn.vue'
 import FormInput from '~/components/FormInput.vue'
 import SimpleWrapperSlimSm from '~/components/SimpleWrapperSlimSm.vue'
@@ -159,21 +159,16 @@ export default Vue.extend({
       },
     ]
     this.wallets = wallets
-    // for (let i = 0; i < 20; i++) {
-    //   wallets.forEach((wallet) => {
-    //     const newWallet = { ...wallet }
-    //     newWallet.id = newWallet.id + '-' + String(i)
-    //     // @ts-ignore
-    //     this.wallets.push(newWallet)
-    //   })
-    // }
   },
   methods: {
-    walletRotate() {
+    walletRotate: function () {
       const walletFirst = { ...this.walletFirst }
       this.walletFirst = { ...this.walletSecond }
       this.walletSecond = walletFirst
     },
+    onWalletConnect: function() {
+      
+    }
   },
 })
 </script>
