@@ -6,8 +6,8 @@
     <template v-slot:bodyTop>
       <form-group>
         <transactions-icons
-          :left="walletA"
-          :right="walletB"
+          :left="chainA"
+          :right="chainB"
         ></transactions-icons>
       </form-group>
     </template>
@@ -71,10 +71,10 @@
           </checkbox>
         </form-group>
       </div>
-      <btn class="btn-primary btn-block">
+      <btn class="btn-primary btn-block" @click="$emit('swap')">
         Swap
       </btn>
-      <btn class="btn-link btn-block">
+      <btn class="btn-link btn-block" @click="$emit('back')">
         Back
       </btn>
     </template>
@@ -96,7 +96,7 @@ import FormGroupBetweenShift1 from '~/components/FormGroupBetweenShift1.vue'
 
 export default {
   name: 'CardSwapFinalized',
-  props: ['heading', 'wallets', 'walletA', 'walletB'],
+  props: ['heading', 'tokens', 'chainA', 'chainB'],
   components: {
     CardSwapFinal,
     FormGroup,

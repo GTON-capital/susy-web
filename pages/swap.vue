@@ -1,12 +1,27 @@
 <template>
   <div class="container">
-    <CardSwapNoWallet
-      :wallets="wallets"
-      :walletA="walletFirst"
-      :walletB="walletSecond"
-      :walletC="walletThree"
+    <CardSwapNoWallet v-if="swapState === 0"
+      :chainA="chainA"
+      :chainB="chainB"
+      :chains="chains"
       :tokens="tokens"
       :onWalletConnect="onWalletConnect"
+    />
+    <CardSwapWalletConnected v-if="swapState === 1"
+      :chainA="chainA"
+      :chainB="chainB"
+      :chains="chains"
+      :tokens="tokens"
+      @next="checkSwapDetails"
+    />
+    <CardSwapFinalized v-if="swapState === 2"
+      :chainA="chainA"
+      :chainB="chainB"
+      :chains="chains"
+      :tokens="tokens"
+      :onWalletConnect="onWalletConnect"
+      @swap="handleSwapConfirm"
+      @back="handleSwapDeny"
     />
     <client-only>
       <ActionLogsModal :page="page" />
@@ -45,18 +60,22 @@ export default Vue.extend({
     WalletProvider,
     ConnectWalletModal,
     CardSwapNoWallet,
-    // CardSwap,
-    // Btn,
-    // FormInput,
-    // SimpleWrapperSlimSm,
-    // FormGroupBetween,
-    // FormGroupBetweenShift,
-    // SearchSelect,
-    // Icon,
-    // exchangeIcon: () => import('assets/icons/exchange.svg?inline'),
+    CardSwapFinalized
   },
   data: () => ({
     tokens: [
+      {
+        id: '1',
+        label: 'Ethereum',
+        icon: '/img/icons/ethereum.svg',
+      },
+      {
+        id: '2',
+        label: 'RBBT',
+        icon: '/img/icons/waves.svg',
+      },
+    ],
+    chains: [
       {
         id: '1',
         label: 'Ethereum',
@@ -78,6 +97,16 @@ export default Vue.extend({
         icon: '/img/icons/tron.svg',
       },
     ],
+    chainA: {
+      id: '1',
+      label: 'Ethereum',
+      icon: '/img/icons/ethereum.svg',
+    },
+    chainB: {
+      id: '2',
+      label: 'Waves',
+      icon: '/img/icons/waves.svg',
+    },
     swapState: 0,
   }),
   computed: {
@@ -87,29 +116,15 @@ export default Vue.extend({
   },
   mounted() {
     this.$store.commit('app/SET_IS_HIDE_MOBILE_TITLE', false)
-    const wallets = [
-      {
-        id: '1',
-        label: 'Ethereum',
-        icon: '/img/icons/ethereum.svg',
-      },
-      {
-        id: '2',
-        label: 'Waves',
-        icon: '/img/icons/waves.svg',
-      },
-      {
-        id: '3',
-        label: 'NEO',
-        icon: '/img/icons/neo.svg',
-      },
-      {
-        id: '4',
-        label: 'Tron',
-        icon: '/img/icons/tron.svg',
-      },
-    ]
-    this.wallets = wallets
+
+
+    this.$store.subscribe((mutation, state) => {
+      const currentWallet = this.$store.getters['wallet/currentWallet']
+
+      if (!currentWallet) { return }
+
+      this.handleWalletConnected()
+    });
   },
   methods: {
     walletRotate: function () {
@@ -120,6 +135,18 @@ export default Vue.extend({
     onWalletConnect: function () {
       this.$modal.push('accounts')
     },
+    checkSwapDetails: function() {
+      this.swapState = 2
+    },
+    handleWalletConnected: function() {
+      this.swapState = 1
+    },
+    handleSwapConfirm: function() {
+
+    },
+    handleSwapDeny: function() {
+      this.swapState = 1
+    }
   },
 })
 </script>
