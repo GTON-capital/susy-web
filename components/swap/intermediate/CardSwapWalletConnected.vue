@@ -10,8 +10,8 @@
           <search-select
             v-model="walletA"
             :data="wallets"
-            placeholder="Select a token..."
-            modal-heading="Select a token"
+            :placeholder="sourceChainLabel"
+            :modal-heading="sourceChainLabel"
           >
             <template v-slot:label>
               Origin
@@ -32,8 +32,8 @@
           <search-select
             v-model="walletB"
             :data="wallets"
-            placeholder="Select a token..."
-            modal-heading="Select a token"
+            :placeholder="destinationChainLabel"
+            :modal-heading="destinationChainLabel"
           >
             <template v-slot:label>
               Destination
@@ -64,7 +64,7 @@
 
     <hr class="d-md-none" style="margin: 5px 0 14px 0;" />
 
-    <form-input value="3PAASSqnygiyYoQuqmXpwaSUJmRkqytwPaw">
+    <form-input value="">
       <template v-slot:label>
         To address
       </template>
@@ -75,7 +75,7 @@
         <template v-slot:left>
           <search-select
             v-model="walletC"
-            :data="wallets"
+            :data="tokens"
             placeholder="Select a token..."
             modal-heading="Select a token"
           >
@@ -120,7 +120,7 @@ import FormGroupBetweenShift1 from '~/components/FormGroupBetweenShift1.vue'
 
 export default {
   name: 'CardSwapWalletConnected',
-  props: ['wallets', 'walletA', 'walletB', 'walletC'],
+  props: ['wallets', 'tokens', 'walletA', 'walletB', 'walletC'],
   components: {
     Btn,
     FormInput,
@@ -136,6 +136,12 @@ export default {
     theme() {
       return this.$store.getters['theme/theme']
     },
+  },
+  data: function() {
+    return {
+      sourceChainLabel: "Select source chain",
+      destinationChainLabel: "Select destination chain",
+    }
   },
   methods: {
     walletRotate: function () {

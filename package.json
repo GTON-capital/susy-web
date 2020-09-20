@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "nuxt",
-    "build": "nuxt-ts build",
+    "build": "nuxt-ts build --target static",
     "start": "nuxt-ts start",
     "export": "nuxt-ts export",
     "serve": "nuxt-ts serve",
@@ -12,6 +12,7 @@
     "lint": "npm run lint:js"
   },
   "dependencies": {
+    "@nuxt/typescript": "^2.8.1",
     "@nuxt/typescript-runtime": "^0.4.10",
     "@nuxtjs/style-resources": "^1.0.0",
     "@waves/waves-transactions": "^4.1.1",

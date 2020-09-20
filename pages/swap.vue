@@ -1,16 +1,13 @@
 <template>
   <div class="container">
-
-
     <CardSwapNoWallet
       :wallets="wallets"
       :walletA="walletFirst"
       :walletB="walletSecond"
       :walletC="walletThree"
+      :tokens="tokens"
       :onWalletConnect="onWalletConnect"
     />
-
-
     <client-only>
       <ActionLogsModal :page="page" />
       <ConnectWalletModal
@@ -20,7 +17,6 @@
       />
       <WalletProvider :walletSecond="walletSecond" :walletFirst="walletFirst" />
     </client-only>
-
   </div>
 </template>
 
@@ -60,9 +56,29 @@ export default Vue.extend({
     // exchangeIcon: () => import('assets/icons/exchange.svg?inline'),
   },
   data: () => ({
-    wallets: [],
-    walletThree: undefined,
-    wavesKeeper: new Keeper(),
+    tokens: [
+      {
+        id: '1',
+        label: 'Ethereum',
+        icon: '/img/icons/ethereum.svg',
+      },
+      {
+        id: '2',
+        label: 'Waves',
+        icon: '/img/icons/waves.svg',
+      },
+      {
+        id: '3',
+        label: 'NEO',
+        icon: '/img/icons/neo.svg',
+      },
+      {
+        id: '4',
+        label: 'Tron',
+        icon: '/img/icons/tron.svg',
+      },
+    ],
+    swapState: 0,
   }),
   computed: {
     theme() {
@@ -101,9 +117,9 @@ export default Vue.extend({
       this.walletFirst = { ...this.walletSecond }
       this.walletSecond = walletFirst
     },
-    onWalletConnect: function() {
+    onWalletConnect: function () {
       this.$modal.push('accounts')
-    }
+    },
   },
 })
 </script>
