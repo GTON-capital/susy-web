@@ -1,142 +1,81 @@
 <template>
   <div class="container">
-    <card-swap>
-      <template v-slot:header>
-        Swap
-      </template>
-      <simple-wrapper-slim-sm>
-        <form-group-between>
-          <template v-slot:left>
-            <search-select
-              v-model="walletFirst"
-              :data="wallets"
-              placeholder="Select a token..."
-            >
-              <template v-slot:label>
-                Origin
-              </template>
-            </search-select>
-          </template>
-          <template v-slot:center>
-            <button
-              class="btn btn-circle btn-secondary-gradient"
-              @click="walletRotate"
-            >
-              <icon>
-                <exchange-icon></exchange-icon>
-              </icon>
-            </button>
-          </template>
-          <template v-slot:right>
-            <search-select
-              v-model="walletSecond"
-              :data="wallets"
-              placeholder="Select a token..."
-            >
-              <template v-slot:label>
-                Destination
-              </template>
-            </search-select>
-          </template>
-        </form-group-between>
-      </simple-wrapper-slim-sm>
-
-      <btn
-        class="btn-link btn-block"
-        :class="{
-          'link-invert': theme === 'susy',
-          'text-primary': theme === 'gravity',
-        }"
-        @click="onWalletConnect"
-      >
-        Connect new wallet
-      </btn>
-
-      <hr />
-
-      <form-input value="3PAASSqnygiyYoQuqmXpwaSUJmRkqytwPaw">
-        <template v-slot:label>
-          To address
-        </template>
-      </form-input>
-
-      <simple-wrapper-slim-sm>
-        <form-group-between-shift>
-          <template v-slot:left>
-            <search-select
-              v-model="walletThree"
-              :data="wallets"
-              placeholder="Select a token..."
-            >
-              <template v-slot:label>
-                Token
-              </template>
-            </search-select>
-          </template>
-          <template v-slot:right>
-            <form-input value="0" type="number">
-              <template v-slot:label>
-                Receive
-              </template>
-            </form-input>
-          </template>
-        </form-group-between-shift>
-      </simple-wrapper-slim-sm>
-
-      <template v-slot:footer>
-        <btn class="btn-primary btn-block" disabled>
-          Next
-        </btn>
-      </template>
-    </card-swap>
+    <CardSwapNoWallet v-if="swapState === 0"
+      :chainA="chainA"
+      :chainB="chainB"
+      :chains="chains"
+      :tokens="tokens"
+      :onWalletConnect="onWalletConnect"
+    />
+    <CardSwapWalletConnected v-if="swapState === 1"
+      :chainA="chainA"
+      :chainB="chainB"
+      :chains="chains"
+      :tokens="tokens"
+      @next="checkSwapDetails"
+    />
+    <CardSwapFinalized v-if="swapState === 2"
+      :chainA="chainA"
+      :chainB="chainB"
+      :chains="chains"
+      :tokens="tokens"
+      :onWalletConnect="onWalletConnect"
+      @swap="handleSwapConfirm"
+      @back="handleSwapDeny"
+    />
+    <client-only>
+      <ActionLogsModal :page="page" />
+      <ConnectWalletModal
+        :walletSecond="walletSecond"
+        :walletFirst="walletFirst"
+        :wavesKeeper="wavesKeeper"
+      />
+      <WalletProvider :walletSecond="walletSecond" :walletFirst="walletFirst" />
+    </client-only>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
+
+// MODAL
+import ConnectWalletModal from '~/components/modal/ConnectWallet'
+import WalletProvider from '~/components/modal/WalletProvider'
+import ActionLogsModal from '~/components/modal/ActionLogsModal'
+
+// SWAP
+import WithdrawCard from '~/components/swap/WithdrawCard.vue'
 import CardSwap from '~/components/swap/CardSwap'
-import Btn from '~/components/Btn.vue'
-import FormInput from '~/components/FormInput.vue'
-import SimpleWrapperSlimSm from '~/components/SimpleWrapperSlimSm.vue'
-import FormGroupBetween from '~/components/FormGroupBetween.vue'
-import FormGroupBetweenShift from '~/components/FormGroupBetweenShift.vue'
-import SearchSelect from '~/components/SearchSelect.vue'
-import Icon from '~/components/Icon.vue'
+import CardSwapFinal from '~/components/swap/CardSwapFinal.vue'
+
+// SWAP INTERMEDIATE
+import CardSwapNoWallet from '~/components/swap/intermediate/CardSwapNoWallet.vue'
+import CardSwapWalletConnected from '~/components/swap/intermediate/CardSwapWalletConnected.vue'
+import CardSwapFinalized from '~/components/swap/intermediate/CardSwapFinalized.vue'
+
+import Keeper from '~/services/wallets/Keeper'
 
 export default Vue.extend({
   components: {
-    CardSwap,
-    Btn,
-    FormInput,
-    SimpleWrapperSlimSm,
-    FormGroupBetween,
-    FormGroupBetweenShift,
-    SearchSelect,
-    Icon,
-    exchangeIcon: () => import('assets/icons/exchange.svg?inline'),
+    WalletProvider,
+    ConnectWalletModal,
+    CardSwapNoWallet,
+    CardSwapFinalized
   },
   data: () => ({
-    wallets: [],
-    walletFirst: {
-      id: '1-0',
-      label: 'Ethereum',
-      icon: '/img/icons/ethereum.svg',
-    },
-    walletSecond: {
-      id: '2-0',
-      label: 'Waves',
-      icon: '/img/icons/waves.svg',
-    },
-    walletThree: undefined,
-  }),
-  computed: {
-    theme() {
-      return this.$store.getters['theme/theme']
-    },
-  },
-  mounted() {
-    this.$store.commit('app/SET_IS_HIDE_MOBILE_TITLE', false)
-    const wallets = [
+    tokens: [
+      {
+        id: '1',
+        label: 'Ethereum',
+        icon: '/img/icons/ethereum.svg',
+      },
+      {
+        id: '2',
+        label: 'RBBT',
+        icon: '/img/icons/waves.svg',
+      },
+    ],
+    chains: [
       {
         id: '1',
         label: 'Ethereum',
@@ -157,8 +96,35 @@ export default Vue.extend({
         label: 'Tron',
         icon: '/img/icons/tron.svg',
       },
-    ]
-    this.wallets = wallets
+    ],
+    chainA: {
+      id: '1',
+      label: 'Ethereum',
+      icon: '/img/icons/ethereum.svg',
+    },
+    chainB: {
+      id: '2',
+      label: 'Waves',
+      icon: '/img/icons/waves.svg',
+    },
+    swapState: 0,
+  }),
+  computed: {
+    theme() {
+      return this.$store.getters['theme/theme']
+    },
+  },
+  mounted() {
+    this.$store.commit('app/SET_IS_HIDE_MOBILE_TITLE', false)
+
+
+    this.$store.subscribe((mutation, state) => {
+      const currentWallet = this.$store.getters['wallet/currentWallet']
+
+      if (!currentWallet) { return }
+
+      this.handleWalletConnected()
+    });
   },
   methods: {
     walletRotate: function () {
@@ -166,8 +132,20 @@ export default Vue.extend({
       this.walletFirst = { ...this.walletSecond }
       this.walletSecond = walletFirst
     },
-    onWalletConnect: function() {
-      
+    onWalletConnect: function () {
+      this.$modal.push('accounts')
+    },
+    checkSwapDetails: function() {
+      this.swapState = 2
+    },
+    handleWalletConnected: function() {
+      this.swapState = 1
+    },
+    handleSwapConfirm: function() {
+
+    },
+    handleSwapDeny: function() {
+      this.swapState = 1
     }
   },
 })

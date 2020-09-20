@@ -14,20 +14,25 @@
         <radio-provider-group style="margin-bottom: 24px;">
           <radio-account
             name="account"
-            :wallet="walletFirst"
-            label="Connected with Metamask"
-            value="0x1015e2182E...6AD26FB9"
+            :walletData="wallets.metamask"
+            @change="handleChange"
+            @connect="handleConnect"
+            @logout="handleLogout"
           ></radio-account>
           <radio-account
             name="account"
-            :wallet="walletSecond"
-            label="Connected with Metamask"
-            value="0x1015e2182E...6AD26FB9"
+            :walletData="wallets.keeper"
+            @change="handleChange"
+            @connect="handleConnect"
+            @logout="handleLogout"
           ></radio-account>
-          <radio-account name="account" :wallet="walletFirst"></radio-account>
+          <!-- <radio-account name="account" :wallet="walletFirst"></radio-account> -->
         </radio-provider-group>
         <div class="text-center">
-          <btn class="btn-link" style="padding-left: 22px; padding-right: 22px;"
+          <btn
+            class="btn-link"
+            style="padding-left: 22px; padding-right: 22px;"
+            @click="goBack"
             >Back</btn
           >
           <btn
@@ -41,7 +46,7 @@
   </modal>
 </template>
 
-<script>
+<script lang="ts">
 // import Vue from 'vue'
 import RadioProvider from '~/components/RadioProvider.vue'
 import RadioAccount from '~/components/RadioAccount.vue'
@@ -49,16 +54,104 @@ import RadioProviderGroup from '~/components/RadioProviderGroup.vue'
 import ModalContent from '~/components/ModalContent.vue'
 import Btn from '~/components/Btn.vue'
 
-// export default Vue.extend({
+import Keeper from '~/services/wallets/Keeper'
+import Web3WalletConnector from '~/services/wallets/Web3'
+import { Wallets, WalletState, ExtensionWallet, WalletProvider } from '~/store/wallet/types'
+
 export default {
   name: 'ConnectWalletModal',
-  props: ['walletFirst', 'walletSecond'],
+  props: ['wavesKeeper'],
   components: {
     Btn,
     ModalContent,
     RadioProvider,
     RadioAccount,
     RadioProviderGroup,
+  },
+  data: function () {
+    return {}
+  },
+  computed: {
+    wallets: function (): WalletState {
+      console.log({ state: this.$store })
+      // @ts-ignore
+      return this.$store.state.wallet
+    },
+  },
+  methods: {
+    connectKeeper: function () {},
+    handleChange: function (wallet: ExtensionWallet) {
+      this.$store.commit('wallet/updateWalletData', {
+        provider: wallet.provider as WalletProvider,
+        body: { checked: true },
+      })
+    },
+    handleLogout: function (wallet: ExtensionWallet) {
+      const existing = Object.keys(this.wallets)
+      let walletToEnable: WalletProvider | undefined
+
+      for (const existingWallet of existing) {
+        if (wallet.provider !== existingWallet) {
+          walletToEnable = existingWallet as WalletProvider
+          break
+        }
+      }
+
+      this.$store.commit('wallet/updateWalletData', {
+        provider: wallet.provider as WalletProvider,
+        body: { checked: false, isConnected: false, value: '' },
+      })
+
+      if (!walletToEnable) {
+        return
+      }
+
+      this.$store.commit('wallet/updateWalletData', {
+        provider: walletToEnable,
+        body: { checked: true },
+      })
+    },
+    handleConnect: async function (wallet: ExtensionWallet) {
+      // console.log({ data }, 'connect occured')
+
+      if (wallet.provider === WalletProvider.Metamask) {
+        const connector = new Web3WalletConnector()
+        const isConnected = connector.ethEnabled()
+
+        if (!isConnected) {
+          return
+        }
+
+        this.$store.commit('wallet/updateWalletData', {
+          provider: wallet.provider,
+          body: {
+            isConnected: true,
+            value: window.web3.eth.accounts.givenProvider.selectedAddress,
+            checked: true,
+          },
+        })
+
+        return
+      }
+
+      if (wallet.provider === WalletProvider.WavesKeeper) {
+        const keeper = new Keeper()
+        const address = await keeper.getAddress()
+
+        this.$store.commit('wallet/updateWalletData', {
+          provider: wallet.provider,
+          body: {
+            isConnected: true,
+            value: address as string,
+            checked: true,
+          },
+        })
+      }
+    },
+    goBack: function () {
+      // @ts-ignore
+      this.$modal.pop()
+    },
   },
 }
 </script>
