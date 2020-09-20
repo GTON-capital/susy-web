@@ -48,6 +48,7 @@
         'link-invert': theme === 'susy',
         'text-primary': theme === 'gravity',
       }"
+      @click="onWalletConnect"
     >
       Connect new wallet
     </btn>
@@ -104,7 +105,7 @@ import FormGroupBetweenShift1 from '~/components/FormGroupBetweenShift1.vue'
 
 export default {
   name: 'CardSwapNoWallet',
-  props: ['wallets', 'walletA', 'walletB', 'walletC'],
+  props: ['onWalletConnect', 'wallets', 'walletA', 'walletB', 'walletC'],
   components: {
     Btn,
     FormInput,

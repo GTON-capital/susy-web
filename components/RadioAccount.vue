@@ -11,7 +11,7 @@
         :checked="checked"
         :value="value"
         class="hide radio-account-input"
-        @change="$emit('change', $event)"
+        @change="$emit('change', walletData)"
       />
       <label
         :for="id"
@@ -51,7 +51,7 @@
         </label>
         <btn
           class="btn-circle btn-secondary-gradient radio-account-logout"
-          @change="$emit('logout')"
+          @click="$emit('logout', walletData)"
         >
           <icon>
             <logout-icon></logout-icon>
@@ -59,7 +59,7 @@
         </btn>
       </template>
       <template v-else>
-        <btn class="btn-primary btn-block">Connect new wallet</btn>
+        <btn class="btn-primary btn-block" @click="$emit('connect', walletData)">Connect new wallet</btn>
       </template>
     </div>
   </div>
@@ -77,38 +77,27 @@ export default Vue.extend({
     Btn,
     logoutIcon: () => import('assets/icons/logout.svg?inline'),
   },
-  props: {
-    type: {
-      type: String,
-      default: () => 'radio',
-      required: false,
+  props: ['walletData'],
+  computed: {
+    wallet() {
+      return this.walletData.wallet
     },
-    checked: {
-      type: Boolean,
-      default: () => false,
-      required: false,
+    value() {
+      return this.walletData.value
     },
-    name: {
-      type: String,
-      required: true,
+    label() {
+      return this.walletData.label
     },
-    label: {
-      type: String,
-      default: () => 'Connected',
-      required: false,
+    name() {
+      return this.walletData.name
     },
-    value: {
-      type: String,
-      default: () => '',
-      required: false,
-    },
-    wallet: {
-      type: Object,
-      required: true,
-    },
+    checked() {
+      return this.walletData.checked
+    }
   },
   data: () => ({
     id: '',
+    type: 'radio'
   }),
   created() {
     this.id = this.getUniqueId()
@@ -229,6 +218,12 @@ export default Vue.extend({
       height: 12px;
     }
   }
+}
+.radio-account-content-value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 240px;
 }
 .radio-account-input:checked {
   ~ {
