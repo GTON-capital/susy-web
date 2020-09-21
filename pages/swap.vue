@@ -29,7 +29,7 @@
     <client-only>
       <ActionLogsModal :page="page" />
       <ConnectWalletModal />
-      <!-- <WalletProvider :walletSecond="chainA" :walletFirst="chainB" /> -->
+      <StatusModal :message="swapForm.message" @close="onPopModal"/>
     </client-only>
   </div>
 </template>
@@ -41,6 +41,7 @@ import Vue from 'vue'
 import ConnectWalletModal from '~/components/modal/ConnectWallet'
 import WalletProvider from '~/components/modal/WalletProvider'
 import ActionLogsModal from '~/components/modal/ActionLogsModal'
+import StatusModal from '~/components/modal/StatusModal'
 
 // SWAP
 import WithdrawCard from '~/components/swap/WithdrawCard.vue'
@@ -52,13 +53,15 @@ import CardSwapNoWallet from '~/components/swap/intermediate/CardSwapNoWallet.vu
 import CardSwapWalletConnected from '~/components/swap/intermediate/CardSwapWalletConnected.vue'
 import CardSwapFinalized from '~/components/swap/intermediate/CardSwapFinalized.vue'
 
-import Keeper from '~/services/wallets/Keeper'
+import Keeper, { LUPortInvoker } from '~/services/wallets/Keeper'
+import { processConfig } from '~/services/misc/config'
 
 const AvailableTokens = {
   SignTestnet: {
     label: 'SIGN Testnet',
     icon: '/img/icons/signature-chain.png',
     bg: 'black',
+    decimals: 8,
     assetId: 'Gf9t8FA4H3ssoZPCwrg3KwUFCci8zuUFP9ssRsUY3s6a',
   },
   SignStagenet: {
@@ -66,12 +69,14 @@ const AvailableTokens = {
     icon: '/img/icons/signature-chain.png',
     bg: 'black',
     assetId: '6x8nupBUrX3u1VQcL4jFsf9UyyqacUNbVsKB9WHJ61Qm',
+    decimals: 8,
   },
   SusyStagenet: {
     label: 'SuSy token Stagenet',
     icon: '/img/icons/waves.svg',
     bg: 'black',
     assetId: 'Ftnm2XbEWTF54z84UHg7LwPcuBZicXEgvhUdmFt84EWH',
+    decimals: 8,
   },
 }
 
@@ -100,12 +105,13 @@ export default Vue.extend({
     ConnectWalletModal,
     CardSwapNoWallet,
     CardSwapFinalized,
+    StatusModal,
   },
   data: () => ({
     tokens: availableTokens,
     chains: [
       AvailableChains.Waves,
-      AvailableChains.Ethereum
+      AvailableChains.Ethereum,
       // {
       //   id: '3',
       //   label: 'NEO',
@@ -125,6 +131,7 @@ export default Vue.extend({
       destinationAddress: '',
       token: AvailableTokens.SignTestnet,
       tokenAmount: 0,
+      message: ''
     },
   }),
   computed: {
@@ -146,6 +153,9 @@ export default Vue.extend({
     })
   },
   methods: {
+    onPopModal: function() {
+      this.$modal.pop()
+    },
     onReverseChains: function () {
       const sourceChain = { ...this.swapForm.sourceChain }
       this.swapForm.sourceChain = { ...this.swapForm.destinationChain }
@@ -160,15 +170,36 @@ export default Vue.extend({
     handleWalletConnected: function () {
       this.swapState = 1
     },
-    handleSwapConfirm: function () {
-      const { sourceChain } = this.swapForm;
+    handleSwapConfirm: async function () {
+      const { sourceChain } = this.swapForm
+
+      this.swapForm.message = ''
 
       if (sourceChain.label !== AvailableChains.Waves.label) {
         return
       }
 
-      const keeper = new Keeper()
+      const invoker = new LUPortInvoker(new Keeper())
+      const config = processConfig()
+      const { swapForm: form } = this
 
+      try {
+        const result = await invoker.sendTransferRequest({
+          dApp: config.wavesChain.luport,
+          receiver: form.destinationAddress,
+          // swapAmount: Math.pow(10, form.token.decimals) * form.tokenAmount,
+          swapAmount: form.tokenAmount,
+          swapAssetID: form.token.assetId,
+        })
+
+        console.log({ result })
+        this.swapForm.message = `Swap has been successfully submitted.`
+        this.$modal.push('status')
+      } catch (err) {
+        console.log({ err })
+        this.swapForm.message = `${err.message}. ${err.data}`
+        this.$modal.push('status')
+      }
 
     },
     handleSwapDeny: function () {
