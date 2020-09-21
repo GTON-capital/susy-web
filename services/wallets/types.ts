@@ -1,4 +1,3 @@
-import { WavesNetworkCode } from './types';
 export interface WavesKeeperAssetData {
     assetId: string;
     tokens: string;

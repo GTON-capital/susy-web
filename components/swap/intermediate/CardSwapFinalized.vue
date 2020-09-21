@@ -38,7 +38,7 @@
             <template v-slot:label>
               Token
               <span class="text-secondary float-right font-weight-normal">
-                Amount: {{ swapForm.tokenAmount }}
+                Balance: {{ swapForm.formattedBalance }}
               </span>
             </template>
           </search-select>

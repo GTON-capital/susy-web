@@ -43,7 +43,6 @@ export class LUPortInvoker {
       return
     }
 
-
     const tx: WavesKeeperTransaction = {
       type: 16,
       data: {
@@ -59,8 +58,6 @@ export class LUPortInvoker {
         payment: [{ tokens: String(swapAmount), assetId: swapAssetID }],
       },
     }
-
-    console.log({ tx })
 
     const result = await plugin.signAndPublishTransaction(tx)    
     return result
