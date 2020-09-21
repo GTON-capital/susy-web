@@ -16,14 +16,14 @@
             name="account"
             :walletData="wallets.metamask"
             @change="handleChange"
-            @connect="handleConnect"
+            @connect="$emit('connect', $event)"
             @logout="handleLogout"
           ></radio-account>
           <radio-account
             name="account"
             :walletData="wallets.keeper"
             @change="handleChange"
-            @connect="handleConnect"
+            @connect="$emit('connect', $event)"
             @logout="handleLogout"
           ></radio-account>
           <!-- <radio-account name="account" :wallet="walletFirst"></radio-account> -->
@@ -110,43 +110,6 @@ export default {
         provider: walletToEnable,
         body: { checked: true },
       })
-    },
-    handleConnect: async function (wallet: ExtensionWallet) {
-      // console.log({ data }, 'connect occured')
-
-      if (wallet.provider === WalletProvider.Metamask) {
-        const connector = new Web3WalletConnector()
-        const isConnected = connector.ethEnabled()
-
-        if (!isConnected) {
-          return
-        }
-
-        this.$store.commit('wallet/updateWalletData', {
-          provider: wallet.provider,
-          body: {
-            isConnected: true,
-            value: window.web3.eth.accounts.givenProvider.selectedAddress,
-            checked: true,
-          },
-        })
-
-        return
-      }
-
-      if (wallet.provider === WalletProvider.WavesKeeper) {
-        const keeper = new Keeper()
-        const address = await keeper.getAddress()
-
-        this.$store.commit('wallet/updateWalletData', {
-          provider: wallet.provider,
-          body: {
-            isConnected: true,
-            value: address as string,
-            checked: true,
-          },
-        })
-      }
     },
     goBack: function () {
       // @ts-ignore

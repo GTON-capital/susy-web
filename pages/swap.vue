@@ -28,19 +28,20 @@
     />
     <client-only>
       <ActionLogsModal :page="page" />
-      <ConnectWalletModal />
+      <ConnectWalletModal @connect="handleWalletConnect"/>
       <StatusModal :message="swapForm.message" @close="onPopModal" />
     </client-only>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue'
 import axios from 'axios'
+import { Subscription } from 'rxjs'
 
 // MODAL
 import ConnectWalletModal from '~/components/modal/ConnectWallet'
-import WalletProvider from '~/components/modal/WalletProvider'
+// import WalletProviderModal from '~/components/modal/WalletProvider'
 import ActionLogsModal from '~/components/modal/ActionLogsModal'
 import StatusModal from '~/components/modal/StatusModal'
 
@@ -55,7 +56,10 @@ import CardSwapWalletConnected from '~/components/swap/intermediate/CardSwapWall
 import CardSwapFinalized from '~/components/swap/intermediate/CardSwapFinalized.vue'
 
 import Keeper, { LUPortInvoker } from '~/services/wallets/keeper'
-// import { WalletProvider as WalletProviderEnum } from '~/services/wallets/types'
+
+import Web3WalletConnector from '~/services/wallets/web3'
+import { Wallets, WalletState, ExtensionWallet, WalletProvider } from '~/store/wallet/types'
+
 import { processConfig } from '~/services/misc/config'
 import { buildPropertyChecker } from '~/services/wallets/checker'
 
@@ -104,7 +108,7 @@ const availableTokens = [
 
 export default Vue.extend({
   components: {
-    WalletProvider,
+    // WalletProviderModal,
     ConnectWalletModal,
     CardSwapNoWallet,
     CardSwapFinalized,
@@ -144,11 +148,14 @@ export default Vue.extend({
         return
       }
 
+      // @ts-ignore
       this.handleWalletConnected()
     })
 
+    // @ts-ignore
     this.propertiesObs = buildPropertyChecker(1800, this.propertyObserveMap)
 
+    // @ts-ignore
     const sub = this.propertiesObs.subscribe(async walletData => {
       const result = await walletData
 
@@ -158,18 +165,20 @@ export default Vue.extend({
       }
     })
 
+    // @ts-ignore
     this.subs.push(sub)
   },
   beforeDestroy() {
+    // @ts-ignore
     this.cleanSubs()
   },
   methods: {
-    propertyObserveMap: async function(num) {
+    propertyObserveMap: async function(num: number) {
       const currentWallet = this.$store.getters['wallet/currentWallet']
 
       if (!currentWallet) { return {} }
 
-      if (currentWallet.provider === 'keeper') {
+      if (currentWallet.provider === WalletProvider.WavesKeeper) {
         const keeper = new Keeper();
         const plugin = await keeper.getPlugin()
 
@@ -201,7 +210,7 @@ export default Vue.extend({
     },
     cleanSubs: function () {
       for (const sub of this.subs) {
-        sub.unsubscribe()
+        (sub as Subscription).unsubscribe()
       }
     },
     onPopModal: function () {
@@ -221,6 +230,42 @@ export default Vue.extend({
     handleWalletConnected: function () {
       this.swapState = 1
     },
+    handleWalletConnect: async function (wallet: ExtensionWallet) {
+
+      if (wallet.provider === WalletProvider.Metamask) {
+        const connector = new Web3WalletConnector()
+        const isConnected = connector.ethEnabled()
+
+        if (!isConnected) {
+          return
+        }
+
+        this.$store.commit('wallet/updateWalletData', {
+          provider: wallet.provider,
+          body: {
+            isConnected: true,
+            value: window.web3.eth.accounts.givenProvider.selectedAddress,
+            checked: true,
+          },
+        })
+
+        return
+      }
+
+      if (wallet.provider === WalletProvider.WavesKeeper) {
+        const keeper = new Keeper()
+        const address = await keeper.getAddress()
+
+        this.$store.commit('wallet/updateWalletData', {
+          provider: wallet.provider,
+          body: {
+            isConnected: true,
+            value: address as string,
+            checked: true,
+          },
+        })
+      }
+    },
     handleSwapConfirm: async function () {
       const { sourceChain } = this.swapForm
 
@@ -233,6 +278,8 @@ export default Vue.extend({
       const invoker = new LUPortInvoker(new Keeper())
       const config = processConfig()
       const { swapForm: form } = this
+
+      if (!config.wavesChain?.luport) { return }
 
       try {
         const result = await invoker.sendTransferRequest({
