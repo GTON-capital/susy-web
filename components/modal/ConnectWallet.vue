@@ -54,8 +54,8 @@ import RadioProviderGroup from '~/components/RadioProviderGroup.vue'
 import ModalContent from '~/components/ModalContent.vue'
 import Btn from '~/components/Btn.vue'
 
-import Keeper from '~/services/wallets/Keeper'
-import Web3WalletConnector from '~/services/wallets/Web3'
+import Keeper from '~/services/wallets/keeper'
+import Web3WalletConnector from '~/services/wallets/web3'
 import { Wallets, WalletState, ExtensionWallet, WalletProvider } from '~/store/wallet/types'
 
 export default {

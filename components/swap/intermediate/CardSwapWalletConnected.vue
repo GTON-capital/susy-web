@@ -46,7 +46,7 @@
     <form-group-between-shift1>
       <template v-slot:left>
         <form-input
-          :value="swapForm.sourceAddress || wallet.value"
+          :value="swapForm.sourceAddress"
           readonly
           :icon="wallet.wallet.icon"
         >
@@ -82,7 +82,7 @@
             <template v-slot:label>
               Token
               <span class="text-secondary float-right font-weight-normal">
-                Balance: 1
+                Balance: {{ swapForm.formattedBalance }}
               </span>
             </template>
           </search-select>
@@ -139,12 +139,12 @@ export default {
     wallet() {
       const wallet = this.$store.getters['wallet/currentWallet']
 
-      if (wallet) {
+      if (wallet && !this.swapForm.sourceAddress) {
         this.swapForm.sourceAddress = wallet.value
       }
 
       return wallet
-    }
+    },
   },
   data: function() {
     return {

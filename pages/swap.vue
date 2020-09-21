@@ -29,13 +29,14 @@
     <client-only>
       <ActionLogsModal :page="page" />
       <ConnectWalletModal />
-      <StatusModal :message="swapForm.message" @close="onPopModal"/>
+      <StatusModal :message="swapForm.message" @close="onPopModal" />
     </client-only>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
+import axios from 'axios'
 
 // MODAL
 import ConnectWalletModal from '~/components/modal/ConnectWallet'
@@ -53,8 +54,11 @@ import CardSwapNoWallet from '~/components/swap/intermediate/CardSwapNoWallet.vu
 import CardSwapWalletConnected from '~/components/swap/intermediate/CardSwapWalletConnected.vue'
 import CardSwapFinalized from '~/components/swap/intermediate/CardSwapFinalized.vue'
 
-import Keeper, { LUPortInvoker } from '~/services/wallets/Keeper'
+import Keeper, { LUPortInvoker } from '~/services/wallets/keeper'
+// import { WalletProvider as WalletProviderEnum } from '~/services/wallets/types'
 import { processConfig } from '~/services/misc/config'
+import { buildPropertyChecker } from '~/services/wallets/checker'
+
 
 const AvailableTokens = {
   SignTestnet: {
@@ -95,7 +99,7 @@ const AvailableChains = {
 
 const availableTokens = [
   AvailableTokens.SignTestnet,
-  AvailableTokens.SignStagenet
+  AvailableTokens.SignStagenet,
 ]
 
 export default Vue.extend({
@@ -107,21 +111,9 @@ export default Vue.extend({
     StatusModal,
   },
   data: () => ({
+    page: 10,
     tokens: availableTokens,
-    chains: [
-      AvailableChains.Waves,
-      AvailableChains.Ethereum,
-      // {
-      //   id: '3',
-      //   label: 'NEO',
-      //   icon: '/img/icons/neo.svg',
-      // },
-      // {
-      //   id: '4',
-      //   label: 'Tron',
-      //   icon: '/img/icons/tron.svg',
-      // },
-    ],
+    chains: [AvailableChains.Waves, AvailableChains.Ethereum],
     swapState: 0,
     swapForm: {
       sourceChain: AvailableChains.Waves,
@@ -130,8 +122,12 @@ export default Vue.extend({
       destinationAddress: '',
       token: AvailableTokens.SignStagenet,
       tokenAmount: 0,
-      message: ''
+      currentBalance: 0,
+      formattedBalance: 0,
+      message: '',
     },
+    propertiesObs: null,
+    subs: []
   }),
   computed: {
     theme() {
@@ -150,9 +146,65 @@ export default Vue.extend({
 
       this.handleWalletConnected()
     })
+
+    this.propertiesObs = buildPropertyChecker(1800, this.propertyObserveMap)
+
+    const sub = this.propertiesObs.subscribe(async walletData => {
+      const result = await walletData
+
+      this.swapForm = {
+        ...this.swapForm,
+        ...result
+      }
+    })
+
+    this.subs.push(sub)
+  },
+  beforeDestroy() {
+    this.cleanSubs()
   },
   methods: {
-    onPopModal: function() {
+    propertyObserveMap: async function(num) {
+      const currentWallet = this.$store.getters['wallet/currentWallet']
+
+      if (!currentWallet) { return {} }
+
+      if (currentWallet.provider === 'keeper') {
+        const keeper = new Keeper();
+        const plugin = await keeper.getPlugin()
+
+        if (!plugin) { return {} }
+
+        const publicState = await plugin.publicState()
+
+        if (!publicState) { return {} }
+
+        const { address } = publicState.account
+        const { server } = publicState.network
+        const { assetId } = this.swapForm.token
+
+        try {
+          const balanceInfo = await axios.get(`/assets/balance/${address}/${assetId}`, { baseURL: server })
+          const { balance } = balanceInfo.data
+
+          return {
+            sourceAddress: address,
+            currentBalance: balance,
+            formattedBalance: balance / Math.pow(10, this.swapForm.token.decimals)
+          }
+        } catch (err) {
+          return {}
+        }
+      }
+
+      return {}
+    },
+    cleanSubs: function () {
+      for (const sub of this.subs) {
+        sub.unsubscribe()
+      }
+    },
+    onPopModal: function () {
       this.$modal.pop()
     },
     onReverseChains: function () {
@@ -199,7 +251,6 @@ export default Vue.extend({
         this.swapForm.message = `${err.message}. ${err.data}`
         this.$modal.push('status')
       }
-
     },
     handleSwapDeny: function () {
       this.swapState = 1
