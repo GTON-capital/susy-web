@@ -23,8 +23,6 @@ export const state = (): WalletState => {
       isConnected: false,
       label: 'Connect with Keeper',
     },
-    // [WalletProvider.Metamask]: {},
-    // [WalletProvider.WavesKeeper]: {}
   }
 }
 

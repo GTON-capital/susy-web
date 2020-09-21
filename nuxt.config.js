@@ -66,6 +66,7 @@ export default {
   modules: [
     '@nuxtjs/style-resources',
     '@nuxtjs/svg',
+    '@nuxtjs/dotenv',
     ['nuxt-lazy-load', { directiveOnly: true }],
   ],
   /*

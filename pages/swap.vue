@@ -2,27 +2,23 @@
   <div class="container">
     <CardSwapNoWallet
       v-if="swapState === 0"
-      :chainA="chainA"
-      :chainB="chainB"
       :chains="chains"
       :tokens="tokens"
       :swapForm="swapForm"
       :onWalletConnect="onWalletConnect"
+      @reverse-chains="onReverseChains"
     />
     <CardSwapWalletConnected
       v-if="swapState === 1"
-      :chainA="chainA"
-      :chainB="chainB"
       :chains="chains"
       :tokens="tokens"
       :swapForm="swapForm"
       @next="checkSwapDetails"
       @change-wallet="onWalletConnect"
+      @reverse-chains="onReverseChains"
     />
     <CardSwapFinalized
       v-if="swapState === 2"
-      :chainA="chainA"
-      :chainB="chainB"
       :chains="chains"
       :tokens="tokens"
       :onWalletConnect="onWalletConnect"
@@ -32,11 +28,7 @@
     />
     <client-only>
       <ActionLogsModal :page="page" />
-      <ConnectWalletModal
-        :walletSecond="walletSecond"
-        :walletFirst="walletFirst"
-        :wavesKeeper="wavesKeeper"
-      />
+      <ConnectWalletModal />
       <!-- <WalletProvider :walletSecond="chainA" :walletFirst="chainB" /> -->
     </client-only>
   </div>
@@ -112,16 +104,8 @@ export default Vue.extend({
   data: () => ({
     tokens: availableTokens,
     chains: [
-      {
-        id: '1',
-        label: 'Ethereum',
-        icon: '/img/icons/ethereum.svg',
-      },
-      {
-        id: '2',
-        label: 'Waves',
-        icon: '/img/icons/waves.svg',
-      },
+      AvailableChains.Waves,
+      AvailableChains.Ethereum
       // {
       //   id: '3',
       //   label: 'NEO',
@@ -133,16 +117,6 @@ export default Vue.extend({
       //   icon: '/img/icons/tron.svg',
       // },
     ],
-    chainA: {
-      id: '1',
-      label: 'Ethereum',
-      icon: '/img/icons/ethereum.svg',
-    },
-    chainB: {
-      id: '2',
-      label: 'Waves',
-      icon: '/img/icons/waves.svg',
-    },
     swapState: 0,
     swapForm: {
       sourceChain: AvailableChains.Waves,
@@ -172,10 +146,10 @@ export default Vue.extend({
     })
   },
   methods: {
-    walletRotate: function () {
-      const walletFirst = { ...this.walletFirst }
-      this.walletFirst = { ...this.walletSecond }
-      this.walletSecond = walletFirst
+    onReverseChains: function () {
+      const sourceChain = { ...this.swapForm.sourceChain }
+      this.swapForm.sourceChain = { ...this.swapForm.destinationChain }
+      this.swapForm.destinationChain = sourceChain
     },
     onWalletConnect: function () {
       this.$modal.push('accounts')
@@ -186,7 +160,17 @@ export default Vue.extend({
     handleWalletConnected: function () {
       this.swapState = 1
     },
-    handleSwapConfirm: function () {},
+    handleSwapConfirm: function () {
+      const { sourceChain } = this.swapForm;
+
+      if (sourceChain.label !== AvailableChains.Waves.label) {
+        return
+      }
+
+      const keeper = new Keeper()
+
+
+    },
     handleSwapDeny: function () {
       this.swapState = 1
     },
