@@ -75,6 +75,12 @@ const AvailableTokens = {
     bg: 'black',
     assetId: '6x8nupBUrX3u1VQcL4jFsf9UyyqacUNbVsKB9WHJ61Qm',
   },
+  SusyStagenet: {
+    label: 'SuSy token Stagenet',
+    icon: '/img/icons/signature-chain.png',
+    bg: 'black',
+    assetId: 'Ftnm2XbEWTF54z84UHg7LwPcuBZicXEgvhUdmFt84EWH',
+  },
 }
 
 const AvailableChains = {
@@ -93,17 +99,7 @@ const AvailableChains = {
 const availableTokens = [
   AvailableTokens.SignTestnet,
   AvailableTokens.SignStagenet,
-  // {
-  //   id: '2',
-  //   label: 'RBBT',
-  //   icon: '/img/icons/waves.svg',
-  // },
-
-  // {
-  //   id: '1',
-  //   label: 'Ethereum',
-  //   icon: '/img/icons/ethereum.svg',
-  // },
+  AvailableTokens.SusyStagenet,
 ]
 
 export default Vue.extend({
