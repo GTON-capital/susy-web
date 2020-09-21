@@ -17,6 +17,7 @@
       :tokens="tokens"
       :swapForm="swapForm"
       @next="checkSwapDetails"
+      @change-wallet="onWalletConnect"
     />
     <CardSwapFinalized
       v-if="swapState === 2"
@@ -36,7 +37,7 @@
         :walletFirst="walletFirst"
         :wavesKeeper="wavesKeeper"
       />
-      <WalletProvider :walletSecond="walletSecond" :walletFirst="walletFirst" />
+      <!-- <WalletProvider :walletSecond="chainA" :walletFirst="chainB" /> -->
     </client-only>
   </div>
 </template>

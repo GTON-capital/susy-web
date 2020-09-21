@@ -48,7 +48,7 @@
         <form-input
           :value="swapForm.sourceAddress || wallet.value"
           readonly
-          icon="/img/icons/metamask.svg"
+          :icon="wallet.wallet.icon"
         >
           <template v-slot:label>
             From address
@@ -56,7 +56,7 @@
         </form-input>
       </template>
       <template v-slot:right>
-        <btn class="btn-link link-invert btn-block" disabled>
+        <btn class="btn-link link-invert btn-block" @click="$emit('change-wallet')">
           Change wallet
         </btn>
       </template>
