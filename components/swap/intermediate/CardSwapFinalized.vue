@@ -6,8 +6,8 @@
     <template v-slot:bodyTop>
       <form-group>
         <transactions-icons
-          :left="chainA"
-          :right="chainB"
+          :left="swapForm.sourceChain"
+          :right="swapForm.destinationChain"
         ></transactions-icons>
       </form-group>
     </template>
@@ -17,7 +17,7 @@
           From address
         </template>
         <div class="text-truncate">
-          0xEA3ed91a668B6a56751729016EBafc214dFBeB65
+          {{ swapForm.sourceAddress }}
         </div>
       </form-group>
       <form-group>
@@ -25,30 +25,26 @@
           To address
         </template>
         <div class="text-truncate">
-          3PAASSqnygiyYoQuqmXpwaSUJmRkqytwPaw
+          {{ swapForm.destinationAddress }}
         </div>
       </form-group>
 
       <form-group-between-shift>
         <template v-slot:left>
           <search-select
-            :value="{
-              id: '1',
-              label: 'Ethereum',
-              icon: '/img/icons/ethereum.svg',
-            }"
+            :value="swapForm.token"
             readonly
           >
             <template v-slot:label>
               Token
               <span class="text-secondary float-right font-weight-normal">
-                Balance: 1
+                Balance: {{ swapForm.tokenAmount }}
               </span>
             </template>
           </search-select>
         </template>
         <template v-slot:right>
-          <form-input value="1.1" type="number" readonly>
+          <form-input :value="swapForm.tokenAmount" type="number" readonly>
             <template v-slot:label>
               Receive
               <span class="text-secondary float-right font-weight-normal">
@@ -66,12 +62,12 @@
     <template v-slot:footer>
       <div style="display: flex; justify-content: center;">
         <form-group>
-          <checkbox name="terms-of-service" checked>
+          <checkbox name="terms-of-service" v-model="termsChecked">
             Terms of Service
           </checkbox>
         </form-group>
       </div>
-      <btn class="btn-primary btn-block" @click="$emit('swap')">
+      <btn class="btn-primary btn-block" @click="$emit('swap')" :disabled="!termsChecked">
         Swap
       </btn>
       <btn class="btn-link btn-block" @click="$emit('back')">
@@ -96,7 +92,7 @@ import FormGroupBetweenShift1 from '~/components/FormGroupBetweenShift1.vue'
 
 export default {
   name: 'CardSwapFinalized',
-  props: ['heading', 'tokens', 'chainA', 'chainB'],
+  props: ['swapForm', 'heading', 'tokens', 'chainA', 'chainB'],
   components: {
     CardSwapFinal,
     FormGroup,
@@ -110,5 +106,10 @@ export default {
     FormGroupBetweenShift,
     FormGroupBetweenShift1,
   },
+  data: function() {
+    return {
+      termsChecked: false
+    }
+  }
 }
 </script>

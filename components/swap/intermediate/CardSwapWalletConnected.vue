@@ -8,7 +8,7 @@
       <form-group-between>
         <template v-slot:left>
           <search-select
-            v-model="chainA"
+            v-model="swapForm.sourceChain"
             :data="chains"
             :placeholder="sourceChainLabel"
             :modal-heading="sourceChainLabel"
@@ -30,7 +30,7 @@
         </template>
         <template v-slot:right>
           <search-select
-            v-model="chainB"
+            v-model="swapForm.destinationChain"
             :data="chains"
             :placeholder="destinationChainLabel"
             :modal-heading="destinationChainLabel"
@@ -46,9 +46,9 @@
     <form-group-between-shift1>
       <template v-slot:left>
         <form-input
-          value="0x1015e2182E...6AD26FB9"
+          :value="swapForm.sourceAddress || wallet.value"
           readonly
-          icon="/img/icons/metamask.svg"
+          :icon="wallet.wallet.icon"
         >
           <template v-slot:label>
             From address
@@ -56,7 +56,7 @@
         </form-input>
       </template>
       <template v-slot:right>
-        <btn class="btn-link link-invert btn-block">
+        <btn class="btn-link link-invert btn-block" @click="$emit('change-wallet')">
           Change wallet
         </btn>
       </template>
@@ -64,7 +64,7 @@
 
     <hr class="d-md-none" style="margin: 5px 0 14px 0;" />
 
-    <form-input value="">
+    <form-input v-model="swapForm.destinationAddress">
       <template v-slot:label>
         To address
       </template>
@@ -74,6 +74,7 @@
       <form-group-between-shift>
         <template v-slot:left>
           <search-select
+            v-model="swapForm.token"
             :data="tokens"
             placeholder="Select a token..."
             modal-heading="Select a token"
@@ -87,7 +88,7 @@
           </search-select>
         </template>
         <template v-slot:right>
-          <form-input value="0" type="number">
+          <form-input v-model="swapForm.tokenAmount" type="number">
             <template v-slot:label>
               Receive
               <span class="text-secondary float-right font-weight-normal">
@@ -119,7 +120,7 @@ import FormGroupBetweenShift1 from '~/components/FormGroupBetweenShift1.vue'
 
 export default {
   name: 'CardSwapWalletConnected',
-  props: ['chains', 'tokens', 'onWalletConnect', 'chainA', 'chainB'],
+  props: ['swapForm', 'chains', 'tokens', 'onWalletConnect', 'chainA', 'chainB'],
   components: {
     Btn,
     FormInput,
@@ -135,6 +136,15 @@ export default {
     theme() {
       return this.$store.getters['theme/theme']
     },
+    wallet() {
+      const wallet = this.$store.getters['wallet/currentWallet']
+
+      if (wallet) {
+        this.swapForm.sourceAddress = wallet.value
+      }
+
+      return wallet
+    }
   },
   data: function() {
     return {

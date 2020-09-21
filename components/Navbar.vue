@@ -28,21 +28,21 @@
               :class="{ active: isOpenNavMode }"
               @click="isOpenNavMode = !isOpenNavMode"
             >
-              <span class="text-body headings-font-family">Intrachain</span>
+              <span class="text-body headings-font-family">Swap</span>
               <icon class="dropdown-caret">
                 <caret-icon></caret-icon>
               </icon>
             </btn>
             <div class="nav-menu">
-              <nuxt-link class="nav-menu-item link-invert" to="/intrachain"
+              <!-- <nuxt-link class="nav-menu-item link-invert" to="/intrachain"
                 >Intrachain</nuxt-link
-              >
+              > -->
               <nuxt-link class="nav-menu-item link-invert" to="/"
                 >Swap</nuxt-link
               >
-              <nuxt-link class="nav-menu-item link-invert" to="/ui"
+              <!-- <nuxt-link class="nav-menu-item link-invert" to="/ui"
                 >UI</nuxt-link
-              >
+              > -->
             </div>
           </div>
           <div v-click-outside="clickOutside" class="nav-dropdown">
@@ -55,17 +55,17 @@
               <i></i><i></i><i></i>
             </button>
             <div class="nav-menu nav-menu--main">
-              <nuxt-link
+              <!-- <nuxt-link
                 class="nav-menu-item link-invert d-lg-none"
                 to="/intrachain"
                 >Intrachain</nuxt-link
-              >
+              > -->
               <nuxt-link class="nav-menu-item link-invert d-lg-none" to="/"
                 >Swap</nuxt-link
               >
-              <nuxt-link class="nav-menu-item link-invert d-lg-none" to="/ui"
+              <!-- <nuxt-link class="nav-menu-item link-invert d-lg-none" to="/ui"
                 >UI</nuxt-link
-              >
+              > -->
               <nuxt-link class="nav-menu-item link-invert" to="/"
                 >FAQ</nuxt-link
               >
