@@ -92,7 +92,7 @@ import FormGroupBetweenShift1 from '~/components/FormGroupBetweenShift1.vue'
 
 export default {
   name: 'CardSwapFinalized',
-  props: ['swapForm', 'heading', 'tokens', 'chainA', 'chainB'],
+  props: ['swapForm', 'heading', 'tokens'],
   components: {
     CardSwapFinal,
     FormGroup,

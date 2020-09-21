@@ -149,15 +149,12 @@ export default class Keeper {
 
     async sendTransaction(
         dApp: string,
-        pairName: string,
-        contractName: string,
         method: string, 
         args: Array<string | number>,
         paymentCurrency: string,
         paymentAmount: number,
         waitTx: boolean = true,
     ) {
-        // const dApp = getDappAddress(this.dal, pairName, contractName);
         const builtTransaction = this._buildTransaction(dApp, method, args, paymentCurrency, paymentAmount);
 
         const keeper = await this.getPlugin();

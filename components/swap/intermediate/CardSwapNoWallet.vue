@@ -20,7 +20,7 @@
         <template v-slot:center>
           <button
             class="btn btn-circle btn-secondary-gradient"
-            @click="walletRotate"
+            @click="$emit('reverse-chains')"
           >
             <icon>
               <exchange-icon></exchange-icon>
@@ -105,7 +105,7 @@ import FormGroupBetweenShift1 from '~/components/FormGroupBetweenShift1.vue'
 
 export default {
   name: 'CardSwapNoWallet',
-  props: ['swapForm', 'chains', 'tokens', 'onWalletConnect', 'chainA', 'chainB'],
+  props: ['swapForm', 'chains', 'tokens', 'onWalletConnect'],
   components: {
     Btn,
     FormInput,
@@ -126,13 +126,6 @@ export default {
   computed: {
     theme() {
       return this.$store.getters['theme/theme']
-    },
-  },
-  methods: {
-    walletRotate: function () {
-      const chainA = { ...this.chainA }
-      this.chainA = { ...this.chainB }
-      this.chainB = chainA
     },
   },
 }
