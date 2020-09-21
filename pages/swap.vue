@@ -95,8 +95,7 @@ const AvailableChains = {
 
 const availableTokens = [
   AvailableTokens.SignTestnet,
-  AvailableTokens.SignStagenet,
-  AvailableTokens.SusyStagenet,
+  AvailableTokens.SignStagenet
 ]
 
 export default Vue.extend({
@@ -129,7 +128,7 @@ export default Vue.extend({
       destinationChain: AvailableChains.Ethereum,
       sourceAddress: '',
       destinationAddress: '',
-      token: AvailableTokens.SignTestnet,
+      token: AvailableTokens.SignStagenet,
       tokenAmount: 0,
       message: ''
     },
