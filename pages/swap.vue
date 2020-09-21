@@ -77,7 +77,7 @@ const AvailableTokens = {
   },
   SusyStagenet: {
     label: 'SuSy token Stagenet',
-    icon: '/img/icons/signature-chain.png',
+    icon: '/img/icons/waves.svg',
     bg: 'black',
     assetId: 'Ftnm2XbEWTF54z84UHg7LwPcuBZicXEgvhUdmFt84EWH',
   },
