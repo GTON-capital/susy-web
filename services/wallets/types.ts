@@ -1,3 +1,4 @@
+import { WavesNetworkCode } from './types';
 export interface WavesKeeperAssetData {
     assetId: string;
     tokens: string;
@@ -31,13 +32,16 @@ export interface WavesKeeperAccountBalance {
     network: string;
 }
 
+export type WavesNetworkName = "mainnet" | "testnet" | "customnet" | "stagenet"
+export type WavesNetworkCode = "W" | "T" | "S";
+
 export interface WavesKeeperAccount {
     address: string;
     balance: WavesKeeperAccountBalance;
     lastActive: number;
     name: string;
-    network: "mainnet" | "testnet" | "customnet" | "stagenet";
-    networkCode: "W" | "T" | "S";
+    network: WavesNetworkName;
+    networkCode: WavesNetworkCode;
     publicKey: string;
     selected: number;
     type: string;
@@ -46,6 +50,11 @@ export interface WavesKeeperAccount {
 export interface WavesKeeper {
     publicState: () => Promise<{
         account: WavesKeeperAccount;
+        network: {
+            code: WavesNetworkCode;
+            matcher: string;
+            server: string;
+        }
     }>;
     signAndPublishTransaction: (tx: WavesKeeperTransaction) => Promise<any>;
     signTransaction: (tx: WavesKeeperTransaction) => Promise<void>;
