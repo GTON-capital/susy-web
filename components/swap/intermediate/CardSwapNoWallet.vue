@@ -7,7 +7,7 @@
       <form-group-between>
         <template v-slot:left>
           <search-select
-            v-model="chainA"
+            v-model="swapForm.sourceChain"
             :data="chains"
             :placeholder="sourceChainLabel"
             :modal-heading="sourceChainLabel"
@@ -29,7 +29,7 @@
         </template>
         <template v-slot:right>
           <search-select
-            v-model="chainB"
+            v-model="swapForm.destinationChain"
             :data="chains"
             :placeholder="destinationChainLabel"
             :modal-heading="destinationChainLabel"
@@ -55,7 +55,7 @@
 
     <hr />
 
-    <form-input>
+    <form-input v-model="swapForm.destinationAddress">
       <template v-slot:label>
         To address
       </template>
@@ -65,7 +65,7 @@
       <form-group-between-shift>
         <template v-slot:left>
           <search-select
-            v-model="walletC"
+            v-model="swapForm.token"
             :data="tokens"
             placeholder="Select a token..."
             modal-heading="Select a token"
@@ -76,7 +76,7 @@
           </search-select>
         </template>
         <template v-slot:right>
-          <form-input value="0" type="number">
+          <form-input v-model="swapForm.tokenAmount" type="number">
             <template v-slot:label>
               Receive
             </template>
@@ -105,7 +105,7 @@ import FormGroupBetweenShift1 from '~/components/FormGroupBetweenShift1.vue'
 
 export default {
   name: 'CardSwapNoWallet',
-  props: ['chains', 'tokens', 'onWalletConnect', 'chainA', 'chainB'],
+  props: ['swapForm', 'chains', 'tokens', 'onWalletConnect', 'chainA', 'chainB'],
   components: {
     Btn,
     FormInput,

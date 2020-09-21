@@ -1,25 +1,31 @@
 <template>
   <div class="container">
-    <CardSwapNoWallet v-if="swapState === 0"
+    <CardSwapNoWallet
+      v-if="swapState === 0"
       :chainA="chainA"
       :chainB="chainB"
       :chains="chains"
       :tokens="tokens"
+      :swapForm="swapForm"
       :onWalletConnect="onWalletConnect"
     />
-    <CardSwapWalletConnected v-if="swapState === 1"
+    <CardSwapWalletConnected
+      v-if="swapState === 1"
       :chainA="chainA"
       :chainB="chainB"
       :chains="chains"
       :tokens="tokens"
+      :swapForm="swapForm"
       @next="checkSwapDetails"
     />
-    <CardSwapFinalized v-if="swapState === 2"
+    <CardSwapFinalized
+      v-if="swapState === 2"
       :chainA="chainA"
       :chainB="chainB"
       :chains="chains"
       :tokens="tokens"
       :onWalletConnect="onWalletConnect"
+      :swapForm="swapForm"
       @swap="handleSwapConfirm"
       @back="handleSwapDeny"
     />
@@ -55,26 +61,59 @@ import CardSwapFinalized from '~/components/swap/intermediate/CardSwapFinalized.
 
 import Keeper from '~/services/wallets/Keeper'
 
+const AvailableTokens = {
+  SignTestnet: {
+    label: 'SIGN Testnet',
+    icon: '/img/icons/signature-chain.png',
+    bg: 'black',
+    assetId: 'Gf9t8FA4H3ssoZPCwrg3KwUFCci8zuUFP9ssRsUY3s6a',
+  },
+  SignStagenet: {
+    label: 'SIGN Stagenet',
+    icon: '/img/icons/signature-chain.png',
+    bg: 'black',
+    assetId: '6x8nupBUrX3u1VQcL4jFsf9UyyqacUNbVsKB9WHJ61Qm',
+  },
+}
+
+const AvailableChains = {
+  Ethereum: {
+    id: '1',
+    label: 'Ethereum',
+    icon: '/img/icons/ethereum.svg',
+  },
+  Waves: {
+    id: '2',
+    label: 'Waves',
+    icon: '/img/icons/waves.svg',
+  },
+}
+
+const availableTokens = [
+  AvailableTokens.SignTestnet,
+  AvailableTokens.SignStagenet,
+  // {
+  //   id: '2',
+  //   label: 'RBBT',
+  //   icon: '/img/icons/waves.svg',
+  // },
+
+  // {
+  //   id: '1',
+  //   label: 'Ethereum',
+  //   icon: '/img/icons/ethereum.svg',
+  // },
+]
+
 export default Vue.extend({
   components: {
     WalletProvider,
     ConnectWalletModal,
     CardSwapNoWallet,
-    CardSwapFinalized
+    CardSwapFinalized,
   },
   data: () => ({
-    tokens: [
-      {
-        id: '1',
-        label: 'Ethereum',
-        icon: '/img/icons/ethereum.svg',
-      },
-      {
-        id: '2',
-        label: 'RBBT',
-        icon: '/img/icons/waves.svg',
-      },
-    ],
+    tokens: availableTokens,
     chains: [
       {
         id: '1',
@@ -86,16 +125,16 @@ export default Vue.extend({
         label: 'Waves',
         icon: '/img/icons/waves.svg',
       },
-      {
-        id: '3',
-        label: 'NEO',
-        icon: '/img/icons/neo.svg',
-      },
-      {
-        id: '4',
-        label: 'Tron',
-        icon: '/img/icons/tron.svg',
-      },
+      // {
+      //   id: '3',
+      //   label: 'NEO',
+      //   icon: '/img/icons/neo.svg',
+      // },
+      // {
+      //   id: '4',
+      //   label: 'Tron',
+      //   icon: '/img/icons/tron.svg',
+      // },
     ],
     chainA: {
       id: '1',
@@ -108,6 +147,14 @@ export default Vue.extend({
       icon: '/img/icons/waves.svg',
     },
     swapState: 0,
+    swapForm: {
+      sourceChain: AvailableChains.Waves,
+      destinationChain: AvailableChains.Ethereum,
+      sourceAddress: '',
+      destinationAddress: '',
+      token: AvailableTokens.SignTestnet,
+      tokenAmount: 0,
+    },
   }),
   computed: {
     theme() {
@@ -117,14 +164,15 @@ export default Vue.extend({
   mounted() {
     this.$store.commit('app/SET_IS_HIDE_MOBILE_TITLE', false)
 
-
     this.$store.subscribe((mutation, state) => {
       const currentWallet = this.$store.getters['wallet/currentWallet']
 
-      if (!currentWallet) { return }
+      if (!currentWallet) {
+        return
+      }
 
       this.handleWalletConnected()
-    });
+    })
   },
   methods: {
     walletRotate: function () {
@@ -135,18 +183,16 @@ export default Vue.extend({
     onWalletConnect: function () {
       this.$modal.push('accounts')
     },
-    checkSwapDetails: function() {
+    checkSwapDetails: function () {
       this.swapState = 2
     },
-    handleWalletConnected: function() {
+    handleWalletConnected: function () {
       this.swapState = 1
     },
-    handleSwapConfirm: function() {
-
-    },
-    handleSwapDeny: function() {
+    handleSwapConfirm: function () {},
+    handleSwapDeny: function () {
       this.swapState = 1
-    }
+    },
   },
 })
 </script>
