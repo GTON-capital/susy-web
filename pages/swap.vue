@@ -57,7 +57,7 @@ import CardSwapFinalized from '~/components/swap/intermediate/CardSwapFinalized.
 
 import Keeper, { LUPortInvoker } from '~/services/wallets/keeper'
 
-import Web3WalletConnector from '~/services/wallets/web3'
+import Web3WalletConnector, { Web3Invoker } from '~/services/wallets/web3'
 import { Wallets, WalletState, ExtensionWallet, WalletProvider } from '~/store/wallet/types'
 
 import { processConfig } from '~/services/misc/config'
@@ -266,15 +266,29 @@ export default Vue.extend({
         })
       }
     },
-    handleSwapConfirm: async function () {
-      const { sourceChain } = this.swapForm
+    handleSwapEthereumWaves: async function() {
+      // invokeSendUnlockRequest
+      const invoker = new Web3Invoker();
+      const config = processConfig();
+      const { swapForm: form } = this
 
-      this.swapForm.message = ''
+      try {
+        if (!config.ethereumChain?.ibport) {
+          throw new Error('IB Port is invalid')
+        }
 
-      if (sourceChain.label !== AvailableChains.Waves.label) {
-        return
+        const result = await invoker.invokeSendUnlockRequest(form.destinationAddress, String(form.tokenAmount), config.ethereumChain.ibport)
+
+        console.log({ result })
+        this.swapForm.message = `Swap has been successfully submitted.`
+        this.$modal.push('status')
+      } catch (err) {
+        console.log({ err })
+        this.swapForm.message = `${err.message}. ${err.data}`
+        this.$modal.push('status')
       }
-
+    },
+    handleSwapWavesEthereum: async function() {
       const invoker = new LUPortInvoker(new Keeper())
       const config = processConfig()
       const { swapForm: form } = this
@@ -297,6 +311,22 @@ export default Vue.extend({
         console.log({ err })
         this.swapForm.message = `${err.message}. ${err.data}`
         this.$modal.push('status')
+      }
+    },
+    handleSwapConfirm: async function () {
+      const { sourceChain } = this.swapForm
+
+      this.swapForm.message = ''
+
+      switch (sourceChain.label) {
+        case AvailableChains.Ethereum.label:
+          // @ts-ignore
+          await this.handleSwapEthereumWaves()
+          break
+        case AvailableChains.Waves.label:
+          // @ts-ignore
+          await this.handleSwapWavesEthereum()
+          break
       }
     },
     handleSwapDeny: function () {
