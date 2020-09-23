@@ -66,11 +66,11 @@
               <!-- <nuxt-link class="nav-menu-item link-invert d-lg-none" to="/ui"
                 >UI</nuxt-link
               > -->
-              <nuxt-link class="nav-menu-item link-invert" to="/"
-                >FAQ</nuxt-link
+              <a class="nav-menu-item link-invert" href="https://medium.com/@gravity_protocol/gravity-protocol-faq-9092bc9c5cf7" target="_blank"
+                >FAQ</a
               >
-              <nuxt-link class="nav-menu-item link-invert" to="/"
-                >Docs</nuxt-link
+              <a class="nav-menu-item link-invert" href="https://docs.gravity.tech" target="_blank"
+                >Docs</a
               >
               <footer-block :is-disabled-cookies-box="true"></footer-block>
             </div>

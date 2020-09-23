@@ -16,7 +16,7 @@
             />
           </nuxt-link>
         </div>
-        <div class="footer-nav-item">
+        <!-- <div class="footer-nav-item">
           <a class="link-invert" href="/">Docs</a>
         </div>
         <div class="footer-nav-item">
@@ -30,6 +30,14 @@
         </div>
         <div class="footer-nav-item"><a href="/">Privacy policy</a></div>
         <div class="footer-nav-item"><a href="/">Terms & Conditions</a></div>
+        <div class="footer-nav-item footer-contacts-email">
+          <a href="mailto:oracle@gravity.tech" class="text-primary">
+            oracle@gravity.tech
+          </a>
+        </div> -->
+        <div class="footer-nav-item" :key="section.label" v-for="section in sections">
+          <a class="link-invert" :href="section.link">{{ section.label }}</a>
+        </div>
         <div class="footer-nav-item footer-contacts-email">
           <a href="mailto:oracle@gravity.tech" class="text-primary">
             oracle@gravity.tech
@@ -106,6 +114,9 @@ import Vue from 'vue'
 import Btn from '~/components/Btn.vue'
 import Icon from '~/components/Icon.vue'
 
+import { sections } from '~/misc/links'
+
+
 export default Vue.extend({
   name: 'GravityFooter',
   components: {
@@ -133,38 +144,47 @@ export default Vue.extend({
   },
   data: () => ({
     socials: [
-      {
-        icon: 'facebook',
-        link: '/',
-      },
-      {
-        icon: 'medium',
-        link: '/',
-      },
-      {
-        icon: 'twitter',
-        link: '/',
-      },
-      {
-        icon: 'linked-in',
-        link: '/',
-      },
-      {
-        icon: 'telegram',
-        link: '/',
-      },
-      {
-        icon: 'discord',
-        link: '/',
-      },
-      {
-        icon: 'reddit',
-        link: '/',
-      },
-      {
-        icon: 'github',
-        link: '/',
-      },
+      // {
+      //   icon: 'facebook',
+      //   link: '/',
+      // },
+      // {
+      //   icon: 'medium',
+      //   link: '/',
+      // },
+      // {
+      //   icon: 'twitter',
+      //   link: '/',
+      // },
+      // {
+      //   icon: 'linked-in',
+      //   link: '/',
+      // },
+      // {
+      //   icon: 'telegram',
+      //   link: '/',
+      // },
+      // {
+      //   icon: 'discord',
+      //   link: '/',
+      // },
+      // {
+      //   icon: 'reddit',
+      //   link: '/',
+      // },
+      // {
+      //   icon: 'github',
+      //   link: '/',
+      // },
+      ...sections.protocol.links,
+      ...sections.community.links,
+      ...sections.news.links,
+    ].filter(link => link.icon),
+    sections: [
+      ...sections.protocol.links,
+      // ...sections.community.links,
+      // ...sections.news.links,
+      ...sections.resources.links,
     ],
     heightCookiesBox: 100,
     isCookiesBox: false,

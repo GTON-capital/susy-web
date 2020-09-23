@@ -64,6 +64,7 @@ import Vue from 'vue'
 import Icon from '~/components/Icon.vue'
 import Btn from '~/components/Btn.vue'
 
+
 export default Vue.extend({
   name: 'SusyFooter',
   components: {

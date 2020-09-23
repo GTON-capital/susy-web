@@ -35,11 +35,11 @@
             @click="goBack"
             >Back</btn
           >
-          <btn
+          <!-- <btn
             class="btn-link text-secondary"
             style="padding-left: 22px; padding-right: 22px;"
             >Logs</btn
-          >
+          > -->
         </div>
       </template>
     </modal-content>

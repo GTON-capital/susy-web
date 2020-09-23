@@ -7,7 +7,12 @@
       <template v-slot:body>
         <radio-provider-group style="margin-bottom: 24px;">
           <div class="message-group">
-            {{ message }}
+            {{ message.text }}
+          </div>
+          <div class="message-group-links" v-if="links.length > 0">
+            <a :href="link.value" :key="link.title" v-for="link in links">{{
+              link.title
+            }}</a>
           </div>
         </radio-provider-group>
         <div class="text-center">
@@ -33,7 +38,22 @@ import Btn from '~/components/Btn.vue'
 
 export default {
   name: 'StatusModal',
-  props: ['message'],
+  props: ['message', 'sourceChain', 'destinationChain'],
+  computed: {
+    links: function () {
+      return [this.message.linkA, this.message.linkB]
+        .filter(Boolean)
+        .map((link, index) => {
+          return {
+            title:
+              index === 0
+                ? this.sourceChain.label
+                : this.destinationChain.label,
+            value: link,
+          }
+        })
+    },
+  },
   components: {
     Btn,
     ModalContent,
@@ -44,4 +64,11 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.message-group-links {
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  line-height: 1.7;
+}
+</style>

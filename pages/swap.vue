@@ -28,8 +28,13 @@
     />
     <client-only>
       <ActionLogsModal :page="page" />
-      <ConnectWalletModal @connect="handleWalletConnect"/>
-      <StatusModal :message="swapForm.message" @close="onPopModal" />
+      <ConnectWalletModal @connect="handleWalletConnect" />
+      <StatusModal
+        :message="swapForm.message"
+        @close="onPopModal"
+        :sourceChain="swapForm.sourceChain"
+        :destinationChain="swapForm.destinationChain"
+      />
     </client-only>
   </div>
 </template>
@@ -58,11 +63,15 @@ import CardSwapFinalized from '~/components/swap/intermediate/CardSwapFinalized.
 import Keeper, { LUPortInvoker } from '~/services/wallets/keeper'
 
 import Web3WalletConnector, { Web3Invoker } from '~/services/wallets/web3'
-import { Wallets, WalletState, ExtensionWallet, WalletProvider } from '~/store/wallet/types'
+import {
+  Wallets,
+  WalletState,
+  ExtensionWallet,
+  WalletProvider,
+} from '~/store/wallet/types'
 
 import { processConfig } from '~/services/misc/config'
 import { buildPropertyChecker } from '~/services/wallets/checker'
-
 
 const AvailableTokens = {
   SignTestnet: {
@@ -106,6 +115,12 @@ const availableTokens = [
   AvailableTokens.SignStagenet,
 ]
 
+interface SwapMessage {
+  text: string
+  linkA?: string
+  linkB?: string
+}
+
 export default Vue.extend({
   components: {
     // WalletProviderModal,
@@ -128,10 +143,10 @@ export default Vue.extend({
       tokenAmount: 0,
       currentBalance: 0,
       formattedBalance: 0,
-      message: '',
+      message: {} as SwapMessage,
     },
     propertiesObs: null,
-    subs: []
+    subs: [],
   }),
   computed: {
     theme() {
@@ -156,50 +171,67 @@ export default Vue.extend({
     this.propertiesObs = buildPropertyChecker(1800, this.propertyObserveMap)
 
     // @ts-ignore
-    const sub = this.propertiesObs.subscribe(async walletData => {
+    const sub = this.propertiesObs.subscribe(async (walletData) => {
       const result = await walletData
 
       this.swapForm = {
         ...this.swapForm,
-        ...result
+        ...result,
       }
     })
 
     // @ts-ignore
     this.subs.push(sub)
+
+    // this.swapForm.message = {
+    //   text: 'Swap has been sfgk dnsf g',
+    //   linkA: 'A',
+    //   linkB: 'B',
+    // }
+    // this.$modal.push('status')
   },
   beforeDestroy() {
     // @ts-ignore
     this.cleanSubs()
   },
   methods: {
-    propertyObserveMap: async function(num: number) {
+    propertyObserveMap: async function (num: number) {
       const currentWallet = this.$store.getters['wallet/currentWallet']
 
-      if (!currentWallet) { return {} }
+      if (!currentWallet) {
+        return {}
+      }
 
       if (currentWallet.provider === WalletProvider.WavesKeeper) {
-        const keeper = new Keeper();
+        const keeper = new Keeper()
         const plugin = await keeper.getPlugin()
 
-        if (!plugin) { return {} }
+        if (!plugin) {
+          return {}
+        }
 
         const publicState = await plugin.publicState()
 
-        if (!publicState) { return {} }
+        if (!publicState) {
+          return {}
+        }
 
         const { address } = publicState.account
         const { server } = publicState.network
         const { assetId } = this.swapForm.token
 
         try {
-          const balanceInfo = await axios.get(`/assets/balance/${address}/${assetId}`, { baseURL: server })
+          const balanceInfo = await axios.get(
+            `/assets/balance/${address}/${assetId}`,
+            { baseURL: server }
+          )
           const { balance } = balanceInfo.data
 
           return {
             sourceAddress: address,
             currentBalance: balance,
-            formattedBalance: balance / Math.pow(10, this.swapForm.token.decimals)
+            formattedBalance:
+              balance / Math.pow(10, this.swapForm.token.decimals),
           }
         } catch (err) {
           return {}
@@ -210,7 +242,7 @@ export default Vue.extend({
     },
     cleanSubs: function () {
       for (const sub of this.subs) {
-        (sub as Subscription).unsubscribe()
+        ;(sub as Subscription).unsubscribe()
       }
     },
     onPopModal: function () {
@@ -226,7 +258,9 @@ export default Vue.extend({
     },
     checkSwapDetails: function () {
       const { tokenAmount, destinationAddress } = this.swapForm
-      if (!destinationAddress || !tokenAmount) { return }
+      if (!destinationAddress || !tokenAmount) {
+        return
+      }
 
       this.swapState = 2
     },
@@ -234,7 +268,6 @@ export default Vue.extend({
       this.swapState = 1
     },
     handleWalletConnect: async function (wallet: ExtensionWallet) {
-
       if (wallet.provider === WalletProvider.Metamask) {
         const connector = new Web3WalletConnector()
         const isConnected = connector.ethEnabled()
@@ -269,10 +302,20 @@ export default Vue.extend({
         })
       }
     },
-    handleSwapEthereumWaves: async function() {
+    buildSuccessMessage: function (txA: string, txB: string): SwapMessage {
+      return {
+        text: `
+          Swap has been successfully submitted. \n
+          Check your transactions here:\n
+        `,
+        linkA: `https://wavesexplorer.com/stagenet/${txA} `,
+        linkB: `https://ropsten.etherscan.io/address/${txB}#tokentxns `,
+      }
+    },
+    handleSwapEthereumWaves: async function () {
       // invokeSendUnlockRequest
-      const invoker = new Web3Invoker();
-      const config = processConfig();
+      const invoker = new Web3Invoker()
+      const config = processConfig()
       const { swapForm: form } = this
 
       try {
@@ -280,23 +323,31 @@ export default Vue.extend({
           throw new Error('IB Port is invalid')
         }
 
-        const result = await invoker.invokeSendUnlockRequest(form.destinationAddress, String(form.tokenAmount), config.ethereumChain.ibport)
+        const result = await invoker.invokeSendUnlockRequest(
+          form.destinationAddress,
+          { value: form.tokenAmount, type: undefined },
+          config.ethereumChain.ibport
+        )
 
         console.log({ result })
-        this.swapForm.message = `Swap has been successfully submitted.`
+        this.swapForm.message = {
+          text: `Swap has been successfully submitted.`,
+        }
         this.$modal.push('status')
       } catch (err) {
         console.log({ err })
-        this.swapForm.message = `${err.message}. ${err.data}`
+        this.swapForm.message = { text: `${err.message}. ${err.data}` }
         this.$modal.push('status')
       }
     },
-    handleSwapWavesEthereum: async function() {
+    handleSwapWavesEthereum: async function () {
       const invoker = new LUPortInvoker(new Keeper())
       const config = processConfig()
       const { swapForm: form } = this
 
-      if (!config.wavesChain?.luport) { return }
+      if (!config.wavesChain?.luport) {
+        return
+      }
 
       try {
         const result = await invoker.sendTransferRequest({
@@ -308,18 +359,22 @@ export default Vue.extend({
         })
 
         console.log({ result })
-        this.swapForm.message = `Swap has been successfully submitted.`
+        // @ts-ignore
+        this.swapForm.message = this.buildSuccessMessage(
+          form.sourceAddress,
+          form.destinationAddress
+        )
         this.$modal.push('status')
       } catch (err) {
         console.log({ err })
-        this.swapForm.message = `${err.message}. ${err.data}`
+        this.swapForm.message = { text: `${err.message}. ${err.data}` }
         this.$modal.push('status')
       }
     },
     handleSwapConfirm: async function () {
       const { sourceChain } = this.swapForm
 
-      this.swapForm.message = ''
+      this.swapForm.message = { text: '' }
 
       switch (sourceChain.label) {
         case AvailableChains.Ethereum.label:
@@ -340,7 +395,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-
 .btn.btn-circle.btn-secondary-gradient {
   visibility: hidden;
 }
