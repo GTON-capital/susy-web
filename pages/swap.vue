@@ -91,18 +91,18 @@ const AvailableTokens = {
 const AvailableChains = {
   Ethereum: {
     id: '1',
-    label: 'Ethereum',
+    label: 'ETH Ropsten',
     icon: '/img/icons/ethereum.svg',
   },
   Waves: {
     id: '2',
-    label: 'Waves',
+    label: 'Waves Stagenet',
     icon: '/img/icons/waves.svg',
   },
 }
 
 const availableTokens = [
-  AvailableTokens.SignTestnet,
+  // AvailableTokens.SignTestnet,
   AvailableTokens.SignStagenet,
 ]
 
@@ -225,6 +225,9 @@ export default Vue.extend({
       this.$modal.push('accounts')
     },
     checkSwapDetails: function () {
+      const { tokenAmount, destinationAddress } = this.swapForm
+      if (!destinationAddress || !tokenAmount) { return }
+
       this.swapState = 2
     },
     handleWalletConnected: function () {
@@ -336,4 +339,9 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+
+.btn.btn-circle.btn-secondary-gradient {
+  visibility: hidden;
+}
+</style>

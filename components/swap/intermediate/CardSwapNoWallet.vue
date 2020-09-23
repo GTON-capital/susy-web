@@ -1,7 +1,7 @@
 <template>
   <card-swap>
     <template v-slot:header>
-      Swap
+      <SwapHint />
     </template>
     <simple-wrapper-slim-sm>
       <form-group-between>
@@ -103,10 +103,13 @@ import CardSwap from '~/components/swap/CardSwap'
 import FormGroupBetweenShift from '~/components/FormGroupBetweenShift.vue'
 import FormGroupBetweenShift1 from '~/components/FormGroupBetweenShift1.vue'
 
+import SwapHint from '~/components/swap/SwapHint'
+
 export default {
   name: 'CardSwapNoWallet',
   props: ['swapForm', 'chains', 'tokens', 'onWalletConnect'],
   components: {
+    SwapHint,
     Btn,
     FormInput,
     SimpleWrapperSlimSm,

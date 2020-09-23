@@ -47,7 +47,7 @@
           <form-input :value="swapForm.tokenAmount" type="number" readonly>
             <template v-slot:label>
               Receive
-              <span class="text-secondary float-right font-weight-normal">
+              <span class="text-gwei text-secondary float-right font-weight-normal">
                 Gas: 100 Gwei
               </span>
             </template>
@@ -113,3 +113,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.text-gwei {
+  visibility: hidden;
+}
+</style>
