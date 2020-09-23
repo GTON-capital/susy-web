@@ -1,9 +1,9 @@
 <template>
   <modal name="logs">
     <modal-content :show-footer="false" size="lg">
-      <template v-slot:head>
+      <!-- <template v-slot:head>
         Logs
-      </template>
+      </template> -->
       <template v-slot:body>
         <table-log></table-log>
         <pagination v-model="page" count-pages="10"></pagination>
