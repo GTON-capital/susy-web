@@ -1,0 +1,22 @@
+kind: pipeline
+type: docker
+name: susy-web
+
+
+pipeline:
+  deployment:
+    image: appleboy/drone-ssh
+    host: susy.gravityhub.org
+    key:
+      from_secret: password
+    username:
+      from_secret: ssh_username
+    port:
+      from_secret: ssh_port
+    script:
+        - cd /var/www/susy-web && bash deploy.sh
+
+trigger:
+  branch:
+  - master
+  - add-drone
