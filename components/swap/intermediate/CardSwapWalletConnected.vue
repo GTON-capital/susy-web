@@ -92,7 +92,7 @@
             <template v-slot:label>
               Receive
               <span class="text-secondary float-right font-weight-normal">
-                Gas: 100 Gwei
+                <!-- Gas: 100 Gwei -->
               </span>
             </template>
           </form-input>
@@ -101,7 +101,10 @@
     </simple-wrapper-slim-sm>
 
     <template v-slot:footer>
-      <btn class="btn-primary" @click="$emit('next')">
+      <btn class="btn-primary" @click="$emit('unlock')" v-if="swapForm.needAllowance">
+        Unlock ERC20
+      </btn>
+      <btn class="btn-primary" @click="$emit('next')" v-if="!swapForm.needAllowance">
         Next
       </btn>
     </template>

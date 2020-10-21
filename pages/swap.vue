@@ -14,6 +14,7 @@
       :tokens="tokens"
       :swapForm="swapForm"
       @next="checkSwapDetails"
+      @unlock="unlockERC20"
       @change-wallet="onWalletConnect"
       @reverse-chains="onReverseChains"
     />
@@ -86,6 +87,7 @@ const AvailableTokens = {
     icon: '/img/icons/signature-chain.png',
     bg: 'black',
     assetId: '6x8nupBUrX3u1VQcL4jFsf9UyyqacUNbVsKB9WHJ61Qm',
+    ERC20: '0xc2dda926711eb9b94b89c886aabb8b11d6ac014d',
     decimals: 8,
   },
   SusyStagenet: {
@@ -143,6 +145,7 @@ export default Vue.extend({
       tokenAmount: 0,
       currentBalance: 0,
       formattedBalance: 0,
+      needAllowance: false,
       message: {} as SwapMessage,
     },
     propertiesObs: null,
@@ -197,6 +200,7 @@ export default Vue.extend({
   methods: {
     propertyObserveMap: async function (num: number) {
       const currentWallet = this.$store.getters['wallet/currentWallet']
+      const config = processConfig()
 
       if (!currentWallet) {
         return {}
@@ -238,8 +242,38 @@ export default Vue.extend({
         }
       }
 
+      if (currentWallet.provider === WalletProvider.Metamask) {
+        try {
+          if (!config.ethereumChain?.ibport) {
+            throw new Error('IB Port is invalid')
+          }
+          const invoker = new Web3Invoker()
+          const { balance, allowance } = await invoker.getBalanceAndAllowance(this.swapForm.sourceAddress,
+           this.swapForm.token.ERC20,
+            '0x' + config.ethereumChain.ibport)
+            
+          return {
+            currentBalance: balance,
+            formattedBalance:
+              balance / Math.pow(10, this.swapForm.token.decimals),
+            needAllowance: allowance <= balance
+          }
+
+        } catch (err) {
+          console.log(err)
+          return {}
+        }
+      }
+
       return {}
     },
+    unlockERC20: function () {
+      const invoker = new Web3Invoker()
+      const config = processConfig()
+
+      invoker.approve('0x' + config.ethereumChain?.ibport, this.swapForm.token.ERC20)
+    },
+
     cleanSubs: function () {
       for (const sub of this.subs) {
         ;(sub as Subscription).unsubscribe()
