@@ -1,5 +1,5 @@
-import susy from './themes/susy'
-import gravity from './themes/gravity'
+import susy from './src/themes/susy'
+import gravity from './src/themes/gravity'
 
 const THEME = 'gravity' // susy, gravity
 // Comment:cvaize
