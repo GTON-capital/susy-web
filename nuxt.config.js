@@ -12,6 +12,7 @@ export default {
    ** Nuxt rendering mode
    ** See https://nuxtjs.org/api/configuration-mode
    */
+  srcDir: 'src/',
   mode: 'universal',
   env: {
     theme: THEME,

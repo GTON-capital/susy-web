@@ -16,6 +16,7 @@
     "@nuxt/typescript-runtime": "^0.4.10",
     "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/style-resources": "^1.0.0",
+    "@types/jest": "^26.0.15",
     "@waves/waves-transactions": "^4.1.1",
     "axios": "^0.20.0",
     "big-number": "^2.0.0",
