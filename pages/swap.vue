@@ -97,6 +97,13 @@ const AvailableTokens = {
     assetId: 'Ftnm2XbEWTF54z84UHg7LwPcuBZicXEgvhUdmFt84EWH',
     decimals: 8,
   },
+  WBNBStagenet: {
+    label: 'WBNB Stagenet',
+    icon: 'https://btcmanager.com/wp-content/uploads/2019/05/uoQavJ6V.png',
+    bg: 'black',
+    assetId: 'Ap4heStRGQbHAxR6qb9UFtJ3kBiGuumdnsd9JzTHwTTL',
+    decimals: 6,
+  },
 }
 
 const AvailableChains = {
@@ -115,6 +122,7 @@ const AvailableChains = {
 const availableTokens = [
   // AvailableTokens.SignTestnet,
   AvailableTokens.SignStagenet,
+  AvailableTokens.WBNBStagenet,
 ]
 
 interface SwapMessage {
