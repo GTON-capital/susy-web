@@ -101,10 +101,10 @@
     </simple-wrapper-slim-sm>
 
     <template v-slot:footer>
-      <btn class="btn-primary" @click="$emit('unlock')" v-if="swapForm.needAllowance">
+      <!-- <btn class="btn-primary" @click="$emit('unlock')" v-if="swapForm.needAllowance">
         Unlock ERC20
-      </btn>
-      <btn class="btn-primary" @click="$emit('next')" v-if="!swapForm.needAllowance">
+      </btn> -->
+      <btn class="btn-primary" @click="$emit('next')">
         Next
       </btn>
     </template>
