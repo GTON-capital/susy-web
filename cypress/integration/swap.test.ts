@@ -1,7 +1,7 @@
 describe('Swap', () => {
-    beforeEach(() => {
-      // Visiting swap
-      cy.visit('/swap')
-    })
+  it('visiting swap page', () => {
+    cy.visit('/swap')
   })
-  
+
+
+})
