@@ -10,9 +10,13 @@
             {{ message.text }}
           </div>
           <div class="message-group-links" v-if="links.length > 0">
-            <a :href="link.value" :key="link.title" v-for="link in links">{{
-              link.title
-            }}</a>
+            <a
+              target="_blank"
+              :href="link.value"
+              :key="link.title"
+              v-for="link in links"
+              >{{ link.title }}</a
+            >
           </div>
         </radio-provider-group>
         <div class="text-center">

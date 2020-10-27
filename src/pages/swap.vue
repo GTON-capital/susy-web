@@ -76,6 +76,7 @@ import { buildPropertyChecker } from '~/services/wallets/checker'
 
 const AvailableTokens = {
   SignTestnet: {
+    ticker: 'SIGN',
     label: 'SIGN Testnet',
     icon: '/img/icons/signature-chain.png',
     bg: 'black',
@@ -83,6 +84,7 @@ const AvailableTokens = {
     assetId: 'Gf9t8FA4H3ssoZPCwrg3KwUFCci8zuUFP9ssRsUY3s6a',
   },
   SignStagenet: {
+    ticker: 'SIGN',
     label: 'SIGN Stagenet',
     icon: '/img/icons/signature-chain.png',
     bg: 'black',
@@ -91,15 +93,28 @@ const AvailableTokens = {
     decimals: 8,
   },
   SusyStagenet: {
+    ticker: 'SIGN',
     label: 'SuSy token Stagenet',
     icon: '/img/icons/waves.svg',
     bg: 'black',
     assetId: 'Ftnm2XbEWTF54z84UHg7LwPcuBZicXEgvhUdmFt84EWH',
     decimals: 8,
   },
+  WBNBStagenet: {
+    ticker: 'WBNB',
+    label: 'WBNB Stagenet',
+    icon: 'https://cryptoai.trade/wp-content/uploads/2020/03/bnb-2.png',
+    bg: 'black',
+    assetId: 'Ap4heStRGQbHAxR6qb9UFtJ3kBiGuumdnsd9JzTHwTTL',
+    ERC20: '0xb834BBbE424Ca134b372e7D275Ef628CDCB4F65E',
+    decimals: 6,
+  },
 }
 
-const AvailableChains = {
+type Chain = { id: string; label: string; icon: string }
+type AvailableChainsDict = { Ethereum: Chain; Waves: Chain; BSC: Chain }
+
+const AvailableChains: AvailableChainsDict = {
   Ethereum: {
     id: '1',
     label: 'ETH Ropsten',
@@ -110,11 +125,30 @@ const AvailableChains = {
     label: 'Waves Stagenet',
     icon: '/img/icons/waves.svg',
   },
+  BSC: {
+    id: '3',
+    label: 'BSC Testnet',
+    icon: 'https://cryptoai.trade/wp-content/uploads/2020/03/bnb-2.png',
+  },
+}
+
+function formLinkForChain(chain: Chain, address: string): string {
+  switch (chain.id) {
+    case AvailableChains.BSC.id:
+      return `https://testnet.bscscan.com/address/${address}#tokentxns`
+    case AvailableChains.Ethereum.id:
+      return `https://ropsten.etherscan.io/address/${address}#tokentxns `
+    case AvailableChains.Waves.id:
+      return `https://wavesexplorer.com/stagenet/address/${address} `
+  }
+
+  return ''
 }
 
 const availableTokens = [
   // AvailableTokens.SignTestnet,
   AvailableTokens.SignStagenet,
+  AvailableTokens.WBNBStagenet,
 ]
 
 interface SwapMessage {
@@ -122,6 +156,12 @@ interface SwapMessage {
   linkA?: string
   linkB?: string
 }
+
+// function web3NumFormat() {
+//   const { BN } = window.web3.utils
+
+//   amountValue = new BN(amountValue, 10)
+// }
 
 export default Vue.extend({
   components: {
@@ -134,14 +174,18 @@ export default Vue.extend({
   data: () => ({
     page: 10,
     tokens: availableTokens,
-    chains: [AvailableChains.Waves, AvailableChains.Ethereum],
+    chains: [
+      AvailableChains.Waves,
+      AvailableChains.Ethereum,
+      AvailableChains.BSC,
+    ],
     swapState: 0,
     swapForm: {
       sourceChain: AvailableChains.Waves,
-      destinationChain: AvailableChains.Ethereum,
+      destinationChain: AvailableChains.BSC,
       sourceAddress: '',
       destinationAddress: '',
-      token: AvailableTokens.SignStagenet,
+      token: AvailableTokens.WBNBStagenet,
       tokenAmount: 0,
       currentBalance: 0,
       formattedBalance: 0,
@@ -247,18 +291,23 @@ export default Vue.extend({
           if (!config.ethereumChain?.ibport) {
             throw new Error('IB Port is invalid')
           }
+          const currentWalletAddress =
+            window.web3.eth.accounts.givenProvider.selectedAddress
+
           const invoker = new Web3Invoker()
-          const { balance, allowance } = await invoker.getBalanceAndAllowance(this.swapForm.sourceAddress,
-           this.swapForm.token.ERC20,
-            '0x' + config.ethereumChain.ibport)
-            
+          const { balance, allowance } = await invoker.getBalanceAndAllowance(
+            currentWalletAddress,
+            this.swapForm.token.ERC20,
+            '0x' + config.ethereumChain.ibport
+          )
+          console.log({ balance })
           return {
+            sourceAddress: currentWalletAddress,
             currentBalance: balance,
             formattedBalance:
               balance / Math.pow(10, this.swapForm.token.decimals),
-            needAllowance: allowance <= balance
+            needAllowance: allowance <= balance,
           }
-
         } catch (err) {
           console.log(err)
           return {}
@@ -271,7 +320,10 @@ export default Vue.extend({
       const invoker = new Web3Invoker()
       const config = processConfig()
 
-      invoker.approve('0x' + config.ethereumChain?.ibport, this.swapForm.token.ERC20)
+      invoker.approve(
+        '0x' + config.ethereumChain?.ibport,
+        this.swapForm.token.ERC20
+      )
     },
 
     cleanSubs: function () {
@@ -336,14 +388,19 @@ export default Vue.extend({
         })
       }
     },
-    buildSuccessMessage: function (txA: string, txB: string): SwapMessage {
+    buildSuccessMessage: function (
+      sourceChain: Chain,
+      destinationChain: Chain,
+      txA: string,
+      txB: string
+    ): SwapMessage {
       return {
         text: `
           Swap has been successfully submitted. \n
           Check your transactions here:\n
         `,
-        linkA: `https://wavesexplorer.com/stagenet/${txA} `,
-        linkB: `https://ropsten.etherscan.io/address/${txB}#tokentxns `,
+        linkA: formLinkForChain(sourceChain, txA),
+        linkB: formLinkForChain(destinationChain, txB),
       }
     },
     handleSwapEthereumWaves: async function () {
@@ -395,6 +452,8 @@ export default Vue.extend({
         console.log({ result })
         // @ts-ignore
         this.swapForm.message = this.buildSuccessMessage(
+          form.sourceChain,
+          form.destinationChain,
           form.sourceAddress,
           form.destinationAddress
         )
@@ -410,12 +469,12 @@ export default Vue.extend({
 
       this.swapForm.message = { text: '' }
 
-      switch (sourceChain.label) {
-        case AvailableChains.Ethereum.label:
+      switch (sourceChain.id) {
+        case (AvailableChains.Ethereum.id, AvailableChains.BSC.id):
           // @ts-ignore
           await this.handleSwapEthereumWaves()
           break
-        case AvailableChains.Waves.label:
+        case AvailableChains.Waves.id:
           // @ts-ignore
           await this.handleSwapWavesEthereum()
           break

@@ -18,8 +18,8 @@ export function processConfig(): EnvironmentConfig {
             ibport: process.env.WAVES_IB_PORT
         },
         ethereumChain: {
-            luport: process.env.ETH_LU_PORT,
-            ibport: process.env.ETH_IB_PORT
+            // luport: process.env.ETH_LU_PORT,
+            ibport: 'A3AA43CF614718409FFedfCeCC2aF9e064729D5D'
         },
     }
 }

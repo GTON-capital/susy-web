@@ -102,8 +102,7 @@ export class Web3Invoker {
       amountValue = amountValue.mul(qtr)
     }
 
-
-    console.log({ amountValue, ctx: this, eth: window.web3.eth, accs: window.web3.eth.accounts })
+    // console.log({ amountValue, ctx: this, eth: window.web3.eth, accs: window.web3.eth.accounts })
 
     const sendRequest = await contract.methods
       .createTransferUnwrapRequest(amountValue, this.wavesToBytes32(receiver)) 
