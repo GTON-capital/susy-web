@@ -53,7 +53,7 @@ import StatusModal from '~/components/modal/StatusModal'
 
 // SWAP
 import WithdrawCard from '~/components/swap/WithdrawCard.vue'
-import CardSwap from '~/components/swap/CardSwap'
+import CardSwap from '~/components/swap/CardSwap.vue'
 import CardSwapFinal from '~/components/swap/CardSwapFinal.vue'
 
 // SWAP INTERMEDIATE
@@ -72,96 +72,23 @@ import {
 } from '~/store/wallet/types'
 
 import { processConfig } from '~/services/misc/config'
+import { castToDecimalsVersion } from '~/misc/bn'
 import { buildPropertyChecker } from '~/services/wallets/checker'
+import { AvailableChains, Chain } from '~/chains/chain'
+import {
+  getAvailableTokens,
+  AvailableTokens,
+  formLinkForChain,
+} from '~/chains/token'
 
-const AvailableTokens = {
-  SignTestnet: {
-    ticker: 'SIGN',
-    label: 'SIGN Testnet',
-    icon: '/img/icons/signature-chain.png',
-    bg: 'black',
-    decimals: 8,
-    assetId: 'Gf9t8FA4H3ssoZPCwrg3KwUFCci8zuUFP9ssRsUY3s6a',
-  },
-  SignStagenet: {
-    ticker: 'SIGN',
-    label: 'SIGN Stagenet',
-    icon: '/img/icons/signature-chain.png',
-    bg: 'black',
-    assetId: '6x8nupBUrX3u1VQcL4jFsf9UyyqacUNbVsKB9WHJ61Qm',
-    ERC20: '0xc2dda926711eb9b94b89c886aabb8b11d6ac014d',
-    decimals: 8,
-  },
-  SusyStagenet: {
-    ticker: 'SIGN',
-    label: 'SuSy token Stagenet',
-    icon: '/img/icons/waves.svg',
-    bg: 'black',
-    assetId: 'Ftnm2XbEWTF54z84UHg7LwPcuBZicXEgvhUdmFt84EWH',
-    decimals: 8,
-  },
-  WBNBStagenet: {
-    ticker: 'WBNB',
-    label: 'WBNB Stagenet',
-    icon: 'https://cryptoai.trade/wp-content/uploads/2020/03/bnb-2.png',
-    bg: 'black',
-    assetId: 'Ap4heStRGQbHAxR6qb9UFtJ3kBiGuumdnsd9JzTHwTTL',
-    ERC20: '0xb834BBbE424Ca134b372e7D275Ef628CDCB4F65E',
-    decimals: 6,
-  },
-}
 
-type Chain = { id: string; label: string; icon: string }
-type AvailableChainsDict = { Ethereum: Chain; Waves: Chain; BSC: Chain }
-
-const AvailableChains: AvailableChainsDict = {
-  Ethereum: {
-    id: '1',
-    label: 'ETH Ropsten',
-    icon: '/img/icons/ethereum.svg',
-  },
-  Waves: {
-    id: '2',
-    label: 'Waves Stagenet',
-    icon: '/img/icons/waves.svg',
-  },
-  BSC: {
-    id: '3',
-    label: 'BSC Testnet',
-    icon: 'https://cryptoai.trade/wp-content/uploads/2020/03/bnb-2.png',
-  },
-}
-
-function formLinkForChain(chain: Chain, address: string): string {
-  switch (chain.id) {
-    case AvailableChains.BSC.id:
-      return `https://testnet.bscscan.com/address/${address}#tokentxns`
-    case AvailableChains.Ethereum.id:
-      return `https://ropsten.etherscan.io/address/${address}#tokentxns `
-    case AvailableChains.Waves.id:
-      return `https://wavesexplorer.com/stagenet/address/${address} `
-  }
-
-  return ''
-}
-
-const availableTokens = [
-  // AvailableTokens.SignTestnet,
-  AvailableTokens.SignStagenet,
-  AvailableTokens.WBNBStagenet,
-]
+const availableTokens = getAvailableTokens()
 
 interface SwapMessage {
   text: string
   linkA?: string
   linkB?: string
 }
-
-// function web3NumFormat() {
-//   const { BN } = window.web3.utils
-
-//   amountValue = new BN(amountValue, 10)
-// }
 
 export default Vue.extend({
   components: {
@@ -295,17 +222,17 @@ export default Vue.extend({
             window.web3.eth.accounts.givenProvider.selectedAddress
 
           const invoker = new Web3Invoker()
-          const { balance, allowance } = await invoker.getBalanceAndAllowance(
+          let { balance, allowance } = await invoker.getBalanceAndAllowance(
             currentWalletAddress,
             this.swapForm.token.ERC20,
-            '0x' + config.ethereumChain.ibport
+            config.ethereumChain.ibport
           )
-          console.log({ balance })
+          balance = Number(balance)
+          // console.log({ balance }, this.swapForm.token.decimals)
           return {
             sourceAddress: currentWalletAddress,
             currentBalance: balance,
-            formattedBalance:
-              balance / Math.pow(10, this.swapForm.token.decimals),
+            formattedBalance: balance / Math.pow(10, 18),
             needAllowance: allowance <= balance,
           }
         } catch (err) {
@@ -319,13 +246,20 @@ export default Vue.extend({
     unlockERC20: function () {
       const invoker = new Web3Invoker()
       const config = processConfig()
+      const amountValue = castToDecimalsVersion(this.swapForm.tokenAmount, 18)
 
+      console.log(
+        { amountValue: amountValue.toString() },
+        config.ethereumChain?.ibport,
+        this.swapForm.token.ERC20,
+        amountValue
+      )
       invoker.approve(
-        '0x' + config.ethereumChain?.ibport,
-        this.swapForm.token.ERC20
+        config.ethereumChain?.ibport,
+        this.swapForm.token.ERC20,
+        amountValue
       )
     },
-
     cleanSubs: function () {
       for (const sub of this.subs) {
         ;(sub as Subscription).unsubscribe()
@@ -488,7 +422,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-.btn.btn-circle.btn-secondary-gradient {
-  visibility: hidden;
-}
+// .btn.btn-circle.btn-secondary-gradient {
+//   visibility: hidden;
+// }
 </style>

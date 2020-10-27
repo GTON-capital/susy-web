@@ -19,7 +19,7 @@ export function processConfig(): EnvironmentConfig {
         },
         ethereumChain: {
             // luport: process.env.ETH_LU_PORT,
-            ibport: 'A3AA43CF614718409FFedfCeCC2aF9e064729D5D'
+            ibport: '0xA3AA43CF614718409FFedfCeCC2aF9e064729D5D'
         },
     }
 }

@@ -7,7 +7,9 @@
           class="text-center"
           style="margin-top: -28px; margin-bottom: 20px;"
         >
-          <btn class="btn-link text-secondary font-weight-normal"
+          <btn
+            class="btn-link text-secondary font-weight-normal"
+            @click="handleLogoutAllWallets"
             >Logout of all wallets</btn
           >
         </div>
@@ -56,7 +58,12 @@ import Btn from '~/components/Btn.vue'
 
 import Keeper from '~/services/wallets/keeper'
 import Web3WalletConnector from '~/services/wallets/web3'
-import { Wallets, WalletState, ExtensionWallet, WalletProvider } from '~/store/wallet/types'
+import {
+  Wallets,
+  WalletState,
+  ExtensionWallet,
+  WalletProvider,
+} from '~/store/wallet/types'
 
 export default {
   name: 'ConnectWalletModal',
@@ -85,6 +92,11 @@ export default {
         provider: wallet.provider as WalletProvider,
         body: { checked: true },
       })
+    },
+    handleLogoutAllWallets: function () {
+      [this.wallets.keeper, this.wallets.metamask].forEach((wallet) => {
+        this.handleLogout(wallet)
+      });
     },
     handleLogout: function (wallet: ExtensionWallet) {
       const existing = Object.keys(this.wallets)
