@@ -42,7 +42,8 @@ export const AvailableTokens: Record<string, Token> = {
     icon: 'https://cryptoai.trade/wp-content/uploads/2020/03/bnb-2.png',
     bg: 'black',
     assetId: 'Ap4heStRGQbHAxR6qb9UFtJ3kBiGuumdnsd9JzTHwTTL',
-    ERC20: '0xb834BBbE424Ca134b372e7D275Ef628CDCB4F65E',
+    // ERC20: '0xb834BBbE424Ca134b372e7D275Ef628CDCB4F65E',
+    ERC20: '0xe1DB0FF90B539518ed4F3Ef8e3Dcc7f60726b457',
     decimals: 6,
   },
 }
