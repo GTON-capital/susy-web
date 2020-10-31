@@ -43,7 +43,7 @@ export const AvailableTokens: Record<string, Token> = {
     bg: 'black',
     assetId: 'Ap4heStRGQbHAxR6qb9UFtJ3kBiGuumdnsd9JzTHwTTL',
     // ERC20: '0xb834BBbE424Ca134b372e7D275Ef628CDCB4F65E',
-    ERC20: '0xe1DB0FF90B539518ed4F3Ef8e3Dcc7f60726b457',
+    ERC20: '0x65e04fd1c83e49eB6ca45Df2DAdde12642481F69',
     decimals: 6,
   },
 }

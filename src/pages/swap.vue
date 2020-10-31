@@ -46,10 +46,10 @@ import axios from 'axios'
 import { Subscription } from 'rxjs'
 
 // MODAL
-import ConnectWalletModal from '~/components/modal/ConnectWallet'
+import ConnectWalletModal from '~/components/modal/ConnectWallet.vue'
 // import WalletProviderModal from '~/components/modal/WalletProvider'
-import ActionLogsModal from '~/components/modal/ActionLogsModal'
-import StatusModal from '~/components/modal/StatusModal'
+import ActionLogsModal from '~/components/modal/ActionLogsModal.vue'
+import StatusModal from '~/components/modal/StatusModal.vue'
 
 // SWAP
 import WithdrawCard from '~/components/swap/WithdrawCard.vue'
@@ -90,7 +90,7 @@ interface SwapMessage {
   linkB?: string
 }
 
-export default Vue.extend({
+export default Vue.defineComponent({
   components: {
     // WalletProviderModal,
     ConnectWalletModal,
