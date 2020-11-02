@@ -90,7 +90,7 @@ interface SwapMessage {
   linkB?: string
 }
 
-export default Vue.defineComponent({
+export default Vue.extend({
   components: {
     // WalletProviderModal,
     ConnectWalletModal,

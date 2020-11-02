@@ -15,12 +15,12 @@ export function processConfig(): EnvironmentConfig {
     return {
         wavesChain: {
             // luport: process.env.WAVES_LU_PORT,
-            luport: '3MgiUVtwHGDxFSRPAoKNaNLgwmCiCnrxNVN',
+            luport: '3Mns3qH1SuWfw2r9LMLdBKyaGQhQGnAbz42',
             ibport: process.env.WAVES_IB_PORT
         },
         ethereumChain: {
             // luport: process.env.ETH_LU_PORT,
-            ibport: '0x276111F661989049f1D859105a07F5B2E2e604C8'
+            ibport: '0x6911910B4D312F89f8C54911aB54ed79B28Ac0A7'
         },
     }
 }
