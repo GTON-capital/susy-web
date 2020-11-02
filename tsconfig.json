@@ -1,14 +1,16 @@
 {
   "compilerOptions": {
-    "target": "ES2018",
-    "module": "ESnext",
+    "target": "esnext",
+    "module": "esnext",
+    // this enables stricter inference for data properties on `this`
+    "jsx": "preserve",
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "lib": [
       "esnext",
       "esnext.asynciterable",
       "dom"
     ],
-    "esModuleInterop": true,
     "allowJs": true,
     "sourceMap": true,
     "strict": true,
@@ -18,21 +20,27 @@
     "baseUrl": ".",
     "paths": {
       "~/*": [
-        "./*"
+        "./*",
+        "./src/*"
       ],
       "@/*": [
+        "./src/*",
         "./*"
       ]
     },
     "types": [
       "@types/node",
-      "@nuxt/types"
+      "jest",
+      "@nuxt/types",
+      "@vue/types"
     ]
   },
   "exclude": [
     "node_modules/*",
     "models",
     ".nuxt",
-    "dist"
-  ]
+    "dist",
+    "cypress"
+  ],
+  "include": ["./src/**/*.ts", "./src/**/*.tsx", "./src/**/*.vue"]
 }

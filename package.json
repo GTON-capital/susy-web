@@ -16,11 +16,14 @@
     "@nuxt/typescript-runtime": "^0.4.10",
     "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/style-resources": "^1.0.0",
+    "@types/vue": "^2.0.0",
     "@waves/waves-transactions": "^4.1.1",
     "axios": "^0.20.0",
     "big-number": "^2.0.0",
+    "bignumber.js": "^9.0.1",
     "bootstrap": "^4.5.0",
     "bootstrap.native": "^3.0.9",
+    "cypress": "^5.4.0",
     "lodash": "^4.17.20",
     "nuxt": "^2.13.0",
     "nuxt-lazy-load": "^1.2.4",
@@ -40,6 +43,7 @@
     "@nuxtjs/eslint-config-typescript": "^2.0.0",
     "@nuxtjs/eslint-module": "^2.0.0",
     "@nuxtjs/svg": "^0.1.11",
+    "@types/jest": "^26.0.15",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.2.0",
     "eslint-config-prettier": "^6.11.0",
@@ -47,6 +51,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "node-sass": "^4.14.1",
     "prettier": "^2.0.5",
-    "sass-loader": "^9.0.1"
+    "sass-loader": "^9.0.1",
+    "start-server-and-test": "^1.11.0"
   }
 }

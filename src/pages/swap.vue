@@ -46,14 +46,14 @@ import axios from 'axios'
 import { Subscription } from 'rxjs'
 
 // MODAL
-import ConnectWalletModal from '~/components/modal/ConnectWallet'
+import ConnectWalletModal from '~/components/modal/ConnectWallet.vue'
 // import WalletProviderModal from '~/components/modal/WalletProvider'
-import ActionLogsModal from '~/components/modal/ActionLogsModal'
-import StatusModal from '~/components/modal/StatusModal'
+import ActionLogsModal from '~/components/modal/ActionLogsModal.vue'
+import StatusModal from '~/components/modal/StatusModal.vue'
 
 // SWAP
 import WithdrawCard from '~/components/swap/WithdrawCard.vue'
-import CardSwap from '~/components/swap/CardSwap'
+import CardSwap from '~/components/swap/CardSwap.vue'
 import CardSwapFinal from '~/components/swap/CardSwapFinal.vue'
 
 // SWAP INTERMEDIATE
@@ -72,58 +72,17 @@ import {
 } from '~/store/wallet/types'
 
 import { processConfig } from '~/services/misc/config'
+import { castToDecimalsVersion } from '~/misc/bn'
 import { buildPropertyChecker } from '~/services/wallets/checker'
+import { AvailableChains, Chain } from '~/chains/chain'
+import {
+  getAvailableTokens,
+  AvailableTokens,
+  formLinkForChain,
+} from '~/chains/token'
 
-const AvailableTokens = {
-  SignTestnet: {
-    label: 'SIGN Testnet',
-    icon: '/img/icons/signature-chain.png',
-    bg: 'black',
-    decimals: 8,
-    assetId: 'Gf9t8FA4H3ssoZPCwrg3KwUFCci8zuUFP9ssRsUY3s6a',
-  },
-  SignStagenet: {
-    label: 'SIGN Stagenet',
-    icon: '/img/icons/signature-chain.png',
-    bg: 'black',
-    assetId: '6x8nupBUrX3u1VQcL4jFsf9UyyqacUNbVsKB9WHJ61Qm',
-    ERC20: '0xc2dda926711eb9b94b89c886aabb8b11d6ac014d',
-    decimals: 8,
-  },
-  SusyStagenet: {
-    label: 'SuSy token Stagenet',
-    icon: '/img/icons/waves.svg',
-    bg: 'black',
-    assetId: 'Ftnm2XbEWTF54z84UHg7LwPcuBZicXEgvhUdmFt84EWH',
-    decimals: 8,
-  },
-  WBNBStagenet: {
-    label: 'WBNB Stagenet',
-    icon: 'https://btcmanager.com/wp-content/uploads/2019/05/uoQavJ6V.png',
-    bg: 'black',
-    assetId: 'Ap4heStRGQbHAxR6qb9UFtJ3kBiGuumdnsd9JzTHwTTL',
-    decimals: 6,
-  },
-}
 
-const AvailableChains = {
-  Ethereum: {
-    id: '1',
-    label: 'ETH Ropsten',
-    icon: '/img/icons/ethereum.svg',
-  },
-  Waves: {
-    id: '2',
-    label: 'Waves Stagenet',
-    icon: '/img/icons/waves.svg',
-  },
-}
-
-const availableTokens = [
-  // AvailableTokens.SignTestnet,
-  AvailableTokens.SignStagenet,
-  AvailableTokens.WBNBStagenet,
-]
+const availableTokens = getAvailableTokens()
 
 interface SwapMessage {
   text: string
@@ -142,14 +101,18 @@ export default Vue.extend({
   data: () => ({
     page: 10,
     tokens: availableTokens,
-    chains: [AvailableChains.Waves, AvailableChains.Ethereum],
+    chains: [
+      AvailableChains.Waves,
+      AvailableChains.Ethereum,
+      AvailableChains.BSC,
+    ],
     swapState: 0,
     swapForm: {
       sourceChain: AvailableChains.Waves,
-      destinationChain: AvailableChains.Ethereum,
+      destinationChain: AvailableChains.BSC,
       sourceAddress: '',
       destinationAddress: '',
-      token: AvailableTokens.SignStagenet,
+      token: AvailableTokens.WBNBStagenet,
       tokenAmount: 0,
       currentBalance: 0,
       formattedBalance: 0,
@@ -255,18 +218,23 @@ export default Vue.extend({
           if (!config.ethereumChain?.ibport) {
             throw new Error('IB Port is invalid')
           }
-          const invoker = new Web3Invoker()
-          const { balance, allowance } = await invoker.getBalanceAndAllowance(this.swapForm.sourceAddress,
-           this.swapForm.token.ERC20,
-            '0x' + config.ethereumChain.ibport)
-            
-          return {
-            currentBalance: balance,
-            formattedBalance:
-              balance / Math.pow(10, this.swapForm.token.decimals),
-            needAllowance: allowance <= balance
-          }
+          const currentWalletAddress =
+            window.web3.eth.accounts.givenProvider.selectedAddress
 
+          const invoker = new Web3Invoker()
+          let { balance, allowance } = await invoker.getBalanceAndAllowance(
+            currentWalletAddress,
+            this.swapForm.token.ERC20,
+            config.ethereumChain.ibport
+          )
+          balance = Number(balance)
+          // console.log({ balance }, this.swapForm.token.decimals)
+          return {
+            sourceAddress: currentWalletAddress,
+            currentBalance: balance,
+            formattedBalance: balance / Math.pow(10, 18),
+            needAllowance: allowance <= balance,
+          }
         } catch (err) {
           console.log(err)
           return {}
@@ -278,10 +246,20 @@ export default Vue.extend({
     unlockERC20: function () {
       const invoker = new Web3Invoker()
       const config = processConfig()
+      const amountValue = castToDecimalsVersion(this.swapForm.tokenAmount, 18)
 
-      invoker.approve('0x' + config.ethereumChain?.ibport, this.swapForm.token.ERC20)
+      console.log(
+        { amountValue: amountValue.toString() },
+        config.ethereumChain?.ibport,
+        this.swapForm.token.ERC20,
+        amountValue
+      )
+      invoker.approve(
+        config.ethereumChain?.ibport,
+        this.swapForm.token.ERC20,
+        amountValue
+      )
     },
-
     cleanSubs: function () {
       for (const sub of this.subs) {
         ;(sub as Subscription).unsubscribe()
@@ -344,14 +322,19 @@ export default Vue.extend({
         })
       }
     },
-    buildSuccessMessage: function (txA: string, txB: string): SwapMessage {
+    buildSuccessMessage: function (
+      sourceChain: Chain,
+      destinationChain: Chain,
+      txA: string,
+      txB: string
+    ): SwapMessage {
       return {
         text: `
           Swap has been successfully submitted. \n
           Check your transactions here:\n
         `,
-        linkA: `https://wavesexplorer.com/stagenet/${txA} `,
-        linkB: `https://ropsten.etherscan.io/address/${txB}#tokentxns `,
+        linkA: formLinkForChain(sourceChain, txA),
+        linkB: formLinkForChain(destinationChain, txB),
       }
     },
     handleSwapEthereumWaves: async function () {
@@ -403,6 +386,8 @@ export default Vue.extend({
         console.log({ result })
         // @ts-ignore
         this.swapForm.message = this.buildSuccessMessage(
+          form.sourceChain,
+          form.destinationChain,
           form.sourceAddress,
           form.destinationAddress
         )
@@ -418,12 +403,12 @@ export default Vue.extend({
 
       this.swapForm.message = { text: '' }
 
-      switch (sourceChain.label) {
-        case AvailableChains.Ethereum.label:
+      switch (sourceChain.id) {
+        case (AvailableChains.Ethereum.id, AvailableChains.BSC.id):
           // @ts-ignore
           await this.handleSwapEthereumWaves()
           break
-        case AvailableChains.Waves.label:
+        case AvailableChains.Waves.id:
           // @ts-ignore
           await this.handleSwapWavesEthereum()
           break
@@ -437,7 +422,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-.btn.btn-circle.btn-secondary-gradient {
-  visibility: hidden;
-}
+// .btn.btn-circle.btn-secondary-gradient {
+//   visibility: hidden;
+// }
 </style>

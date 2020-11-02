@@ -1,5 +1,5 @@
-import susy from './themes/susy'
-import gravity from './themes/gravity'
+import susy from './src/themes/susy'
+import gravity from './src/themes/gravity'
 
 const THEME = 'gravity' // susy, gravity
 // Comment:cvaize
@@ -12,6 +12,7 @@ export default {
    ** Nuxt rendering mode
    ** See https://nuxtjs.org/api/configuration-mode
    */
+  srcDir: 'src/',
   mode: 'universal',
   env: {
     theme: THEME,

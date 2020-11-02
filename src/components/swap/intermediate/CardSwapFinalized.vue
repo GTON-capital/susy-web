@@ -52,7 +52,7 @@
               </span>
             </template>
             <template v-slot:append>
-              <span style="display: block; padding: 0 15px;">wETH</span>
+              <span style="display: block; padding: 0 15px;">{{ swapForm.token.ticker }}</span>
             </template>
           </form-input>
         </template>
