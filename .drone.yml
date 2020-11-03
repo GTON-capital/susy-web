@@ -26,7 +26,7 @@ pipeline:
     port:
       from_secret: ssh_port
     script:
-        - cd /var/www/susy-web && bash rebuild.sh
+        - cd /var/www/susy-web && bash rebuild.sh master
 
 trigger:
   branch:
