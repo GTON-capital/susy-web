@@ -28,6 +28,15 @@ export const AvailableTokens: Record<string, Token> = {
     ERC20: '0xc2dda926711eb9b94b89c886aabb8b11d6ac014d',
     decimals: 8,
   },
+  SignMainnet: {
+    ticker: 'SIGN',
+    label: 'SIGN Mainnet',
+    icon: '/img/icons/signature-chain.png',
+    bg: 'black',
+    assetId: '9sQutD5HnRvjM1uui5cVC4w9xkMPAfYEV8ymug3Mon2Y',
+    ERC20: '0x29499dD7da98588077806a9Fd45048692b443A3F',
+    decimals: 8,
+  },
   SusyStagenet: {
     ticker: 'SIGN',
     label: 'SuSy token Stagenet',
@@ -50,16 +59,23 @@ export const AvailableTokens: Record<string, Token> = {
 export function formLinkForChain(chain: Chain, address: string): string {
   switch (chain.id) {
     case AvailableChains.BSC.id:
-      return `https://testnet.bscscan.com/address/${address}#tokentxns`
+      // return `https://testnet.bscscan.com/address/${address}#tokentxns`
+      return `https://bscscan.com/address/${address}#tokentxns`
     case AvailableChains.Ethereum.id:
-      return `https://ropsten.etherscan.io/address/${address}#tokentxns`
+      // return `https://ropsten.etherscan.io/address/${address}#tokentxns`
+      return `https://etherscan.io/address/${address}#tokentxns`
     case AvailableChains.Waves.id:
-      return `https://wavesexplorer.com/stagenet/address/${address}`
+      // return `https://wavesexplorer.com/stagenet/address/${address}`
+      return `https://wavesexplorer.com/address/${address}`
   }
 
   return ''
 }
 
 export function getAvailableTokens(): Token[] {
-  return [AvailableTokens.SignStagenet, AvailableTokens.WBNBStagenet]
+  return [
+    // AvailableTokens.SignStagenet, 
+    // AvailableTokens.WBNBStagenet
+    AvailableTokens.SignMainnet
+  ]
 }
