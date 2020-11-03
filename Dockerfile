@@ -13,7 +13,7 @@ RUN apk update && apk upgrade && apk add --no-cache bash git openssh \
     && npm run export
 
 FROM nginx:stable-alpine as nginx
-COPY --from=gravity /susy/dist /usr/share/nginx/html
+COPY --from=susy-web /susy/dist /usr/share/nginx/html
 RUN mkdir -p /etc/nginx/sites-enabled
 
 # COPY ./nginx.conf /etc/nginx/
