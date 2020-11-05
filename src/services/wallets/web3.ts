@@ -85,8 +85,8 @@ export class Web3Invoker {
       JSON.parse(this.contractsABI.IBPortABI),
       smartContract,
       {
-        gasPrice: String(50 * 1e9),
-        gas: 300000,
+        // gasPrice: String(50 * 1e9),
+        gas: 200000,
       }
     )
     // createTransferUnwrapRequest

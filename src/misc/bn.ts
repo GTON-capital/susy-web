@@ -2,9 +2,9 @@ import BigNumber from "bignumber.js";
 
 
 export function castToDecimalsVersion(amount: number, decimals: number): BigNumber {
-  let bnAmount = new BigNumber(amount, 10)
-  let base = new BigNumber(10, 10)
-  let power = new BigNumber(decimals, 10)
+  let bnAmount = new BigNumber(amount)
+  let base = new BigNumber(10)
+  let power = new BigNumber(decimals)
   let multiplier = base.pow(power)
   bnAmount = bnAmount.multipliedBy(multiplier)
 
@@ -12,9 +12,9 @@ export function castToDecimalsVersion(amount: number, decimals: number): BigNumb
 }
 
 export function castFromDecimalsVersion(amount: number, decimals: number): BigNumber {
-  let bnAmount = new BigNumber(amount, 10)
-  let base = new BigNumber(10, 10)
-  let power = new BigNumber(decimals, 10)
+  let bnAmount = new BigNumber(amount)
+  let base = new BigNumber(10)
+  let power = new BigNumber(decimals)
   let multiplier = base.pow(power)
   bnAmount = bnAmount.dividedBy(multiplier)
 
