@@ -8,6 +8,9 @@ const THEME = 'gravity' // susy, gravity
 const themes = { susy, gravity }
 
 export default {
+  server: {
+    host: '0.0.0.0'
+  },
   /*
    ** Nuxt rendering mode
    ** See https://nuxtjs.org/api/configuration-mode
