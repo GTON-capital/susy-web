@@ -1,10 +1,10 @@
-import BigNumberImpl from 'bn.js';
+import BN from 'bn.js';
 import Web3 from 'web3'
 import { base58Decode, base16Encode } from '@waves/ts-lib-crypto'
 
 import { IBPortABI } from '~/contracts/ibport'
 import { ERC20ABI } from '~/contracts/erc20'
-import { castToDecimalsVersion } from '~/misc/bn'
+import { castFloatToDecimalsVersion } from '~/misc/bn'
 
 declare global {
   interface Window {
@@ -32,7 +32,7 @@ export class Web3Invoker {
   async approve(
     spender: string,
     token: string,
-    amount: number,
+    amount: string,
   ) {
     const web3Obj = new Web3(window.ethereum)
     await window.ethereum.enable()
@@ -74,7 +74,7 @@ export class Web3Invoker {
   
   async invokeSendUnlockRequest(
     receiver: string | null,
-    { value: amountValue, type: amountType }: { value: number; type: 'bigint' | undefined },
+    { value: amountValue, type: amountType }: { value: string; type: 'bigint' | undefined },
     smartContract: string
   ) {
     const web3Obj = new Web3(window.ethereum)
@@ -91,15 +91,12 @@ export class Web3Invoker {
     )
     // createTransferUnwrapRequest
     
-    let bnAmount = new BigNumberImpl(amountValue)
-    if (!amountType) {
-      bnAmount = castToDecimalsVersion(amountValue, 18)
-    }
+    let bnAmount = castFloatToDecimalsVersion(amountValue, 18)
 
     console.log({ bnAmount: bnAmount.toString(), bnAmountOrig: bnAmount, ctx: this, eth: window.web3.eth, accs: window.web3.eth.accounts })
 
     const sendRequest = await contract.methods
-      .createTransferUnwrapRequest(bnAmount, this.wavesToBytes32(receiver)) 
+      .createTransferUnwrapRequest(bnAmount.toString(), this.wavesToBytes32(receiver)) 
       // @ts-ignore
       .send({ from: await this.resolveCurrentAddress() })
 
