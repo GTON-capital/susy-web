@@ -19,7 +19,6 @@
     "@types/vue": "^2.0.0",
     "@waves/waves-transactions": "^4.1.1",
     "axios": "^0.20.0",
-    "big-number": "^2.0.0",
     "bignumber.js": "^9.0.1",
     "bootstrap": "^4.5.0",
     "bootstrap.native": "^3.0.9",
