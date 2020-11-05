@@ -1,4 +1,4 @@
-import { BigNumber } from 'bignumber.js';
+import BigNumber from 'bignumber.js';
 import Web3 from 'web3'
 import { base58Decode, base16Encode } from '@waves/ts-lib-crypto'
 
