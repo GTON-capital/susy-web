@@ -1,4 +1,4 @@
-import BigNumberImpl from "bignumber.js";
+import BigNumberImpl from 'bn.js';
 
 
 export function castToDecimalsVersion(amount: number, decimals: number): BigNumberImpl {
@@ -6,7 +6,7 @@ export function castToDecimalsVersion(amount: number, decimals: number): BigNumb
   let base = new BigNumberImpl(10)
   let power = new BigNumberImpl(decimals)
   let multiplier = base.pow(power)
-  bnAmount = bnAmount.multipliedBy(multiplier)
+  bnAmount = bnAmount.mul(multiplier)
 
   return bnAmount
 }
@@ -16,7 +16,7 @@ export function castFromDecimalsVersion(amount: number, decimals: number): BigNu
   let base = new BigNumberImpl(10)
   let power = new BigNumberImpl(decimals)
   let multiplier = base.pow(power)
-  bnAmount = bnAmount.dividedBy(multiplier)
+  bnAmount = bnAmount.div(multiplier)
 
   return bnAmount
 }

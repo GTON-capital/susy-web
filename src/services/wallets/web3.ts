@@ -1,4 +1,4 @@
-import BigNumberImpl from 'bignumber.js';
+import BigNumberImpl from 'bn.js';
 import Web3 from 'web3'
 import { base58Decode, base16Encode } from '@waves/ts-lib-crypto'
 
