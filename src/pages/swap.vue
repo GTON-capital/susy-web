@@ -72,7 +72,7 @@ import {
 } from '~/store/wallet/types'
 
 import { processConfig } from '~/services/misc/config'
-import { castToDecimalsVersion } from '~/misc/bn'
+import { castFloatToDecimalsVersion } from '~/misc/bn'
 import { buildPropertyChecker } from '~/services/wallets/checker'
 import { AvailableChains, Chain } from '~/chains/chain'
 import {
@@ -224,7 +224,7 @@ export default Vue.extend({
           const invoker = new Web3Invoker()
           let { balance, allowance } = await invoker.getBalanceAndAllowance(
             currentWalletAddress,
-            this.swapForm.token.ERC20,
+            this.swapForm.token.ERC20!,
             config.ethereumChain.ibport
           )
           balance = Number(balance)
@@ -246,18 +246,18 @@ export default Vue.extend({
     unlockERC20: function () {
       const invoker = new Web3Invoker()
       const config = processConfig()
-      const amountValue = castToDecimalsVersion(this.swapForm.tokenAmount, 18)
+      const amountValue = castFloatToDecimalsVersion(String(this.swapForm.tokenAmount), 18)
 
       console.log(
         { amountValue: amountValue.toString() },
-        config.ethereumChain?.ibport,
-        this.swapForm.token.ERC20,
-        amountValue
+        config.ethereumChain!.ibport!,
+        this.swapForm.token.ERC20!,
+        amountValue.toString()
       )
       invoker.approve(
-        config.ethereumChain?.ibport,
-        this.swapForm.token.ERC20,
-        amountValue
+        config.ethereumChain!.ibport!,
+        this.swapForm.token.ERC20!,
+        amountValue.toString()
       )
     },
     cleanSubs: function () {
@@ -350,7 +350,7 @@ export default Vue.extend({
 
         const result = await invoker.invokeSendUnlockRequest(
           form.destinationAddress,
-          { value: form.tokenAmount, type: undefined },
+          { value: String(form.tokenAmount), type: undefined },
           config.ethereumChain.ibport
         )
 
