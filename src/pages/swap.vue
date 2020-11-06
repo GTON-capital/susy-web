@@ -10,6 +10,7 @@
     />
     <CardSwapWalletConnected
       v-if="swapState === 1"
+      :allowanceReceived="allowanceReceived"
       :chains="chains"
       :tokens="tokens"
       :swapForm="swapForm"
@@ -71,7 +72,7 @@ import {
   WalletProvider,
 } from '~/store/wallet/types'
 
-import { processConfig } from '~/services/misc/config'
+// import { processConfig } from '~/services/misc/config'
 import { castFloatToDecimalsVersion } from '~/misc/bn'
 import { buildPropertyChecker } from '~/services/wallets/checker'
 import { AvailableChains, Chain } from '~/chains/chain'
@@ -116,11 +117,11 @@ export default Vue.extend({
       tokenAmount: 0,
       currentBalance: 0,
       formattedBalance: 0,
-      needAllowance: false,
       message: {} as SwapMessage,
     },
     propertiesObs: null,
     subs: [],
+    allowanceReceived: false
   }),
   computed: {
     theme() {
@@ -171,13 +172,22 @@ export default Vue.extend({
   methods: {
     propertyObserveMap: async function (num: number) {
       const currentWallet = this.$store.getters['wallet/currentWallet']
-      const config = processConfig()
+
 
       if (!currentWallet) {
         return {}
       }
 
+      if (!this.swapForm.token.bridgeConfig) {
+        return {}
+      }
+
+      const { sourcePort, destinationPort } = this.swapForm.token.bridgeConfig
+
       if (currentWallet.provider === WalletProvider.WavesKeeper) {
+        // reset
+        this.allowanceReceived = false
+
         const keeper = new Keeper()
         const plugin = await keeper.getPlugin()
 
@@ -215,25 +225,28 @@ export default Vue.extend({
 
       if (currentWallet.provider === WalletProvider.Metamask) {
         try {
-          if (!config.ethereumChain?.ibport) {
+
+          if (!destinationPort) {
             throw new Error('IB Port is invalid')
           }
           const currentWalletAddress =
             window.web3.eth.accounts.givenProvider.selectedAddress
 
           const invoker = new Web3Invoker()
+
           let { balance, allowance } = await invoker.getBalanceAndAllowance(
             currentWalletAddress,
             this.swapForm.token.ERC20!,
-            config.ethereumChain.ibport
+            destinationPort
           )
+
           balance = Number(balance)
           // console.log({ balance }, this.swapForm.token.decimals)
+
           return {
             sourceAddress: currentWalletAddress,
             currentBalance: balance,
             formattedBalance: balance / Math.pow(10, 18),
-            needAllowance: allowance <= balance,
           }
         } catch (err) {
           console.log(err)
@@ -243,22 +256,34 @@ export default Vue.extend({
 
       return {}
     },
-    unlockERC20: function () {
+    unlockERC20: async function () {
       const invoker = new Web3Invoker()
-      const config = processConfig()
       const amountValue = castFloatToDecimalsVersion(String(this.swapForm.tokenAmount), 18)
+
+      if (!this.swapForm.token.bridgeConfig) {
+        return {}
+      }
+
+      const { sourcePort, destinationPort } = this.swapForm.token.bridgeConfig
 
       console.log(
         { amountValue: amountValue.toString() },
-        config.ethereumChain!.ibport!,
+        destinationPort,
         this.swapForm.token.ERC20!,
         amountValue.toString()
       )
-      invoker.approve(
-        config.ethereumChain!.ibport!,
-        this.swapForm.token.ERC20!,
-        amountValue.toString()
-      )
+
+      try {
+        await invoker.approve(
+          destinationPort,
+          this.swapForm.token.ERC20!,
+          amountValue.toString()
+        )
+        this.allowanceReceived = true
+      } catch (err) {
+        this.allowanceReceived = false
+      }
+
     },
     cleanSubs: function () {
       for (const sub of this.subs) {
@@ -338,20 +363,25 @@ export default Vue.extend({
       }
     },
     handleSwapEthereumWaves: async function () {
-      // invokeSendUnlockRequest
-      const invoker = new Web3Invoker()
-      const config = processConfig()
-      const { swapForm: form } = this
-
       try {
-        if (!config.ethereumChain?.ibport) {
+        // invokeSendUnlockRequest
+        const invoker = new Web3Invoker()
+
+        if (!this.swapForm.token.bridgeConfig) {
+          throw new Error('Bridge config is not provided for this token.')
+        }
+
+        const { destinationPort } = this.swapForm.token.bridgeConfig
+        const { swapForm: form } = this
+
+        if (!destinationPort) {
           throw new Error('IB Port is invalid')
         }
 
         const result = await invoker.invokeSendUnlockRequest(
           form.destinationAddress,
           { value: String(form.tokenAmount), type: undefined },
-          config.ethereumChain.ibport
+          destinationPort
         )
 
         console.log({ result })
@@ -367,16 +397,17 @@ export default Vue.extend({
     },
     handleSwapWavesEthereum: async function () {
       const invoker = new LUPortInvoker(new Keeper())
-      const config = processConfig()
-      const { swapForm: form } = this
-
-      if (!config.wavesChain?.luport) {
+      if (!this.swapForm.token.bridgeConfig) {
         return
       }
 
+      const { sourcePort } = this.swapForm.token.bridgeConfig
+      const { swapForm: form } = this
+
+
       try {
         const result = await invoker.sendTransferRequest({
-          dApp: config.wavesChain.luport,
+          dApp: sourcePort,
           receiver: form.destinationAddress,
           // swapAmount: Math.pow(10, form.token.decimals) * form.tokenAmount,
           swapAmount: form.tokenAmount,

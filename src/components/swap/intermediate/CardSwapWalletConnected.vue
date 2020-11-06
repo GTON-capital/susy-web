@@ -101,10 +101,10 @@
     </simple-wrapper-slim-sm>
 
     <template v-slot:footer>
-      <btn class="btn-primary" @click="$emit('unlock')">
-        Unlock ERC20
+      <btn class="btn-primary" @click="$emit('unlock')" v-if="!allowanceReceived && swapForm.sourceChain.label !== 'WAVES'">
+        Approve
       </btn>
-      <btn class="btn-primary" @click="$emit('next')">
+      <btn class="btn-primary" @click="$emit('next')" v-else>
         Next
       </btn>
     </template>
@@ -125,7 +125,7 @@ import SwapHint from '~/components/swap/SwapHint'
 
 export default {
   name: 'CardSwapWalletConnected',
-  props: ['swapForm', 'chains', 'tokens', 'onWalletConnect'],
+  props: ['swapForm', 'chains', 'tokens', 'onWalletConnect', 'allowanceReceived'],
   components: {
     SwapHint,
     Btn,
