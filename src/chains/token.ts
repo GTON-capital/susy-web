@@ -80,6 +80,21 @@ export const AvailableTokens: Record<string, Token> = {
       destinationPort: '0xeF79FdA8cd7Ffc1a9b97320146E3d66404249B23'
     }
   },
+  USDNMainnet: {
+    ticker: 'USDN',
+    label: 'USDN',
+    bg: 'black',
+    icon: '/img/icons/tokens/nsbt.svg',
+    assetId: '6fnDrGcntTDP3ftibavq4EjKuqYoaDkJn8TPKGZgBgy8',
+    ERC20: '0x91ef08ee4AD55bcA2c4DEcf08519E9a82A57131B',
+    decimals: 2,
+    bridgeConfig: {
+      // sourcePort: '3PMMhFMzC86MstkNopJMNJoyUhDVCBxADCe',
+      // destinationPort: '0x4B559A1c1Bc2701AAD4267Fc7A86d117e02f06c4'
+      sourcePort: '3PMqeRHzRJd2LHdSA1ok4zZMfcCZDXtvAqN',
+      destinationPort: '0xA3050568689F0239f533a45957Cb026eeefb6974'
+    }
+  },
 }
 
 export function formLinkForChain(chain: Chain, address: string): string {
@@ -102,6 +117,7 @@ export function getAvailableTokens(): Token[] {
   return [
     // AvailableTokens.SignStagenet,
     // AvailableTokens.WBNBStagenet
+    AvailableTokens.USDNMainnet,
     AvailableTokens.SignMainnet,
     AvailableTokens.NSBTMainnet,
   ]

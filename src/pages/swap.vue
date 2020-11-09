@@ -113,7 +113,7 @@ export default Vue.extend({
       destinationChain: AvailableChains.BSC,
       sourceAddress: '',
       destinationAddress: '',
-      token: AvailableTokens.SignMainnet,
+      token: AvailableTokens.USDNMainnet,
       tokenAmount: 0,
       currentBalance: 0,
       formattedBalance: 0,
