@@ -37,7 +37,18 @@
         :sourceChain="swapForm.sourceChain"
         :destinationChain="swapForm.destinationChain"
       />
+      <SwapLoader :loader="loader" ref="loader"/>
     </client-only>
+    <div>
+      <!-- <div ref="loader" style="width: 100%; z-index: 0; height: 100vh; position: absolute; top: 0; left: 0"/> -->
+    </div>
+    <!-- <modal name="susy-loader">
+      <div>
+        <div style="text-align: center; padding: 20px 0;">{{ loader.text }}</div>
+        <div ref="loader" style="height: 450px;"/>
+      </div>
+    </modal> -->
+    <!-- <SwapLoader :loader="loader"/> -->
   </div>
 </template>
 
@@ -50,6 +61,7 @@ import { Subscription } from 'rxjs'
 import ConnectWalletModal from '~/components/modal/ConnectWallet.vue'
 // import WalletProviderModal from '~/components/modal/WalletProvider'
 import ActionLogsModal from '~/components/modal/ActionLogsModal.vue'
+import SwapLoader from '~/components/modal/SwapLoader.vue'
 import StatusModal from '~/components/modal/StatusModal.vue'
 
 // SWAP
@@ -91,6 +103,11 @@ interface SwapMessage {
   linkB?: string
 }
 
+const SwapLoaderMessage = {
+  Processing: 'Swap is processing',
+  Allowance: 'Waiting for allowance approval',
+}
+
 export default Vue.extend({
   components: {
     // WalletProviderModal,
@@ -121,7 +138,11 @@ export default Vue.extend({
     },
     propertiesObs: null,
     subs: [],
-    allowanceReceived: false
+    allowanceReceived: false,
+    loader: {
+      callCount: 0,
+      text: SwapLoaderMessage.Processing
+    }
   }),
   computed: {
     theme() {
@@ -170,6 +191,12 @@ export default Vue.extend({
     this.cleanSubs()
   },
   methods: {
+    hideLoader() {
+      this.$modal.pop('susy-loader');
+    },
+    showLoader() {
+      this.$modal.push('susy-loader')
+    },
     propertyObserveMap: async function (num: number) {
       const currentWallet = this.$store.getters['wallet/currentWallet']
 
@@ -274,6 +301,8 @@ export default Vue.extend({
       )
 
       try {
+        // @ts-ignore
+        this.showLoader();
         await invoker.approve(
           destinationPort,
           this.swapForm.token.ERC20!,
@@ -282,6 +311,9 @@ export default Vue.extend({
         this.allowanceReceived = true
       } catch (err) {
         this.allowanceReceived = false
+      } finally {
+        // @ts-ignore
+        this.hideLoader();
       }
 
     },
@@ -365,6 +397,9 @@ export default Vue.extend({
     handleSwapEthereumWaves: async function () {
       try {
         // invokeSendUnlockRequest
+
+        // @ts-ignore
+        this.showLoader();
         const invoker = new Web3Invoker()
 
         if (!this.swapForm.token.bridgeConfig) {
@@ -384,7 +419,7 @@ export default Vue.extend({
           destinationPort
         )
 
-        console.log({ result })
+
         this.swapForm.message = {
           text: `Swap has been successfully submitted.`,
         }
@@ -393,6 +428,9 @@ export default Vue.extend({
         console.log({ err })
         this.swapForm.message = { text: `${err.message}. ${err.data}` }
         this.$modal.push('status')
+      } finally {
+        // @ts-ignore
+        this.hideLoader();
       }
     },
     handleSwapWavesEthereum: async function () {
@@ -406,6 +444,9 @@ export default Vue.extend({
 
 
       try {
+
+        // @ts-ignore
+        this.showLoader();
         const result = await invoker.sendTransferRequest({
           dApp: sourcePort,
           receiver: form.destinationAddress,
@@ -427,6 +468,9 @@ export default Vue.extend({
         console.log({ err })
         this.swapForm.message = { text: `${err.message}. ${err.data}` }
         this.$modal.push('status')
+      } finally {
+        // @ts-ignore
+        this.hideLoader();
       }
     },
     handleSwapConfirm: async function () {
