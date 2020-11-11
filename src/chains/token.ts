@@ -21,7 +21,7 @@ export const AvailableTokens: Record<string, Token> = {
   SignTestnet: {
     ticker: 'SIGN',
     label: 'SIGN Testnet',
-    icon: '/img/icons/signature-chain.png',
+    icon: '/img/icons/signature-chain.svg',
     bg: 'black',
     decimals: 8,
     assetId: 'Gf9t8FA4H3ssoZPCwrg3KwUFCci8zuUFP9ssRsUY3s6a',
@@ -29,7 +29,7 @@ export const AvailableTokens: Record<string, Token> = {
   SignStagenet: {
     ticker: 'SIGN',
     label: 'SIGN Stagenet',
-    icon: '/img/icons/signature-chain.png',
+    icon: '/img/icons/signature-chain.svg',
     bg: 'black',
     assetId: '6x8nupBUrX3u1VQcL4jFsf9UyyqacUNbVsKB9WHJ61Qm',
     ERC20: '0xc2dda926711eb9b94b89c886aabb8b11d6ac014d',
@@ -38,7 +38,7 @@ export const AvailableTokens: Record<string, Token> = {
   SignMainnet: {
     ticker: 'SIGN',
     label: 'SIGN Mainnet',
-    icon: '/img/icons/signature-chain.png',
+    icon: '/img/icons/signature-chain.svg',
     bg: 'black',
     assetId: '9sQutD5HnRvjM1uui5cVC4w9xkMPAfYEV8ymug3Mon2Y',
     ERC20: '0x29499dD7da98588077806a9Fd45048692b443A3F',
@@ -84,7 +84,7 @@ export const AvailableTokens: Record<string, Token> = {
     ticker: 'USDN',
     label: 'USDN',
     bg: 'black',
-    icon: '/img/icons/tokens/nsbt.svg',
+    icon: '/img/icons/tokens/usdn.svg',
     assetId: 'DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p',
     ERC20: '0x72d273faaC4f851cC6534FA37572b6fFffE29fbb',
     decimals: 6,
