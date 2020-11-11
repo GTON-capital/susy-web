@@ -85,9 +85,9 @@ export const AvailableTokens: Record<string, Token> = {
     label: 'USDN',
     bg: 'black',
     icon: '/img/icons/tokens/nsbt.svg',
-    assetId: '6fnDrGcntTDP3ftibavq4EjKuqYoaDkJn8TPKGZgBgy8',
+    assetId: 'DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p',
     ERC20: '0x72d273faaC4f851cC6534FA37572b6fFffE29fbb',
-    decimals: 2,
+    decimals: 6,
     bridgeConfig: {
       // sourcePort: '3PMMhFMzC86MstkNopJMNJoyUhDVCBxADCe',
       // destinationPort: '0x4B559A1c1Bc2701AAD4267Fc7A86d117e02f06c4'
