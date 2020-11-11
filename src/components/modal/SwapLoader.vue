@@ -19,10 +19,11 @@ export default Vue.extend({
       loaderInitialised: false
     }
   },
-  beforeUpdate() { 
-    const loader = this.$refs.loader;
+  methods: {
+    init() {
+      const loader = this.$refs.loader;
+      if(!loader) return;
 
-    if (!this.loaderInitialised && loader) {
       lottie.loadAnimation({
         container: loader as Element,
         renderer: 'svg',
@@ -30,9 +31,10 @@ export default Vue.extend({
         autoplay: true,
         path: '/img/anims/susy-loader.json'
       });
-
-      this.loaderInitialised = true
     }
+  },
+  mounted() { 
+    setTimeout(() => this.init(), 1000)
   },
 })
 </script>

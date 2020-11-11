@@ -192,10 +192,10 @@ export default Vue.extend({
   },
   methods: {
     hideLoader() {
-      this.$modal.pop('susy-loader');
+      // this.$modal.pop('susy-loader');
     },
     showLoader() {
-      this.$modal.push('susy-loader')
+      // this.$modal.push('susy-loader')
     },
     propertyObserveMap: async function (num: number) {
       const currentWallet = this.$store.getters['wallet/currentWallet']
