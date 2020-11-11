@@ -86,7 +86,7 @@ export class Web3Invoker {
       smartContract,
       {
         // gasPrice: String(50 * 1e9),
-        gas: 200000,
+        gas: 400000,
       }
     )
     // createTransferUnwrapRequest
