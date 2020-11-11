@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="113px" height="113px" viewBox="0 0 113 113" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
-    <title>Neutrino_N_ICON</title>
-    <desc>Created with Sketch.</desc>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Neutrino_N_ICON" transform="translate(2.000000, 2.000000)">
-            <polygon id="Path" stroke="#00F5FF" stroke-width="3" points="54.7817 0.75987 108.522 54.5 54.7817 108.24 1.04162 54.5"></polygon>
-            <path d="M0,54.7891 C0,54.7891 6.55359,47.5229 21.254,44.0117 C35.9545,40.5005 47.0252,47.5281 56.8655,54.7891 C66.7058,62.0501 74.1674,65.7608 85.7852,65.1056 C97.4031,64.4504 104.976,58.1112 109.2,52.9951" id="Path" stroke="#00F5FF" stroke-width="3"></path>
-            <polygon id="Path" fill="#00F5FF" points="30 83.6679 30 23 34.1083 23 74.6041 75.7811 74.6041 23 78.7962 23 78.7962 83.6679 76.7099 85.6308 34.1921 29.7601 34.1921 89.4458"></polygon>
+<svg width="90px" height="90px" viewBox="0 0 90 90" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group 33</title>
+    <g id="ONE-PAGER" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Gravity-Mainnet-Launch_2" transform="translate(-301.000000, -277.000000)">
+            <g id="Group-33" transform="translate(301.000000, 277.000000)">
+                <path d="M45,0 L90,45 L45,90 L0,45 L45,0 Z" id="Shape-Copy" fill="#9B8BFF"></path>
+                <path d="M45,90 L0,44.9785831 C0,44.9785831 21.7139863,29.7108555 47.4995236,42.064596 C73.285061,54.4183366 90,45 90,45 L45,90 Z" id="Path-Copy-2" fill="#7549FF"></path>
+                <polygon id="N-Copy-2" fill="#FFFFFF" fill-rule="nonzero" points="34.9833887 62.195122 34.9833887 36.2770035 55.9136213 62.195122 60 62.195122 60 27.4390244 55.0166113 27.4390244 55.0166113 53.3571429 34.0863787 27.4390244 30 27.4390244 30 62.195122"></polygon>
+                <rect id="Rectangle-Copy-28" fill="#FFFFFF" x="20.4878049" y="41.7073171" width="9.51219512" height="4.02439024"></rect>
+                <rect id="Rectangle-Copy-29" fill="#FFFFFF" x="60" y="41.7073171" width="9.51219512" height="4.02439024"></rect>
+            </g>
         </g>
     </g>
 </svg>
