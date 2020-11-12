@@ -74,8 +74,6 @@ export const AvailableTokens: Record<string, Token> = {
     ERC20: '0x01B5E6bfaCA9041ab42855e2c7B80dF53378180B',
     decimals: 6,
     bridgeConfig: {
-      // sourcePort: '3PMMhFMzC86MstkNopJMNJoyUhDVCBxADCe',
-      // destinationPort: '0x4B559A1c1Bc2701AAD4267Fc7A86d117e02f06c4'
       sourcePort: '3PGaUbcP9qtFcVvW59WXEyU2JvS866pCWNW',
       destinationPort: '0xeF79FdA8cd7Ffc1a9b97320146E3d66404249B23'
     }
@@ -86,13 +84,11 @@ export const AvailableTokens: Record<string, Token> = {
     bg: 'black',
     icon: '/img/icons/tokens/usdn.svg',
     assetId: 'DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p',
-    ERC20: '0x72d273faaC4f851cC6534FA37572b6fFffE29fbb',
+    ERC20: '0x8056242b148226baFccc59513C273A373826ccc7',
     decimals: 6,
     bridgeConfig: {
-      // sourcePort: '3PMMhFMzC86MstkNopJMNJoyUhDVCBxADCe',
-      // destinationPort: '0x4B559A1c1Bc2701AAD4267Fc7A86d117e02f06c4'
-      sourcePort: '3PMqeRHzRJd2LHdSA1ok4zZMfcCZDXtvAqN',
-      destinationPort: '0xB53f89983bcAf328913369C94E0d19Be32c9097C'
+      sourcePort: '3P79TSKjoN7YKKMufoqLM8SUH3cSV7Kdf39',
+      destinationPort: '0xf8dbc41e269F12B554E1936047858D71C1EA8c2c'
     }
   },
 }
