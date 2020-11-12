@@ -144,8 +144,8 @@ export function getAvailableTokens(): Token[] {
     // AvailableTokens.SignStagenet,
     // AvailableTokens.WBNBStagenet
     AvailableTokens.USDNMainnet,
-    AvailableTokens.SignMainnet,
-    AvailableTokens.NSBTMainnet,
+    // AvailableTokens.SignMainnet,
+    // AvailableTokens.NSBTMainnet,
     //AvailableTokens.ErgoMainnet,
     //AvailableTokens.WestMainnet,
   ]
