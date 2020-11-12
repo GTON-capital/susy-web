@@ -84,11 +84,11 @@ export const AvailableTokens: Record<string, Token> = {
     bg: 'black',
     icon: '/img/icons/tokens/usdn.svg',
     assetId: 'DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p',
-    ERC20: '0x8056242b148226baFccc59513C273A373826ccc7',
+    ERC20: '0xc4b6F32B84657E9f6a73fE119f0967bE5bA8CF05',
     decimals: 6,
     bridgeConfig: {
-      sourcePort: '3P79TSKjoN7YKKMufoqLM8SUH3cSV7Kdf39',
-      destinationPort: '0xf8dbc41e269F12B554E1936047858D71C1EA8c2c'
+      sourcePort: '3PFhJUFXAwzPzNMjJkxQYFqEUPr8Jm4BmqP',
+      destinationPort: '0x549200f306BB2dC676ef052125Dc499A1e897120'
     }
   },
 }
