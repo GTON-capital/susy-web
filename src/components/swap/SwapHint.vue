@@ -10,7 +10,8 @@ export default {
   name: 'SwapHint',
   data: function () {
     return {
-      link: 'https://medium.com/@gravity_protocol/9bcc88bdf825',
+      link:
+        'https://medium.com/gravity-protocol/gravity-mainnet-alpha-launch-with-waves-bsc-as-target-chains-e110b59a01b8',
     }
   },
 }

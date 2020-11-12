@@ -91,6 +91,36 @@ export const AvailableTokens: Record<string, Token> = {
       destinationPort: '0x549200f306BB2dC676ef052125Dc499A1e897120'
     }
   },
+  //ErgoMainnet: {
+  //ticker: 'Ergo',
+  //label: 'Ergo',
+  //bg: 'black',
+  //icon: '/img/icons/ergO.svg',
+  //assetId: '6nSpVyNH7yM69eg446wrQR94ipbbcmZMU1ENPwanC97g',
+  //ERC20: '0x01B5E6bfaCA9041ab42855e2c7B80dF53378180B',
+  //decimals: 6,
+  //bridgeConfig: {
+  // sourcePort: '3PMMhFMzC86MstkNopJMNJoyUhDVCBxADCe',
+  // destinationPort: '0x4B559A1c1Bc2701AAD4267Fc7A86d117e02f06c4'
+  //sourcePort: '1fkRdEtioC44Klgqpvn78hq3kbGGpq7fqwg',
+  //destinationPort: '5hkqnJJ94vkKg9vhNbwlbf4jblwbn4cmNNd'
+  //}
+  //},
+  //WestMainnet: {
+  //ticker: 'West',
+  //label: 'West',
+  //bg: 'black',
+  //icon: '/img/icons/west.svg',
+  //assetId: '6nSpVyNH7yM69eg446wrQR94ipbbcmZMU1ENPwanC97g',
+  //ERC20: '0x01B5E6bfaCA9041ab42855e2c7B80dF53378180B',
+  //decimals: 6,
+  //bridgeConfig: {
+  // sourcePort: '3PMMhFMzC86MstkNopJMNJoyUhDVCBxADCe',
+  // destinationPort: '0x4B559A1c1Bc2701AAD4267Fc7A86d117e02f06c4'
+  //sourcePort: '1fkRdEtioC44Klgqpvn78hq3kbGGpq7fqwg',
+  //destinationPort: '5hkqnJJ94vkKg9vhNbwlbf4jblwbn4cmNNd'
+  //}
+  //},
 }
 
 export function formLinkForChain(chain: Chain, address: string): string {
@@ -116,5 +146,7 @@ export function getAvailableTokens(): Token[] {
     AvailableTokens.USDNMainnet,
     AvailableTokens.SignMainnet,
     AvailableTokens.NSBTMainnet,
+    //AvailableTokens.ErgoMainnet,
+    //AvailableTokens.WestMainnet,
   ]
 }
