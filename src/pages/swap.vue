@@ -121,7 +121,6 @@ export default Vue.extend({
     tokens: availableTokens,
     chains: [
       AvailableChains.Waves,
-      AvailableChains.Ethereum,
       AvailableChains.BSC,
     ],
     swapState: 0,
