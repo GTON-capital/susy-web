@@ -1,5 +1,6 @@
 <template>
   <div class="page-wrapper">
+    <bug-bounty></bug-bounty>
     <navbar-block></navbar-block>
     <main>
       <Nuxt />
@@ -11,9 +12,11 @@
 <script>
 import navbarBlock from '~/components/Navbar'
 import footerBlock from '~/components/Footer'
+import bugBounty from '../components/BugBounty.vue'
 
 export default {
   components: {
+    bugBounty,
     navbarBlock,
     footerBlock,
   },
