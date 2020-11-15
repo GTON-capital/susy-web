@@ -16,6 +16,7 @@
         this form
       </a>
     </div>
+    <hr class="bottom-line" />
   </div>
 </template>
 
@@ -35,22 +36,17 @@ export default {
   .mobil {
     display: block;
   }
-  border-bottom: 1px solid;
-  border-image: linear-gradient(to top left, #4200C0, #FF5E00) 47% 32%;
   @include media-breakpoint-up(md) {
     .mobil {
       display: none;
     }
     box-sizing: border-box;
     width: auto;
-    //height: 72px;
     background: -webkit-linear-gradient(
       270deg,
       rgba(46, 51, 86, 1),
       rgba(16, 17, 26, 1) 80%
     );
-    border-bottom: 1px solid;
-    border-image: linear-gradient(to top left, #4200C0, #FF5E00) 47% 32%;
   }
 }
 .info {
@@ -70,6 +66,10 @@ export default {
 }
 .line {
   background: -webkit-linear-gradient(0deg, #6000FF, #4200C0, #FF5E00);
+}
+.bottom-line {
+  background: -webkit-linear-gradient(270deg, #6000FF, #FF5E00);
+  height: 1px;
 }
 </style>
 
