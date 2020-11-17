@@ -7,7 +7,6 @@
       <template v-slot:body>
         <radio-provider-group style="margin-bottom: 24px">
           <div class="message-group">
-            qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
             {{ message.text }}
           </div>
           <div class="message-group-links" v-if="links.length > 0">
