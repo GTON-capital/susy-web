@@ -5,7 +5,7 @@
         <span class="text-secondary">Message </span>
       </template>
       <template v-slot:body>
-        <radio-provider-group style="margin-bottom: 24px;">
+        <radio-provider-group style="margin-bottom: 24px">
           <div class="message-group">
             {{ message.text }}
           </div>
@@ -22,7 +22,7 @@
         <div class="text-center">
           <btn
             class="btn-link btn-block"
-            style="margin-top: 0;"
+            style="margin-top: 0"
             @click="$emit('close')"
           >
             Back
@@ -74,5 +74,9 @@ export default {
   flex-direction: column;
   padding-top: 20px;
   line-height: 1.7;
+}
+.message-group {
+  width: 460px;
+  overflow-wrap: break-word;
 }
 </style>
