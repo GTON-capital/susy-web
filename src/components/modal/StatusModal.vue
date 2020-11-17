@@ -65,9 +65,6 @@ export default {
     RadioAccount,
     RadioProviderGroup,
   },
-  mounted() {
-    this.$modal.push('status')
-  },
 }
 </script>
 
