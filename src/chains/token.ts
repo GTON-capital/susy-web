@@ -71,11 +71,11 @@ export const AvailableTokens: Record<string, Token> = {
     bg: 'black',
     icon: '/img/icons/tokens/nsbt.svg',
     assetId: '6nSpVyNH7yM69eg446wrQR94ipbbcmZMU1ENPwanC97g',
-    ERC20: '0x01B5E6bfaCA9041ab42855e2c7B80dF53378180B',
+    ERC20: '0x09C62Eb4793eF6E967411D5D2BD6C4EF7d087f1F',
     decimals: 6,
     bridgeConfig: {
-      sourcePort: '3PGaUbcP9qtFcVvW59WXEyU2JvS866pCWNW',
-      destinationPort: '0xeF79FdA8cd7Ffc1a9b97320146E3d66404249B23'
+      sourcePort: '3PPUsj1yjMMAAg2hihdebK7n8zkAagHqdNT',
+      destinationPort: '0x88FBF63f30BE0E4f0b355415389c05652A942CdD'
     }
   },
   USDNMainnet: {
@@ -144,8 +144,7 @@ export function getAvailableTokens(): Token[] {
     // AvailableTokens.SignStagenet,
     // AvailableTokens.WBNBStagenet
     AvailableTokens.USDNMainnet,
-    // AvailableTokens.SignMainnet,
-    // AvailableTokens.NSBTMainnet,
+    AvailableTokens.NSBTMainnet,
     //AvailableTokens.ErgoMainnet,
     //AvailableTokens.WestMainnet,
   ]
