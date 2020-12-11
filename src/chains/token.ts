@@ -71,11 +71,11 @@ export const AvailableTokens: Record<string, Token> = {
     bg: 'black',
     icon: '/img/icons/tokens/nsbt.svg',
     assetId: '6nSpVyNH7yM69eg446wrQR94ipbbcmZMU1ENPwanC97g',
-    ERC20: '0x09C62Eb4793eF6E967411D5D2BD6C4EF7d087f1F',
+    ERC20: '0x496d451dDAB0F79346f773CbC2eb7Aee58446019',
     decimals: 6,
     bridgeConfig: {
       sourcePort: '3PPUsj1yjMMAAg2hihdebK7n8zkAagHqdNT',
-      destinationPort: '0x88FBF63f30BE0E4f0b355415389c05652A942CdD'
+      destinationPort: '0x59622815BADB181a2c37052136a9480C6A4a4eA6'
     }
   },
   USDNMainnet: {
