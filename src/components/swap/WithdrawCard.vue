@@ -70,7 +70,7 @@ export default Vue.extend({
     border-color: $base-border-color;
     box-shadow: $base-box-shadow;
     border-radius: 8px;
-    padding: 18px $card-content-padding-x;
+    padding: 18px;
   }
 }
 .card-footer {

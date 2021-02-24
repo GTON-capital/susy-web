@@ -63,7 +63,7 @@
       <div style="display: flex; justify-content: center;">
         <form-group>
           <checkbox name="terms-of-service" v-model="termsChecked">
-            Terms of Service
+            <a href="https://explorer.gravity.tech/docs/pdf/Gravity_Terms_of_Use_15.07.2020.pdf" target="_blank">Terms of Service</a>
           </checkbox>
         </form-group>
       </div>

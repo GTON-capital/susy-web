@@ -24,19 +24,19 @@ export const sections: SectionsDict = {
         target: '_blank',
       },
       {
-        // icon: 'github',
+        icon: 'github',
         label: 'GitHub',
         link: 'https://github.com/Gravity-Tech',
         target: '_blank',
       },
       {
-        icon: 'github',
+        //icon: 'github',
         label: 'Docs',
-        link: 'https://docs.gravity.tech',
+        link: 'https://docs.gravity.tech/',
         target: '_blank',
       },
       {
-        label: 'Demo',
+        label: 'Explorer',
         link: '/explorer',
         target: '_blank',
       },
