@@ -65,9 +65,9 @@ export const AvailableTokens: Record<string, Token> = {
     ERC20: '0x8478f3C11F167da1C7C2c57F5FB3a34B584A4217',
     decimals: 6,
   },
-  NSBTMainnet: {
+  NSBTLegacyMainnet: {
     ticker: 'NSBT',
-    label: 'NSBT',
+    label: 'NSBT (LEGACY)',
     bg: 'black',
     icon: '/img/icons/tokens/nsbt.svg',
     assetId: '6nSpVyNH7yM69eg446wrQR94ipbbcmZMU1ENPwanC97g',
@@ -76,6 +76,19 @@ export const AvailableTokens: Record<string, Token> = {
     bridgeConfig: {
       sourcePort: '3PPUsj1yjMMAAg2hihdebK7n8zkAagHqdNT',
       destinationPort: '0x59622815BADB181a2c37052136a9480C6A4a4eA6'
+    }
+  },
+  gwaNSBTMainnet: {
+    ticker: 'gwaNSBT',
+    label: 'gwaNSBT',
+    bg: 'black',
+    icon: '/img/icons/tokens/nsbt.svg',
+    assetId: '6nSpVyNH7yM69eg446wrQR94ipbbcmZMU1ENPwanC97g',
+    ERC20: '0xaDb688CC2D5A729d7e5ddEcDA8B63ED118F41eA4',
+    decimals: 6,
+    bridgeConfig: {
+      sourcePort: '3PRGPGtsVZVUCFRsEKp1FHccv6uFu8YNqb1',
+      destinationPort: '0xf427525Eb648d14c1Da28E530e9fe7ab9832c411'
     }
   },
   USDNMainnet: {
@@ -141,11 +154,8 @@ export function formLinkForChain(chain: Chain, address: string): string {
 
 export function getAvailableTokens(): Token[] {
   return [
-    // AvailableTokens.SignStagenet,
-    // AvailableTokens.WBNBStagenet
     AvailableTokens.USDNMainnet,
-    AvailableTokens.NSBTMainnet,
-    //AvailableTokens.ErgoMainnet,
-    //AvailableTokens.WestMainnet,
+    AvailableTokens.gwaNSBTMainnet,
+    AvailableTokens.NSBTLegacyMainnet,
   ]
 }
