@@ -100,8 +100,8 @@ export const AvailableTokens: Record<string, Token> = {
     ERC20: '0xc4b6F32B84657E9f6a73fE119f0967bE5bA8CF05',
     decimals: 6,
     bridgeConfig: {
-      sourcePort: '3PFhJUFXAwzPzNMjJkxQYFqEUPr8Jm4BmqP',
-      destinationPort: '0x549200f306BB2dC676ef052125Dc499A1e897120'
+      sourcePort: '3PEXiW1BrBNMo5A9dfj2CnBW2mwMiaf2sAe',
+      destinationPort: '0x8c0e11a6E692d02f71598AB5050083ED691Eb760'
     }
   },
   //ErgoMainnet: {
