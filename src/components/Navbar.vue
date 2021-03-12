@@ -6,7 +6,7 @@
         <nuxt-link to="/" class="nav-logo responsive">
           <img
             class="responsive-item"
-            :src="`/img/${theme}/logo.svg`"
+            :src="`/img/gravity/logo.svg`"
             alt="Logo"
           />
         </nuxt-link>
@@ -66,10 +66,16 @@
               <!-- <nuxt-link class="nav-menu-item link-invert d-lg-none" to="/ui"
                 >UI</nuxt-link
               > -->
-              <a class="nav-menu-item link-invert" href="https://medium.com/@gravity_protocol/gravity-protocol-faq-9092bc9c5cf7" target="_blank"
+              <a
+                class="nav-menu-item link-invert"
+                href="https://medium.com/@gravity_protocol/gravity-protocol-faq-9092bc9c5cf7"
+                target="_blank"
                 >FAQ</a
               >
-              <a class="nav-menu-item link-invert" href="https://docs.gravity.tech" target="_blank"
+              <a
+                class="nav-menu-item link-invert"
+                href="https://docs.gravity.tech"
+                target="_blank"
                 >Docs</a
               >
               <footer-block :is-disabled-cookies-box="true"></footer-block>
