@@ -4,11 +4,7 @@
     <div class="container nav-container">
       <div class="nav-content">
         <nuxt-link to="/" class="nav-logo responsive">
-          <img
-            class="responsive-item"
-            :src="`/img/gravity/logo.svg`"
-            alt="Logo"
-          />
+          <img class="responsive-item" src="/img/gravity/logo.svg" alt="Logo" />
         </nuxt-link>
         <div
           class="nav-header"
