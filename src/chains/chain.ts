@@ -26,11 +26,11 @@ export const AvailableChains: AvailableChainsDict = {
   Heco: {
     id: '4',
     label: 'HECO',
-    icon: 'src/static/img/icons/heco.jpg',
+    icon: '/img/icons/heco.jpg',
   },
   Fantom: {
     id: '5',
     label: 'Fantom Opera',
-    icon: 'src/static/img/icons/fantom.png',
+    icon: '/img/icons/fantom.png',
   },
 }

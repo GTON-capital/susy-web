@@ -5,6 +5,7 @@
       :swapProps="cardSwapProps"
       :onWalletConnect="onWalletConnect"
       @reverse-chains="onReverseChains"
+      @select-token="handleTokenSelect"
     />
     <CardSwapWalletConnected
       v-if="swapState === 1"
@@ -14,10 +15,12 @@
       @unlock="unlockERC20"
       @change-wallet="onWalletConnect"
       @reverse-chains="onReverseChains"
+      @select-token="handleTokenSelect"
     />
     <CardSwapFinalized
       v-if="swapState === 2"
       :onWalletConnect="onWalletConnect"
+      :swapProps="cardSwapProps"
       @swap="handleSwapConfirm"
       @back="handleSwapDeny"
     />
@@ -87,6 +90,8 @@ import {
   GatewayBridge,
   getAvailableTokens,
   formLinkForChain,
+
+  pickBridgeGateway,
   availableOriginChains,
   availableDestChains,
 } from '~/chains/token'
@@ -120,10 +125,6 @@ export default Vue.extend({
   data: () => ({
     page: 10,
     tokens: availableTokens,
-    // chains: [
-    //   AvailableChains.Waves,
-    //   AvailableChains.BSC,
-    // ],
     swapState: 0,
     swapForm: {
       isDirect: true,
@@ -224,6 +225,33 @@ export default Vue.extend({
     showLoader() {
       // this.$modal.push('susy-loader')
     },
+    handleTokenSelect() {
+      // set default chains for token
+      const [origin, dest] = [
+        this.availableOriginChains,
+        this.availableDestChains,
+      ]
+
+      if (this.swapForm.isDirect) {
+        this.swapForm.sourceChain = origin[0]
+        this.swapForm.destinationChain = dest[0]
+      } else {
+        this.swapForm.sourceChain = dest[0]
+        this.swapForm.destinationChain = origin[0]
+      }
+    },
+    pickBridgeGateway() {
+      const { isDirect } = this.swapForm
+
+      let listOfChains = [this.swapForm.sourceChain, this.swapForm.destinationChain]
+
+      if (!isDirect) {
+        listOfChains = listOfChains.reverse()
+      }
+
+      const [originChain, destChain] = listOfChains
+      return pickBridgeGateway(this.swapForm.token.bridge!, originChain, destChain)
+    },
     propertyObserveMap: async function (num: number) {
       const currentWallet = this.$store.getters['wallet/currentWallet']
 
@@ -231,11 +259,8 @@ export default Vue.extend({
         return {}
       }
 
-      if (!this.swapForm.token.bridgeConfig) {
-        return {}
-      }
-
-      const { sourcePort, destinationPort } = this.swapForm.token.bridgeConfig
+      const gateway = this.pickBridgeGateway()
+      const { destinationPort } = gateway!.cfg
 
       if (currentWallet.provider === WalletProvider.WavesKeeper) {
         // reset
@@ -315,11 +340,12 @@ export default Vue.extend({
         18
       )
 
-      if (!this.swapForm.token.bridgeConfig) {
-        return {}
-      }
+      // if (!this.swapForm.token.bridgeConfig) {
+      //   return {}
+      // }
 
-      const { sourcePort, destinationPort } = this.swapForm.token.bridgeConfig
+      const gateway = this.pickBridgeGateway()
+      const { destinationPort } = gateway!.cfg
 
       console.log(
         { amountValue: amountValue.toString() },
@@ -353,23 +379,10 @@ export default Vue.extend({
       this.$modal.pop()
     },
     onReverseChains: function () {
-      // const sourceChain = { ...this.swapForm.sourceChain }
-      // this.swapForm.sourceChain = { ...this.swapForm.destinationChain }
-      // this.swapForm.destinationChain = sourceChain
+      const sourceChain = { ...this.swapForm.sourceChain }
+      this.swapForm.sourceChain = { ...this.swapForm.destinationChain }
+      this.swapForm.destinationChain = sourceChain
       this.swapForm.isDirect = !this.swapForm.isDirect
-
-      const [origin, dest] = [
-        this.availableOriginChains,
-        this.availableDestChains,
-      ]
-
-      if (this.swapForm.isDirect) {
-        this.swapForm.sourceChain = origin[0]
-        this.swapForm.destinationChain = dest[0]
-      } else {
-        this.swapForm.sourceChain = dest[0]
-        this.swapForm.destinationChain = origin[0]
-      }
     },
     onWalletConnect: function () {
       this.$modal.push('accounts')
@@ -443,11 +456,11 @@ export default Vue.extend({
         this.showLoader()
         const invoker = new Web3Invoker()
 
-        if (!this.swapForm.token.bridgeConfig) {
-          throw new Error('Bridge config is not provided for this token.')
-        }
-
-        const { destinationPort } = this.swapForm.token.bridgeConfig
+        // if (!this.swapForm.token.bridgeConfig) {
+        //   throw new Error('Bridge config is not provided for this token.')
+        // }
+        const gateway = this.pickBridgeGateway()
+        const { destinationPort } = gateway!.cfg
         const { swapForm: form } = this
 
         if (!destinationPort) {
@@ -475,11 +488,14 @@ export default Vue.extend({
     },
     handleSwapWavesEthereum: async function () {
       const invoker = new LUPortInvoker(new Keeper())
-      if (!this.swapForm.token.bridgeConfig) {
-        return
-      }
+      // if (!this.swapForm.token.bridgeConfig) {
+      //   return
+      // }
 
-      const { sourcePort } = this.swapForm.token.bridgeConfig
+      // const { sourcePort } = this.swapForm.token.bridgeConfig
+
+      const gateway = this.pickBridgeGateway()
+      const { sourcePort } = gateway!.cfg
       const { swapForm: form } = this
 
       try {

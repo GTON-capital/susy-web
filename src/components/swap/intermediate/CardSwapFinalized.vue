@@ -31,10 +31,7 @@
 
       <form-group-between-shift>
         <template v-slot:left>
-          <search-select
-            :value="swapForm.token"
-            readonly
-          >
+          <search-select :value="swapForm.token" readonly>
             <template v-slot:label>
               Token
               <span class="text-secondary float-right font-weight-normal">
@@ -47,12 +44,16 @@
           <form-input :value="swapForm.tokenAmount" type="number" readonly>
             <template v-slot:label>
               Receive
-              <span class="text-gwei text-secondary float-right font-weight-normal">
+              <span
+                class="text-gwei text-secondary float-right font-weight-normal"
+              >
                 Gas: 100 Gwei
               </span>
             </template>
             <template v-slot:append>
-              <span style="display: block; padding: 0 15px;">{{ swapForm.token.ticker }}</span>
+              <span style="display: block; padding: 0 15px;">{{
+                swapForm.token.ticker
+              }}</span>
             </template>
           </form-input>
         </template>
@@ -63,11 +64,19 @@
       <div style="display: flex; justify-content: center;">
         <form-group>
           <checkbox name="terms-of-service" v-model="termsChecked">
-            <a href="https://explorer.gravity.tech/docs/pdf/Gravity_Terms_of_Use_15.07.2020.pdf" target="_blank">Terms of Service</a>
+            <a
+              href="https://explorer.gravity.tech/docs/pdf/Gravity_Terms_of_Use_15.07.2020.pdf"
+              target="_blank"
+              >Terms of Service</a
+            >
           </checkbox>
         </form-group>
       </div>
-      <btn class="btn-primary btn-block" @click="$emit('swap')" :disabled="!termsChecked">
+      <btn
+        class="btn-primary btn-block"
+        @click="$emit('swap')"
+        :disabled="!termsChecked"
+      >
         Swap
       </btn>
       <btn class="btn-link btn-block" @click="$emit('back')">
@@ -92,7 +101,7 @@ import FormGroupBetweenShift1 from '~/components/FormGroupBetweenShift1.vue'
 
 export default {
   name: 'CardSwapFinalized',
-  props: ['swapForm', 'heading', 'tokens'],
+  props: ['swapProps', 'heading', 'tokens'],
   components: {
     CardSwapFinal,
     FormGroup,
@@ -106,11 +115,16 @@ export default {
     FormGroupBetweenShift,
     FormGroupBetweenShift1,
   },
-  data: function() {
+  computed: {
+    swapForm() {
+      return this.swapProps.swapForm
+    },
+  },
+  data: function () {
     return {
-      termsChecked: false
+      termsChecked: false,
     }
-  }
+  },
 }
 </script>
 

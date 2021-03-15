@@ -8,7 +8,7 @@
         <template v-slot:left>
           <search-select
             v-model="swapForm.sourceChain"
-            :data="swapProps.chains.origin"
+            :data="chains.origin"
             :placeholder="sourceChainLabel"
             :modal-heading="sourceChainLabel"
           >
@@ -30,7 +30,7 @@
         <template v-slot:right>
           <search-select
             v-model="swapForm.destinationChain"
-            :data="swapProps.chains.destination"
+            :data="chains.destination"
             :placeholder="destinationChainLabel"
             :modal-heading="destinationChainLabel"
           >
@@ -69,6 +69,7 @@
             :data="swapProps.tokens"
             placeholder="Select a token..."
             modal-heading="Select a token"
+            @input="$emit('select-token')"
           >
             <template v-slot:label>
               Token
@@ -129,6 +130,9 @@ export default {
   computed: {
     theme() {
       return this.$store.getters['theme/theme']
+    },
+    chains() {
+      return this.swapProps.chains
     },
     swapForm() {
       return this.swapProps.swapForm

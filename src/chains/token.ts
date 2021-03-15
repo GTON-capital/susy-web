@@ -53,6 +53,15 @@ export const availableOriginChains = (bridge?: GatewayBridge[]) => {
 export const availableDestChains = (bridge?: GatewayBridge[]) => {
   return bridge?.map((x: GatewayBridge) => x.destination) ?? []
 }
+export const pickBridgeGateway = (bridgeList: GatewayBridge[], origin: Chain, dest: Chain): GatewayBridge | null => {
+  for (const bridge of bridgeList) {
+    if (bridge.destination.id === dest.id && bridge.origin.id === origin.id) {
+      return bridge
+    }
+  }
+
+  return null
+}
 
 export const AvailableTokens: Record<string, Token> = {
   SignTestnet: {
@@ -196,4 +205,6 @@ export function getAvailableTokens(): Token[] {
     AvailableTokens.gwaNSBTMainnet,
     AvailableTokens.NSBTLegacyMainnet,
   ]
+    // UI requires visible tokens to represent bridge config
+    .filter(x => (x.bridge ?? []).length > 0 )
 }

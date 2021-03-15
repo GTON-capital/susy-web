@@ -9,7 +9,7 @@
         <template v-slot:left>
           <search-select
             v-model="swapForm.sourceChain"
-            :data="chains"
+            :data="chains.origin"
             :placeholder="sourceChainLabel"
             :modal-heading="sourceChainLabel"
           >
@@ -31,7 +31,7 @@
         <template v-slot:right>
           <search-select
             v-model="swapForm.destinationChain"
-            :data="chains"
+            :data="chains.destination"
             :placeholder="destinationChainLabel"
             :modal-heading="destinationChainLabel"
           >
@@ -78,6 +78,7 @@
             :data="tokens"
             placeholder="Select a token..."
             modal-heading="Select a token"
+            @input="$emit('select-token')"
           >
             <template v-slot:label>
               Token
@@ -125,7 +126,8 @@ import SwapHint from '~/components/swap/SwapHint'
 
 export default {
   name: 'CardSwapWalletConnected',
-  props: ['swapForm', 'chains', 'tokens', 'onWalletConnect', 'allowanceReceived'],
+  // props: ['swapForm', 'chains', 'tokens', 'onWalletConnect', 'allowanceReceived'],
+  props: ['swapProps', 'onWalletConnect', 'allowanceReceived'],
   components: {
     SwapHint,
     Btn,
@@ -139,6 +141,9 @@ export default {
     exchangeIcon: () => import('assets/icons/exchange.svg?inline'),
   },
   computed: {
+    swapForm() { return this.swapProps.swapForm },
+    chains() { return this.swapProps.chains },
+    tokens() { return this.swapProps.tokens },
     theme() {
       return this.$store.getters['theme/theme']
     },
