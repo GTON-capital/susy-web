@@ -2,18 +2,14 @@
   <div class="container">
     <CardSwapNoWallet
       v-if="swapState === 0"
-      :chains="chains"
-      :tokens="tokens"
-      :swapForm="swapForm"
+      :swapProps="cardSwapProps"
       :onWalletConnect="onWalletConnect"
       @reverse-chains="onReverseChains"
     />
     <CardSwapWalletConnected
       v-if="swapState === 1"
       :allowanceReceived="allowanceReceived"
-      :chains="chains"
-      :tokens="tokens"
-      :swapForm="swapForm"
+      :swapProps="cardSwapProps"
       @next="checkSwapDetails"
       @unlock="unlockERC20"
       @change-wallet="onWalletConnect"
@@ -21,10 +17,7 @@
     />
     <CardSwapFinalized
       v-if="swapState === 2"
-      :chains="chains"
-      :tokens="tokens"
       :onWalletConnect="onWalletConnect"
-      :swapForm="swapForm"
       @swap="handleSwapConfirm"
       @back="handleSwapDeny"
     />
@@ -37,7 +30,7 @@
         :sourceChain="swapForm.sourceChain"
         :destinationChain="swapForm.destinationChain"
       />
-      <SwapLoader :loader="loader" ref="loader"/>
+      <SwapLoader :loader="loader" ref="loader" />
     </client-only>
     <div>
       <!-- <div ref="loader" style="width: 100%; z-index: 0; height: 100vh; position: absolute; top: 0; left: 0"/> -->
@@ -89,13 +82,21 @@ import { castFloatToDecimalsVersion } from '~/misc/bn'
 import { buildPropertyChecker } from '~/services/wallets/checker'
 import { AvailableChains, Chain } from '~/chains/chain'
 import {
-  getAvailableTokens,
+  Token,
   AvailableTokens,
+  GatewayBridge,
+  getAvailableTokens,
   formLinkForChain,
+  availableOriginChains,
+  availableDestChains,
 } from '~/chains/token'
 
-
 const availableTokens = getAvailableTokens()
+
+type DirectionChainsCfg = {
+  origin: Chain[]
+  destination: Chain[]
+}
 
 interface SwapMessage {
   text: string
@@ -119,17 +120,18 @@ export default Vue.extend({
   data: () => ({
     page: 10,
     tokens: availableTokens,
-    chains: [
-      AvailableChains.Waves,
-      AvailableChains.BSC,
-    ],
+    // chains: [
+    //   AvailableChains.Waves,
+    //   AvailableChains.BSC,
+    // ],
     swapState: 0,
     swapForm: {
+      isDirect: true,
       sourceChain: AvailableChains.Waves,
       destinationChain: AvailableChains.BSC,
       sourceAddress: '',
       destinationAddress: '',
-      token: AvailableTokens.USDNMainnet,
+      token: AvailableTokens.USDNMainnet as Token,
       tokenAmount: 0,
       currentBalance: 0,
       formattedBalance: 0,
@@ -140,12 +142,38 @@ export default Vue.extend({
     allowanceReceived: false,
     loader: {
       callCount: 0,
-      text: SwapLoaderMessage.Processing
-    }
+      text: SwapLoaderMessage.Processing,
+    },
   }),
   computed: {
     theme() {
       return this.$store.getters['theme/theme']
+    },
+    availableOriginChains() {
+      return availableOriginChains(this.swapForm.token.bridge)
+    },
+    availableDestChains() {
+      return availableDestChains(this.swapForm.token.bridge)
+    },
+    cardSwapProps() {
+      const { tokens, swapForm } = this
+      return {
+        chains: (swapForm.isDirect
+          ? {
+              // @ts-ignore
+              origin: this.availableOriginChains,
+              // @ts-ignore
+              destination: this.availableDestChains,
+            }
+          : {
+              // @ts-ignore
+              origin: this.availableDestChains,
+              // @ts-ignore
+              destination: this.availableOriginChains,
+            }) as DirectionChainsCfg,
+        tokens,
+        swapForm,
+      }
     },
   },
   mounted() {
@@ -199,7 +227,6 @@ export default Vue.extend({
     propertyObserveMap: async function (num: number) {
       const currentWallet = this.$store.getters['wallet/currentWallet']
 
-
       if (!currentWallet) {
         return {}
       }
@@ -251,7 +278,6 @@ export default Vue.extend({
 
       if (currentWallet.provider === WalletProvider.Metamask) {
         try {
-
           if (!destinationPort) {
             throw new Error('IB Port is invalid')
           }
@@ -284,7 +310,10 @@ export default Vue.extend({
     },
     unlockERC20: async function () {
       const invoker = new Web3Invoker()
-      const amountValue = castFloatToDecimalsVersion(String(this.swapForm.tokenAmount), 18)
+      const amountValue = castFloatToDecimalsVersion(
+        String(this.swapForm.tokenAmount),
+        18
+      )
 
       if (!this.swapForm.token.bridgeConfig) {
         return {}
@@ -301,7 +330,7 @@ export default Vue.extend({
 
       try {
         // @ts-ignore
-        this.showLoader();
+        this.showLoader()
         await invoker.approve(
           destinationPort,
           this.swapForm.token.ERC20!,
@@ -312,9 +341,8 @@ export default Vue.extend({
         this.allowanceReceived = false
       } finally {
         // @ts-ignore
-        this.hideLoader();
+        this.hideLoader()
       }
-
     },
     cleanSubs: function () {
       for (const sub of this.subs) {
@@ -325,9 +353,23 @@ export default Vue.extend({
       this.$modal.pop()
     },
     onReverseChains: function () {
-      const sourceChain = { ...this.swapForm.sourceChain }
-      this.swapForm.sourceChain = { ...this.swapForm.destinationChain }
-      this.swapForm.destinationChain = sourceChain
+      // const sourceChain = { ...this.swapForm.sourceChain }
+      // this.swapForm.sourceChain = { ...this.swapForm.destinationChain }
+      // this.swapForm.destinationChain = sourceChain
+      this.swapForm.isDirect = !this.swapForm.isDirect
+
+      const [origin, dest] = [
+        this.availableOriginChains,
+        this.availableDestChains,
+      ]
+
+      if (this.swapForm.isDirect) {
+        this.swapForm.sourceChain = origin[0]
+        this.swapForm.destinationChain = dest[0]
+      } else {
+        this.swapForm.sourceChain = dest[0]
+        this.swapForm.destinationChain = origin[0]
+      }
     },
     onWalletConnect: function () {
       this.$modal.push('accounts')
@@ -398,7 +440,7 @@ export default Vue.extend({
         // invokeSendUnlockRequest
 
         // @ts-ignore
-        this.showLoader();
+        this.showLoader()
         const invoker = new Web3Invoker()
 
         if (!this.swapForm.token.bridgeConfig) {
@@ -418,7 +460,6 @@ export default Vue.extend({
           destinationPort
         )
 
-
         this.swapForm.message = {
           text: `Swap has been successfully submitted.`,
         }
@@ -429,7 +470,7 @@ export default Vue.extend({
         this.$modal.push('status')
       } finally {
         // @ts-ignore
-        this.hideLoader();
+        this.hideLoader()
       }
     },
     handleSwapWavesEthereum: async function () {
@@ -441,11 +482,9 @@ export default Vue.extend({
       const { sourcePort } = this.swapForm.token.bridgeConfig
       const { swapForm: form } = this
 
-
       try {
-
         // @ts-ignore
-        this.showLoader();
+        this.showLoader()
         const result = await invoker.sendTransferRequest({
           dApp: sourcePort,
           receiver: form.destinationAddress,
@@ -469,7 +508,7 @@ export default Vue.extend({
         this.$modal.push('status')
       } finally {
         // @ts-ignore
-        this.hideLoader();
+        this.hideLoader()
       }
     },
     handleSwapConfirm: async function () {
