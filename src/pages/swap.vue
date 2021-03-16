@@ -240,6 +240,18 @@ export default Vue.extend({
         this.swapForm.destinationChain = origin[0]
       }
     },
+    getCurrentBridgeToken() {
+      const gateway = this.pickBridgeGateway()!
+      const { token } = gateway.cfg
+
+      const [originToken, destToken] = [token.origin, token.dest]
+
+      if (this.swapForm.sourceChain.id === gateway.origin.id) {
+        return originToken
+      }
+
+      return destToken
+    },
     pickBridgeGateway() {
       const { isDirect } = this.swapForm
 
@@ -281,7 +293,8 @@ export default Vue.extend({
 
         const { address } = publicState.account
         const { server } = publicState.network
-        const { assetId } = this.swapForm.token
+
+        const { assetId, decimals } = this.getCurrentBridgeToken()
 
         try {
           const balanceInfo = await axios.get(
@@ -294,7 +307,7 @@ export default Vue.extend({
             sourceAddress: address,
             currentBalance: balance,
             formattedBalance:
-              balance / Math.pow(10, this.swapForm.token.decimals),
+              balance / Math.pow(10, decimals),
           }
         } catch (err) {
           return {}
@@ -310,10 +323,11 @@ export default Vue.extend({
             window.web3.eth.accounts.givenProvider.selectedAddress
 
           const invoker = new Web3Invoker()
+          const { assetId } = this.getCurrentBridgeToken()
 
-          let { balance, allowance } = await invoker.getBalanceAndAllowance(
+          let { balance } = await invoker.getBalanceAndAllowance(
             currentWalletAddress,
-            this.swapForm.token.ERC20!,
+            assetId,
             destinationPort
           )
 
@@ -347,19 +361,22 @@ export default Vue.extend({
       const gateway = this.pickBridgeGateway()
       const { destinationPort } = gateway!.cfg
 
-      console.log(
-        { amountValue: amountValue.toString() },
-        destinationPort,
-        this.swapForm.token.ERC20!,
-        amountValue.toString()
-      )
+      // console.log(
+      //   { amountValue: amountValue.toString() },
+      //   destinationPort,
+      //   this.swapForm.token.ERC20!,
+      //   amountValue.toString()
+      // )
 
       try {
         // @ts-ignore
         this.showLoader()
+
+        const currentToken = this.getCurrentBridgeToken()
+
         await invoker.approve(
           destinationPort,
-          this.swapForm.token.ERC20!,
+          currentToken.assetId,
           amountValue.toString()
         )
         this.allowanceReceived = true
@@ -501,12 +518,16 @@ export default Vue.extend({
       try {
         // @ts-ignore
         this.showLoader()
+
+        const currentToken = this.getCurrentBridgeToken()
+
         const result = await invoker.sendTransferRequest({
           dApp: sourcePort,
           receiver: form.destinationAddress,
           // swapAmount: Math.pow(10, form.token.decimals) * form.tokenAmount,
           swapAmount: form.tokenAmount,
-          swapAssetID: form.token.assetId,
+          // TODO: H
+          swapAssetID: currentToken.assetId
         })
 
         console.log({ result })
@@ -533,7 +554,7 @@ export default Vue.extend({
       this.swapForm.message = { text: '' }
 
       switch (sourceChain.id) {
-        case (AvailableChains.Ethereum.id, AvailableChains.BSC.id):
+        case (AvailableChains.Ethereum.id, AvailableChains.BSC.id, AvailableChains.Heco.id):
           // @ts-ignore
           await this.handleSwapEthereumWaves()
           break
