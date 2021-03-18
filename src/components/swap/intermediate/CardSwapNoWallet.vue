@@ -8,7 +8,7 @@
         <template v-slot:left>
           <search-select
             v-model="swapForm.sourceChain"
-            :data="chains"
+            :data="chains.origin"
             :placeholder="sourceChainLabel"
             :modal-heading="sourceChainLabel"
           >
@@ -30,7 +30,7 @@
         <template v-slot:right>
           <search-select
             v-model="swapForm.destinationChain"
-            :data="chains"
+            :data="chains.destination"
             :placeholder="destinationChainLabel"
             :modal-heading="destinationChainLabel"
           >
@@ -66,9 +66,10 @@
         <template v-slot:left>
           <search-select
             v-model="swapForm.token"
-            :data="tokens"
+            :data="swapProps.tokens"
             placeholder="Select a token..."
             modal-heading="Select a token"
+            @input="$emit('select-token')"
           >
             <template v-slot:label>
               Token
@@ -107,7 +108,7 @@ import SwapHint from '~/components/swap/SwapHint'
 
 export default {
   name: 'CardSwapNoWallet',
-  props: ['swapForm', 'chains', 'tokens', 'onWalletConnect'],
+  props: ['swapProps', 'onWalletConnect'],
   components: {
     SwapHint,
     Btn,
@@ -120,15 +121,21 @@ export default {
     FormGroupBetweenShift1,
     exchangeIcon: () => import('assets/icons/exchange.svg?inline'),
   },
-  data: function() {
+  data: function () {
     return {
-      sourceChainLabel: "Select source chain",
-      destinationChainLabel: "Select destination chain",
+      sourceChainLabel: 'Select source chain',
+      destinationChainLabel: 'Select destination chain',
     }
   },
   computed: {
     theme() {
       return this.$store.getters['theme/theme']
+    },
+    chains() {
+      return this.swapProps.chains
+    },
+    swapForm() {
+      return this.swapProps.swapForm
     },
   },
 }
