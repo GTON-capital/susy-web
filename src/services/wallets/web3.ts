@@ -19,6 +19,7 @@ export class Web3Invoker {
     ERC20ABI
   }
 
+  private gasLimit = 1e6
 
   wavesToBytes32(receiver: string | null) {
     if (!receiver) {
@@ -42,7 +43,7 @@ export class Web3Invoker {
       JSON.parse(this.contractsABI.ERC20ABI),
       token,
       {
-        gas: 100000,
+        gas: this.gasLimit,
       }
     )
 
@@ -63,7 +64,7 @@ export class Web3Invoker {
       JSON.parse(this.contractsABI.ERC20ABI),
       token,
       {
-        gas: 100000,
+        gas: this.gasLimit,
       }
     )
     const balance = await contract.methods.balanceOf(address).call()
@@ -86,7 +87,7 @@ export class Web3Invoker {
       smartContract,
       {
         // gasPrice: String(50 * 1e9),
-        gas: 400000,
+        gas: this.gasLimit,
       }
     )
     // createTransferUnwrapRequest
