@@ -172,6 +172,32 @@ export const AvailableTokens: Record<string, Token> = {
       }),
     ],
   },
+  SWOPMainnet: {
+    ticker: 'SWOP',
+    label: 'SWOP Token',
+    bg: 'black',
+    icon: '/img/icons/tokens/swop.png',
+    bridge: [
+      new GatewayBridge({
+        origin: AvailableChains.Waves,
+        destination: AvailableChains.BSC,
+        cfg: {
+          token: {
+            origin: {
+              decimals: 8,
+              assetId: 'Ehie5xYpeN8op1Cctc6aGUrqx8jq3jtf1DSjXDbfm7aT',
+            },
+            dest: {
+              decimals: 18,
+              assetId: '0x14B819B057078BbD87C5e5f65d54818f490701Ce',
+            },
+          },
+          sourcePort: '3P3Fb6UCW3TB7TGK2BWsV6YfmoL3Y8bv1Km',
+          destinationPort: '0xd6C8D0d800B9CbbAE0B13f6d41087bA3CCe797E6',
+        },
+      }),
+    ],
+  },
   USDNMainnet: {
     ticker: 'USDN',
     label: 'USDN',
@@ -248,6 +274,7 @@ export function getAvailableTokens(): Token[] {
     [
       AvailableTokens.USDNMainnet,
       AvailableTokens.gwaNSBTMainnet,
+      AvailableTokens.SWOPMainnet,
       AvailableTokens.NSBTLegacyMainnet,
     ]
       // UI requires visible tokens to represent bridge config

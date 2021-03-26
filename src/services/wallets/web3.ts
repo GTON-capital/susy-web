@@ -19,8 +19,6 @@ export class Web3Invoker {
     ERC20ABI
   }
 
-  private gasLimit = 1e6
-
   wavesToBytes32(receiver: string | null) {
     if (!receiver) {
       return null
@@ -42,9 +40,6 @@ export class Web3Invoker {
     const contract = new web3Obj.eth.Contract(
       JSON.parse(this.contractsABI.ERC20ABI),
       token,
-      {
-        gas: this.gasLimit,
-      }
     )
 
     await contract.methods.approve(spender, amount)
@@ -63,9 +58,6 @@ export class Web3Invoker {
     const contract = new web3Obj.eth.Contract(
       JSON.parse(this.contractsABI.ERC20ABI),
       token,
-      {
-        gas: this.gasLimit,
-      }
     )
     const balance = await contract.methods.balanceOf(address).call()
     const allowance = await contract.methods.allowance(address, ibport).call()
@@ -85,12 +77,7 @@ export class Web3Invoker {
     const contract = new web3Obj.eth.Contract(
       JSON.parse(this.contractsABI.IBPortABI),
       smartContract,
-      {
-        // gasPrice: String(50 * 1e9),
-        gas: this.gasLimit,
-      }
     )
-    // createTransferUnwrapRequest
     
     let bnAmount = castFloatToDecimalsVersion(amountValue, 18)
 
@@ -100,8 +87,6 @@ export class Web3Invoker {
       .createTransferUnwrapRequest(bnAmount.toString(), this.wavesToBytes32(receiver)) 
       // @ts-ignore
       .send({ from: await this.resolveCurrentAddress() })
-
-    console.log({ sendRequest })
   }
 
   async resolveCurrentAddress() {
