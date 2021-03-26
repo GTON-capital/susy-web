@@ -176,7 +176,7 @@ export const AvailableTokens: Record<string, Token> = {
     ticker: 'SWOP',
     label: 'SWOP Token',
     bg: 'black',
-    icon: '/img/icons/tokens/usdn.svg',
+    icon: '/img/icons/tokens/swop.png',
     bridge: [
       new GatewayBridge({
         origin: AvailableChains.Waves,
