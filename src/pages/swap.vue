@@ -472,18 +472,17 @@ export default Vue.extend({
         // @ts-ignore
         this.showLoader()
         const invoker = new Web3Invoker()
-        console.log({ invoker })
+
 
         // if (!this.swapForm.token.bridgeConfig) {
         //   throw new Error('Bridge config is not provided for this token.')
         // }
         const gateway = this.pickBridgeGateway()
-        console.log({ gateway })
+
         const { destinationPort } = gateway!.cfg
-        console.log({ destinationPort })
+
         const { swapForm: form } = this
 
-        console.log({ destinationPort, gateway })
 
         if (!destinationPort) {
           throw new Error('IB Port is invalid')
