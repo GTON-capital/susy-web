@@ -90,7 +90,6 @@ import {
   GatewayBridge,
   getAvailableTokens,
   formLinkForChain,
-
   pickBridgeGateway,
   availableOriginChains,
   availableDestChains,
@@ -255,14 +254,21 @@ export default Vue.extend({
     pickBridgeGateway() {
       const { isDirect } = this.swapForm
 
-      let listOfChains = [this.swapForm.sourceChain, this.swapForm.destinationChain]
+      let listOfChains = [
+        this.swapForm.sourceChain,
+        this.swapForm.destinationChain,
+      ]
 
       if (!isDirect) {
         listOfChains = listOfChains.reverse()
       }
 
       const [originChain, destChain] = listOfChains
-      return pickBridgeGateway(this.swapForm.token.bridge!, originChain, destChain)
+      return pickBridgeGateway(
+        this.swapForm.token.bridge!,
+        originChain,
+        destChain
+      )
     },
     propertyObserveMap: async function (num: number) {
       const currentWallet = this.$store.getters['wallet/currentWallet']
@@ -306,8 +312,7 @@ export default Vue.extend({
           return {
             sourceAddress: address,
             currentBalance: balance,
-            formattedBalance:
-              balance / Math.pow(10, decimals),
+            formattedBalance: balance / Math.pow(10, decimals),
           }
         } catch (err) {
           return {}
@@ -473,7 +478,6 @@ export default Vue.extend({
         this.showLoader()
         const invoker = new Web3Invoker()
 
-
         // if (!this.swapForm.token.bridgeConfig) {
         //   throw new Error('Bridge config is not provided for this token.')
         // }
@@ -482,7 +486,6 @@ export default Vue.extend({
         const { destinationPort } = gateway!.cfg
 
         const { swapForm: form } = this
-
 
         if (!destinationPort) {
           throw new Error('IB Port is invalid')
@@ -531,7 +534,7 @@ export default Vue.extend({
           // swapAmount: Math.pow(10, form.token.decimals) * form.tokenAmount,
           swapAmount: form.tokenAmount,
           // TODO: H
-          swapAssetID: currentToken.assetId
+          swapAssetID: currentToken.assetId,
         })
 
         console.log({ result })
@@ -557,11 +560,17 @@ export default Vue.extend({
 
       this.swapForm.message = { text: '' }
 
-      if ([AvailableChains.Ethereum.id, AvailableChains.BSC.id, AvailableChains.Heco.id].includes(sourceChain.id)) {
-        console.log("hit evm chain swap")
+      if (
+        [
+          AvailableChains.Ethereum.id,
+          AvailableChains.BSC.id,
+          AvailableChains.Heco.id,
+        ].includes(sourceChain.id)
+      ) {
+        console.log('hit evm chain swap')
         await this.handleSwapEthereumWaves()
       } else if ([AvailableChains.Waves.id].includes(sourceChain.id)) {
-        console.log("hit waves chain swap")
+        console.log('hit waves chain swap')
         await this.handleSwapWavesEthereum()
       }
     },

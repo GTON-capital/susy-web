@@ -198,6 +198,32 @@ export const AvailableTokens: Record<string, Token> = {
       }),
     ],
   },
+  SIGNMainnet: {
+    ticker: 'SIGN',
+    label: 'SIGN Token',
+    bg: 'black',
+    icon: '/img/icons/signature-chain.svg',
+    bridge: [
+      new GatewayBridge({
+        origin: AvailableChains.Waves,
+        destination: AvailableChains.BSC,
+        cfg: {
+          token: {
+            origin: {
+              decimals: 8,
+              assetId: '9sQutD5HnRvjM1uui5cVC4w9xkMPAfYEV8ymug3Mon2Y',
+            },
+            dest: {
+              decimals: 18,
+              assetId: '0xb5e094AEC0D8f019497Bce712AF685aC15BD8c35',
+            },
+          },
+          sourcePort: '3PKKYSedPuFuExJCweD52mj1MtjJLT8da9g',
+          destinationPort: '0x072232c6B713024e04D596bf68f1B22AC123af7f',
+        },
+      }),
+    ],
+  },
   USDNMainnet: {
     ticker: 'USDN',
     label: 'USDN',
@@ -240,14 +266,6 @@ export const AvailableTokens: Record<string, Token> = {
           destinationPort: '0x649b35580EF2a15abF595df626b45aCeBd818882',
         },
       }),
-      // new GatewayBridge({
-      //   origin: AvailableChains.Waves,
-      //   destination: AvailableChains.Fantom,
-      //   cfg: {
-      //     sourcePort: '3PEXiW1BrBNMo5A9dfj2CnBW2mwMiaf2sAe',
-      //     destinationPort: '0x8c0e11a6E692d02f71598AB5050083ED691Eb760',
-      //   },
-      // }),
     ],
   },
 }
@@ -275,6 +293,7 @@ export function getAvailableTokens(): Token[] {
       AvailableTokens.USDNMainnet,
       AvailableTokens.gwaNSBTMainnet,
       AvailableTokens.SWOPMainnet,
+      AvailableTokens.SIGNMainnet,
       AvailableTokens.NSBTLegacyMainnet,
     ]
       // UI requires visible tokens to represent bridge config
