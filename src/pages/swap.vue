@@ -565,6 +565,7 @@ export default Vue.extend({
           AvailableChains.Ethereum.id,
           AvailableChains.BSC.id,
           AvailableChains.Heco.id,
+          AvailableChains.Fantom.id,
         ].includes(sourceChain.id)
       ) {
         console.log('hit evm chain swap')

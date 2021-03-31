@@ -262,8 +262,26 @@ export const AvailableTokens: Record<string, Token> = {
               assetId: '0xa10C9B112504bdDBB8dA13ad90f26E6D379dD0e2',
             },
           },
-          sourcePort: '3P7DNKjZ5RB1YM4V4t1yTwDmsbjDkQ7aePD',
-          destinationPort: '0x649b35580EF2a15abF595df626b45aCeBd818882',
+          sourcePort: '3P5ASZYdgDgB6uLKaeVxZmcf71gFhwzDvH2',
+          destinationPort: '0x4d43E4ed92469F38839ea2077db7649BC7c175ef',
+        },
+      }),
+      new GatewayBridge({
+        origin: AvailableChains.Waves,
+        destination: AvailableChains.Fantom,
+        cfg: {
+          token: {
+            origin: {
+              decimals: 6,
+              assetId: 'DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p',
+            },
+            dest: {
+              decimals: 18,
+              assetId: '0x1d82150c392b2fbaa84b7cb1a471b2be68befcdb',
+            },
+          },
+          sourcePort: '3PPJ2HnXKjuaTopung1K2DsrgMigpwXHsFF',
+          destinationPort: '0x83d97d01db4ae12CB637e0732BbB3569d0D218e9',
         },
       }),
     ],
