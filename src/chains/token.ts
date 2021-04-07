@@ -284,6 +284,24 @@ export const AvailableTokens: Record<string, Token> = {
           destinationPort: '0x83d97d01db4ae12CB637e0732BbB3569d0D218e9',
         },
       }),
+      new GatewayBridge({
+        origin: AvailableChains.Waves,
+        destination: AvailableChains.Avax,
+        cfg: {
+          token: {
+            origin: {
+              decimals: 6,
+              assetId: 'DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p',
+            },
+            dest: {
+              decimals: 18,
+              assetId: '0x24e29ce9149B2cfC92e49aDc42A816e694aFf1b7',
+            },
+          },
+          sourcePort: '3PDdegFA8R2jUAZHpppcyAdQJ5BFsSMx4Pm',
+          destinationPort: '0x9a7B1800CE35aAca97d7Aa06d82F61cb971E947c',
+        },
+      }),
     ],
   },
 }
@@ -292,6 +310,8 @@ export function formLinkForChain(chain: Chain, address: string): string {
   switch (chain.id) {
     case AvailableChains.BSC.id:
       return `https://bscscan.com/address/${address}#tokentxns`
+    case AvailableChains.Avax.id:
+      return `https://cchain.explorer.avax.network/address/${address}#tokentxns`
     case AvailableChains.Ethereum.id:
       return `https://etherscan.io/address/${address}#tokentxns`
     case AvailableChains.Waves.id:

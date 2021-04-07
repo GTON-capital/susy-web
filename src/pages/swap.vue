@@ -83,7 +83,7 @@ import {
 // import { processConfig } from '~/services/misc/config'
 import { castFloatToDecimalsVersion } from '~/misc/bn'
 import { buildPropertyChecker } from '~/services/wallets/checker'
-import { AvailableChains, Chain } from '~/chains/chain'
+import { AvailableChains, Chain, availableEVMChains } from '~/chains/chain'
 import {
   Token,
   AvailableTokens,
@@ -561,12 +561,9 @@ export default Vue.extend({
       this.swapForm.message = { text: '' }
 
       if (
-        [
-          AvailableChains.Ethereum.id,
-          AvailableChains.BSC.id,
-          AvailableChains.Heco.id,
-          AvailableChains.Fantom.id,
-        ].includes(sourceChain.id)
+        availableEVMChains()
+          .map((x) => x.id)
+          .includes(sourceChain.id)
       ) {
         console.log('hit evm chain swap')
         await this.handleSwapEthereumWaves()
