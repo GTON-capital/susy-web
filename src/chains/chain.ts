@@ -5,6 +5,7 @@ export type AvailableChainsDict = {
   Waves: Chain
   BSC: Chain
   Fantom: Chain
+  Avax: Chain
 }
 
 export const AvailableChains: AvailableChainsDict = {
@@ -33,4 +34,17 @@ export const AvailableChains: AvailableChainsDict = {
     label: 'Fantom Opera',
     icon: '/img/icons/fantom.png',
   },
+  Avax: {
+    id: '6',
+    label: 'Avax C-Chain',
+    icon: '/img/icons/avax.png',
+  },
 }
+
+export const availableEVMChains = () => [
+  AvailableChains.Ethereum,
+  AvailableChains.Avax,
+  AvailableChains.BSC,
+  AvailableChains.Heco,
+  AvailableChains.Fantom,
+]
