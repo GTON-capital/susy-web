@@ -20,6 +20,7 @@ export type Wallets = {
 export enum WalletProvider {
   Metamask = 'metamask',
   WavesKeeper = 'keeper',
+  MathWallet = 'mathwallet',
 }
 
 export type WalletState = Wallets

@@ -1,39 +1,10 @@
 <template>
-  <div
-    class="radio-account"
-    :class="{ 'radio-account--without-value': !value }"
-  >
+  <div class="radio-account" :class="{ 'radio-account--without-value': !value }">
     <template v-if="value">
-      <input
-        :id="id"
-        :type="type"
-        :name="name"
-        :checked="checked"
-        :value="value"
-        class="hide radio-account-input"
-        @change="$emit('change', walletData)"
-      />
-      <label
-        :for="id"
-        class="radio-account-label"
-        :aria-label="wallet.label"
-      ></label>
-      <svg
-        width="22"
-        height="22"
-        viewBox="0 0 22 22"
-        fill="transparent"
-        xmlns="http://www.w3.org/2000/svg"
-        class="radio-account-dot"
-      >
-        <circle
-          cx="11"
-          cy="11"
-          r="10"
-          fill="transparent"
-          stroke="#00DD80"
-          stroke-width="2"
-        />
+      <input :id="id" :type="type" :name="name" :checked="checked" :value="value" class="hide radio-account-input" @change="$emit('change', walletData)" />
+      <label :for="id" class="radio-account-label" :aria-label="wallet.label"></label>
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="transparent" xmlns="http://www.w3.org/2000/svg" class="radio-account-dot">
+        <circle cx="11" cy="11" r="10" fill="transparent" stroke="#00DD80" stroke-width="2" />
         <circle cx="11" cy="11" r="4" fill="#00DD80" />
       </svg>
     </template>
@@ -49,10 +20,7 @@
         <label :for="id" class="radio-account-content-value">
           {{ value }}
         </label>
-        <btn
-          class="btn-circle btn-secondary-gradient radio-account-logout"
-          @click="$emit('logout', walletData)"
-        >
+        <btn class="btn-circle btn-secondary-gradient radio-account-logout" @click="$emit('logout', walletData)">
           <icon>
             <logout-icon></logout-icon>
           </icon>
@@ -66,18 +34,18 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import Icon from '~/components/Icon.vue'
-import Btn from '~/components/Btn.vue'
+import Vue from "vue"
+import Icon from "~/components/Icon.vue"
+import Btn from "~/components/Btn.vue"
 
 export default Vue.extend({
-  name: 'RadioAccount',
+  name: "RadioAccount",
   components: {
     Icon,
     Btn,
-    logoutIcon: () => import('assets/icons/logout.svg?inline'),
+    logoutIcon: () => import("assets/icons/logout.svg?inline"),
   },
-  props: ['walletData'],
+  props: ["walletData"],
   computed: {
     wallet() {
       return this.walletData.wallet
@@ -93,11 +61,11 @@ export default Vue.extend({
     },
     checked() {
       return this.walletData.checked
-    }
+    },
   },
   data: () => ({
-    id: '',
-    type: 'radio'
+    id: "",
+    type: "radio",
   }),
   created() {
     this.id = this.getUniqueId()
@@ -111,7 +79,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import '../assets/scss/import';
+@import "../assets/scss/import";
 // stylelint-disable selector-no-qualifying-type
 
 .radio-account {

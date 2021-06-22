@@ -1,27 +1,37 @@
-import { WalletState, WalletProvider, ExtensionWallet } from './types'
-import { ActionContext } from 'vuex'
+import { WalletState, WalletProvider, ExtensionWallet } from "./types"
+import { ActionContext } from "vuex"
 
 export const state = (): WalletState => {
   return {
     [WalletProvider.Metamask]: {
       wallet: {
-        id: '1-0',
-        label: 'Ethereum',
-        icon: '/img/icons/metamask.svg',
+        id: "1-0",
+        label: "Metamask",
+        icon: "/img/icons/metamask.svg",
       },
       provider: WalletProvider.Metamask,
       isConnected: false,
-      label: 'Connect with Metamask',
+      label: "Connect with Metamask",
     },
     [WalletProvider.WavesKeeper]: {
       wallet: {
-        id: '2-0',
-        label: 'Waves',
-        icon: '/img/icons/waves.svg',
+        id: "2-0",
+        label: "Waves",
+        icon: "/img/icons/waves.svg",
       },
       provider: WalletProvider.WavesKeeper,
       isConnected: false,
-      label: 'Connect with Keeper',
+      label: "Connect with Keeper",
+    },
+    [WalletProvider.MathWallet]: {
+      wallet: {
+        id: '3-0',
+        label: 'Math Wallet',
+        icon: '/img/icons/mathwallet.png',
+      },
+      provider: WalletProvider.MathWallet,
+      isConnected: false,
+      label: 'Connect with Math Wallet',
     },
   }
 }
