@@ -1,10 +1,6 @@
-import {
-  WavesKeeperTransaction,
-  WavesKeeper,
-  WavesKeeperAccount,
-} from './types'
-import { waitForTx, broadcast } from '@waves/waves-transactions'
-import { TInvokeScriptCallArgument } from '@waves/ts-types'
+import { WavesKeeperTransaction, WavesKeeper, WavesKeeperAccount } from "./types"
+import { waitForTx, broadcast } from "@waves/waves-transactions"
+import { TInvokeScriptCallArgument } from "@waves/ts-types"
 
 enum LoginType {
   WEB_KEEPER = 0,
@@ -24,17 +20,7 @@ export class LUPortInvoker {
     this.keeper = keeper
   }
 
-  async sendTransferRequest({
-    dApp,
-    receiver,
-    swapAssetID,
-    swapAmount,
-  }: {
-    dApp: string
-    receiver: string
-    swapAmount: number
-    swapAssetID: string
-  }) {
+  async sendTransferRequest({ dApp, receiver, swapAssetID, swapAmount }: { dApp: string; receiver: string; swapAmount: number; swapAssetID: string }) {
     const plugin = await this.keeper.getPlugin()
 
     console.log({ plugin })
@@ -47,19 +33,19 @@ export class LUPortInvoker {
       type: 16,
       data: {
         fee: {
-          assetId: 'WAVES',
-          tokens: '0.005',
+          assetId: "WAVES",
+          tokens: "0.005",
         },
         dApp: dApp,
         call: {
-          function: 'createTransferWrapRq',
-          args: [{ type: 'string', value: receiver }],
+          function: "createTransferWrapRq",
+          args: [{ type: "string", value: receiver }],
         },
         payment: [{ tokens: String(swapAmount), assetId: swapAssetID }],
       },
     }
 
-    const result = await plugin.signAndPublishTransaction(tx)    
+    const result = await plugin.signAndPublishTransaction(tx)
     return result
   }
 }
@@ -168,18 +154,10 @@ export default class Keeper {
 
   async getPlugin(): Promise<WavesKeeper | undefined> {
     const checker = <T>(resolve: (result: T | undefined) => void) => {
-      if (
-        this._isAvailable === true ||
-        (Date.now() - this._pageStart > 2000 &&
-          window.WavesKeeper &&
-          window.WavesKeeper.publicState)
-      ) {
+      if (this._isAvailable === true || (Date.now() - this._pageStart > 2000 && window.WavesKeeper && window.WavesKeeper.publicState)) {
         this._isAvailable = true
         setTimeout(() => resolve(window.WavesKeeper))
-      } else if (
-        this._isAvailable === false ||
-        Date.now() - this._pageStart > 5000
-      ) {
+      } else if (this._isAvailable === false || Date.now() - this._pageStart > 5000) {
         this._isAvailable = false
         resolve(undefined)
       } else if (this._isAvailable === null) {
@@ -192,29 +170,13 @@ export default class Keeper {
 
   mapInvokeTxArgs(args: Array<string | number>) {
     return args.map((argument) => ({
-      type:
-        (typeof argument === 'string' && 'string') ||
-        (typeof argument === 'number' && 'integer') ||
-        (typeof argument === 'boolean' && 'boolean'),
+      type: (typeof argument === "string" && "string") || (typeof argument === "number" && "integer") || (typeof argument === "boolean" && "boolean"),
       value: argument,
     })) as Array<TInvokeScriptCallArgument<number>>
   }
 
-  async sendTransaction(
-    dApp: string,
-    method: string,
-    args: Array<string | number>,
-    paymentCurrency: string,
-    paymentAmount: number,
-    waitTx: boolean = true
-  ) {
-    const builtTransaction = this._buildTransaction(
-      dApp,
-      method,
-      args,
-      paymentCurrency,
-      paymentAmount
-    )
+  async sendTransaction(dApp: string, method: string, args: Array<string | number>, paymentCurrency: string, paymentAmount: number, waitTx: boolean = true) {
+    const builtTransaction = this._buildTransaction(dApp, method, args, paymentCurrency, paymentAmount)
 
     const keeper = await this.getPlugin()
 
@@ -246,30 +208,22 @@ export default class Keeper {
     const keeper = await this.getPlugin()
     const dApp = this.dal.contracts[pairName][contractName]
 
-    return keeper?.signTransaction(
-      this._buildTransaction(dApp, method, args, paymentCurrency, paymentAmount)
-    )
+    return keeper?.signTransaction(this._buildTransaction(dApp, method, args, paymentCurrency, paymentAmount))
   }
 
-  _buildTransaction(
-    dApp: string,
-    method: string,
-    args: Array<string | number>,
-    paymentCurrency: string,
-    paymentAmount: number
-  ) {
+  _buildTransaction(dApp: string, method: string, args: Array<string | number>, paymentCurrency: string, paymentAmount: number) {
     const transaction: WavesKeeperTransaction = {
       type: 16,
       data: {
         fee: {
-          assetId: 'WAVES',
+          assetId: "WAVES",
           tokens: String(this.fee),
         },
         dApp,
         call: {
           args: args.map((item) => ({
-            type: !isNaN(Number(item)) ? 'integer' : 'string',
-            value: typeof item === 'object' ? JSON.stringify(item) : item,
+            type: !isNaN(Number(item)) ? "integer" : "string",
+            value: typeof item === "object" ? JSON.stringify(item) : item,
           })),
           function: method,
         },
@@ -277,15 +231,15 @@ export default class Keeper {
           ? []
           : [
               {
-                assetId: paymentCurrency || 'WAVES',
+                assetId: paymentCurrency || "WAVES",
                 tokens: String(paymentAmount),
               },
             ],
       },
     }
-    if (process.env.NODE_ENV !== 'production') {
-      console.log('Transaction:', transaction) // eslint-disable-line no-console
-      console.log('Transaction:', JSON.stringify(transaction))
+    if (process.env.NODE_ENV !== "production") {
+      console.log("Transaction:", transaction) // eslint-disable-line no-console
+      console.log("Transaction:", JSON.stringify(transaction))
     }
     return transaction
   }
