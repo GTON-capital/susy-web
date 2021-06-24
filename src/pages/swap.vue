@@ -32,6 +32,7 @@
 </template>
 
 <script lang="ts">
+import _ from "lodash"
 import Vue from "vue"
 import axios from "axios"
 import { Subscription } from "rxjs"
@@ -55,8 +56,10 @@ import { ExtensionWallet, WalletProvider } from "~/store/wallet/types"
 // import { processConfig } from '~/services/misc/config'
 import { castFloatToDecimalsVersion } from "~/misc/bn"
 import { buildPropertyChecker } from "~/services/wallets/checker"
-import { AvailableChains, Chain, availableEVMChains } from "~/chains/chain"
+import { AvailableChains, Chain, availableEVMChains, SOLANA_CHAIN } from "~/chains/chain"
 import { Token, AvailableTokens, getAvailableTokens, formLinkForChain, pickBridgeGateway, availableOriginChains, availableDestChains } from "~/chains/token"
+
+import { MathWalletAdapter } from "~/services/wallet-adapters"
 
 const availableTokens = getAvailableTokens()
 
@@ -223,11 +226,44 @@ export default Vue.extend({
       const [originChain, destChain] = listOfChains
       return pickBridgeGateway(this.swapForm.token.bridge!, originChain, destChain)
     },
-    async propertyObserveMap(num: number) {
+    async propertyObserveMap() {
       const currentWallet = this.$store.getters["wallet/currentWallet"]
 
       if (!currentWallet) {
         return {}
+      }
+
+      if (currentWallet.provider === WalletProvider.MathWallet) {
+        // const mathWallet = new MathWalletAdapter()
+
+        // mathWallet.connect()
+
+        // await new Promise((resolve) => setTimeout(() => resolve(0), 100))
+
+        // this.$store.commit("wallet/updateWalletData", {
+        //   provider: wallet.provider,
+        //   body: {
+        //     isConnected: mathWallet.connected,
+        //     value: mathWallet.publicKey.toBase58(),
+        //     checked: true,
+        //   },
+        // })
+        // const mathWallet = new MathWalletAdapter()
+
+        // mathWallet.connect()
+
+        // await new Promise((resolve) => setTimeout(() => resolve(0), 100))
+
+        const address = currentWallet.walletAdapter?.publicKey.toBase58()
+        // console.log({ address, currentWallet })
+
+        
+
+        return {
+          sourceAddress: address,
+          currentBalance: 0,
+          formattedBalance: 0,
+        }
       }
 
       const gateway = this.pickBridgeGateway()
@@ -359,6 +395,26 @@ export default Vue.extend({
       this.swapState = 1
     },
     async handleWalletConnect(wallet: ExtensionWallet) {
+      if (wallet.provider === WalletProvider.MathWallet) {
+        const mathWallet = new MathWalletAdapter()
+
+        mathWallet.connect()
+
+        await new Promise((resolve) => setTimeout(() => resolve(0), 100))
+
+        this.$store.commit("wallet/updateWalletData", {
+          provider: wallet.provider,
+          body: {
+            isConnected: mathWallet.connected,
+            value: mathWallet.publicKey.toBase58(),
+            checked: true,
+            walletAdapter: mathWallet,
+          },
+        })
+
+        return
+      }
+
       if (wallet.provider === WalletProvider.Metamask) {
         const connector = new Web3WalletConnector()
         const isConnected = connector.ethEnabled()
@@ -479,10 +535,24 @@ export default Vue.extend({
         this.hideLoader()
       }
     },
+    handleSolanaAndEVMSwap(sourceChain: Chain, destinationChain: Chain) {
+      // if (sourceChain.id === SOLANA_CHAIN) {
+      //   return
+      // }
+      // if (destinationChain.id === SOLANA_CHAIN) {
+      //   return
+      // }
+    },
     async handleSwapConfirm() {
-      const { sourceChain } = this.swapForm
+      const { sourceChain, destinationChain } = this.swapForm
 
       this.swapForm.message = { text: "" }
+
+      const isEVMChainInAction = _.intersection(availableEVMChains(), [sourceChain.id, destinationChain.id]).length > 0
+
+      if ([sourceChain.id, destinationChain.id].includes(SOLANA_CHAIN) && isEVMChainInAction) {
+        await this.handleSolanaAndEVMSwap(sourceChain, destinationChain)
+      }
 
       if (
         availableEVMChains()

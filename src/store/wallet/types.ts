@@ -1,3 +1,4 @@
+import { WalletAdapter } from "~/services/wallet-adapters"
 export interface ExtensionWallet {
   wallet: {
     id: string
@@ -8,6 +9,7 @@ export interface ExtensionWallet {
   isConnected: boolean
   label: string
   value?: string
+  walletAdapter?: WalletAdapter
   checked?: boolean
 }
 
@@ -18,9 +20,9 @@ export type Wallets = {
 }
 
 export enum WalletProvider {
-  Metamask = 'metamask',
-  WavesKeeper = 'keeper',
-  MathWallet = 'mathwallet',
+  Metamask = "metamask",
+  WavesKeeper = "keeper",
+  MathWallet = "mathwallet",
 }
 
 export type WalletState = Wallets

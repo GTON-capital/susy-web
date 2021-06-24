@@ -42,7 +42,6 @@ export default {
   components: {
     Btn,
     ModalContent,
-    RadioProvider,
     RadioAccount,
     RadioProviderGroup,
   },
@@ -60,6 +59,7 @@ export default {
   methods: {
     connectKeeper() {},
     handleChange(wallet: ExtensionWallet) {
+      console.log({ wallet })
       this.$store.commit("wallet/updateWalletData", {
         provider: wallet.provider as WalletProvider,
         body: { checked: true },

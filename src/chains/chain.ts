@@ -1,4 +1,5 @@
 export type Chain = { id: string; label: string; icon: string }
+
 export type AvailableChainsDict = {
   Ethereum: Chain
   Heco: Chain
@@ -8,6 +9,8 @@ export type AvailableChainsDict = {
   Avax: Chain
   Solana: Chain
 }
+
+export const SOLANA_CHAIN: string = "7"
 
 export const AvailableChains: AvailableChainsDict = {
   Ethereum: {
@@ -41,7 +44,7 @@ export const AvailableChains: AvailableChainsDict = {
     icon: "/img/icons/avax.png",
   },
   Solana: {
-    id: "7",
+    id: SOLANA_CHAIN,
     label: "Solana",
     icon: "/img/icons/solana.svg",
   },

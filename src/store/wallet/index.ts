@@ -1,5 +1,5 @@
 import { WalletState, WalletProvider, ExtensionWallet } from "./types"
-import { ActionContext } from "vuex"
+// import { ActionContext } from "vuex"
 
 export const state = (): WalletState => {
   return {
@@ -25,13 +25,13 @@ export const state = (): WalletState => {
     },
     [WalletProvider.MathWallet]: {
       wallet: {
-        id: '3-0',
-        label: 'Math Wallet',
-        icon: '/img/icons/mathwallet.png',
+        id: "3-0",
+        label: "Math Wallet",
+        icon: "/img/icons/mathwallet.png",
       },
       provider: WalletProvider.MathWallet,
       isConnected: false,
-      label: 'Connect with Math Wallet',
+      label: "Connect with Math Wallet",
     },
   }
 }

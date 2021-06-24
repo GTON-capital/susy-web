@@ -7,34 +7,21 @@
     <simple-wrapper-slim-sm>
       <form-group-between>
         <template v-slot:left>
-          <search-select
-            v-model="swapForm.sourceChain"
-            :data="chains.origin"
-            :placeholder="sourceChainLabel"
-            :modal-heading="sourceChainLabel"
-          >
+          <search-select v-model="swapForm.sourceChain" :data="chains.origin" :placeholder="sourceChainLabel" :modal-heading="sourceChainLabel">
             <template v-slot:label>
               Origin
             </template>
           </search-select>
         </template>
         <template v-slot:center>
-          <button
-            class="btn btn-circle btn-secondary-gradient"
-            @click="$emit('reverse-chains')"
-          >
+          <button class="btn btn-circle btn-secondary-gradient" @click="$emit('reverse-chains')">
             <icon>
               <exchange-icon></exchange-icon>
             </icon>
           </button>
         </template>
         <template v-slot:right>
-          <search-select
-            v-model="swapForm.destinationChain"
-            :data="chains.destination"
-            :placeholder="destinationChainLabel"
-            :modal-heading="destinationChainLabel"
-          >
+          <search-select v-model="swapForm.destinationChain" :data="chains.destination" :placeholder="destinationChainLabel" :modal-heading="destinationChainLabel">
             <template v-slot:label>
               Destination
             </template>
@@ -45,11 +32,7 @@
 
     <form-group-between-shift1>
       <template v-slot:left>
-        <form-input
-          :value="swapForm.sourceAddress"
-          readonly
-          :icon="wallet.wallet.icon"
-        >
+        <form-input :value="swapForm.sourceAddress" readonly :icon="wallet.wallet.icon">
           <template v-slot:label>
             From address
           </template>
@@ -73,18 +56,10 @@
     <simple-wrapper-slim-sm>
       <form-group-between-shift>
         <template v-slot:left>
-          <search-select
-            v-model="swapForm.token"
-            :data="tokens"
-            placeholder="Select a token..."
-            modal-heading="Select a token"
-            @input="$emit('select-token')"
-          >
+          <search-select v-model="swapForm.token" :data="tokens" placeholder="Select a token..." modal-heading="Select a token" @input="$emit('select-token')">
             <template v-slot:label>
               Token
-              <span class="text-secondary float-right font-weight-normal">
-                Balance: {{ swapForm.formattedBalance }}
-              </span>
+              <span class="text-secondary float-right font-weight-normal"> Balance: {{ swapForm.formattedBalance }} </span>
             </template>
           </search-select>
         </template>
@@ -113,21 +88,21 @@
 </template>
 
 <script>
-import Btn from '~/components/Btn.vue'
-import FormInput from '~/components/FormInput.vue'
-import SimpleWrapperSlimSm from '~/components/SimpleWrapperSlimSm.vue'
-import FormGroupBetween from '~/components/FormGroupBetween.vue'
-import SearchSelect from '~/components/SearchSelect.vue'
-import CardSwap from '~/components/swap/CardSwap'
-import FormGroupBetweenShift from '~/components/FormGroupBetweenShift.vue'
-import FormGroupBetweenShift1 from '~/components/FormGroupBetweenShift1.vue'
+import Btn from "~/components/Btn.vue"
+import FormInput from "~/components/FormInput.vue"
+import SimpleWrapperSlimSm from "~/components/SimpleWrapperSlimSm.vue"
+import FormGroupBetween from "~/components/FormGroupBetween.vue"
+import SearchSelect from "~/components/SearchSelect.vue"
+import CardSwap from "~/components/swap/CardSwap"
+import FormGroupBetweenShift from "~/components/FormGroupBetweenShift.vue"
+import FormGroupBetweenShift1 from "~/components/FormGroupBetweenShift1.vue"
 
-import SwapHint from '~/components/swap/SwapHint'
+import SwapHint from "~/components/swap/SwapHint"
 
 export default {
-  name: 'CardSwapWalletConnected',
+  name: "CardSwapWalletConnected",
   // props: ['swapForm', 'chains', 'tokens', 'onWalletConnect', 'allowanceReceived'],
-  props: ['swapProps', 'onWalletConnect', 'allowanceReceived'],
+  props: ["swapProps", "onWalletConnect", "allowanceReceived"],
   components: {
     SwapHint,
     Btn,
@@ -138,17 +113,23 @@ export default {
     CardSwap,
     FormGroupBetweenShift,
     FormGroupBetweenShift1,
-    exchangeIcon: () => import('assets/icons/exchange.svg?inline'),
+    exchangeIcon: () => import("assets/icons/exchange.svg?inline"),
   },
   computed: {
-    swapForm() { return this.swapProps.swapForm },
-    chains() { return this.swapProps.chains },
-    tokens() { return this.swapProps.tokens },
+    swapForm() {
+      return this.swapProps.swapForm
+    },
+    chains() {
+      return this.swapProps.chains
+    },
+    tokens() {
+      return this.swapProps.tokens
+    },
     theme() {
-      return this.$store.getters['theme/theme']
+      return this.$store.getters["theme/theme"]
     },
     wallet() {
-      const wallet = this.$store.getters['wallet/currentWallet']
+      const wallet = this.$store.getters["wallet/currentWallet"]
 
       if (wallet && !this.swapForm.sourceAddress) {
         this.swapForm.sourceAddress = wallet.value
@@ -157,11 +138,11 @@ export default {
       return wallet
     },
   },
-  data: function() {
+  data: function () {
     return {
       sourceChainLabel: "Select source chain",
       destinationChainLabel: "Select destination chain",
     }
-  }
+  },
 }
 </script>
