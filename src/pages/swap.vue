@@ -234,30 +234,7 @@ export default Vue.extend({
       }
 
       if (currentWallet.provider === WalletProvider.MathWallet) {
-        // const mathWallet = new MathWalletAdapter()
-
-        // mathWallet.connect()
-
-        // await new Promise((resolve) => setTimeout(() => resolve(0), 100))
-
-        // this.$store.commit("wallet/updateWalletData", {
-        //   provider: wallet.provider,
-        //   body: {
-        //     isConnected: mathWallet.connected,
-        //     value: mathWallet.publicKey.toBase58(),
-        //     checked: true,
-        //   },
-        // })
-        // const mathWallet = new MathWalletAdapter()
-
-        // mathWallet.connect()
-
-        // await new Promise((resolve) => setTimeout(() => resolve(0), 100))
-
         const address = currentWallet.walletAdapter?.publicKey.toBase58()
-        // console.log({ address, currentWallet })
-
-        
 
         return {
           sourceAddress: address,
