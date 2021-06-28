@@ -6,24 +6,13 @@
         <nuxt-link to="/" class="nav-logo responsive">
           <img class="responsive-item" src="/img/gravity/logo.svg" alt="Logo" />
         </nuxt-link>
-        <div
-          class="nav-header"
-          :class="{ 'nav-header-mobile': isHideMobileTitle }"
-        >
-          <template v-if="$route.name === 'intrachain'">
-            Seamless Intrachain <br />Swaps
-          </template>
+        <div class="nav-header" :class="{ 'nav-header-mobile': isHideMobileTitle }">
+          <template v-if="$route.name === 'intrachain'"> Seamless Intrachain <br />Swaps </template>
           <template v-else> Seamless <br />Crosschain Swaps </template>
         </div>
         <div class="nav-menu-wrapper">
           <div class="nav-dropdown d-none d-lg-block">
-            <btn
-              v-click-outside="clickOutsideMode"
-              class="nav-dropdown-toggle"
-              type="button"
-              :class="{ active: isOpenNavMode }"
-              @click="isOpenNavMode = !isOpenNavMode"
-            >
+            <btn v-click-outside="clickOutsideMode" class="nav-dropdown-toggle" type="button" :class="{ active: isOpenNavMode }" @click="isOpenNavMode = !isOpenNavMode">
               <span class="text-body headings-font-family">Swap</span>
               <icon class="dropdown-caret">
                 <caret-icon></caret-icon>
@@ -33,47 +22,26 @@
               <!-- <nuxt-link class="nav-menu-item link-invert" to="/intrachain"
                 >Intrachain</nuxt-link
               > -->
-              <nuxt-link class="nav-menu-item link-invert" to="/"
-                >Swap</nuxt-link
-              >
+              <nuxt-link class="nav-menu-item link-invert" to="/">Swap</nuxt-link>
               <!-- <nuxt-link class="nav-menu-item link-invert" to="/ui"
                 >UI</nuxt-link
               > -->
             </div>
           </div>
           <div v-click-outside="clickOutside" class="nav-dropdown">
-            <button
-              class="nav-burger"
-              :class="{ active: isOpenNav }"
-              aria-label="Menu"
-              @click="isOpenNavToggle"
-            >
-              <i></i><i></i><i></i>
-            </button>
+            <button class="nav-burger" :class="{ active: isOpenNav }" aria-label="Menu" @click="isOpenNavToggle"><i></i><i></i><i></i></button>
             <div class="nav-menu nav-menu--main">
               <!-- <nuxt-link
                 class="nav-menu-item link-invert d-lg-none"
                 to="/intrachain"
                 >Intrachain</nuxt-link
               > -->
-              <nuxt-link class="nav-menu-item link-invert d-lg-none" to="/"
-                >Swap</nuxt-link
-              >
+              <nuxt-link class="nav-menu-item link-invert d-lg-none" to="/">Swap</nuxt-link>
               <!-- <nuxt-link class="nav-menu-item link-invert d-lg-none" to="/ui"
                 >UI</nuxt-link
               > -->
-              <a
-                class="nav-menu-item link-invert"
-                href="https://medium.com/@gravity_protocol/gravity-protocol-faq-9092bc9c5cf7"
-                target="_blank"
-                >FAQ</a
-              >
-              <a
-                class="nav-menu-item link-invert"
-                href="https://docs.gravity.tech"
-                target="_blank"
-                >Docs</a
-              >
+              <a class="nav-menu-item link-invert" href="https://medium.com/@gravity_protocol/gravity-protocol-faq-9092bc9c5cf7" target="_blank">FAQ</a>
+              <a class="nav-menu-item link-invert" href="https://docs.gravity.tech" target="_blank">Docs</a>
               <footer-block :is-disabled-cookies-box="true"></footer-block>
             </div>
           </div>
@@ -85,43 +53,43 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import footerBlock from '~/components/Footer.vue'
-import Btn from '~/components/Btn.vue'
-import Icon from '~/components/Icon.vue'
+import Vue from "vue"
+import footerBlock from "~/components/Footer.vue"
+import Btn from "~/components/Btn.vue"
+import Icon from "~/components/Icon.vue"
 
 export default Vue.extend({
-  name: 'Navbar',
+  name: "Navbar",
   components: {
     footerBlock,
     Btn,
     Icon,
-    CaretIcon: () => import('~/assets/icons/caret.svg?inline'),
+    CaretIcon: () => import("~/assets/icons/caret.svg?inline"),
   },
   data: () => ({
     isOpenNavMode: false,
   }),
   computed: {
     theme() {
-      return this.$store.getters['theme/theme']
+      return this.$store.getters["theme/theme"]
     },
     isOpenNav() {
-      return this.$store.getters['app/isOpenNav']
+      return this.$store.getters["app/isOpenNav"]
     },
     navbarTitle() {
-      return this.$store.getters['app/navbarTitle']
+      return this.$store.getters["app/navbarTitle"]
     },
     isHideMobileTitle() {
-      return this.$store.getters['app/isHideMobileTitle']
+      return this.$store.getters["app/isHideMobileTitle"]
     },
   },
   methods: {
     isOpenNavToggle() {
-      this.$store.dispatch('app/isOpenNavToggle')
+      this.$store.dispatch("app/isOpenNavToggle")
     },
     clickOutside() {
       if (window.innerWidth >= 576 && this.isOpenNav) {
-        this.$store.dispatch('app/isOpenNavToggle')
+        this.$store.dispatch("app/isOpenNavToggle")
       }
     },
     clickOutsideMode() {
@@ -179,7 +147,7 @@ export default Vue.extend({
     width: $logo-width-md;
   }
   &:before {
-    content: '';
+    content: "";
     display: block;
     padding-top: $logo-height;
     @include media-breakpoint-up(md) {

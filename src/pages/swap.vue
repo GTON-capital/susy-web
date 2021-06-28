@@ -93,7 +93,7 @@ export default Vue.extend({
     swapState: 0,
     swapForm: {
       isDirect: true,
-      sourceChain: AvailableChains.Fantom,
+      sourceChain: AvailableChains.BSC,
       destinationChain: AvailableChains.Solana,
       sourceAddress: "",
       destinationAddress: "",
