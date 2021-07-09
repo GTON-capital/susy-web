@@ -5,36 +5,10 @@
       <div class="footer-nav">
         <hr />
         <div class="footer-nav-logo-wrapper">
-          <nuxt-link
-            to="/"
-            class="footer-nav-logo responsive responsive-bsizer"
-          >
-            <img
-              class="responsive-item"
-              src="/img/gravity/logo.svg"
-              alt="Logo"
-            />
+          <nuxt-link to="/" class="footer-nav-logo responsive responsive-bsizer">
+            <img class="responsive-item" src="/img/gravity/logo.svg" alt="Logo" />
           </nuxt-link>
         </div>
-        <!-- <div class="footer-nav-item">
-          <a class="link-invert" href="/">Docs</a>
-        </div>
-        <div class="footer-nav-item">
-          <a class="link-invert" href="/">Whitepaper</a>
-        </div>
-        <div class="footer-nav-item">
-          <a class="link-invert" href="/">FAQ</a>
-        </div>
-        <div class="footer-nav-item">
-          <a class="link-invert" href="/">Brand Assets</a>
-        </div>
-        <div class="footer-nav-item"><a href="/">Privacy policy</a></div>
-        <div class="footer-nav-item"><a href="/">Terms & Conditions</a></div>
-        <div class="footer-nav-item footer-contacts-email">
-          <a href="mailto:oracle@gravity.tech" class="text-primary">
-            oracle@gravity.tech
-          </a>
-        </div> -->
         <div class="footer-nav-item" :key="section.label" v-for="section in sections">
           <a class="link-invert" :href="section.link">{{ section.label }}</a>
         </div>
@@ -50,17 +24,9 @@
       <div class="footer-socials">
         <div class="footer-copyright footer-copyright-lg">
           &copy; {{ new Date().getFullYear() }} Gravity Protocol.
-          <span class="footer-copyright-desc"
-            >Oracles and Cross-chain Communication Network</span
-          >
+          <span class="footer-copyright-desc">Oracles and Cross-chain Communication Network</span>
         </div>
-        <a
-          v-for="(social, key) in socials"
-          :key="key"
-          class="footer-social"
-          :href="social.link"
-          target="_blank"
-        >
+        <a v-for="(social, key) in socials" :key="key" class="footer-social" :href="social.link" target="_blank">
           <icon>
             <component :is="'socials-' + social.icon + '-icon'"></component>
           </icon>
@@ -72,36 +38,23 @@
             <ventuary-lab-icon></ventuary-lab-icon>
           </icon>
         </btn>
-        <a
-          class="text-primary footer-contacts-email"
-          href="mailto:oracle@gravity.tech"
-        >
+        <a class="text-primary footer-contacts-email" href="mailto:oracle@gravity.tech">
           oracle@gravity.tech
         </a>
       </div>
       <div class="footer-copyright footer-copyright-xs">
         &copy; {{ new Date().getFullYear() }} Gravity Protocol.
-        <span class="footer-copyright-desc"
-          >Oracles and Cross-chain Communication Network</span
-        >
+        <span class="footer-copyright-desc">Oracles and Cross-chain Communication Network</span>
       </div>
     </div>
-    <div
-      v-if="!isDisabledCookiesBox"
-      class="footer-cookies"
-      :style="getCookiesStyle"
-    >
+    <div v-if="!isDisabledCookiesBox" class="footer-cookies" :style="getCookiesStyle">
       <div class="footer-cookies-wrapper" :style="getWrapperCookiesStyle">
         <div class="container">
           <div ref="cookiesBox" class="footer-cookies-box">
             <div>
-              We use cookies on our website. By continuing to use the site, or
-              by clicking “I&nbsp;agree”, you consent to the use of cookies. For
-              more info click here.
+              We use cookies on our website. By continuing to use the site, or by clicking “I&nbsp;agree”, you consent to the use of cookies. For more info click here.
             </div>
-            <btn class="btn-primary footer-cookies-btn" @click="hideCookiesBox"
-              >I agree</btn
-            >
+            <btn class="btn-primary footer-cookies-btn" @click="hideCookiesBox">I agree</btn>
           </div>
         </div>
       </div>
@@ -110,30 +63,26 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import Btn from '~/components/Btn.vue'
-import Icon from '~/components/Icon.vue'
+import Vue from "vue"
+import Btn from "~/components/Btn.vue"
+import Icon from "~/components/Icon.vue"
 
-import { sections } from '~/misc/links'
-
+import { sections } from "~/misc/links"
 
 export default Vue.extend({
-  name: 'GravityFooter',
+  name: "GravityFooter",
   components: {
     Btn,
     Icon,
-    ventuaryLabIcon: () => import('assets/icons/ventuary-lab.svg?inline'),
-    socialsTwitterIcon: () => import('assets/icons/socials/twitter.svg?inline'),
-    socialsMediumIcon: () => import('assets/icons/socials/medium.svg?inline'),
-    socialsTelegramIcon: () =>
-      import('assets/icons/socials/telegram.svg?inline'),
-    socialsFacebookIcon: () =>
-      import('assets/icons/socials/facebook.svg?inline'),
-    socialsLinkedInIcon: () =>
-      import('assets/icons/socials/linked-in.svg?inline'),
-    socialsDiscordIcon: () => import('assets/icons/socials/discord.svg?inline'),
-    socialsRedditIcon: () => import('assets/icons/socials/reddit.svg?inline'),
-    socialsGithubIcon: () => import('assets/icons/socials/github.svg?inline'),
+    ventuaryLabIcon: () => import("assets/icons/ventuary-lab.svg?inline"),
+    socialsTwitterIcon: () => import("assets/icons/socials/twitter.svg?inline"),
+    socialsMediumIcon: () => import("assets/icons/socials/medium.svg?inline"),
+    socialsTelegramIcon: () => import("assets/icons/socials/telegram.svg?inline"),
+    socialsFacebookIcon: () => import("assets/icons/socials/facebook.svg?inline"),
+    socialsLinkedInIcon: () => import("assets/icons/socials/linked-in.svg?inline"),
+    socialsDiscordIcon: () => import("assets/icons/socials/discord.svg?inline"),
+    socialsRedditIcon: () => import("assets/icons/socials/reddit.svg?inline"),
+    socialsGithubIcon: () => import("assets/icons/socials/github.svg?inline"),
   },
   props: {
     isDisabledCookiesBox: {
@@ -179,7 +128,7 @@ export default Vue.extend({
       ...sections.protocol.links,
       ...sections.community.links,
       ...sections.news.links,
-    ].filter(link => link.icon),
+    ].filter((link) => link.icon),
     sections: [
       ...sections.protocol.links,
       // ...sections.community.links,
@@ -196,22 +145,20 @@ export default Vue.extend({
     },
     getWrapperCookiesStyle() {
       return {
-        bottom: this.getIsCookiesBox ? '30px' : '-100%',
+        bottom: this.getIsCookiesBox ? "30px" : "-100%",
       }
     },
     getCookiesStyle() {
       return {
-        height: this.getIsCookiesBox
-          ? this.heightCookiesBox + 30 + 'px'
-          : '0px',
-        'min-height': this.getIsCookiesBox ? '100px' : '0px',
+        height: this.getIsCookiesBox ? this.heightCookiesBox + 30 + "px" : "0px",
+        "min-height": this.getIsCookiesBox ? "100px" : "0px",
       }
     },
   },
   mounted() {
     if (!this.isDisabledCookiesBox) {
       setTimeout(() => {
-        this.isCookiesBox = !localStorage.getItem('IS_AGREE_COOKIES')
+        this.isCookiesBox = !localStorage.getItem("IS_AGREE_COOKIES")
         this.calcHeightCookiesBox()
         this.bindHeightCookiesBox()
       }, 2000)
@@ -223,17 +170,17 @@ export default Vue.extend({
   methods: {
     hideCookiesBox() {
       this.isCookiesBox = false
-      localStorage.setItem('IS_AGREE_COOKIES', '1')
+      localStorage.setItem("IS_AGREE_COOKIES", "1")
       this.unbindHeightCookiesBox()
     },
     bindHeightCookiesBox() {
-      if (this.getIsCookiesBox && typeof window !== 'undefined') {
-        window.addEventListener('resize', this.calcHeightCookiesBox)
+      if (this.getIsCookiesBox && typeof window !== "undefined") {
+        window.addEventListener("resize", this.calcHeightCookiesBox)
       }
     },
     unbindHeightCookiesBox() {
-      if (typeof window !== 'undefined') {
-        window.removeEventListener('resize', this.calcHeightCookiesBox)
+      if (typeof window !== "undefined") {
+        window.removeEventListener("resize", this.calcHeightCookiesBox)
       }
     },
     calcHeightCookiesBox() {

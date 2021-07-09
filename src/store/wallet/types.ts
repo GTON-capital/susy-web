@@ -1,4 +1,6 @@
 import { WalletAdapter } from "~/services/wallet-adapters"
+import { IBPort } from "~/services/solana/instruction"
+
 export interface ExtensionWallet {
   wallet: {
     id: string
@@ -11,6 +13,8 @@ export interface ExtensionWallet {
   value?: string
   walletAdapter?: WalletAdapter
   checked?: boolean
+  // instructionBuilder?: IBPort.InstructionBuilder
+  invoker?: IBPort.Invoker
 }
 
 export type Wallets = {

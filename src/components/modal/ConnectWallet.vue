@@ -10,15 +10,9 @@
           <radio-account name="account" :wallet-data="wallets.mathwallet" @change="handleChange" @connect="$emit('connect', $event)" @logout="handleLogout"></radio-account>
           <radio-account name="account" :wallet-data="wallets.metamask" @change="handleChange" @connect="$emit('connect', $event)" @logout="handleLogout"></radio-account>
           <radio-account name="account" :wallet-data="wallets.keeper" @change="handleChange" @connect="$emit('connect', $event)" @logout="handleLogout"></radio-account>
-          <!-- <radio-account name="account" :wallet="walletFirst"></radio-account> -->
         </radio-provider-group>
         <div class="text-center">
           <btn class="btn-link" style="padding-left: 22px; padding-right: 22px;" @click="goBack">Back</btn>
-          <!-- <btn
-            class="btn-link text-secondary"
-            style="padding-left: 22px; padding-right: 22px;"
-            >Logs</btn
-          > -->
         </div>
       </template>
     </modal-content>
@@ -90,7 +84,7 @@ export default {
       // wallet.walletAdapter?.disconnect()
       console.log({ provider: wallet.provider })
       if (wallet.provider === WalletProvider.MathWallet) {
-
+        //
       }
 
       if (!walletToEnable) {

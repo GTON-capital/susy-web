@@ -218,7 +218,7 @@ export const AvailableTokens: Record<string, Token> = {
     icon: "/img/icons/tokens/graviton-b&w-logo.svg",
     bridge: [
       new GatewayBridge({
-        origin: AvailableChains.BSC,
+        origin: AvailableChains.Polygon,
         destination: AvailableChains.Solana,
         cfg: {
           token: {
@@ -228,11 +228,11 @@ export const AvailableTokens: Record<string, Token> = {
             },
             dest: {
               decimals: 8,
-              assetId: "EV3s5AepKqD83yCqEAZLfokM5p2tPbseKeudWskWENFE",
+              assetId: "nVZnRKdr3pmcgnJvYDE8iafgiMiBqxiffQMcyv5ETdA",
             },
           },
           sourcePort: "0x10a785aa24d8540C583Ad99Bc82E5d7aF61b5806",
-          destinationPort: "",
+          destinationPort: "AH3QKaj942UUxDjaRaGh7hvdadsD8yfU9LRTa9KXfJkZ",
         },
       }),
     ],

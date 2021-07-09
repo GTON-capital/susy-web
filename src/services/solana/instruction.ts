@@ -1,19 +1,37 @@
 import BN from "bn.js"
 import { AccountLayout, Token, TOKEN_PROGRAM_ID } from "@solana/spl-token"
-import { Keypair, Connection, PublicKey, SystemProgram, SYSVAR_RENT_PUBKEY, Transaction, TransactionInstruction, Signer, Commitment } from "@solana/web3.js"
+import { Keypair, Connection, PublicKey, Transaction, TransactionInstruction, Signer, Commitment, TransactionSignature, SystemProgram } from "@solana/web3.js"
 
-export namespace IBPortInstruction {
+import { WalletAdapter } from "~/services/wallet-adapters/types"
+export namespace IBPort {
   export type CreateTransferUnwrapRequest = {
     amount: BN
     receiver: Uint8Array
   }
-
+  export class IntructionObject {
+    static burnFunds(amount: string, receiver: string): CreateTransferUnwrapRequest {
+      return {
+        amount: new BN(amount),
+        receiver: Buffer.from(receiver),
+      }
+    }
+  }
   export class Broadcaster {
     connection: Connection
+    adapter: WalletAdapter
 
-    constructor(endpoint: string, commitment: Commitment) {
+    constructor(adapter: WalletAdapter, endpoint: string, commitment: Commitment) {
+      this.adapter = adapter
       this.connection = new Connection(endpoint, commitment)
       // this.connection = new Connection("http://localhost:8899", 'singleGossip');
+    }
+
+    async broadcastTransaction(tx: Transaction, signers: Signer[]): Promise<TransactionSignature> {
+      const response = await this.connection.sendTransaction(tx, signers, { skipPreflight: false, preflightCommitment: "singleGossip" })
+
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+
+      return response
     }
 
     async broadcast(txInstruction: TransactionInstruction, signers: Signer[]) {
@@ -22,10 +40,119 @@ export namespace IBPortInstruction {
 
       await new Promise((resolve) => setTimeout(resolve, 1000))
     }
+
+    async signAndBroadcast(transaction: Transaction) {
+      const { connection, adapter: wallet } = this
+      const { blockhash } = await connection.getRecentBlockhash()
+
+      transaction.recentBlockhash = blockhash
+      transaction.feePayer = wallet.publicKey
+
+      const signed = await wallet.signTransaction(transaction)
+
+      const txid = await connection.sendRawTransaction(signed.serialize())
+      const resp = await connection.confirmTransaction(txid)
+
+      console.log({ signed, txid, resp })
+    }
   }
 
+  export class Invoker {
+    instructionBuilder: InstructionBuilder
+    broadcaster: Broadcaster
+
+    adapter: WalletAdapter
+
+    constructor(adapter: WalletAdapter, builderProps: InstructionBuilderProps, connectionEndpoint: string) {
+      this.adapter = adapter
+      this.instructionBuilder = new InstructionBuilder(builderProps)
+      this.broadcaster = new Broadcaster(this.adapter, connectionEndpoint, "confirmed")
+    }
+
+    get connection(): Connection {
+      return this.broadcaster.connection
+    }
+
+    get initializer(): PublicKey {
+      return this.instructionBuilder.initializer
+    }
+
+    async createTokenAccount(tokenBinary: PublicKey) {
+      // const lamports = await this.broadcaster.connection.getMinimumBalanceForRentExemption(AccountLayout.span, "singleGossip")
+      // const [createTokenAccount, initTokenAccount] = this.instructionBuilder.buildCreateTokenAccountInstructionForInitializer(lamports, tokenBinary)
+      // // console.log({ createTokenAccountIx })
+      // // transaction.add
+      // const tx = new Transaction().add(createTokenAccount, initTokenAccount)
+      // const resp = await this.broadcaster.signAndBroadcast(tx)
+
+      // console.log({ broadcast: resp })
+      // this.instructionBuilder.setTokenOwner()
+
+      // const token = new Token(this.broadcaster.connection, tokenBinary, TOKEN_PROGRAM_ID, new Keypair())
+      const tx = new Transaction()
+      const instructions = []
+      const account = new Keypair()
+
+      const accountRentExempt = await this.connection.getMinimumBalanceForRentExemption(AccountLayout.span)
+
+      instructions.push(
+        SystemProgram.createAccount({
+          fromPubkey: this.initializer,
+          newAccountPubkey: account.publicKey,
+          lamports: accountRentExempt,
+          space: AccountLayout.span,
+          programId: TOKEN_PROGRAM_ID,
+        })
+      )
+
+      instructions.push(Token.createInitAccountInstruction(TOKEN_PROGRAM_ID, tokenBinary, this.initializer, this.instructionBuilder.tokenOwner))
+
+      // signers.push(account);
+      const { blockhash } = await this.connection.getRecentBlockhash()
+
+      tx.recentBlockhash = blockhash
+      tx.feePayer = this.initializer
+
+      tx.add(...instructions)
+      tx.sign(account)
+      // tx.sign
+
+      console.log({ account: account.publicKey, accountP: account.secretKey })
+
+      try {
+        const resp = await this.broadcaster.broadcastTransaction(tx, [account])
+        console.log({ resp })
+      } catch (err) {
+        console.log({ err })
+      }
+      // let sentTx = await sendTransaction(
+      //   this.connection,
+      //   wallet,
+      //   instructions.concat(cleanupInstructions),
+      //   signers
+      // );
+
+      // // await this.broadcaster.signAndBroadcast(tx)
+
+      // const signed = await wallet.signTransaction(transaction)
+
+      // const txid = await connection.sendRawTransaction(signed.serialize())
+      // const resp = await connection.confirmTransaction(txid)
+    }
+
+    async createTransferUnwrapRequest(amount: string, receiver: string) {
+      // const instructionObject = IntructionObject.burnFunds(amount, receiver)
+      // const createTokenAccountIx = this.instructionBuilder.buildCreateTokenAccountInstructionForInitializer()
+      // // transaction.add
+      // const tx = new Transaction().add(createTokenAccountIx)
+      // await this.broadcaster.broadcastTransaction(tx)
+    }
+  }
+
+  export type InstructionBuilderProps = { initializer: PublicKey; ibportProgram: PublicKey; tokenProgramAccount: PublicKey; spenderTokenAccount: PublicKey; tokenOwner: PublicKey }
   export class InstructionBuilder {
-    initializer: Keypair
+    // initializer: Keypair
+    initializer: PublicKey
 
     ibportProgram: PublicKey
     spenderTokenAccount: PublicKey
@@ -33,7 +160,7 @@ export namespace IBPortInstruction {
 
     tokenOwner: PublicKey
 
-    constructor(props: { initializer: Keypair; ibportProgram: PublicKey; tokenProgramAccount: PublicKey; spenderTokenAccount: PublicKey; tokenOwner: PublicKey }) {
+    constructor(props: InstructionBuilderProps) {
       this.initializer = props.initializer
 
       this.ibportProgram = props.ibportProgram
@@ -43,19 +170,29 @@ export namespace IBPortInstruction {
       this.tokenOwner = props.tokenOwner
     }
 
+    updateTokenOwner(tokenOwner: PublicKey) {
+      this.tokenOwner = tokenOwner
+    }
+
     async getIBPortPDA(): Promise<PublicKey> {
       return await PublicKey.createProgramAddress([Buffer.from("ibport")], this.ibportProgram)
     }
 
-    buildCreateTokenAccountInstruction(tokenHolder: PublicKey): TransactionInstruction {
-      return Token.createInitAccountInstruction(
-        TOKEN_PROGRAM_ID,
-        this.tokenProgramAccount,
-        tokenHolder,
-        // new PublicKey(0)
-        this.tokenOwner
-        // initializerAccount.publicKey
-      )
+    buildCreateTokenAccountInstructionForInitializer(lamports: number, tokenBinary: PublicKey): TransactionInstruction[] {
+      return this.buildCreateTokenAccountInstruction(this.initializer, tokenBinary, lamports)
+    }
+
+    buildCreateTokenAccountInstruction(_tokenHolder: PublicKey, tokenBinary: PublicKey, lamports: number): TransactionInstruction[] {
+      const createTokenAccount = SystemProgram.createAccount({
+        programId: TOKEN_PROGRAM_ID,
+        space: AccountLayout.span,
+        lamports,
+        fromPubkey: _tokenHolder,
+        newAccountPubkey: tokenBinary,
+      })
+      const initTokenAccount = Token.createInitAccountInstruction(TOKEN_PROGRAM_ID, this.tokenProgramAccount, tokenBinary, this.tokenOwner)
+
+      return [createTokenAccount, initTokenAccount]
     }
 
     async buildCreateTransferUnwrapRequest(raw: CreateTransferUnwrapRequest): Promise<TransactionInstruction> {

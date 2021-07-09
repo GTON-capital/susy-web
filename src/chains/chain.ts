@@ -7,6 +7,7 @@ export type AvailableChainsDict = {
   BSC: Chain
   Fantom: Chain
   Avax: Chain
+  Polygon: Chain
   Solana: Chain
 }
 
@@ -48,6 +49,11 @@ export const AvailableChains: AvailableChainsDict = {
     label: "Solana",
     icon: "/img/icons/solana.svg",
   },
+  Polygon: {
+    id: "8",
+    label: "Polygon",
+    icon: "/img/icons/polygon.svg",
+  },
 }
 
-export const availableEVMChains = () => [AvailableChains.Ethereum, AvailableChains.Avax, AvailableChains.BSC, AvailableChains.Heco, AvailableChains.Fantom]
+export const availableEVMChains = () => [AvailableChains.Ethereum, AvailableChains.Avax, AvailableChains.BSC, AvailableChains.Heco, AvailableChains.Fantom, AvailableChains.Polygon]

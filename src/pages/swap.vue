@@ -36,6 +36,7 @@ import _ from "lodash"
 import Vue from "vue"
 import axios from "axios"
 import { Subscription } from "rxjs"
+import { PublicKey } from "@solana/web3.js"
 
 // MODAL
 import ConnectWalletModal from "~/components/modal/ConnectWallet.vue"
@@ -59,6 +60,7 @@ import { buildPropertyChecker } from "~/services/wallets/checker"
 import { AvailableChains, Chain, availableEVMChains, SOLANA_CHAIN } from "~/chains/chain"
 import { Token, AvailableTokens, getAvailableTokens, formLinkForChain, pickBridgeGateway, availableOriginChains, availableDestChains } from "~/chains/token"
 
+import { IBPort } from "~/services/solana/instruction"
 import { MathWalletAdapter } from "~/services/wallet-adapters"
 
 const availableTokens = getAvailableTokens()
@@ -93,7 +95,7 @@ export default Vue.extend({
     swapState: 0,
     swapForm: {
       isDirect: true,
-      sourceChain: AvailableChains.BSC,
+      sourceChain: AvailableChains.Polygon,
       destinationChain: AvailableChains.Solana,
       sourceAddress: "",
       destinationAddress: "",
@@ -375,19 +377,52 @@ export default Vue.extend({
       if (wallet.provider === WalletProvider.MathWallet) {
         const mathWallet = new MathWalletAdapter()
 
-        mathWallet.connect()
+        const IBPORT_PROGRAM_ID = "AH3QKaj942UUxDjaRaGh7hvdadsD8yfU9LRTa9KXfJkZ"
+        const TOKEN_DATA_ACCOUNT = "nVZnRKdr3pmcgnJvYDE8iafgiMiBqxiffQMcyv5ETdA"
+        const TOKEN_OWNER = "2ANEXknub11fKbmELve361E7rbPFCsu3qEey7oai2Et9"
 
+        // const instructionBuilder = new IBPort.InstructionBuilder({
+        //   initializer: mathWallet.publicKey,
+        //   ibportProgram: new PublicKey(IBPORT_PROGRAM_ID),
+        //   tokenProgramAccount: new PublicKey(TOKEN_DATA_ACCOUNT),
+        //   spenderTokenAccount: new PublicKey(""),
+        //   tokenOwner: new PublicKey(TOKEN_OWNER),
+        // })
+        await mathWallet.connect()
         await new Promise((resolve) => setTimeout(() => resolve(0), 100))
 
-        this.$store.commit("wallet/updateWalletData", {
-          provider: wallet.provider,
-          body: {
-            isConnected: mathWallet.connected,
-            value: mathWallet.publicKey.toBase58(),
-            checked: true,
-            walletAdapter: mathWallet,
-          },
-        })
+        console.log({ mathWallet, initializer: mathWallet.publicKey.toBase58() })
+
+        try {
+          const invoker = new IBPort.Invoker(
+            mathWallet,
+            {
+              initializer: mathWallet.publicKey,
+              ibportProgram: new PublicKey(IBPORT_PROGRAM_ID),
+              tokenProgramAccount: new PublicKey(TOKEN_DATA_ACCOUNT),
+              spenderTokenAccount: new PublicKey(TOKEN_OWNER), // wrong
+              tokenOwner: new PublicKey(TOKEN_OWNER),
+            },
+            "https://api.devnet.solana.com"
+          )
+
+          const createTokenAccount = invoker.createTokenAccount.bind(invoker)
+
+          setTimeout(() => createTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT)), 1000)
+
+          this.$store.commit("wallet/updateWalletData", {
+            provider: wallet.provider,
+            body: {
+              isConnected: mathWallet.connected,
+              value: mathWallet.publicKey.toBase58(),
+              checked: true,
+              walletAdapter: mathWallet,
+              invoker,
+            },
+          })
+        } catch (err) {
+          console.log({ err })
+        }
 
         return
       }
@@ -515,6 +550,8 @@ export default Vue.extend({
     handleSolanaAndEVMSwap(sourceChain: Chain, destinationChain: Chain) {
       // if (sourceChain.id === SOLANA_CHAIN) {
       //   return
+      console.log({ sourceChain, destinationChain })
+
       // }
       // if (destinationChain.id === SOLANA_CHAIN) {
       //   return
@@ -525,10 +562,15 @@ export default Vue.extend({
 
       this.swapForm.message = { text: "" }
 
-      const isEVMChainInAction = _.intersection(availableEVMChains(), [sourceChain.id, destinationChain.id]).length > 0
+      const isEVMChainInAction =
+        _.intersection(
+          availableEVMChains().map((x) => x.id),
+          [sourceChain.id, destinationChain.id]
+        ).length > 0
 
       if ([sourceChain.id, destinationChain.id].includes(SOLANA_CHAIN) && isEVMChainInAction) {
         await this.handleSolanaAndEVMSwap(sourceChain, destinationChain)
+        return
       }
 
       if (
