@@ -1,11 +1,39 @@
 import BN from "bn.js"
+import bs58 from "bs58"
 import { AccountLayout, Token, TOKEN_PROGRAM_ID } from "@solana/spl-token"
 import { Keypair, Connection, PublicKey, Transaction, TransactionInstruction, Signer, Commitment, TransactionSignature, SystemProgram, Account } from "@solana/web3.js"
 
+import { sendTransaction } from "./utils/connection"
 import { WalletAdapter } from "~/services/wallet-adapters/types"
 import { createSplAccount } from "~/services/solana/utils/pools"
-import { sendTransaction } from "./utils/connection"
+
 export namespace IBPort {
+  export class LocalStorageSaver {
+    private static formKey(tokenBinary: string, holder: string) {
+      return tokenBinary + "_" + holder
+    }
+
+    static saveTokenAccount(tokenBinary: string, holder: string, acc: Account) {
+      const key = LocalStorageSaver.formKey(tokenBinary, holder)
+
+      const encodedPK = bs58.encode(acc.secretKey)
+
+      window.localStorage.setItem(key, encodedPK)
+    }
+
+    static getTokenAccount(tokenBinary: string, holder: string): Account | null {
+      const key = LocalStorageSaver.formKey(tokenBinary, holder)
+
+      const encodedPK = window.localStorage.getItem(key)
+
+      if (!encodedPK) {
+        return null
+      }
+
+      return new Account(bs58.decode(encodedPK))
+    }
+  }
+
   export type CreateTransferUnwrapRequest = {
     amount: BN
     receiver: Uint8Array
@@ -79,7 +107,19 @@ export namespace IBPort {
       return this.instructionBuilder.initializer
     }
 
-    async createTokenAccount(tokenBinary: PublicKey) {
+    async createOrGetMemorizedTokenAccount(tokenBinary: PublicKey): Promise<Account | null> {
+      const tokenAcc = LocalStorageSaver.getTokenAccount(tokenBinary.toBase58(), this.initializer.toBase58())
+      console.log({ tokenAcc })
+      if (!tokenAcc) {
+        const tokenAcc = await this.createTokenAccount(tokenBinary)
+        LocalStorageSaver.saveTokenAccount(tokenBinary.toBase58(), this.initializer.toBase58(), tokenAcc!)
+        return tokenAcc
+      }
+
+      return tokenAcc
+    }
+
+    async createTokenAccount(tokenBinary: PublicKey): Promise<Account | null> {
       const instructions: TransactionInstruction[] = []
       const payer = this.initializer
       const accountRentExempt = await this.connection.getMinimumBalanceForRentExemption(AccountLayout.span)
@@ -91,12 +131,15 @@ export namespace IBPort {
       const signers: Account[] = []
 
       try {
-
         const tx = await sendTransaction(this.connection, this.adapter, instructions, [newToAccount, ...signers])
         console.log({ tx })
+
+        return newToAccount
       } catch (err) {
         console.log({ err })
       }
+
+      return null
     }
 
     async createTransferUnwrapRequest(amount: string, receiver: string) {

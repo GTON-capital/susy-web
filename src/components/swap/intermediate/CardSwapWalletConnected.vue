@@ -77,7 +77,8 @@
     </simple-wrapper-slim-sm>
 
     <template v-slot:footer>
-      <btn class="btn-primary" @click="$emit('unlock')" v-if="!allowanceReceived && swapForm.sourceChain.label !== 'WAVES'">
+      <btn class="btn-primary" @click="$emit('unlock')" v-if="!allowanceReceived && isOriginChainEVM">
+        <!-- <btn class="btn-primary" @click="$emit('unlock')" v-if="false"> -->
         Approve
       </btn>
       <btn class="btn-primary" @click="$emit('next')" v-else>
@@ -98,6 +99,8 @@ import FormGroupBetweenShift from "~/components/FormGroupBetweenShift.vue"
 import FormGroupBetweenShift1 from "~/components/FormGroupBetweenShift1.vue"
 
 import SwapHint from "~/components/swap/SwapHint"
+
+import { isEVMChain } from "~/chains/chain"
 
 export default {
   name: "CardSwapWalletConnected",
@@ -127,6 +130,12 @@ export default {
     },
     theme() {
       return this.$store.getters["theme/theme"]
+    },
+    isOriginChainEVM() {
+      const origin = this.swapForm.sourceChain
+      const isEVM = isEVMChain(origin)
+      console.log({ isEVM })
+      return isEVM
     },
     wallet() {
       const wallet = this.$store.getters["wallet/currentWallet"]

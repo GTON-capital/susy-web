@@ -6,6 +6,7 @@ type BridgeTokenCfg = {
 }
 
 interface ChainBridgeConfig {
+  meta: Record<string, any>
   token: {
     origin: BridgeTokenCfg
     dest: BridgeTokenCfg
@@ -221,10 +222,18 @@ export const AvailableTokens: Record<string, Token> = {
         origin: AvailableChains.Polygon,
         destination: AvailableChains.Solana,
         cfg: {
+          meta: {
+            // const IBPORT_PROGRAM_ID = "AH3QKaj942UUxDjaRaGh7hvdadsD8yfU9LRTa9KXfJkZ"
+            // const TOKEN_DATA_ACCOUNT = "nVZnRKdr3pmcgnJvYDE8iafgiMiBqxiffQMcyv5ETdA"
+            // const TOKEN_OWNER = "2ANEXknub11fKbmELve361E7rbPFCsu3qEey7oai2Et9",
+            IBPORT_PROGRAM_ID: "AH3QKaj942UUxDjaRaGh7hvdadsD8yfU9LRTa9KXfJkZ",
+            TOKEN_DATA_ACCOUNT: "nVZnRKdr3pmcgnJvYDE8iafgiMiBqxiffQMcyv5ETdA",
+            TOKEN_OWNER: "2ANEXknub11fKbmELve361E7rbPFCsu3qEey7oai2Et9",
+          },
           token: {
             origin: {
               decimals: 18,
-              assetId: "0x67d95bc7f471e141bbba15e8966742f4cad948aa",
+              assetId: "0xf480f38c366daac4305dc484b2ad7a496ff00cea",
             },
             dest: {
               decimals: 8,

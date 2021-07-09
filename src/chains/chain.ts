@@ -1,3 +1,5 @@
+import _ from "lodash"
+
 export type Chain = { id: string; label: string; icon: string }
 
 export type AvailableChainsDict = {
@@ -57,3 +59,12 @@ export const AvailableChains: AvailableChainsDict = {
 }
 
 export const availableEVMChains = () => [AvailableChains.Ethereum, AvailableChains.Avax, AvailableChains.BSC, AvailableChains.Heco, AvailableChains.Fantom, AvailableChains.Polygon]
+
+export const isEVMChain = (inputChain: Chain): boolean => {
+  return (
+    _.intersection(
+      availableEVMChains().map((x) => x.id),
+      [inputChain.id]
+    ).length > 0
+  )
+}
