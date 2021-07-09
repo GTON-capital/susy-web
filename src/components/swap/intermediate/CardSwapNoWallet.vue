@@ -6,34 +6,21 @@
     <simple-wrapper-slim-sm>
       <form-group-between>
         <template v-slot:left>
-          <search-select
-            v-model="swapForm.sourceChain"
-            :data="chains.origin"
-            :placeholder="sourceChainLabel"
-            :modal-heading="sourceChainLabel"
-          >
+          <search-select v-model="swapForm.sourceChain" :data="chains.origin" :placeholder="sourceChainLabel" :modal-heading="sourceChainLabel">
             <template v-slot:label>
               Origin
             </template>
           </search-select>
         </template>
         <template v-slot:center>
-          <button
-            class="btn btn-circle btn-secondary-gradient"
-            @click="$emit('reverse-chains')"
-          >
+          <button class="btn btn-circle btn-secondary-gradient" @click="$emit('reverse-chains')">
             <icon>
-              <exchange-icon></exchange-icon>
+              <exchange-icon> </exchange-icon>
             </icon>
           </button>
         </template>
         <template v-slot:right>
-          <search-select
-            v-model="swapForm.destinationChain"
-            :data="chains.destination"
-            :placeholder="destinationChainLabel"
-            :modal-heading="destinationChainLabel"
-          >
+          <search-select v-model="swapForm.destinationChain" :data="chains.destination" :placeholder="destinationChainLabel" :modal-heading="destinationChainLabel">
             <template v-slot:label>
               Destination
             </template>
@@ -64,13 +51,7 @@
     <simple-wrapper-slim-sm>
       <form-group-between-shift>
         <template v-slot:left>
-          <search-select
-            v-model="swapForm.token"
-            :data="swapProps.tokens"
-            placeholder="Select a token..."
-            modal-heading="Select a token"
-            @input="$emit('select-token')"
-          >
+          <search-select v-model="swapForm.token" :data="swapProps.tokens" placeholder="Select a token..." modal-heading="Select a token" @input="$emit('select-token')">
             <template v-slot:label>
               Token
             </template>
@@ -95,20 +76,20 @@
 </template>
 
 <script>
-import Btn from '~/components/Btn.vue'
-import FormInput from '~/components/FormInput.vue'
-import SimpleWrapperSlimSm from '~/components/SimpleWrapperSlimSm.vue'
-import FormGroupBetween from '~/components/FormGroupBetween.vue'
-import SearchSelect from '~/components/SearchSelect.vue'
-import CardSwap from '~/components/swap/CardSwap'
-import FormGroupBetweenShift from '~/components/FormGroupBetweenShift.vue'
-import FormGroupBetweenShift1 from '~/components/FormGroupBetweenShift1.vue'
+import Btn from "~/components/Btn.vue"
+import FormInput from "~/components/FormInput.vue"
+import SimpleWrapperSlimSm from "~/components/SimpleWrapperSlimSm.vue"
+import FormGroupBetween from "~/components/FormGroupBetween.vue"
+import SearchSelect from "~/components/SearchSelect.vue"
+import CardSwap from "~/components/swap/CardSwap"
+import FormGroupBetweenShift from "~/components/FormGroupBetweenShift.vue"
+import FormGroupBetweenShift1 from "~/components/FormGroupBetweenShift1.vue"
 
-import SwapHint from '~/components/swap/SwapHint'
+import SwapHint from "~/components/swap/SwapHint"
 
 export default {
-  name: 'CardSwapNoWallet',
-  props: ['swapProps', 'onWalletConnect'],
+  name: "CardSwapNoWallet",
+  props: ["swapProps", "onWalletConnect"],
   components: {
     SwapHint,
     Btn,
@@ -119,17 +100,17 @@ export default {
     CardSwap,
     FormGroupBetweenShift,
     FormGroupBetweenShift1,
-    exchangeIcon: () => import('assets/icons/exchange.svg?inline'),
+    exchangeIcon: () => import("assets/icons/exchange.svg?inline"),
   },
   data: function () {
     return {
-      sourceChainLabel: 'Select source chain',
-      destinationChainLabel: 'Select destination chain',
+      sourceChainLabel: "Select source chain",
+      destinationChainLabel: "Select destination chain",
     }
   },
   computed: {
     theme() {
-      return this.$store.getters['theme/theme']
+      return this.$store.getters["theme/theme"]
     },
     chains() {
       return this.swapProps.chains

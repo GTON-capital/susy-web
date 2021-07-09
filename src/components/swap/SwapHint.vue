@@ -1,19 +1,18 @@
 <template>
   <div class="swap-hint">
     <div>Swap</div>
-    <a :href="link" target="_blank">?</a>
+    <!-- <a :href="link" target="_blank">?</a> -->
   </div>
 </template>
 
 <script>
 export default {
-  name: 'SwapHint',
-  data: function () {
-    return {
-      link:
-        'https://medium.com/gravity-protocol/gravity-mainnet-alpha-launch-with-waves-bsc-as-target-chains-e110b59a01b8',
-    }
-  },
+  name: "SwapHint",
+  // data: function () {
+  //   return {
+  //     link: "https://medium.com/gravity-protocol/gravity-mainnet-alpha-launch-with-waves-bsc-as-target-chains-e110b59a01b8",
+  //   }
+  // },
 }
 </script>
 

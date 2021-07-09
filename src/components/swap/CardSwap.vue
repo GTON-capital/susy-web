@@ -11,17 +11,17 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import Card from './WithdrawCard'
+import Vue from "vue"
+import Card from "./WithdrawCard"
 
 export default Vue.extend({
-  name: 'CardSwap',
+  name: "CardSwap",
   components: { Card },
 })
 </script>
 
 <style lang="scss">
-@import '../../assets/scss/import';
+@import "../../assets/scss/import";
 
 .card-swap {
   .card-header {

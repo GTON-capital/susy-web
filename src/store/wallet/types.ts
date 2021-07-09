@@ -1,3 +1,6 @@
+import { WalletAdapter } from "~/services/wallet-adapters"
+import { IBPort } from "~/services/solana/instruction"
+
 export interface ExtensionWallet {
   wallet: {
     id: string
@@ -8,7 +11,11 @@ export interface ExtensionWallet {
   isConnected: boolean
   label: string
   value?: string
+  // getWalletAdapter?: () => WalletAdapter
+  walletAdapter?: WalletAdapter
   checked?: boolean
+  // instructionBuilder?: IBPort.InstructionBuilder
+  invoker?: IBPort.Invoker
 }
 
 export type Wallets = {
@@ -18,8 +25,9 @@ export type Wallets = {
 }
 
 export enum WalletProvider {
-  Metamask = 'metamask',
-  WavesKeeper = 'keeper',
+  Metamask = "metamask",
+  WavesKeeper = "keeper",
+  MathWallet = "mathwallet",
 }
 
 export type WalletState = Wallets
