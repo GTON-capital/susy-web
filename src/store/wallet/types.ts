@@ -11,6 +11,7 @@ export interface ExtensionWallet {
   isConnected: boolean
   label: string
   value?: string
+  // getWalletAdapter?: () => WalletAdapter
   walletAdapter?: WalletAdapter
   checked?: boolean
   // instructionBuilder?: IBPort.InstructionBuilder

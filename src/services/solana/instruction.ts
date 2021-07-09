@@ -1,8 +1,10 @@
 import BN from "bn.js"
 import { AccountLayout, Token, TOKEN_PROGRAM_ID } from "@solana/spl-token"
-import { Keypair, Connection, PublicKey, Transaction, TransactionInstruction, Signer, Commitment, TransactionSignature, SystemProgram } from "@solana/web3.js"
+import { Keypair, Connection, PublicKey, Transaction, TransactionInstruction, Signer, Commitment, TransactionSignature, SystemProgram, Account } from "@solana/web3.js"
 
 import { WalletAdapter } from "~/services/wallet-adapters/types"
+import { createSplAccount } from "~/services/solana/utils/pools"
+import { sendTransaction } from "./utils/connection"
 export namespace IBPort {
   export type CreateTransferUnwrapRequest = {
     amount: BN
@@ -78,66 +80,23 @@ export namespace IBPort {
     }
 
     async createTokenAccount(tokenBinary: PublicKey) {
-      // const lamports = await this.broadcaster.connection.getMinimumBalanceForRentExemption(AccountLayout.span, "singleGossip")
-      // const [createTokenAccount, initTokenAccount] = this.instructionBuilder.buildCreateTokenAccountInstructionForInitializer(lamports, tokenBinary)
-      // // console.log({ createTokenAccountIx })
-      // // transaction.add
-      // const tx = new Transaction().add(createTokenAccount, initTokenAccount)
-      // const resp = await this.broadcaster.signAndBroadcast(tx)
-
-      // console.log({ broadcast: resp })
-      // this.instructionBuilder.setTokenOwner()
-
-      // const token = new Token(this.broadcaster.connection, tokenBinary, TOKEN_PROGRAM_ID, new Keypair())
-      const tx = new Transaction()
-      const instructions = []
-      const account = new Keypair()
-
+      const instructions: TransactionInstruction[] = []
+      const payer = this.initializer
       const accountRentExempt = await this.connection.getMinimumBalanceForRentExemption(AccountLayout.span)
+      const mint = tokenBinary
+      const owner = this.instructionBuilder.tokenOwner
 
-      instructions.push(
-        SystemProgram.createAccount({
-          fromPubkey: this.initializer,
-          newAccountPubkey: account.publicKey,
-          lamports: accountRentExempt,
-          space: AccountLayout.span,
-          programId: TOKEN_PROGRAM_ID,
-        })
-      )
+      const newToAccount = createSplAccount(instructions, payer, accountRentExempt, mint, owner, AccountLayout.span)
 
-      instructions.push(Token.createInitAccountInstruction(TOKEN_PROGRAM_ID, tokenBinary, this.initializer, this.instructionBuilder.tokenOwner))
-
-      // signers.push(account);
-      const { blockhash } = await this.connection.getRecentBlockhash()
-
-      tx.recentBlockhash = blockhash
-      tx.feePayer = this.initializer
-
-      tx.add(...instructions)
-      tx.sign(account)
-      // tx.sign
-
-      console.log({ account: account.publicKey, accountP: account.secretKey })
+      const signers: Account[] = []
 
       try {
-        const resp = await this.broadcaster.broadcastTransaction(tx, [account])
-        console.log({ resp })
+
+        const tx = await sendTransaction(this.connection, this.adapter, instructions, [newToAccount, ...signers])
+        console.log({ tx })
       } catch (err) {
         console.log({ err })
       }
-      // let sentTx = await sendTransaction(
-      //   this.connection,
-      //   wallet,
-      //   instructions.concat(cleanupInstructions),
-      //   signers
-      // );
-
-      // // await this.broadcaster.signAndBroadcast(tx)
-
-      // const signed = await wallet.signTransaction(transaction)
-
-      // const txid = await connection.sendRawTransaction(signed.serialize())
-      // const resp = await connection.confirmTransaction(txid)
     }
 
     async createTransferUnwrapRequest(amount: string, receiver: string) {

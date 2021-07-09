@@ -237,6 +237,7 @@ export default Vue.extend({
 
       if (currentWallet.provider === WalletProvider.MathWallet) {
         const address = currentWallet.walletAdapter?.publicKey.toBase58()
+        // const address = currentWallet.getWalletAdapter()?.publicKey.toBase58()
 
         return {
           sourceAddress: address,
@@ -403,7 +404,7 @@ export default Vue.extend({
               spenderTokenAccount: new PublicKey(TOKEN_OWNER), // wrong
               tokenOwner: new PublicKey(TOKEN_OWNER),
             },
-            "https://api.devnet.solana.com"
+            "https://api.mainnet-beta.solana.com"
           )
 
           const createTokenAccount = invoker.createTokenAccount.bind(invoker)
@@ -417,7 +418,6 @@ export default Vue.extend({
               value: mathWallet.publicKey.toBase58(),
               checked: true,
               walletAdapter: mathWallet,
-              invoker,
             },
           })
         } catch (err) {
