@@ -7,6 +7,10 @@ import { sendTransaction } from "./utils/connection"
 import { WalletAdapter } from "~/services/wallet-adapters/types"
 import { approveAmount, createSplAccount } from "~/services/solana/utils/pools"
 
+export function randomUint8() {
+  return Math.floor(255 * Math.random())
+}
+
 export namespace IBPort {
   export class LocalStorageSaver {
     private static formKey(tokenBinary: string, holder: string) {
@@ -218,11 +222,17 @@ export namespace IBPort {
       let rawData = Uint8Array.of(...new BN(1).toArray("le", 1))
       // Token Amount = f64
       rawData = Uint8Array.of(...rawData, ...new BN(raw.amount).toArray("le", 8))
-      // Receiver
-      rawData = Uint8Array.of(...rawData, ...raw.receiver)
+      // Receiver - 32 bytes
+      const receiverBytes = new Uint8Array(32)
+      receiverBytes.set(raw.receiver, 0)
+
+      rawData = Uint8Array.of(...rawData, ...receiverBytes)
+      // Swap ID - 16 bytes
+      rawData = Uint8Array.of(...rawData, ...new Uint8Array(16).map(() => randomUint8()))
 
       const data = Buffer.from(rawData)
-
+      
+      console.log({ data, bufferLen: data.length, goal: 1 + 8 + 32 + 16 })
       console.log(raw.amount)
       console.log(raw.receiver)
 

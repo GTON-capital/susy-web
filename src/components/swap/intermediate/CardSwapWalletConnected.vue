@@ -139,11 +139,6 @@ export default {
     },
     wallet() {
       const wallet = this.$store.getters["wallet/currentWallet"]
-
-      if (wallet && !this.swapForm.sourceAddress) {
-        this.swapForm.sourceAddress = wallet.value
-      }
-
       return wallet
     },
   },

@@ -90,6 +90,11 @@ export default {
     FormGroupBetweenShift,
   },
   props: ["swapProps", "heading", "tokens"],
+  data() {
+    return {
+      termsChecked: false,
+    }
+  },
   computed: {
     swapForm() {
       return this.swapProps.swapForm
