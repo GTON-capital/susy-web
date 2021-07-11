@@ -173,16 +173,14 @@ export namespace IBPort {
       return null
     }
 
-    async createTransferUnwrapRequest(amount: string, receiver: Uint8Array, spender: PublicKey) {
+    async createTransferUnwrapRequest(amount: number, receiver: Uint8Array, spender: PublicKey) {
       const ix = await this.instructionBuilder.buildCreateTransferUnwrapRequest({ amount: new BN(amount), receiver }, spender)
 
+      console.log({ ix })
       const tx = await sendTransaction(this.connection, this.adapter, [ix], [])
       console.log({ tx })
-      // const instructionObject = IntructionObject.burnFunds(amount, receiver)
-      // const createTokenAccountIx = this.instructionBuilder.buildCreateTokenAccountInstructionForInitializer()
-      // // transaction.add
-      // const tx = new Transaction().add(createTokenAccountIx)
-      // await this.broadcaster.broadcastTransaction(tx)
+
+      return tx
     }
   }
 

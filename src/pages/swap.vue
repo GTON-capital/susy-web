@@ -101,7 +101,7 @@ export default Vue.extend({
     },
     propertiesObs: null,
     subs: [],
-    allowanceReceived: false,
+    allowanceReceived: true,
     loader: {
       callCount: 0,
       text: SwapLoaderMessage.Processing,
@@ -422,8 +422,11 @@ export default Vue.extend({
         const approveTx = await invoker.approveSPLToken(approveAmount, tokenAccount.publicKey, spender)
 
         console.log({ approveTx })
+
+        this.allowanceReceived = true
       } catch (err) {
         console.log({ err: err.stack })
+        this.allowanceReceived = false
       } finally {
         this.hideLoader()
       }
@@ -745,7 +748,6 @@ export default Vue.extend({
         }
         const { TOKEN_DATA_ACCOUNT } = gateway.cfg.meta
 
-        // const destinationAddress = await invoker.createOrGetMemorizedTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
         const holderTokenAccount = await invoker.getMemorizedTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
 
         if (!holderTokenAccount) {
@@ -757,11 +759,27 @@ export default Vue.extend({
 
         const evmReceiver = new Uint8Array(web3.utils.hexToBytes(String(this.swapForm.destinationAddress)))
 
-        const createTransferUnwrapRequestTx = await invoker.createTransferUnwrapRequest(String(this.swapForm.tokenAmount), evmReceiver, holderTokenAccount!.publicKey)
+        const amount = Number(this.swapForm.tokenAmount)
 
-        console.log({ createTransferUnwrapRequestTx })
+        try {
+          const createTransferUnwrapRequestTx = await invoker.createTransferUnwrapRequest(amount, evmReceiver, holderTokenAccount!.publicKey)
 
-        this.transferIsBeingProcessed = false
+          console.log({ createTransferUnwrapRequestTx })
+
+          this.swapForm.message = {
+            text: `Transfer has been successfully submitted. Tx: ${createTransferUnwrapRequestTx}`,
+          }
+          this.hideLoader()
+          this.$modal.push("status")
+        } catch (err) {
+          this.hideLoader()
+
+          console.log({ err })
+          this.swapForm.message = { text: `${err.message}. ${err.data}` }
+          this.$modal.push("status")
+        } finally {
+          this.transferIsBeingProcessed = false
+        }
       } else {
         console.log({ walletAdapter, initializer: walletAdapter.publicKey.toBase58() })
 
@@ -776,7 +794,6 @@ export default Vue.extend({
         console.log({ destinationAddress, destinationAddressB58: destinationAddress?.publicKey.toBase58() })
 
         await this.handleEVMLUPortLock(destinationAddress!.publicKey)
-        this.transferIsBeingProcessed = false
       }
     },
     async handleSolanaIBPortBurn() {},
@@ -818,6 +835,8 @@ export default Vue.extend({
         console.log({ err })
         this.swapForm.message = { text: `${err.message}. ${err.data}` }
         this.$modal.push("status")
+      } finally {
+        this.transferIsBeingProcessed = false
       }
     },
     async handleSwapConfirm() {
