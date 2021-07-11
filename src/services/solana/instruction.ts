@@ -107,9 +107,14 @@ export namespace IBPort {
       return this.instructionBuilder.initializer
     }
 
+    getMemorizedTokenAccount(tokenBinary: PublicKey): Account | null {
+      return LocalStorageSaver.getTokenAccount(tokenBinary.toBase58(), this.initializer.toBase58())
+    }
+
     async createOrGetMemorizedTokenAccount(tokenBinary: PublicKey): Promise<Account | null> {
       const tokenAcc = LocalStorageSaver.getTokenAccount(tokenBinary.toBase58(), this.initializer.toBase58())
       console.log({ tokenAcc })
+
       if (!tokenAcc) {
         const tokenAcc = await this.createTokenAccount(tokenBinary)
         LocalStorageSaver.saveTokenAccount(tokenBinary.toBase58(), this.initializer.toBase58(), tokenAcc!)

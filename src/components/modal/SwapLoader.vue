@@ -2,39 +2,43 @@
   <modal name="susy-loader">
     <div>
       <div class="text">{{ loader.text }}</div>
-      <div class="loader" ref="loader" />
+      <div ref="inner" class="loader" />
     </div>
   </modal>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import lottie from 'lottie-web'
+import Vue from "vue"
+import lottie, { AnimationItem } from "lottie-web"
 
 export default Vue.extend({
-  name: 'SwapLoader',
-  props: ['loader'],
-  data: function() {
+  name: "SwapLoader",
+  props: ["loader"],
+  data() {
     return {
-      loaderInitialised: false
+      anim: null as null | AnimationItem,
     }
+  },
+  mounted() {
+    const callback = this.init.bind(this)
+    setTimeout(() => callback, 300)
   },
   methods: {
     init() {
-      const loader = this.$refs.loader;
-      if(!loader) return;
+      const loader = this.$refs.inner
 
-      lottie.loadAnimation({
+      if (!loader) return
+
+      this.anim = lottie.loadAnimation({
         container: loader as Element,
-        renderer: 'svg',
+        renderer: "svg",
         loop: true,
         autoplay: true,
-        path: '/img/anims/susy-loader.json'
-      });
-    }
-  },
-  mounted() { 
-    setTimeout(() => this.init(), 1000)
+        path: "/img/anims/susy-loader.json",
+      })
+
+      this.anim.play()
+    },
   },
 })
 </script>
@@ -42,7 +46,8 @@ export default Vue.extend({
 <style scoped>
 .text {
   font-size: 18px;
-  text-align: center; padding: 20px 0;
+  text-align: center;
+  padding: 20px 0;
 }
 .loader {
   height: 450px;
