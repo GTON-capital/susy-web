@@ -107,7 +107,7 @@ export namespace IBPort {
       return this.instructionBuilder.initializer
     }
 
-    async approveSPLToken(amount: number, tokenHolderDataAccount: PublicKey, tokenHolderAddress: PublicKey, portBinary: PublicKey) {
+    async approveSPLToken(amount: number, tokenHolderDataAccount: PublicKey, portBinary: PublicKey) {
       const instructions: TransactionInstruction[] = []
       const cleanupInstructions: TransactionInstruction[] = []
       const signers: Account[] = []
@@ -122,8 +122,10 @@ export namespace IBPort {
 
       // const owner = this.instructionBuilder
 
-      // console.log(instructions, cleanupInstructions, tokenBinary, wallet.publicKey, amount, mintAuthority)
-      approveAmount(instructions, cleanupInstructions, tokenHolderDataAccount, tokenHolderAddress, amount, portBinary)
+      console.log(instructions, cleanupInstructions, tokenHolderDataAccount, wallet.publicKey.toBase58(), amount, portBinary)
+      console.log(instructions, cleanupInstructions, tokenHolderDataAccount, this.initializer.toBase58(), amount, portBinary)
+
+      approveAmount(instructions, cleanupInstructions, tokenHolderDataAccount, this.initializer, amount, portBinary)
 
       const tx = await sendTransaction(connection, wallet, instructions.concat(cleanupInstructions), signers)
       console.log({ tx })
@@ -153,7 +155,7 @@ export namespace IBPort {
       const payer = this.initializer
       const accountRentExempt = await this.connection.getMinimumBalanceForRentExemption(AccountLayout.span)
       const mint = tokenBinary
-      const owner = this.instructionBuilder.tokenOwner
+      const owner = payer
 
       const newToAccount = createSplAccount(instructions, payer, accountRentExempt, mint, owner, AccountLayout.span)
 
@@ -171,7 +173,11 @@ export namespace IBPort {
       return null
     }
 
-    async createTransferUnwrapRequest(amount: string, receiver: string) {
+    async createTransferUnwrapRequest(amount: string, receiver: Uint8Array, spender: PublicKey) {
+      const ix = await this.instructionBuilder.buildCreateTransferUnwrapRequest({ amount: new BN(amount), receiver }, spender)
+
+      const tx = await sendTransaction(this.connection, this.adapter, [ix], [])
+      console.log({ tx })
       // const instructionObject = IntructionObject.burnFunds(amount, receiver)
       // const createTokenAccountIx = this.instructionBuilder.buildCreateTokenAccountInstructionForInitializer()
       // // transaction.add
@@ -180,13 +186,13 @@ export namespace IBPort {
     }
   }
 
-  export type InstructionBuilderProps = { initializer: PublicKey; ibportProgram: PublicKey; tokenProgramAccount: PublicKey; spenderTokenAccount: PublicKey; tokenOwner: PublicKey }
+  export type InstructionBuilderProps = { initializer: PublicKey; ibportProgram: PublicKey; ibportDataAccount: PublicKey; tokenProgramAccount: PublicKey; tokenOwner: PublicKey }
   export class InstructionBuilder {
     // initializer: Keypair
     initializer: PublicKey
 
     ibportProgram: PublicKey
-    spenderTokenAccount: PublicKey
+    ibportDataAccount: PublicKey
     tokenProgramAccount: PublicKey
 
     tokenOwner: PublicKey
@@ -195,7 +201,7 @@ export namespace IBPort {
       this.initializer = props.initializer
 
       this.ibportProgram = props.ibportProgram
-      this.spenderTokenAccount = props.spenderTokenAccount
+      this.ibportDataAccount = props.ibportDataAccount
       this.tokenProgramAccount = props.tokenProgramAccount
 
       this.tokenOwner = props.tokenOwner
@@ -209,24 +215,7 @@ export namespace IBPort {
       return await PublicKey.createProgramAddress([Buffer.from("ibport")], this.ibportProgram)
     }
 
-    buildCreateTokenAccountInstructionForInitializer(lamports: number, tokenBinary: PublicKey): TransactionInstruction[] {
-      return this.buildCreateTokenAccountInstruction(this.initializer, tokenBinary, lamports)
-    }
-
-    buildCreateTokenAccountInstruction(_tokenHolder: PublicKey, tokenBinary: PublicKey, lamports: number): TransactionInstruction[] {
-      const createTokenAccount = SystemProgram.createAccount({
-        programId: TOKEN_PROGRAM_ID,
-        space: AccountLayout.span,
-        lamports,
-        fromPubkey: _tokenHolder,
-        newAccountPubkey: tokenBinary,
-      })
-      const initTokenAccount = Token.createInitAccountInstruction(TOKEN_PROGRAM_ID, this.tokenProgramAccount, tokenBinary, this.tokenOwner)
-
-      return [createTokenAccount, initTokenAccount]
-    }
-
-    async buildCreateTransferUnwrapRequest(raw: CreateTransferUnwrapRequest): Promise<TransactionInstruction> {
+    async buildCreateTransferUnwrapRequest(raw: CreateTransferUnwrapRequest, spender: PublicKey): Promise<TransactionInstruction> {
       // Instruction Index = u8
       let rawData = Uint8Array.of(...new BN(1).toArray("le", 1))
       // Token Amount = f64
@@ -243,9 +232,14 @@ export namespace IBPort {
         programId: this.ibportProgram,
         keys: [
           {
-            pubkey: this.initializer.publicKey,
+            pubkey: this.initializer,
             isSigner: true,
             isWritable: false,
+          },
+          {
+            pubkey: this.ibportDataAccount,
+            isSigner: false,
+            isWritable: true,
           },
           {
             pubkey: TOKEN_PROGRAM_ID,
@@ -261,7 +255,7 @@ export namespace IBPort {
           },
           {
             // the man we allowed to burn tokens from (caller)
-            pubkey: this.spenderTokenAccount,
+            pubkey: spender,
             isSigner: false,
             isWritable: true,
           },

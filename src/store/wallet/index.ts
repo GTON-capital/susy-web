@@ -33,6 +33,16 @@ export const state = (): WalletState => {
       isConnected: false,
       label: "Connect with Math Wallet",
     },
+    [WalletProvider.Phantom]: {
+      wallet: {
+        id: "3-0",
+        label: "Phantom",
+        icon: "/img/icons/phantom.png",
+      },
+      provider: WalletProvider.Phantom,
+      isConnected: false,
+      label: "Connect with Phantom",
+    },
   }
 }
 

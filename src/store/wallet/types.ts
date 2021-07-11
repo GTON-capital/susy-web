@@ -28,6 +28,11 @@ export enum WalletProvider {
   Metamask = "metamask",
   WavesKeeper = "keeper",
   MathWallet = "mathwallet",
+  Phantom = "phantom",
 }
 
 export type WalletState = Wallets
+
+export const walletSupportsSolana = (provider: WalletProvider): boolean => {
+  return [WalletProvider.MathWallet, WalletProvider.Phantom].includes(provider)
+}

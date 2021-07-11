@@ -89,7 +89,6 @@ import SwapHint from "~/components/swap/SwapHint"
 
 export default {
   name: "CardSwapNoWallet",
-  props: ["swapProps", "onWalletConnect"],
   components: {
     SwapHint,
     Btn,
@@ -102,7 +101,8 @@ export default {
     FormGroupBetweenShift1,
     exchangeIcon: () => import("assets/icons/exchange.svg?inline"),
   },
-  data: function () {
+  props: ["swapProps", "onWalletConnect"],
+  data() {
     return {
       sourceChainLabel: "Select source chain",
       destinationChainLabel: "Select destination chain",

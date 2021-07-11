@@ -28,6 +28,8 @@ import Vue from "vue"
 import axios from "axios"
 import { Subscription } from "rxjs"
 import { PublicKey } from "@solana/web3.js"
+import { BN } from "bn.js"
+import Web3 from "web3"
 
 // MODAL
 import ConnectWalletModal from "~/components/modal/ConnectWallet.vue"
@@ -43,7 +45,7 @@ import CardSwapFinalized from "~/components/swap/intermediate/CardSwapFinalized.
 import Keeper, { LUPortInvoker } from "~/services/wallets/keeper"
 
 import Web3WalletConnector, { Web3Invoker } from "~/services/wallets/web3"
-import { ExtensionWallet, WalletProvider } from "~/store/wallet/types"
+import { ExtensionWallet, WalletProvider, walletSupportsSolana } from "~/store/wallet/types"
 
 // import { processConfig } from '~/services/misc/config'
 import { castFloatToDecimalsVersion } from "~/misc/bn"
@@ -52,7 +54,7 @@ import { AvailableChains, Chain, availableEVMChains, SOLANA_CHAIN, isEVMChain } 
 import { Token, AvailableTokens, getAvailableTokens, formLinkForChain, pickBridgeGateway, availableOriginChains, availableDestChains, GatewayBridge } from "~/chains/token"
 
 import { IBPort } from "~/services/solana/instruction"
-import { MathWalletAdapter } from "~/services/wallet-adapters"
+import { MathWalletAdapter, PhantomWalletAdapter, WalletAdapter } from "~/services/wallet-adapters"
 
 const availableTokens = getAvailableTokens()
 
@@ -81,6 +83,7 @@ export default Vue.extend({
     StatusModal,
   },
   data: () => ({
+    transferIsBeingProcessed: false,
     page: 10,
     tokens: availableTokens,
     swapState: 0,
@@ -117,6 +120,7 @@ export default Vue.extend({
     cardSwapProps() {
       const { tokens, swapForm } = this
       return {
+        transferIsBeingProcessed: this.transferIsBeingProcessed,
         chains: (swapForm.isDirect
           ? {
               // @ts-ignore
@@ -191,8 +195,10 @@ export default Vue.extend({
       await new Promise((resolve) => setTimeout(() => resolve(0), 300))
       // @ts-ignore
       this.$refs.loader.init()
+
+      await new Promise((resolve) => setTimeout(() => resolve(0), 300))
       // @ts-ignore
-      this.$refs.loader.anim.play()
+      // this.$refs.loader.anim.play()
 
       // // @ts-ignore
     },
@@ -239,14 +245,20 @@ export default Vue.extend({
         return {}
       }
 
-      if (currentWallet.provider === WalletProvider.MathWallet) {
-        const address = currentWallet.walletAdapter?.publicKey.toBase58()
+      // if (currentWallet.provider === WalletProvider.MathWallet || currentWallet.provider === WalletProvider.Phantom) {
+      if (walletSupportsSolana(currentWallet.provider)) {
+        const address = currentWallet.address
         const emptyResult = {
           sourceAddress: address,
           currentBalance: 0,
           formattedBalance: 0,
         }
-        const invoker = this.getSolanaInvoker(currentWallet.walletAdapter)
+
+        const walletAdapter = new PhantomWalletAdapter()
+        await walletAdapter.connect()
+
+        const invoker = this.getSolanaInvoker(walletAdapter)
+        // console.log({ invoker })
 
         if (!invoker) {
           return emptyResult
@@ -257,6 +269,7 @@ export default Vue.extend({
         const { TOKEN_DATA_ACCOUNT } = currentBridge.cfg.meta!
 
         const memorizedAccount = invoker!.getMemorizedTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
+        // console.log({ inmemorizedAccountvokerPubkey: memorizedAccount?.publicKey.toBase58() })
 
         if (!memorizedAccount) {
           return emptyResult
@@ -346,7 +359,7 @@ export default Vue.extend({
           const invoker = new Web3Invoker()
           const { assetId } = this.getCurrentBridgeToken()
 
-          console.log({ currentWalletAddress, assetId })
+          // console.log({ currentWalletAddress, assetId })
           let { balance } = await invoker.getBalanceAndAllowance(currentWalletAddress, assetId, "")
 
           balance = Number(balance)
@@ -372,15 +385,24 @@ export default Vue.extend({
         return {}
       }
 
-      if (currentWallet.provider !== WalletProvider.MathWallet) {
+      if (!walletSupportsSolana(currentWallet.provider)) {
         return
       }
 
-      const invoker = this.getSolanaInvoker(currentWallet.walletAdapter)
+      const wa = new PhantomWalletAdapter()
+      await wa.connect()
+
+      console.log({ pb: wa.publicKey.toBase58() })
+
+      const invoker = this.getSolanaInvoker(wa)
+
       if (!invoker) {
         return
       }
-      const { IBPORT_PROGRAM_ID, TOKEN_DATA_ACCOUNT, TOKEN_OWNER } = gateway.cfg.meta!
+
+      const { TOKEN_DATA_ACCOUNT, IBPORT_PROGRAM_PDA } = gateway.cfg.meta!
+
+      console.log({ TOKEN_DATA_ACCOUNT })
 
       const tokenAccount = invoker.getMemorizedTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
 
@@ -390,50 +412,40 @@ export default Vue.extend({
         return
       }
 
-      const approveAmount = this.swapForm.tokenAmount
+      const approveAmount = Number(this.swapForm.tokenAmount)
       console.log({ approveAmount, destinationPort: gateway.cfg.destinationPort })
 
       try {
-        // const spender = new PublicKey(bs58.decode(gateway.cfg.destinationPort))
-        const spender = new PublicKey(gateway.cfg.destinationPort)
-
-        const approveTx = await invoker.approveSPLToken(approveAmount, tokenAccount.publicKey, invoker.initializer, spender)
-        // const approveTx = await invoker.approveSPLToken(approveAmount, spender, spender)
+        this.showLoader(SwapLoaderMessage.Allowance)
+        const spender = new PublicKey(IBPORT_PROGRAM_PDA)
+        // console.log({ destinationPort: gateway.cfg.destinationPort })
+        const approveTx = await invoker.approveSPLToken(approveAmount, tokenAccount.publicKey, spender)
 
         console.log({ approveTx })
       } catch (err) {
         console.log({ err: err.stack })
+      } finally {
+        this.hideLoader()
       }
     },
     async unlockERC20() {
       const invoker = new Web3Invoker()
       const amountValue = castFloatToDecimalsVersion(String(this.swapForm.tokenAmount), 18)
 
-      // if (!this.swapForm.token.bridgeConfig) {
-      //   return {}
-      // }
-
       const gateway = this.pickBridgeGateway()
       if (!gateway) {
         return
       }
 
-      if (gateway!.origin.id === SOLANA_CHAIN) {
+      const formOrigin = this.swapForm.sourceChain
+      if (formOrigin!.id === SOLANA_CHAIN) {
         return this.handleApproveSolana(gateway, gateway.origin)
       }
 
       let spender = gateway!.cfg.destinationPort
-
-      if (isEVMChain(gateway!.origin)) {
+      if (isEVMChain(formOrigin)) {
         spender = gateway!.cfg.sourcePort
       }
-
-      // console.log(
-      //   { amountValue: amountValue.toString() },
-      //   destinationPort,
-      //   this.swapForm.token.ERC20!,
-      //   amountValue.toString()
-      // )
 
       try {
         // @ts-ignore
@@ -479,9 +491,41 @@ export default Vue.extend({
       this.swapState = 1
     },
     async handleWalletConnect(wallet: ExtensionWallet) {
-      if (wallet.provider === WalletProvider.MathWallet) {
-        const mathWallet = new MathWalletAdapter()
+      if (wallet.provider === WalletProvider.Phantom) {
+        // @ts-ignore
+        const isPhantomInstalled = window.solana && window.solana.isPhantom
 
+        if (!isPhantomInstalled) {
+          console.error("phantom is not installed")
+          return
+        }
+
+        const phantomWallet = new PhantomWalletAdapter()
+
+        phantomWallet.on("connect", () => {
+          // await new Promise((resolve) => setTimeout(() => resolve(0), 2000))
+
+          console.log({ phantomWallet, initializer: phantomWallet.publicKey.toBase58() })
+
+          try {
+            this.$store.commit("wallet/updateWalletData", {
+              provider: wallet.provider,
+              body: {
+                isConnected: phantomWallet.connected,
+                value: phantomWallet.publicKey.toBase58(),
+                checked: true,
+              },
+            })
+          } catch (err) {
+            console.log({ err })
+          }
+        })
+
+        await phantomWallet.connect()
+
+        return
+      }
+      if (wallet.provider === WalletProvider.MathWallet) {
         // const IBPORT_PROGRAM_ID = "AH3QKaj942UUxDjaRaGh7hvdadsD8yfU9LRTa9KXfJkZ"
         // const TOKEN_DATA_ACCOUNT = "nVZnRKdr3pmcgnJvYDE8iafgiMiBqxiffQMcyv5ETdA"
         // const TOKEN_OWNER = "2ANEXknub11fKbmELve361E7rbPFCsu3qEey7oai2Et9"
@@ -493,24 +537,29 @@ export default Vue.extend({
         //   spenderTokenAccount: new PublicKey(""),
         //   tokenOwner: new PublicKey(TOKEN_OWNER),
         // })
+
+        const mathWallet = new MathWalletAdapter()
+
+        mathWallet.on("connect", () => {
+          // await new Promise((resolve) => setTimeout(() => resolve(0), 2000))
+
+          console.log({ mathWallet, initializer: mathWallet.publicKey.toBase58() })
+
+          try {
+            this.$store.commit("wallet/updateWalletData", {
+              provider: wallet.provider,
+              body: {
+                isConnected: mathWallet.connected,
+                value: mathWallet.publicKey.toBase58(),
+                checked: true,
+              },
+            })
+          } catch (err) {
+            console.log({ err })
+          }
+        })
+
         await mathWallet.connect()
-        await new Promise((resolve) => setTimeout(() => resolve(0), 100))
-
-        console.log({ mathWallet, initializer: mathWallet.publicKey.toBase58() })
-
-        try {
-          this.$store.commit("wallet/updateWalletData", {
-            provider: wallet.provider,
-            body: {
-              isConnected: mathWallet.connected,
-              value: mathWallet.publicKey.toBase58(),
-              checked: true,
-              walletAdapter: mathWallet,
-            },
-          })
-        } catch (err) {
-          console.log({ err })
-        }
 
         return
       }
@@ -561,6 +610,7 @@ export default Vue.extend({
     },
     async handleSwapEthereumWaves() {
       try {
+        this.transferIsBeingProcessed = true
         // invokeSendUnlockRequest
 
         // @ts-ignore
@@ -581,33 +631,34 @@ export default Vue.extend({
         }
 
         const result = await invoker.invokeSendUnlockRequest(form.destinationAddress, { value: String(form.tokenAmount), type: undefined }, destinationPort)
+        this.hideLoader()
 
         this.swapForm.message = {
           text: `Transfer has been successfully submitted.`,
         }
         this.$modal.push("status")
       } catch (err) {
+        this.hideLoader()
         console.log({ err })
         this.swapForm.message = { text: `${err.message}. ${err.data}` }
         this.$modal.push("status")
       } finally {
+        this.transferIsBeingProcessed = false
+
         // @ts-ignore
         this.hideLoader()
       }
     },
     async handleSwapWavesEthereum() {
       const invoker = new LUPortInvoker(new Keeper())
-      // if (!this.swapForm.token.bridgeConfig) {
-      //   return
-      // }
-
-      // const { sourcePort } = this.swapForm.token.bridgeConfig
 
       const gateway = this.pickBridgeGateway()
       const { sourcePort } = gateway!.cfg
       const { swapForm: form } = this
 
       try {
+        this.transferIsBeingProcessed = true
+
         // @ts-ignore
         this.showLoader()
 
@@ -616,42 +667,43 @@ export default Vue.extend({
         const result = await invoker.sendTransferRequest({
           dApp: sourcePort,
           receiver: form.destinationAddress,
-          // swapAmount: Math.pow(10, form.token.decimals) * form.tokenAmount,
           swapAmount: form.tokenAmount,
-          // TODO: H
           swapAssetID: currentToken.assetId,
         })
+        this.hideLoader()
 
-        console.log({ result })
         // @ts-ignore
         this.swapForm.message = this.buildSuccessMessage(form.sourceChain, form.destinationChain, form.sourceAddress, form.destinationAddress)
         this.$modal.push("status")
       } catch (err) {
+        this.hideLoader()
+
         console.log({ err })
         this.swapForm.message = { text: `${err.message}. ${err.data}` }
         this.$modal.push("status")
       } finally {
         // @ts-ignore
         this.hideLoader()
+        this.transferIsBeingProcessed = false
       }
     },
-    getSolanaInvoker(mathWallet: MathWalletAdapter): IBPort.Invoker | null {
+    getSolanaInvoker(walletAdapter: WalletAdapter): IBPort.Invoker | null {
       const currentBridge = this.pickBridgeGateway()!
 
       if (!currentBridge.cfg.meta) {
         return null
       }
 
-      const { IBPORT_PROGRAM_ID, TOKEN_DATA_ACCOUNT, TOKEN_OWNER } = currentBridge.cfg.meta!
+      const { IBPORT_PROGRAM_ID, TOKEN_DATA_ACCOUNT, TOKEN_OWNER, IBPORT_DATA_ACCOUNT } = currentBridge.cfg.meta!
 
       // const
       const invoker = new IBPort.Invoker(
-        mathWallet,
+        walletAdapter,
         {
-          initializer: mathWallet.publicKey,
+          initializer: walletAdapter.publicKey,
           ibportProgram: new PublicKey(IBPORT_PROGRAM_ID),
+          ibportDataAccount: new PublicKey(IBPORT_DATA_ACCOUNT),
           tokenProgramAccount: new PublicKey(TOKEN_DATA_ACCOUNT),
-          spenderTokenAccount: new PublicKey(TOKEN_OWNER), // wrong
           tokenOwner: new PublicKey(TOKEN_OWNER),
         },
         "https://api.mainnet-beta.solana.com"
@@ -661,6 +713,8 @@ export default Vue.extend({
     },
     async handleSolanaAndEVMSwap(sourceChain: Chain, destinationChain: Chain) {
       console.log({ sourceChain, destinationChain })
+
+      this.transferIsBeingProcessed = true
       const currentWallet = this.$store.getters["wallet/currentWallet"]
 
       if (!currentWallet) {
@@ -668,12 +722,16 @@ export default Vue.extend({
         return
       }
 
-      const mathWallet = new MathWalletAdapter()
+      // const mathWallet = new MathWalletAdapter()
+      // const walletAdapter = currentWallet.walletAdapter
+      const walletAdapter = new PhantomWalletAdapter()
+      await walletAdapter.connect()
 
-      await mathWallet.connect()
       await new Promise((resolve) => setTimeout(() => resolve(0), 1000))
 
-      const invoker = this.getSolanaInvoker(mathWallet)
+      console.log({ pb: walletAdapter.publicKey.toBase58() })
+
+      const invoker = this.getSolanaInvoker(walletAdapter)
 
       if (!invoker) {
         console.error("invoker is not available")
@@ -681,32 +739,31 @@ export default Vue.extend({
       }
 
       if (sourceChain.id === SOLANA_CHAIN) {
-        //         {
-        //     "jsonrpc": "2.0",
-        //     "id": 1,
-        //     "method": "getTokenAccountBalance",
-        //     "params": [
-        //         "DK4U8VsNh7ZJs3myAiwtPijkkLdg8ZM4SNokASjN8znK"
-        //     ]
-        // }
-        // TODO
-        // if (currentWallet.provider !== WalletProvider.MathWallet) {
-        //   console.log("connected wallet is not mathwallet")
-        //   return
-        // }
-        // const mathWallet = currentWallet.walletAdapter!
-        // const createTokenAccount = invoker.createTokenAccount.bind(invoker)
-        // const createTokenAccount = invoker.createOrGetMemorizedTokenAccount.bind(invoker)
-        // // setTimeout(() => createTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT)), 1000)
-        // setTimeout(async () => {
-        //   const createAccount = await createTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
-        //   console.log({ createAccount, tag: "outside" })
-        // }, 1000)
-        // const tokenHolderAddress = await invoker.createOrGetMemorizedTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
-        // const tokenHolderAddress = await invoker.createOrGetMemorizedTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
-        // await this.handleSolanaIBPortBurn(invoker, destinationAddress!.publicKey)
+        const gateway = this.pickBridgeGateway()
+        if (!gateway || !gateway.cfg.meta) {
+          return
+        }
+        const { TOKEN_DATA_ACCOUNT } = gateway.cfg.meta
+
+        // const destinationAddress = await invoker.createOrGetMemorizedTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
+        const holderTokenAccount = await invoker.getMemorizedTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
+
+        if (!holderTokenAccount) {
+          console.log({ holderTokenAccount })
+          return
+        }
+
+        const web3 = new Web3()
+
+        const evmReceiver = new Uint8Array(web3.utils.hexToBytes(String(this.swapForm.destinationAddress)))
+
+        const createTransferUnwrapRequestTx = await invoker.createTransferUnwrapRequest(String(this.swapForm.tokenAmount), evmReceiver, holderTokenAccount!.publicKey)
+
+        console.log({ createTransferUnwrapRequestTx })
+
+        this.transferIsBeingProcessed = false
       } else {
-        console.log({ mathWallet, initializer: mathWallet.publicKey.toBase58() })
+        console.log({ walletAdapter, initializer: walletAdapter.publicKey.toBase58() })
 
         const gateway = this.pickBridgeGateway()
         if (!gateway || !gateway.cfg.meta) {
@@ -719,6 +776,7 @@ export default Vue.extend({
         console.log({ destinationAddress, destinationAddressB58: destinationAddress?.publicKey.toBase58() })
 
         await this.handleEVMLUPortLock(destinationAddress!.publicKey)
+        this.transferIsBeingProcessed = false
       }
     },
     async handleSolanaIBPortBurn() {},
@@ -747,19 +805,19 @@ export default Vue.extend({
           throw new Error("IB Port is invalid")
         }
 
-        const result = await invoker.invokeLUPortLock(destinationAddress, { value: String(form.tokenAmount), type: undefined }, destinationPort)
+        await invoker.invokeLUPortLock(destinationAddress, { value: String(form.tokenAmount), type: undefined }, destinationPort)
 
         this.swapForm.message = {
           text: `Transfer has been successfully submitted.`,
         }
+        this.hideLoader()
         this.$modal.push("status")
       } catch (err) {
+        this.hideLoader()
+
         console.log({ err })
         this.swapForm.message = { text: `${err.message}. ${err.data}` }
         this.$modal.push("status")
-      } finally {
-        // @ts-ignore
-        this.hideLoader()
       }
     },
     async handleSwapConfirm() {
