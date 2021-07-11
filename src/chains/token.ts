@@ -6,7 +6,7 @@ type BridgeTokenCfg = {
 }
 
 interface ChainBridgeConfig {
-  meta: Record<string, any>
+  meta?: Record<string, any>
   token: {
     origin: BridgeTokenCfg
     dest: BridgeTokenCfg
@@ -240,8 +240,8 @@ export const AvailableTokens: Record<string, Token> = {
               assetId: "nVZnRKdr3pmcgnJvYDE8iafgiMiBqxiffQMcyv5ETdA",
             },
           },
-          sourcePort: "0x10a785aa24d8540C583Ad99Bc82E5d7aF61b5806",
-          destinationPort: "AH3QKaj942UUxDjaRaGh7hvdadsD8yfU9LRTa9KXfJkZ",
+          sourcePort: "0xD2C80231a5E1C7B621c2bb96819b20a00E1be7D2",
+          destinationPort: "B9mZLg1yk7eFPBJ7PSN15tHVzuWidKg5L68uzCiSAsSm",
         },
       }),
     ],

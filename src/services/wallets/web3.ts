@@ -85,7 +85,7 @@ export class Web3Invoker {
     const sendRequest = await contract.methods
       .createTransferUnwrapRequest(bnAmount.toString(), receiver.toBytes())
       // @ts-ignore
-      .send({ from: await this.resolveCurrentAddress(), gas: 1000000 })
+      .send({ from: await this.resolveCurrentAddress() })
   }
 
   async resolveCurrentAddress() {

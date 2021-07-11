@@ -30,7 +30,7 @@ import Btn from "~/components/Btn.vue"
 import Keeper from "~/services/wallets/keeper"
 import Web3WalletConnector from "~/services/wallets/web3"
 import { Wallets, WalletState, ExtensionWallet, WalletProvider } from "~/store/wallet/types"
-import { MathWalletAdapter } from "~/src/services/wallet-adapters"
+import { MathWalletAdapter } from "~/services/wallet-adapters"
 
 export default {
   name: "ConnectWalletModal",
@@ -84,7 +84,6 @@ export default {
       // wallet.walletAdapter?.disconnect()
       console.log({ provider: wallet.provider })
       if (wallet.provider === WalletProvider.MathWallet) {
-        //
       }
 
       if (!walletToEnable) {

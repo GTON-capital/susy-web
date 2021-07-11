@@ -964,7 +964,7 @@ async function _addLiquidityNewPool(wallet: any, connection: Connection, compone
   })
 }
 
-function approveAmount(
+export function approveAmount(
   instructions: TransactionInstruction[],
   cleanupInstructions: TransactionInstruction[],
   account: PublicKey,
@@ -977,6 +977,7 @@ function approveAmount(
   const tokenProgram = programIds().token
   const transferAuthority = new Account()
 
+  console.log("args", [tokenProgram, account, delegate ?? transferAuthority.publicKey, owner, [], amount])
   instructions.push(Token.createApproveInstruction(tokenProgram, account, delegate ?? transferAuthority.publicKey, owner, [], amount))
 
   cleanupInstructions.push(Token.createRevokeInstruction(tokenProgram, account, owner, []))
