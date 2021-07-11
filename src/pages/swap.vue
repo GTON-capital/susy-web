@@ -28,6 +28,8 @@ import Vue from "vue"
 import axios from "axios"
 import { Subscription } from "rxjs"
 import { PublicKey } from "@solana/web3.js"
+import { BN } from "bn.js"
+import Web3 from "web3"
 
 // MODAL
 import ConnectWalletModal from "~/components/modal/ConnectWallet.vue"
@@ -53,7 +55,6 @@ import { Token, AvailableTokens, getAvailableTokens, formLinkForChain, pickBridg
 
 import { IBPort } from "~/services/solana/instruction"
 import { MathWalletAdapter, PhantomWalletAdapter, WalletAdapter } from "~/services/wallet-adapters"
-import { BN } from "bn.js"
 
 const availableTokens = getAvailableTokens()
 
@@ -257,7 +258,7 @@ export default Vue.extend({
         await walletAdapter.connect()
 
         const invoker = this.getSolanaInvoker(walletAdapter)
-        console.log({ invoker })
+        // console.log({ invoker })
 
         if (!invoker) {
           return emptyResult
@@ -268,7 +269,7 @@ export default Vue.extend({
         const { TOKEN_DATA_ACCOUNT } = currentBridge.cfg.meta!
 
         const memorizedAccount = invoker!.getMemorizedTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
-        console.log({ inmemorizedAccountvokerPubkey: memorizedAccount?.publicKey.toBase58() })
+        // console.log({ inmemorizedAccountvokerPubkey: memorizedAccount?.publicKey.toBase58() })
 
         if (!memorizedAccount) {
           return emptyResult
@@ -358,7 +359,7 @@ export default Vue.extend({
           const invoker = new Web3Invoker()
           const { assetId } = this.getCurrentBridgeToken()
 
-          console.log({ currentWalletAddress, assetId })
+          // console.log({ currentWalletAddress, assetId })
           let { balance } = await invoker.getBalanceAndAllowance(currentWalletAddress, assetId, "")
 
           balance = Number(balance)
@@ -693,7 +694,7 @@ export default Vue.extend({
         return null
       }
 
-      const { IBPORT_PROGRAM_ID, TOKEN_DATA_ACCOUNT, TOKEN_OWNER } = currentBridge.cfg.meta!
+      const { IBPORT_PROGRAM_ID, TOKEN_DATA_ACCOUNT, TOKEN_OWNER, IBPORT_DATA_ACCOUNT } = currentBridge.cfg.meta!
 
       // const
       const invoker = new IBPort.Invoker(
@@ -701,8 +702,8 @@ export default Vue.extend({
         {
           initializer: walletAdapter.publicKey,
           ibportProgram: new PublicKey(IBPORT_PROGRAM_ID),
+          ibportDataAccount: new PublicKey(IBPORT_DATA_ACCOUNT),
           tokenProgramAccount: new PublicKey(TOKEN_DATA_ACCOUNT),
-          spenderTokenAccount: new PublicKey(TOKEN_OWNER), // wrong
           tokenOwner: new PublicKey(TOKEN_OWNER),
         },
         "https://api.mainnet-beta.solana.com"
@@ -738,30 +739,28 @@ export default Vue.extend({
       }
 
       if (sourceChain.id === SOLANA_CHAIN) {
-        //         {
-        //     "jsonrpc": "2.0",
-        //     "id": 1,
-        //     "method": "getTokenAccountBalance",
-        //     "params": [
-        //         "DK4U8VsNh7ZJs3myAiwtPijkkLdg8ZM4SNokASjN8znK"
-        //     ]
-        // }
-        // TODO
-        // if (currentWallet.provider !== WalletProvider.MathWallet) {
-        //   console.log("connected wallet is not mathwallet")
-        //   return
-        // }
-        // const mathWallet = currentWallet.walletAdapter!
-        // const createTokenAccount = invoker.createTokenAccount.bind(invoker)
-        // const createTokenAccount = invoker.createOrGetMemorizedTokenAccount.bind(invoker)
-        // // setTimeout(() => createTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT)), 1000)
-        // setTimeout(async () => {
-        //   const createAccount = await createTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
-        //   console.log({ createAccount, tag: "outside" })
-        // }, 1000)
-        // const tokenHolderAddress = await invoker.createOrGetMemorizedTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
-        // const tokenHolderAddress = await invoker.createOrGetMemorizedTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
-        // await this.handleSolanaIBPortBurn(invoker, destinationAddress!.publicKey)
+        const gateway = this.pickBridgeGateway()
+        if (!gateway || !gateway.cfg.meta) {
+          return
+        }
+        const { TOKEN_DATA_ACCOUNT } = gateway.cfg.meta
+
+        // const destinationAddress = await invoker.createOrGetMemorizedTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
+        const holderTokenAccount = await invoker.getMemorizedTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
+
+        if (!holderTokenAccount) {
+          console.log({ holderTokenAccount })
+          return
+        }
+
+        const web3 = new Web3()
+
+        const evmReceiver = new Uint8Array(web3.utils.hexToBytes(String(this.swapForm.destinationAddress)))
+
+        const createTransferUnwrapRequestTx = await invoker.createTransferUnwrapRequest(String(this.swapForm.tokenAmount), evmReceiver, holderTokenAccount!.publicKey)
+
+        console.log({ createTransferUnwrapRequestTx })
+
         this.transferIsBeingProcessed = false
       } else {
         console.log({ walletAdapter, initializer: walletAdapter.publicKey.toBase58() })
