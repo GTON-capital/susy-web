@@ -77,11 +77,11 @@
     </simple-wrapper-slim-sm>
 
     <template v-slot:footer>
-      <btn class="btn-primary" @click="$emit('unlock')" v-if="!allowanceReceived && chainHasApproveMechanism">
+      <btn v-if="!allowanceReceived && chainHasApproveMechanism" class="btn-primary" @click="$emit('unlock')">
         <!-- <btn class="btn-primary" @click="$emit('unlock')" v-if="false"> -->
         Approve
       </btn>
-      <btn class="btn-primary" @click="$emit('next')" v-else>
+      <btn v-else class="btn-primary" @click="$emit('next')">
         Next
       </btn>
     </template>
@@ -100,12 +100,10 @@ import FormGroupBetweenShift1 from "~/components/FormGroupBetweenShift1.vue"
 
 import SwapHint from "~/components/swap/SwapHint"
 
-import { isEVMChain, SOLANA_CHAIN } from "~/chains/chain"
+import { isEVMChain } from "~/chains/chain"
 
 export default {
   name: "CardSwapWalletConnected",
-  // props: ['swapForm', 'chains', 'tokens', 'onWalletConnect', 'allowanceReceived'],
-  props: ["swapProps", "onWalletConnect", "allowanceReceived"],
   components: {
     SwapHint,
     Btn,
@@ -117,6 +115,14 @@ export default {
     FormGroupBetweenShift,
     FormGroupBetweenShift1,
     exchangeIcon: () => import("assets/icons/exchange.svg?inline"),
+  },
+  // props: ['swapForm', 'chains', 'tokens', 'onWalletConnect', 'allowanceReceived'],
+  props: ["swapProps", "onWalletConnect", "allowanceReceived"],
+  data() {
+    return {
+      sourceChainLabel: "Select source chain",
+      destinationChainLabel: "Select destination chain",
+    }
   },
   computed: {
     swapForm() {
@@ -134,24 +140,13 @@ export default {
     chainHasApproveMechanism() {
       const origin = this.swapForm.sourceChain
       const isEVM = isEVMChain(origin)
-      // console.log({ isEVM })
-      return isEVM || origin.id === SOLANA_CHAIN
+
+      return isEVM
     },
     wallet() {
       const wallet = this.$store.getters["wallet/currentWallet"]
-
-      if (wallet && !this.swapForm.sourceAddress) {
-        this.swapForm.sourceAddress = wallet.value
-      }
-
       return wallet
     },
-  },
-  data: function () {
-    return {
-      sourceChainLabel: "Select source chain",
-      destinationChainLabel: "Select destination chain",
-    }
   },
 }
 </script>

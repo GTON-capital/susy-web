@@ -7,6 +7,10 @@ import { sendTransaction } from "./utils/connection"
 import { WalletAdapter } from "~/services/wallet-adapters/types"
 import { approveAmount, createSplAccount } from "~/services/solana/utils/pools"
 
+export function randomUint8() {
+  return Math.floor(255 * Math.random())
+}
+
 export namespace IBPort {
   export class LocalStorageSaver {
     private static formKey(tokenBinary: string, holder: string) {
@@ -112,23 +116,18 @@ export namespace IBPort {
       const cleanupInstructions: TransactionInstruction[] = []
       const signers: Account[] = []
 
-      // const payer = this.initializer
-      // const accountRentExempt = await this.connection.getMinimumBalanceForRentExemption(AccountLayout.span)
-      // const mint = tokenBinary
-
       const connection = this.connection
       const wallet = this.adapter
-      console.log({ w: wallet.publicKey, w58: wallet.publicKey.toBase58() })
 
-      // const owner = this.instructionBuilder
+      // console.log({ w: wallet.publicKey, w58: wallet.publicKey.toBase58() })
 
-      console.log(instructions, cleanupInstructions, tokenHolderDataAccount, wallet.publicKey.toBase58(), amount, portBinary)
-      console.log(instructions, cleanupInstructions, tokenHolderDataAccount, this.initializer.toBase58(), amount, portBinary)
+      // console.log(instructions, cleanupInstructions, tokenHolderDataAccount, wallet.publicKey.toBase58(), amount, portBinary)
+      // console.log(instructions, cleanupInstructions, tokenHolderDataAccount, this.initializer.toBase58(), amount, portBinary)
 
       approveAmount(instructions, cleanupInstructions, tokenHolderDataAccount, this.initializer, amount, portBinary)
 
       const tx = await sendTransaction(connection, wallet, instructions.concat(cleanupInstructions), signers)
-      console.log({ tx })
+      // console.log({ tx })
 
       return tx
     }
@@ -173,16 +172,27 @@ export namespace IBPort {
       return null
     }
 
-    async createTransferUnwrapRequest(amount: string, receiver: Uint8Array, spender: PublicKey) {
-      const ix = await this.instructionBuilder.buildCreateTransferUnwrapRequest({ amount: new BN(amount), receiver }, spender)
+    async createTransferUnwrapRequest(amount: number, receiver: Uint8Array, spender: PublicKey, tokenHolderDataAccount: PublicKey, portBinary: PublicKey) {
+      const instructions: TransactionInstruction[] = []
+      const cleanupInstructions: TransactionInstruction[] = []
+      const signers: Account[] = []
 
-      const tx = await sendTransaction(this.connection, this.adapter, [ix], [])
-      console.log({ tx })
-      // const instructionObject = IntructionObject.burnFunds(amount, receiver)
-      // const createTokenAccountIx = this.instructionBuilder.buildCreateTokenAccountInstructionForInitializer()
-      // // transaction.add
-      // const tx = new Transaction().add(createTokenAccountIx)
-      // await this.broadcaster.broadcastTransaction(tx)
+      const connection = this.connection
+      const wallet = this.adapter
+
+      approveAmount(instructions, cleanupInstructions, tokenHolderDataAccount, this.initializer, amount, portBinary)
+
+      // const tx = await sendTransaction(connection, wallet, instructions.concat(cleanupInstructions), signers)
+
+      const createTransferUnwrapIX = await this.instructionBuilder.buildCreateTransferUnwrapRequest({ amount: new BN(amount / Math.pow(10, 8)), receiver }, spender)
+
+      instructions.push(createTransferUnwrapIX)
+      // console.log({ ix })
+      // const tx = await sendTransaction(this.connection, this.adapter, [ix], [])
+      // console.log({ tx })
+      const tx = await sendTransaction(connection, wallet, instructions.concat(cleanupInstructions), signers)
+
+      return tx
     }
   }
 
@@ -220,11 +230,17 @@ export namespace IBPort {
       let rawData = Uint8Array.of(...new BN(1).toArray("le", 1))
       // Token Amount = f64
       rawData = Uint8Array.of(...rawData, ...new BN(raw.amount).toArray("le", 8))
-      // Receiver
-      rawData = Uint8Array.of(...rawData, ...raw.receiver)
+      // Receiver - 32 bytes
+      const receiverBytes = new Uint8Array(32)
+      receiverBytes.set(raw.receiver, 0)
+
+      rawData = Uint8Array.of(...rawData, ...receiverBytes)
+      // Swap ID - 16 bytes
+      rawData = Uint8Array.of(...rawData, ...new Uint8Array(16).map(() => randomUint8()))
 
       const data = Buffer.from(rawData)
 
+      console.log({ data, bufferLen: data.length, goal: 1 + 8 + 32 + 16 })
       console.log(raw.amount)
       console.log(raw.receiver)
 

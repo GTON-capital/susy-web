@@ -219,7 +219,7 @@ const getErrorForTransaction = async (connection: Connection, txid: string) => {
   return errors
 }
 
-export const sendTransaction = async (connection: Connection, wallet: any, instructions: TransactionInstruction[], signers: Account[], awaitConfirmation = true) => {
+export const sendTransaction = async (connection: Connection, wallet: any, instructions: TransactionInstruction[], signers: Account[], awaitConfirmation = true): Promise<string> => {
   let transaction = new Transaction()
   instructions.forEach((instruction) => transaction.add(instruction))
   transaction.recentBlockhash = (await connection.getRecentBlockhash("max")).blockhash
