@@ -122,7 +122,9 @@ export namespace IBPort {
 
       // const owner = this.instructionBuilder
 
-      // console.log(instructions, cleanupInstructions, tokenBinary, wallet.publicKey, amount, mintAuthority)
+      console.log(instructions, cleanupInstructions, tokenHolderDataAccount, wallet.publicKey.toBase58(), amount, portBinary)
+      console.log(instructions, cleanupInstructions, tokenHolderDataAccount, this.initializer.toBase58(), amount, portBinary)
+
       approveAmount(instructions, cleanupInstructions, tokenHolderDataAccount, this.initializer, amount, portBinary)
 
       const tx = await sendTransaction(connection, wallet, instructions.concat(cleanupInstructions), signers)
@@ -153,7 +155,7 @@ export namespace IBPort {
       const payer = this.initializer
       const accountRentExempt = await this.connection.getMinimumBalanceForRentExemption(AccountLayout.span)
       const mint = tokenBinary
-      const owner = this.instructionBuilder.tokenOwner
+      const owner = payer
 
       const newToAccount = createSplAccount(instructions, payer, accountRentExempt, mint, owner, AccountLayout.span)
 
@@ -207,23 +209,6 @@ export namespace IBPort {
 
     async getIBPortPDA(): Promise<PublicKey> {
       return await PublicKey.createProgramAddress([Buffer.from("ibport")], this.ibportProgram)
-    }
-
-    buildCreateTokenAccountInstructionForInitializer(lamports: number, tokenBinary: PublicKey): TransactionInstruction[] {
-      return this.buildCreateTokenAccountInstruction(this.initializer, tokenBinary, lamports)
-    }
-
-    buildCreateTokenAccountInstruction(_tokenHolder: PublicKey, tokenBinary: PublicKey, lamports: number): TransactionInstruction[] {
-      const createTokenAccount = SystemProgram.createAccount({
-        programId: TOKEN_PROGRAM_ID,
-        space: AccountLayout.span,
-        lamports,
-        fromPubkey: _tokenHolder,
-        newAccountPubkey: tokenBinary,
-      })
-      const initTokenAccount = Token.createInitAccountInstruction(TOKEN_PROGRAM_ID, this.tokenProgramAccount, tokenBinary, this.tokenOwner)
-
-      return [createTokenAccount, initTokenAccount]
     }
 
     async buildCreateTransferUnwrapRequest(raw: CreateTransferUnwrapRequest): Promise<TransactionInstruction> {

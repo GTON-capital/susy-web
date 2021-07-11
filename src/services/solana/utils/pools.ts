@@ -970,7 +970,6 @@ export function approveAmount(
   account: PublicKey,
   owner: PublicKey,
   amount: number,
-
   // if delegate is not passed ephemeral transfer authority is used
   delegate?: PublicKey
 ) {
