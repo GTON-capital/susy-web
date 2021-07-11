@@ -23,6 +23,7 @@
 
 <script lang="ts">
 import _ from "lodash"
+import bs58 from "bs58"
 import Vue from "vue"
 import axios from "axios"
 import { Subscription } from "rxjs"
@@ -48,7 +49,7 @@ import { ExtensionWallet, WalletProvider } from "~/store/wallet/types"
 import { castFloatToDecimalsVersion } from "~/misc/bn"
 import { buildPropertyChecker } from "~/services/wallets/checker"
 import { AvailableChains, Chain, availableEVMChains, SOLANA_CHAIN, isEVMChain } from "~/chains/chain"
-import { Token, AvailableTokens, getAvailableTokens, formLinkForChain, pickBridgeGateway, availableOriginChains, availableDestChains } from "~/chains/token"
+import { Token, AvailableTokens, getAvailableTokens, formLinkForChain, pickBridgeGateway, availableOriginChains, availableDestChains, GatewayBridge } from "~/chains/token"
 
 import { IBPort } from "~/services/solana/instruction"
 import { MathWalletAdapter } from "~/services/wallet-adapters"
@@ -364,6 +365,46 @@ export default Vue.extend({
 
       return {}
     },
+    async handleApproveSolana(gateway: GatewayBridge, _chain: Chain) {
+      const currentWallet = this.$store.getters["wallet/currentWallet"]
+
+      if (!currentWallet) {
+        return {}
+      }
+
+      if (currentWallet.provider !== WalletProvider.MathWallet) {
+        return
+      }
+
+      const invoker = this.getSolanaInvoker(currentWallet.walletAdapter)
+      if (!invoker) {
+        return
+      }
+      const { IBPORT_PROGRAM_ID, TOKEN_DATA_ACCOUNT, TOKEN_OWNER } = gateway.cfg.meta!
+
+      const tokenAccount = invoker.getMemorizedTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
+
+      console.log({ tokenAccount })
+
+      if (!tokenAccount) {
+        return
+      }
+
+      const approveAmount = this.swapForm.tokenAmount
+      console.log({ approveAmount, destinationPort: gateway.cfg.destinationPort })
+
+      try {
+        // const spender = new PublicKey(bs58.decode(gateway.cfg.destinationPort))
+        const spender = new PublicKey(gateway.cfg.destinationPort)
+        
+        const approveTx = await invoker.approveSPLToken(approveAmount, tokenAccount.publicKey, invoker.initializer, spender)
+        // const approveTx = await invoker.approveSPLToken(approveAmount, spender, spender)
+
+        console.log({ approveTx })
+      } catch (err) {
+        console.log({ err: err.stack })
+      }
+    },
     async unlockERC20() {
       const invoker = new Web3Invoker()
       const amountValue = castFloatToDecimalsVersion(String(this.swapForm.tokenAmount), 18)
@@ -373,6 +414,14 @@ export default Vue.extend({
       // }
 
       const gateway = this.pickBridgeGateway()
+      if (!gateway) {
+        return
+      }
+
+      if (isEVMChain(gateway.origin)) {
+        return this.handleApproveSolana(gateway, gateway.origin)
+      }
+
       let spender = gateway!.cfg.destinationPort
 
       if (isEVMChain(gateway!.origin)) {
@@ -655,10 +704,15 @@ export default Vue.extend({
         // }, 1000)
         // const tokenHolderAddress = await invoker.createOrGetMemorizedTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
         // const tokenHolderAddress = await invoker.createOrGetMemorizedTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
-
-        await this.handleSolanaIBPortBurn(invoker, destinationAddress!.publicKey)
+        // await this.handleSolanaIBPortBurn(invoker, destinationAddress!.publicKey)
       } else {
         console.log({ mathWallet, initializer: mathWallet.publicKey.toBase58() })
+
+        const gateway = this.pickBridgeGateway()
+        if (!gateway || !gateway.cfg.meta) {
+          return
+        }
+        const { TOKEN_DATA_ACCOUNT } = gateway.cfg.meta
 
         const destinationAddress = await invoker.createOrGetMemorizedTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
 

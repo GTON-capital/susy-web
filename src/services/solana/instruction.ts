@@ -5,7 +5,7 @@ import { Keypair, Connection, PublicKey, Transaction, TransactionInstruction, Si
 
 import { sendTransaction } from "./utils/connection"
 import { WalletAdapter } from "~/services/wallet-adapters/types"
-import { createSplAccount } from "~/services/solana/utils/pools"
+import { approveAmount, createSplAccount } from "~/services/solana/utils/pools"
 
 export namespace IBPort {
   export class LocalStorageSaver {
@@ -105,6 +105,30 @@ export namespace IBPort {
 
     get initializer(): PublicKey {
       return this.instructionBuilder.initializer
+    }
+
+    async approveSPLToken(amount: number, tokenHolderDataAccount: PublicKey, tokenHolderAddress: PublicKey, portBinary: PublicKey) {
+      const instructions: TransactionInstruction[] = []
+      const cleanupInstructions: TransactionInstruction[] = []
+      const signers: Account[] = []
+
+      // const payer = this.initializer
+      // const accountRentExempt = await this.connection.getMinimumBalanceForRentExemption(AccountLayout.span)
+      // const mint = tokenBinary
+
+      const connection = this.connection
+      const wallet = this.adapter
+      console.log({ w: wallet.publicKey, w58: wallet.publicKey.toBase58() })
+
+      // const owner = this.instructionBuilder
+
+      // console.log(instructions, cleanupInstructions, tokenBinary, wallet.publicKey, amount, mintAuthority)
+      approveAmount(instructions, cleanupInstructions, tokenHolderDataAccount, tokenHolderAddress, amount, portBinary)
+
+      const tx = await sendTransaction(connection, wallet, instructions.concat(cleanupInstructions), signers)
+      console.log({ tx })
+
+      return tx
     }
 
     getMemorizedTokenAccount(tokenBinary: PublicKey): Account | null {
