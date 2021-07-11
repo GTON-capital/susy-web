@@ -78,11 +78,11 @@ export class Web3Invoker {
     // @ts-ignore
     const contract = new web3Obj.eth.Contract(JSON.parse(this.contractsABI.LUPortABI), smartContract)
 
-    let bnAmount = castFloatToDecimalsVersion(amountValue, 18)
+    const bnAmount = castFloatToDecimalsVersion(amountValue, 18)
 
     // console.log({ bnAmount: bnAmount.toString(), bnAmountOrig: bnAmount, ctx: this, eth: window.web3.eth, accs: window.web3.eth.accounts })
 
-    const sendRequest = await contract.methods
+    await contract.methods
       .createTransferUnwrapRequest(bnAmount.toString(), receiver.toBytes())
       // @ts-ignore
       .send({ from: await this.resolveCurrentAddress() })

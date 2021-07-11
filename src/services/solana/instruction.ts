@@ -107,7 +107,7 @@ export namespace IBPort {
       return this.instructionBuilder.initializer
     }
 
-    async approveSPLToken(amount: number, tokenHolderDataAccount: PublicKey, tokenHolderAddress: PublicKey, portBinary: PublicKey) {
+    async approveSPLToken(amount: number, tokenHolderDataAccount: PublicKey, portBinary: PublicKey) {
       const instructions: TransactionInstruction[] = []
       const cleanupInstructions: TransactionInstruction[] = []
       const signers: Account[] = []
@@ -123,7 +123,7 @@ export namespace IBPort {
       // const owner = this.instructionBuilder
 
       // console.log(instructions, cleanupInstructions, tokenBinary, wallet.publicKey, amount, mintAuthority)
-      approveAmount(instructions, cleanupInstructions, tokenHolderDataAccount, tokenHolderAddress, amount, portBinary)
+      approveAmount(instructions, cleanupInstructions, tokenHolderDataAccount, this.initializer, amount, portBinary)
 
       const tx = await sendTransaction(connection, wallet, instructions.concat(cleanupInstructions), signers)
       console.log({ tx })

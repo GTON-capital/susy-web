@@ -54,12 +54,12 @@
     <template v-slot:footer>
       <div style="display: flex; justify-content: center;">
         <form-group>
-          <checkbox name="terms-of-service" v-model="termsChecked">
+          <checkbox v-model="termsChecked" name="terms-of-service">
             <a href="https://explorer.gravity.tech/docs/pdf/Gravity_Terms_of_Use_15.07.2020.pdf" target="_blank">Terms of Service</a>
           </checkbox>
         </form-group>
       </div>
-      <btn class="btn-primary btn-block" @click="$emit('swap')" :disabled="!termsChecked">
+      <btn class="btn-primary btn-block" :disabled="!termsChecked || swapProps.transferIsBeingProcessed" @click="$emit('swap')">
         Swap
       </btn>
       <btn class="btn-link btn-block" @click="$emit('back')">
@@ -80,7 +80,6 @@ import FormGroupBetweenShift from "~/components/FormGroupBetweenShift.vue"
 
 export default {
   name: "CardSwapFinalized",
-  props: ["swapProps", "heading", "tokens"],
   components: {
     CardSwapFinal,
     FormGroup,
@@ -90,6 +89,7 @@ export default {
     SearchSelect,
     FormGroupBetweenShift,
   },
+  props: ["swapProps", "heading", "tokens"],
   computed: {
     swapForm() {
       return this.swapProps.swapForm

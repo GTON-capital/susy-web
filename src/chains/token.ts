@@ -226,6 +226,7 @@ export const AvailableTokens: Record<string, Token> = {
             // const IBPORT_PROGRAM_ID = "AH3QKaj942UUxDjaRaGh7hvdadsD8yfU9LRTa9KXfJkZ"
             // const TOKEN_DATA_ACCOUNT = "nVZnRKdr3pmcgnJvYDE8iafgiMiBqxiffQMcyv5ETdA"
             // const TOKEN_OWNER = "2ANEXknub11fKbmELve361E7rbPFCsu3qEey7oai2Et9",
+            IBPORT_PROGRAM_PDA: "CYEnZhJdYaUjgFtGQ2FgXe4vp4zMiqY8RsdqwNFduxdm",
             IBPORT_PROGRAM_ID: "AH3QKaj942UUxDjaRaGh7hvdadsD8yfU9LRTa9KXfJkZ",
             TOKEN_DATA_ACCOUNT: "nVZnRKdr3pmcgnJvYDE8iafgiMiBqxiffQMcyv5ETdA",
             TOKEN_OWNER: "2ANEXknub11fKbmELve361E7rbPFCsu3qEey7oai2Et9",

@@ -32,7 +32,7 @@
 
     <form-group-between-shift1>
       <template v-slot:left>
-        <form-input :value="swapForm.sourceAddress" readonly :icon="wallet.wallet.icon">
+        <form-input :value="swapForm.sourceAddress" readonly :icon="wallet && wallet.wallet.icon">
           <template v-slot:label>
             From address
           </template>
