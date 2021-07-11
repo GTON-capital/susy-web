@@ -418,7 +418,7 @@ export default Vue.extend({
         return
       }
 
-      if (isEVMChain(gateway.destination)) {
+      if (gateway!.origin.id === SOLANA_CHAIN) {
         return this.handleApproveSolana(gateway, gateway.origin)
       }
 
