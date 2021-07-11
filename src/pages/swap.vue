@@ -396,7 +396,7 @@ export default Vue.extend({
       try {
         // const spender = new PublicKey(bs58.decode(gateway.cfg.destinationPort))
         const spender = new PublicKey(gateway.cfg.destinationPort)
-        
+
         const approveTx = await invoker.approveSPLToken(approveAmount, tokenAccount.publicKey, invoker.initializer, spender)
         // const approveTx = await invoker.approveSPLToken(approveAmount, spender, spender)
 
@@ -418,7 +418,7 @@ export default Vue.extend({
         return
       }
 
-      if (isEVMChain(gateway.origin)) {
+      if (gateway!.origin.id === SOLANA_CHAIN) {
         return this.handleApproveSolana(gateway, gateway.origin)
       }
 
