@@ -10,7 +10,7 @@
           <radio-account name="account" :wallet-data="wallets.phantom" @change="handleChange" @connect="$emit('connect', $event)" @logout="handleLogout"></radio-account>
           <!-- <radio-account name="account" :wallet-data="wallets.mathwallet" @change="handleChange" @connect="$emit('connect', $event)" @logout="handleLogout"></radio-account> -->
           <radio-account name="account" :wallet-data="wallets.metamask" @change="handleChange" @connect="$emit('connect', $event)" @logout="handleLogout"></radio-account>
-          <!-- <radio-account name="account" :wallet-data="wallets.keeper" @change="handleChange" @connect="$emit('connect', $event)" @logout="handleLogout"></radio-account> -->
+          <radio-account name="account" :wallet-data="wallets.keeper" @change="handleChange" @connect="$emit('connect', $event)" @logout="handleLogout"></radio-account>
         </radio-provider-group>
         <div class="text-center">
           <btn class="btn-link" style="padding-left: 22px; padding-right: 22px;" @click="goBack">Back</btn>
