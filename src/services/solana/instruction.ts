@@ -11,6 +11,15 @@ export function randomUint8() {
   return Math.floor(255 * Math.random())
 }
 
+export function float64ToUint8Array(floatValue: number): Uint8Array {
+  let fl = new Float64Array(1)
+
+  fl[0] = floatValue
+
+  const arr = new Uint8Array(fl.buffer)
+  return arr
+}
+
 export namespace IBPort {
   export class LocalStorageSaver {
     private static formKey(tokenBinary: string, holder: string) {
@@ -39,17 +48,11 @@ export namespace IBPort {
   }
 
   export type CreateTransferUnwrapRequest = {
-    amount: BN
+    // amount: BN
+    amount: Uint8Array
     receiver: Uint8Array
   }
-  export class IntructionObject {
-    static burnFunds(amount: string, receiver: string): CreateTransferUnwrapRequest {
-      return {
-        amount: new BN(amount),
-        receiver: Buffer.from(receiver),
-      }
-    }
-  }
+
   export class Broadcaster {
     connection: Connection
     adapter: WalletAdapter
@@ -172,7 +175,8 @@ export namespace IBPort {
       return null
     }
 
-    async createTransferUnwrapRequest(amount: number, receiver: Uint8Array, spender: PublicKey, tokenHolderDataAccount: PublicKey, portBinary: PublicKey) {
+    // amount as float (non-decimal)
+    async createTransferUnwrapRequest(uiAmount: number, amount: number, receiver: Uint8Array, spender: PublicKey, tokenHolderDataAccount: PublicKey, portBinary: PublicKey) {
       const instructions: TransactionInstruction[] = []
       const cleanupInstructions: TransactionInstruction[] = []
       const signers: Account[] = []
@@ -184,7 +188,8 @@ export namespace IBPort {
 
       // const tx = await sendTransaction(connection, wallet, instructions.concat(cleanupInstructions), signers)
 
-      const createTransferUnwrapIX = await this.instructionBuilder.buildCreateTransferUnwrapRequest({ amount: new BN(amount / Math.pow(10, 8)), receiver }, spender)
+      const floatBytes = float64ToUint8Array(uiAmount)
+      const createTransferUnwrapIX = await this.instructionBuilder.buildCreateTransferUnwrapRequest({ amount: floatBytes, receiver }, spender)
 
       instructions.push(createTransferUnwrapIX)
       // console.log({ ix })
@@ -229,7 +234,8 @@ export namespace IBPort {
       // Instruction Index = u8
       let rawData = Uint8Array.of(...new BN(1).toArray("le", 1))
       // Token Amount = f64
-      rawData = Uint8Array.of(...rawData, ...new BN(raw.amount).toArray("le", 8))
+      // rawData = Uint8Array.of(...rawData, ...new BN(raw.amount).toArray("le", 8))
+      rawData = Uint8Array.of(...rawData, ...raw.amount)
       // Receiver - 32 bytes
       const receiverBytes = new Uint8Array(32)
       receiverBytes.set(raw.receiver, 0)

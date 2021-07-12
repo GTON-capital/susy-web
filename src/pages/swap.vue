@@ -766,12 +766,13 @@ export default Vue.extend({
 
         const evmReceiver = new Uint8Array(web3.utils.hexToBytes(String(this.swapForm.destinationAddress)))
 
-        const amount = Number(this.swapForm.tokenAmount) * Math.pow(10, gateway.cfg.token.dest.decimals)
+        const uiAmount = Number(this.swapForm.tokenAmount)
+        const amount = uiAmount * Math.pow(10, gateway.cfg.token.dest.decimals)
 
         try {
           this.showLoader(SwapLoaderMessage.Processing)
 
-          const createTransferUnwrapRequestTx = await invoker.createTransferUnwrapRequest(amount, evmReceiver, holderTokenAccount!.publicKey, holderTokenAccount!.publicKey, new PublicKey(IBPORT_PROGRAM_PDA))
+          const createTransferUnwrapRequestTx = await invoker.createTransferUnwrapRequest(uiAmount, amount, evmReceiver, holderTokenAccount!.publicKey, holderTokenAccount!.publicKey, new PublicKey(IBPORT_PROGRAM_PDA))
 
           this.swapForm.message = {
             text: `Transfer has been successfully submitted. Tx: ${createTransferUnwrapRequestTx}`,
