@@ -215,8 +215,8 @@ $search-select-icon-height: 32px;
   justify-content: center;
   align-items: center;
   .icon {
-    height: 20px;
-    width: 20px;
+    height: 32px;
+    width: 32px;
     margin: 0;
   }
 }

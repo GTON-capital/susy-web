@@ -217,8 +217,8 @@ export const AvailableTokens: Record<string, Token> = {
     ticker: "GTON",
     label: "GTON",
     bg: "black",
-    icon: "/img/icons/tokens/graviton-b&w-logo.svg",
-    iconWrapped: "/img/icons/tokens/graviton-b&w-logo_wrapped.svg",
+    icon: "/img/icons/tokens/GTON.svg",
+    iconWrapped: "/img/icons/tokens/su_GTON.svg",
     bridge: [
       new GatewayBridge({
         origin: AvailableChains.Polygon,

@@ -7,12 +7,16 @@ export type SwapProps = {
 }
 
 export const SwapError = {
+  SilentError: new Error(""),
   InvalidAmount: new Error("Invalid amount passed"),
   InsufficientBalance: new Error("Insufficient balance"),
 }
 
 export const formValidatorBuilder: FormValidationBuilder<SwapProps> = (props) => {
   return function () {
+    if (props.amount === 0) {
+      return SwapError.SilentError
+    }
     if (props.amount < 0 || isNaN(props.amount)) {
       return SwapError.InvalidAmount
     }
