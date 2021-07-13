@@ -6,7 +6,7 @@
     <simple-wrapper-slim-sm>
       <form-group-between>
         <template v-slot:left>
-          <search-select v-model="swapForm.sourceChain" :data="chains.origin" :placeholder="sourceChainLabel" :modal-heading="sourceChainLabel">
+          <search-select v-model="swapForm.sourceChain" :data="chains.origin" disabled :placeholder="sourceChainLabel" :modal-heading="sourceChainLabel">
             <template v-slot:label>
               Origin
             </template>
@@ -37,16 +37,17 @@
       }"
       @click="onWalletConnect"
     >
-      Connect new wallet
+      Connect wallet
     </btn>
 
-    <hr />
+    <!-- <hr /> -->
+    <br />
 
-    <form-input v-model="swapForm.destinationAddress">
+    <!-- <form-input v-model="swapForm.destinationAddress">
       <template v-slot:label>
         To address
       </template>
-    </form-input>
+    </form-input> -->
 
     <simple-wrapper-slim-sm>
       <form-group-between-shift>
@@ -60,7 +61,7 @@
         <template v-slot:right>
           <form-input v-model="swapForm.tokenAmount" type="number">
             <template v-slot:label>
-              Receive
+              Amount
             </template>
           </form-input>
         </template>

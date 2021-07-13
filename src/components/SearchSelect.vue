@@ -1,23 +1,16 @@
 <template>
   <form-group>
     <template v-slot:label><slot name="label"></slot></template>
-    <button
-      class="search-select btn"
-      :class="searchSelectClass"
-      @click="showModal"
-    >
+    <button class="search-select btn" :class="searchSelectClass" @click="showModal">
       <span class="search-select-value">
-        <span
-          v-if="valueIcon"
-          class="search-select-value-icon search-select-icon wrapper-icon-circle"
-        >
+        <span v-if="valueIcon" class="search-select-value-icon search-select-icon wrapper-icon-circle">
           <icon :image="valueIcon"></icon>
         </span>
         <span class="search-select-value-label">
           {{ valueLabel }}
         </span>
       </span>
-      <icon class="search-select-chevron">
+      <icon v-show="hasVariety" class="search-select-chevron">
         <chevron-small-icon></chevron-small-icon>
       </icon>
     </button>
@@ -42,16 +35,12 @@
                   :key="key"
                   href="javascript:void(0)"
                   :class="{
-                    active:
-                      currentValue && item.id && currentValue.id === item.id,
+                    active: currentValue && item.id && currentValue.id === item.id,
                   }"
                   :data-id="item.id"
                   @click="selectValue(item)"
                 >
-                  <span
-                    v-if="item.icon"
-                    class="search-select-icon wrapper-icon-circle"
-                  >
+                  <span v-if="item.icon" class="search-select-icon wrapper-icon-circle">
                     <icon :image="item.icon"></icon>
                   </span>
                   {{ item.label }}
@@ -66,22 +55,22 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import FormGroup from '~/components/FormGroup.vue'
-import Icon from '~/components/Icon.vue'
-import ModalContent from '~/components/ModalContent.vue'
-import SearchInput from '~/components/SearchInput.vue'
-import SimpleWrapperSlim from '~/components/SimpleWrapperSlim.vue'
+import Vue from "vue"
+import FormGroup from "~/components/FormGroup.vue"
+import Icon from "~/components/Icon.vue"
+import ModalContent from "~/components/ModalContent.vue"
+import SearchInput from "~/components/SearchInput.vue"
+import SimpleWrapperSlim from "~/components/SimpleWrapperSlim.vue"
 
 export default Vue.extend({
-  name: 'SearchSelect',
+  name: "SearchSelect",
   components: {
     FormGroup,
     Icon,
     ModalContent,
     SearchInput,
     SimpleWrapperSlim,
-    chevronSmallIcon: () => import('assets/icons/chevron-small.svg?inline'),
+    chevronSmallIcon: () => import("assets/icons/chevron-small.svg?inline"),
   },
   props: {
     data: {
@@ -96,12 +85,12 @@ export default Vue.extend({
     },
     placeholder: {
       type: String,
-      default: () => 'Select ...',
+      default: () => "Select ...",
       required: false,
     },
     modalHeading: {
       type: String,
-      default: () => 'Select ...',
+      default: () => "Select ...",
       required: false,
     },
     readonly: {
@@ -110,29 +99,30 @@ export default Vue.extend({
       required: false,
     },
   },
-  data: () => ({
-    search: '',
-    id: '',
-    currentValue: undefined,
-  }),
+  data() {
+    return {
+      search: "",
+      id: "",
+      currentValue: undefined,
+    }
+  },
   computed: {
+    hasVariety() {
+      return this.data && this.data.length > 1
+    },
     modalId() {
-      return 'search-select-modal-' + this.id
+      return "search-select-modal-" + this.id
     },
     filteredData() {
       const search = this.search
       const data = this.data
 
-      return search
-        ? data.filter((value) =>
-            value.label.toLowerCase().includes(search.toLowerCase())
-          )
-        : data
+      return search ? data.filter((value) => value.label.toLowerCase().includes(search.toLowerCase())) : data
     },
     searchSelectClass() {
       return {
-        'search-select--with-icon': this.valueIcon,
-        'search-select--readonly': this.readonly,
+        "search-select--with-icon": this.valueIcon,
+        "search-select--readonly": this.readonly,
       }
     },
     valueIcon() {
@@ -153,6 +143,10 @@ export default Vue.extend({
   },
   methods: {
     showModal() {
+      if (!this.hasVariety) {
+        return
+      }
+
       !this.readonly && this.$modal.push(this.modalId)
     },
     getUniqueId() {
@@ -161,14 +155,14 @@ export default Vue.extend({
     selectValue(item) {
       this.currentValue = item
       this.$modal.pop()
-      this.$emit('input', item)
+      this.$emit("input", item)
     },
   },
 })
 </script>
 
 <style lang="scss">
-@import '../assets/scss/import';
+@import "../assets/scss/import";
 $search-select-chevron-height: 6px;
 $search-select-chevron-width: 9px;
 $search-select-icon-height: 32px;
