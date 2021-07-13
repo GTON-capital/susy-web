@@ -75,5 +75,9 @@ export default Vue.extend({
 }
 .card-footer {
   padding-top: 14px;
+
+  & > button {
+    width: 100%;
+  }
 }
 </style>
