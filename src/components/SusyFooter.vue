@@ -2,24 +2,16 @@
   <footer class="footer">
     <div class="container footer-nav">
       <div class="footer-row">
-        <div class="footer-gravity">
+        <!-- <div class="footer-gravity">
           <btn class="footer-gravity-btn" tag="a" to="/">
             <icon>
               <gravity-icon></gravity-icon>
             </icon>
           </btn>
         </div>
-        <div class="footer-copyright headings-font-family">
-          &copy; {{ new Date().getFullYear() }} Gravity Protocol.
-        </div>
+        <div class="footer-copyright headings-font-family">&copy; {{ new Date().getFullYear() }} Gravity Protocol.</div>
         <div class="footer-socials">
-          <a
-            v-for="(social, key) in socials"
-            :key="key"
-            class="footer-social"
-            :href="social.link"
-            target="_blank"
-          >
+          <a v-for="(social, key) in socials" :key="key" class="footer-social" :href="social.link" target="_blank">
             <icon>
               <component :is="'socials-' + social.icon + '-icon'"></component>
             </icon>
@@ -30,24 +22,21 @@
         </div>
         <div class="footer-link headings-font-family">
           <a href="/">Terms of Service</a>
-        </div>
+        </div> -->
+        <p class="c-info">
+          Decentralised bridge for fast and simple borderless cross-chain transfers © susy.one 2021
+        </p>
         <div class="footer-link headings-font-family">
           <a class="text-primary" href="mailto:info@susy.one">info@susy.one</a>
         </div>
       </div>
     </div>
-    <div
-      v-if="!isDisabledCookiesBox"
-      class="footer-cookies"
-      :style="getCookiesStyle"
-    >
+    <div v-if="!isDisabledCookiesBox" class="footer-cookies" :style="getCookiesStyle">
       <div class="footer-cookies-wrapper" :style="getWrapperCookiesStyle">
         <div class="container">
           <div ref="cookiesBox" class="footer-cookies-box">
             <div>
-              We use cookies on our website. By continuing to use the site, or
-              by clicking “I&nbsp;agree”, you consent to the use of cookies. For
-              more info click here.
+              We use cookies on our website. By continuing to use the site, or by clicking “I&nbsp;agree”, you consent to the use of cookies. For more info click here.
             </div>
             <btn class="btn-primary footer-cookies-btn" @click="hideCookiesBox">
               I agree
@@ -60,23 +49,20 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import Icon from '~/components/Icon.vue'
-import Btn from '~/components/Btn.vue'
-
+import Vue from "vue"
+import Icon from "~/components/Icon.vue"
+import Btn from "~/components/Btn.vue"
 
 export default Vue.extend({
-  name: 'SusyFooter',
+  name: "SusyFooter",
   components: {
     Btn,
     Icon,
-    gravityIcon: () => import('assets/icons/gravity.svg?inline'),
-    socialsTwitterIcon: () => import('assets/icons/socials/twitter.svg?inline'),
-    socialsMediumIcon: () => import('assets/icons/socials/medium.svg?inline'),
-    socialsTelegramIcon: () =>
-      import('assets/icons/socials/telegram.svg?inline'),
-    socialsFacebookIcon: () =>
-      import('assets/icons/socials/facebook.svg?inline'),
+    gravityIcon: () => import("assets/icons/gravity.svg?inline"),
+    socialsTwitterIcon: () => import("assets/icons/socials/twitter.svg?inline"),
+    socialsMediumIcon: () => import("assets/icons/socials/medium.svg?inline"),
+    socialsTelegramIcon: () => import("assets/icons/socials/telegram.svg?inline"),
+    socialsFacebookIcon: () => import("assets/icons/socials/facebook.svg?inline"),
   },
   props: {
     isDisabledCookiesBox: {
@@ -88,20 +74,20 @@ export default Vue.extend({
   data: () => ({
     socials: [
       {
-        icon: 'twitter',
-        link: '/',
+        icon: "twitter",
+        link: "/",
       },
       {
-        icon: 'medium',
-        link: '/',
+        icon: "medium",
+        link: "/",
       },
       {
-        icon: 'telegram',
-        link: '/',
+        icon: "telegram",
+        link: "/",
       },
       {
-        icon: 'facebook',
-        link: '/',
+        icon: "facebook",
+        link: "/",
       },
     ],
     heightCookiesBox: 74,
@@ -114,20 +100,20 @@ export default Vue.extend({
     },
     getWrapperCookiesStyle() {
       return {
-        bottom: this.getIsCookiesBox ? '30px' : '-100%',
+        bottom: this.getIsCookiesBox ? "30px" : "-100%",
       }
     },
     getCookiesStyle() {
       return {
-        height: this.getIsCookiesBox ? this.heightCookiesBox + 'px' : '0px',
-        'min-height': this.getIsCookiesBox ? '74px' : '0px',
+        height: this.getIsCookiesBox ? this.heightCookiesBox + "px" : "0px",
+        "min-height": this.getIsCookiesBox ? "74px" : "0px",
       }
     },
   },
   mounted() {
     if (!this.isDisabledCookiesBox) {
       setTimeout(() => {
-        this.isCookiesBox = !localStorage.getItem('IS_AGREE_COOKIES')
+        this.isCookiesBox = !localStorage.getItem("IS_AGREE_COOKIES")
         this.calcHeightCookiesBox()
         this.bindHeightCookiesBox()
       }, 2000)
@@ -139,17 +125,17 @@ export default Vue.extend({
   methods: {
     hideCookiesBox() {
       this.isCookiesBox = false
-      localStorage.setItem('IS_AGREE_COOKIES', '1')
+      localStorage.setItem("IS_AGREE_COOKIES", "1")
       this.unbindHeightCookiesBox()
     },
     bindHeightCookiesBox() {
-      if (this.getIsCookiesBox && typeof window !== 'undefined') {
-        window.addEventListener('resize', this.calcHeightCookiesBox)
+      if (this.getIsCookiesBox && typeof window !== "undefined") {
+        window.addEventListener("resize", this.calcHeightCookiesBox)
       }
     },
     unbindHeightCookiesBox() {
-      if (typeof window !== 'undefined') {
-        window.removeEventListener('resize', this.calcHeightCookiesBox)
+      if (typeof window !== "undefined") {
+        window.removeEventListener("resize", this.calcHeightCookiesBox)
       }
     },
     calcHeightCookiesBox() {
@@ -173,6 +159,13 @@ export default Vue.extend({
   .footer-cookies {
     transition: height 0.5s ease;
   }
+
+  .c-info {
+    font-family: Cormorant;
+    font-size: 14px;
+    margin: 0 12px;
+  }
+
   .footer {
     padding-top: 42px;
     padding-bottom: 30px;
@@ -244,6 +237,10 @@ export default Vue.extend({
   .footer-link {
     @include make-col-ready(0);
     @include make-col-auto();
+  }
+  .footer-row {
+    max-width: 600px;
+    margin: auto;
   }
   .footer-gravity {
   }

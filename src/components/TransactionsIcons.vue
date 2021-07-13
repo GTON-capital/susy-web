@@ -92,8 +92,8 @@ export default Vue.extend({
   align-items: center;
   border-radius: 50%;
   .icon {
-    height: 20px;
-    width: 20px;
+    height: 32px;
+    width: 32px;
     margin: 0;
   }
 }

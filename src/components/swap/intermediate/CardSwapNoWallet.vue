@@ -6,7 +6,7 @@
     <simple-wrapper-slim-sm>
       <form-group-between>
         <template v-slot:left>
-          <search-select v-model="swapForm.sourceChain" :data="chains.origin" :placeholder="sourceChainLabel" :modal-heading="sourceChainLabel">
+          <search-select v-model="swapForm.sourceChain" :data="chains.origin" disabled :placeholder="sourceChainLabel" :modal-heading="sourceChainLabel">
             <template v-slot:label>
               Origin
             </template>
@@ -37,16 +37,17 @@
       }"
       @click="onWalletConnect"
     >
-      Connect new wallet
+      Connect wallet
     </btn>
 
-    <hr />
+    <!-- <hr /> -->
+    <br />
 
-    <form-input v-model="swapForm.destinationAddress">
+    <!-- <form-input v-model="swapForm.destinationAddress">
       <template v-slot:label>
         To address
       </template>
-    </form-input>
+    </form-input> -->
 
     <simple-wrapper-slim-sm>
       <form-group-between-shift>
@@ -60,7 +61,10 @@
         <template v-slot:right>
           <form-input v-model="swapForm.tokenAmount" type="number">
             <template v-slot:label>
-              Receive
+              Amount
+            </template>
+            <template v-slot:error v-if="formErrors">
+              {{ formErrors.message }}
             </template>
           </form-input>
         </template>
@@ -83,7 +87,6 @@ import FormGroupBetween from "~/components/FormGroupBetween.vue"
 import SearchSelect from "~/components/SearchSelect.vue"
 import CardSwap from "~/components/swap/CardSwap"
 import FormGroupBetweenShift from "~/components/FormGroupBetweenShift.vue"
-import FormGroupBetweenShift1 from "~/components/FormGroupBetweenShift1.vue"
 
 import SwapHint from "~/components/swap/SwapHint"
 
@@ -98,10 +101,9 @@ export default {
     SearchSelect,
     CardSwap,
     FormGroupBetweenShift,
-    FormGroupBetweenShift1,
     exchangeIcon: () => import("assets/icons/exchange.svg?inline"),
   },
-  props: ["swapProps", "onWalletConnect"],
+  props: ["swapProps", "onWalletConnect", "formErrors"],
   data() {
     return {
       sourceChainLabel: "Select source chain",
@@ -121,3 +123,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+// .go-max {
+//   background: linear-gradient(0.64deg, #5d7c80 -97.93%, #ffffff 190.55%);
+// }
+</style>

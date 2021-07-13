@@ -26,6 +26,12 @@
         </div>
       </form-group>
 
+      <form-input v-model="swapForm.tokenAmount" type="number" readonly>
+        <template v-slot:label>
+          Amount
+          <span class="text-secondary float-right font-weight-normal"> </span>
+        </template>
+      </form-input>
       <form-group-between-shift>
         <template v-slot:left>
           <search-select :value="swapForm.token" readonly>
@@ -36,7 +42,13 @@
           </search-select>
         </template>
         <template v-slot:right>
-          <form-input :value="swapForm.tokenAmount" type="number" readonly>
+          <search-select :value="wrappedToken" readonly>
+            <template v-slot:label>
+              You receive
+              <!-- <span class="text-secondary float-right font-weight-normal"> Balance: {{ swapForm.formattedBalance }} </span> -->
+            </template>
+          </search-select>
+          <!-- <form-input :value="swapForm.tokenAmount" type="number" readonly>
             <template v-slot:label>
               Receive
               <span class="text-gwei text-secondary float-right font-weight-normal">
@@ -46,7 +58,7 @@
             <template v-slot:append>
               <span style="display: block; padding: 0 15px;">{{ swapForm.token.ticker }}</span>
             </template>
-          </form-input>
+          </form-input> -->
         </template>
       </form-group-between-shift>
     </template>
@@ -60,7 +72,7 @@
         </form-group>
       </div>
       <btn class="btn-primary btn-block" :disabled="!termsChecked || swapProps.transferIsBeingProcessed" @click="$emit('swap')">
-        Swap
+        Transfer
       </btn>
       <btn class="btn-link btn-block" @click="$emit('back')">
         Back
@@ -96,6 +108,9 @@ export default {
     }
   },
   computed: {
+    wrappedToken() {
+      return Object.assign({}, this.swapForm.token, { icon: this.swapForm.token.iconWrapped })
+    },
     swapForm() {
       return this.swapProps.swapForm
     },

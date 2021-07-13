@@ -1,4 +1,3 @@
-
 export default function ({ store, redirect }) {
-  return redirect('/swap')
+  return redirect("/swap")
 }

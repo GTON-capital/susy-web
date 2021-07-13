@@ -6,15 +6,15 @@
 </template>
 
 <script>
-import Vue from 'vue'
+import Vue from "vue"
 
 export default Vue.extend({
-  name: 'FormGroupBetweenShift',
+  name: "FormGroupBetweenShift",
 })
 </script>
 
 <style lang="scss">
-@import '../assets/scss/import';
+@import "../assets/scss/import";
 
 .form-group-between-shift {
   display: flex;

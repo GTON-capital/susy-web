@@ -34,7 +34,7 @@ export default Vue.extend({
         renderer: "svg",
         loop: true,
         autoplay: true,
-        path: "/img/anims/susy-loader.json",
+        path: "/img/anims/susy-loader2.json",
       })
 
       this.anim.play()
