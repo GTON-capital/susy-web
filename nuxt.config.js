@@ -39,6 +39,18 @@ export default {
       },
     ],
   },
+  router: {
+    extendRoutes(routes, resolve) {
+      routes.push({
+        path: "/swap/gton",
+        components: {
+          default: resolve(__dirname, "src/pages/swap/index.vue"),
+          // default: resolve(__dirname, "pages/users"), // or routes[index].component
+          // modal: resolve(__dirname, "components/modal.vue"),
+        },
+      })
+    },
+  },
   /*
    ** Global CSS
    */

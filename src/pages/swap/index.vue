@@ -344,7 +344,7 @@ export default Vue.extend({
     },
     async propertyObserveMap() {
       if (this.formErrors !== null) {
-        return {}sudo
+        return {}
       }
       // const currentWallet = this.$store.getters["wallet/currentWallet"]
 

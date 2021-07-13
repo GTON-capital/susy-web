@@ -16,6 +16,12 @@ export const SwapError = {
 
 export const formValidatorBuilder: FormValidationBuilder<SwapProps> = (props) => {
   return async function () {
+    if (props.metamaskChainIDGetter) {
+      const chainID = await props.metamaskChainIDGetter()
+      if (chainID !== 137) {
+        return SwapError.InvalidChainID
+      }
+    }
     if (props.amount === 0) {
       return SwapError.SilentError
     }
@@ -26,12 +32,6 @@ export const formValidatorBuilder: FormValidationBuilder<SwapProps> = (props) =>
       return SwapError.InsufficientBalance
     }
 
-    if (props.metamaskChainIDGetter) {
-      const chainID = await props.metamaskChainIDGetter()
-      if (chainID !== 137) {
-        return SwapError.InvalidChainID
-      }
-    }
     // if (props.string)
 
     return null
