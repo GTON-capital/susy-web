@@ -111,7 +111,7 @@ export default Vue.extend({
       callCount: 0,
       text: SwapLoaderMessage.Processing,
     },
-    formErrors: null as null | typeof SwapError,
+    formErrors: null as null | Error,
   }),
   computed: {
     formValidatorProps(): SwapProps {
@@ -343,7 +343,7 @@ export default Vue.extend({
       return pickBridgeGateway(this.swapForm.token.bridge!, originChain, destChain)
     },
     async propertyObserveMap() {
-      if (this.formErrors !== null) {
+      if (this.formErrors !== null && this.formErrors.message !== SwapError.InsufficientBalance.message) {
         return {}
       }
       // const currentWallet = this.$store.getters["wallet/currentWallet"]

@@ -1,4 +1,5 @@
 import { FormValidationBuilder } from "~/services/misc/form"
+import { isNil } from "lodash"
 
 export type SwapProps = {
   amount: number
@@ -25,7 +26,8 @@ export const formValidatorBuilder: FormValidationBuilder<SwapProps> = (props) =>
     if (props.amount < 0 || isNaN(props.amount)) {
       return SwapError.InvalidAmount
     }
-    if ((props.balance && props.balance < props.amount) || (props.balance && props.balance === 0)) {
+
+    if ((!isNil(props.balance) && props.balance < props.amount) || (!isNil(props.balance) && props.balance === 0)) {
       return SwapError.InsufficientBalance
     }
 
