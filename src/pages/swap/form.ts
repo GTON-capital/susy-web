@@ -25,7 +25,7 @@ export const formValidatorBuilder: FormValidationBuilder<SwapProps> = (props) =>
     if (props.amount < 0 || isNaN(props.amount)) {
       return SwapError.InvalidAmount
     }
-    if (props.balance && props.balance < props.amount) {
+    if ((props.balance && props.balance < props.amount) || (props.balance && props.balance === 0)) {
       return SwapError.InsufficientBalance
     }
 
