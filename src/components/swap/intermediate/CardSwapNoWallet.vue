@@ -71,7 +71,7 @@
       </form-group-between-shift>
     </simple-wrapper-slim-sm>
 
-    <template v-slot:footer>
+    <template v-slot:footer disabled>
       <btn class="btn-primary btn-block">
         Next
       </btn>

@@ -22,9 +22,6 @@ export const formValidatorBuilder: FormValidationBuilder<SwapProps> = (props) =>
         return SwapError.InvalidChainID
       }
     }
-    if (props.amount === 0) {
-      return SwapError.SilentError
-    }
     if (props.amount < 0 || isNaN(props.amount)) {
       return SwapError.InvalidAmount
     }

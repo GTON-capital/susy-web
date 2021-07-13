@@ -92,11 +92,11 @@
     </simple-wrapper-slim-sm>
 
     <template v-slot:footer>
-      <btn v-if="!allowanceReceived && chainHasApproveMechanism" class="btn-primary" @click="$emit('unlock')">
+      <btn v-if="!allowanceReceived && chainHasApproveMechanism" class="btn-primary" @click="$emit('unlock')" :disabled="formErrors || swapForm.tokenAmount <= 0">
         <!-- <btn class="btn-primary" @click="$emit('unlock')" v-if="false"> -->
         Approve
       </btn>
-      <btn v-else class="btn-primary" @click="$emit('next')">
+      <btn v-else class="btn-primary" @click="$emit('next')" :disabled="formErrors || swapForm.tokenAmount <= 0">
         Next
       </btn>
     </template>
