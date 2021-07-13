@@ -83,6 +83,9 @@
             <template v-slot:error v-if="formErrors">
               {{ formErrors.message }}
             </template>
+            <template v-slot:append>
+              <a style="display: block; padding: 0 15px; cursor: pointer;" @click="$emit('set-max')">MAX</a>
+            </template>
           </form-input>
         </template>
       </form-group-between-shift>

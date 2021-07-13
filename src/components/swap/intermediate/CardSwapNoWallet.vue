@@ -123,3 +123,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+// .go-max {
+//   background: linear-gradient(0.64deg, #5d7c80 -97.93%, #ffffff 190.55%);
+// }
+</style>

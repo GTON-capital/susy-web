@@ -19,6 +19,7 @@ export type Token = {
   ticker: string
   label: string
   icon: string
+  iconWrapped: string
   bg: string
   // decimals: number
   // assetId: string
@@ -217,6 +218,7 @@ export const AvailableTokens: Record<string, Token> = {
     label: "GTON",
     bg: "black",
     icon: "/img/icons/tokens/graviton-b&w-logo.svg",
+    iconWrapped: "/img/icons/tokens/graviton-b&w-logo_wrapped.svg",
     bridge: [
       new GatewayBridge({
         origin: AvailableChains.Polygon,

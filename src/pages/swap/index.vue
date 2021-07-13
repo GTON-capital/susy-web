@@ -9,6 +9,7 @@
       @next="checkSwapDetails"
       @unlock="unlockERC20"
       @change-wallet="onWalletConnect"
+      @set-max="setMaxAmount"
       @reverse-chains="onReverseChains"
       @select-token="handleTokenSelect"
     />
@@ -236,6 +237,9 @@ export default Vue.extend({
     this.cleanSubs()
   },
   methods: {
+    setMaxAmount() {
+      this.swapForm.tokenAmount = this.swapForm.formattedBalance
+    },
     updateAddressFields() {
       const splittedWallets = this.splitWallets()!
       if (!splittedWallets) {
@@ -305,7 +309,14 @@ export default Vue.extend({
       const gateway = this.pickBridgeGateway()!
       const { token } = gateway.cfg
 
-      const [originToken, destToken] = [token.origin, token.dest]
+      let tokenList = [token.origin, token.dest]
+      if (!this.swapForm.isDirect) {
+        tokenList = tokenList.reverse()
+      }
+
+      const [originToken, destToken] = tokenList
+
+      console.log({ originToken, destToken, formSource: this.swapForm.sourceChain.id, gatewayOrigin: gateway.origin.id })
 
       if (this.swapForm.sourceChain.id === gateway.origin.id) {
         return originToken
@@ -326,14 +337,22 @@ export default Vue.extend({
       return pickBridgeGateway(this.swapForm.token.bridge!, originChain, destChain)
     },
     async propertyObserveMap() {
-      const currentWallet = this.$store.getters["wallet/currentWallet"]
+      // const currentWallet = this.$store.getters["wallet/currentWallet"]
 
-      if (!currentWallet) {
-        return {}
-      }
+      // if (!currentWallet) {
+      //   return {}
+      // }
 
       // if (currentWallet.provider === WalletProvider.MathWallet || currentWallet.provider === WalletProvider.Phantom) {
-      if (walletSupportsSolana(currentWallet.provider)) {
+      const splittedWallets = this.splitWallets()
+
+      if (!splittedWallets) {
+        return {}
+      }
+      const { originWallet: currentWallet } = splittedWallets
+      // const currentWallet = originWallet.wallet
+
+      if (walletSupportsSolana(currentWallet.provider as WalletProvider)) {
         const address = currentWallet.value
         const emptyResult = {
           sourceAddress: address,
@@ -519,6 +538,10 @@ export default Vue.extend({
     //   }
     // },
     async unlockERC20() {
+      if (this.formErrors !== null) {
+        return
+      }
+
       const invoker = new Web3Invoker()
       const amountValue = castFloatToDecimalsVersion(String(this.swapForm.tokenAmount), 18)
 
@@ -574,7 +597,12 @@ export default Vue.extend({
     },
     checkSwapDetails() {
       const { tokenAmount, destinationAddress } = this.swapForm
+
       if (!destinationAddress || !tokenAmount) {
+        return
+      }
+
+      if (this.formErrors !== null) {
         return
       }
 
