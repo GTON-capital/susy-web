@@ -10,42 +10,6 @@
           <template v-if="$route.name === 'intrachain'"> Seamless Intrachain <br />Swaps </template>
           <template v-else> Seamless <br />Cross-Chain Swaps </template>
         </div>
-        <div class="nav-menu-wrapper">
-          <div class="nav-dropdown d-none d-lg-block">
-            <btn v-click-outside="clickOutsideMode" class="nav-dropdown-toggle" type="button" :class="{ active: isOpenNavMode }" @click="isOpenNavMode = !isOpenNavMode">
-              <span class="text-body headings-font-family">Swap</span>
-              <icon class="dropdown-caret">
-                <caret-icon></caret-icon>
-              </icon>
-            </btn>
-            <div class="nav-menu">
-              <!-- <nuxt-link class="nav-menu-item link-invert" to="/intrachain"
-                >Intrachain</nuxt-link
-              > -->
-              <nuxt-link class="nav-menu-item link-invert" to="/">Swap</nuxt-link>
-              <!-- <nuxt-link class="nav-menu-item link-invert" to="/ui"
-                >UI</nuxt-link
-              > -->
-            </div>
-          </div>
-          <div v-click-outside="clickOutside" class="nav-dropdown">
-            <button class="nav-burger" :class="{ active: isOpenNav }" aria-label="Menu" @click="isOpenNavToggle"><i></i><i></i><i></i></button>
-            <div class="nav-menu nav-menu--main">
-              <!-- <nuxt-link
-                class="nav-menu-item link-invert d-lg-none"
-                to="/intrachain"
-                >Intrachain</nuxt-link
-              > -->
-              <nuxt-link class="nav-menu-item link-invert d-lg-none" to="/">Swap</nuxt-link>
-              <!-- <nuxt-link class="nav-menu-item link-invert d-lg-none" to="/ui"
-                >UI</nuxt-link
-              > -->
-              <a class="nav-menu-item link-invert" href="https://medium.com/@gravity_protocol/gravity-protocol-faq-9092bc9c5cf7" target="_blank">FAQ</a>
-              <a class="nav-menu-item link-invert" href="https://docs.gravity.tech" target="_blank">Docs</a>
-              <footer-block :is-disabled-cookies-box="true"></footer-block>
-            </div>
-          </div>
-        </div>
         <hr />
       </div>
     </div>

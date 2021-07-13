@@ -3,6 +3,7 @@ import { FormValidationBuilder } from "~/services/misc/form"
 export type SwapProps = {
   amount: number
   balance?: number
+  metamaskChainIDGetter?: () => Promise<number>
   // address: string2
 }
 
@@ -10,10 +11,11 @@ export const SwapError = {
   SilentError: new Error(""),
   InvalidAmount: new Error("Invalid amount passed"),
   InsufficientBalance: new Error("Insufficient balance"),
+  InvalidChainID: new Error("Invalid metamask network"),
 }
 
 export const formValidatorBuilder: FormValidationBuilder<SwapProps> = (props) => {
-  return function () {
+  return async function () {
     if (props.amount === 0) {
       return SwapError.SilentError
     }
@@ -22,6 +24,13 @@ export const formValidatorBuilder: FormValidationBuilder<SwapProps> = (props) =>
     }
     if (props.balance && props.balance < props.amount) {
       return SwapError.InsufficientBalance
+    }
+
+    if (props.metamaskChainIDGetter) {
+      const chainID = await props.metamaskChainIDGetter()
+      if (chainID !== 137) {
+        return SwapError.InvalidChainID
+      }
     }
     // if (props.string)
 

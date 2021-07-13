@@ -93,7 +93,7 @@ export default Vue.extend({
   border-radius: 50%;
   .icon {
     height: 32px;
-    width: 32supx;
+    width: 32px;
     margin: 0;
   }
 }

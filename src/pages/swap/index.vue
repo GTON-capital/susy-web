@@ -33,7 +33,7 @@ import { PublicKey } from "@solana/web3.js"
 import Web3 from "web3"
 
 // MODAL
-import { formValidatorBuilder, SwapProps } from "./form"
+import { formValidatorBuilder, SwapProps, SwapError } from "./form"
 import ConnectWalletModal from "~/components/modal/ConnectWallet.vue"
 import ConnectTwoWalletsModal from "~/components/modal/ConnectTwoWallets.vue"
 // import WalletProviderModal from '~/components/modal/WalletProvider'
@@ -111,22 +111,25 @@ export default Vue.extend({
       callCount: 0,
       text: SwapLoaderMessage.Processing,
     },
+    formErrors: null as null | typeof SwapError,
   }),
   computed: {
     formValidatorProps(): SwapProps {
       return {
         amount: Number(this.swapForm.tokenAmount),
         balance: this.swapForm.formattedBalance,
+        // @ts-ignore
+        metamaskChainIDGetter: typeof window !== "undefined" && window.web3?.eth?.getChainId,
       }
     },
     formValidate() {
       const formValidate = formValidatorBuilder(this.formValidatorProps)
       return formValidate
     },
-    formErrors() {
-      // @ts-ignore
-      return this.formValidate(this.formValidatorProps)
-    },
+    // async formErrors() {
+    //   // @ts-ignore
+    //   return await this.formValidate(this.formValidatorProps)
+    // },
     theme() {
       return this.$store.getters["theme/theme"]
     },
@@ -173,6 +176,9 @@ export default Vue.extend({
     },
   },
   watch: {
+    async formValidatorProps() {
+      this.formErrors = await this.formValidate()
+    },
     connectedWallets(connectedWallets) {
       if (!connectedWallets || connectedWallets.length < 2) {
         this.swapState = 0
@@ -337,6 +343,9 @@ export default Vue.extend({
       return pickBridgeGateway(this.swapForm.token.bridge!, originChain, destChain)
     },
     async propertyObserveMap() {
+      if (this.formErrors !== null) {
+        return {}sudo
+      }
       // const currentWallet = this.$store.getters["wallet/currentWallet"]
 
       // if (!currentWallet) {
@@ -461,6 +470,7 @@ export default Vue.extend({
       if (currentWallet.provider === WalletProvider.Metamask) {
         try {
           const currentWalletAddress = window.web3.eth.accounts.givenProvider.selectedAddress
+          // window.web3.eth.accounts.givenProvider.
 
           const invoker = new Web3Invoker()
           const { assetId } = this.getCurrentBridgeToken()

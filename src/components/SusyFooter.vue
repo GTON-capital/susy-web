@@ -163,6 +163,7 @@ export default Vue.extend({
   .c-info {
     font-family: Cormorant;
     font-size: 14px;
+    margin: 0 12px;
   }
 
   .footer {
@@ -236,6 +237,10 @@ export default Vue.extend({
   .footer-link {
     @include make-col-ready(0);
     @include make-col-auto();
+  }
+  .footer-row {
+    max-width: 600px;
+    margin: auto;
   }
   .footer-gravity {
   }

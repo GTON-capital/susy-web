@@ -1,6 +1,6 @@
 <template>
   <div class="swap-hint">
-    <div>Swap</div>
+    <div>Transfer</div>
     <!-- <a :href="link" target="_blank">?</a> -->
   </div>
 </template>

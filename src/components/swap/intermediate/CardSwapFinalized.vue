@@ -72,7 +72,7 @@
         </form-group>
       </div>
       <btn class="btn-primary btn-block" :disabled="!termsChecked || swapProps.transferIsBeingProcessed" @click="$emit('swap')">
-        Swap
+        Transfer
       </btn>
       <btn class="btn-link btn-block" @click="$emit('back')">
         Back
