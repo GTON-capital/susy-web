@@ -63,6 +63,9 @@
             <template v-slot:label>
               Amount
             </template>
+            <template v-slot:error v-if="formErrors">
+              {{ formErrors.message }}
+            </template>
           </form-input>
         </template>
       </form-group-between-shift>
@@ -84,7 +87,6 @@ import FormGroupBetween from "~/components/FormGroupBetween.vue"
 import SearchSelect from "~/components/SearchSelect.vue"
 import CardSwap from "~/components/swap/CardSwap"
 import FormGroupBetweenShift from "~/components/FormGroupBetweenShift.vue"
-import FormGroupBetweenShift1 from "~/components/FormGroupBetweenShift1.vue"
 
 import SwapHint from "~/components/swap/SwapHint"
 
@@ -99,10 +101,9 @@ export default {
     SearchSelect,
     CardSwap,
     FormGroupBetweenShift,
-    FormGroupBetweenShift1,
     exchangeIcon: () => import("assets/icons/exchange.svg?inline"),
   },
-  props: ["swapProps", "onWalletConnect"],
+  props: ["swapProps", "onWalletConnect", "formErrors"],
   data() {
     return {
       sourceChainLabel: "Select source chain",

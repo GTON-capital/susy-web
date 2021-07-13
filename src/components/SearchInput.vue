@@ -4,13 +4,7 @@
     <label class="search-input">
       <button type="submit" class="search-input-submit">
         <icon>
-          <svg
-            width="30"
-            height="30"
-            viewBox="0 0 30 30"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               fill-rule="evenodd"
               clip-rule="evenodd"
@@ -20,67 +14,36 @@
           </svg>
         </icon>
       </button>
-      <button
-        v-if="value"
-        class="search-input-clear"
-        aria-label="Clear Input"
-        @click="$emit('input', '')"
-      >
+      <button v-if="value" class="search-input-clear" aria-label="Clear Input" @click="$emit('input', '')">
         <icon>
-          <svg
-            width="30"
-            height="30"
-            viewBox="0 0 30 30"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect
-              x="2.5"
-              width="38.85"
-              height="3.525"
-              rx="1.7625"
-              transform="rotate(45 2.5 0)"
-              fill="currentColor"
-            />
-            <rect
-              y="27.5"
-              width="38.85"
-              height="3.525"
-              rx="1.7625"
-              transform="rotate(-45 0 27.5)"
-              fill="currentColor"
-            />
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2.5" width="38.85" height="3.525" rx="1.7625" transform="rotate(45 2.5 0)" fill="currentColor" />
+            <rect y="27.5" width="38.85" height="3.525" rx="1.7625" transform="rotate(-45 0 27.5)" fill="currentColor" />
           </svg>
         </icon>
       </button>
-      <input
-        type="search"
-        class="form-control"
-        :value="value"
-        :placeholder="placeholder"
-        @input="$emit('input', $event.target.value)"
-      />
+      <input type="search" class="form-control" :value="value" :placeholder="placeholder" @input="$emit('input', $event.target.value)" />
     </label>
   </form-group>
 </template>
 
 <script>
-import Vue from 'vue'
-import FormGroup from '~/components/FormGroup.vue'
-import Icon from '~/components/Icon.vue'
+import Vue from "vue"
+import FormGroup from "~/components/FormGroup.vue"
+import Icon from "~/components/Icon.vue"
 
 export default Vue.extend({
-  name: 'SearchInput',
+  name: "SearchInput",
   components: { FormGroup, Icon },
   props: {
     value: {
       type: String,
-      default: () => '',
+      default: () => "",
       required: false,
     },
     placeholder: {
       type: String,
-      default: () => '',
+      default: () => "",
       required: false,
     },
   },

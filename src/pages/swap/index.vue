@@ -1,9 +1,10 @@
 <template>
   <div class="container">
-    <CardSwapNoWallet v-if="swapState === 0" :swap-props="cardSwapProps" :on-wallet-connect="onWalletConnect" @reverse-chains="onReverseChains" @select-token="handleTokenSelect" />
+    <CardSwapNoWallet v-if="swapState === 0" :swap-props="cardSwapProps" :form-errors="formErrors" :on-wallet-connect="onWalletConnect" @reverse-chains="onReverseChains" @select-token="handleTokenSelect" />
     <CardSwapWalletConnected
       v-if="swapState === 1"
       :allowance-received="allowanceReceived"
+      :form-errors="formErrors"
       :swap-props="cardSwapProps"
       @next="checkSwapDetails"
       @unlock="unlockERC20"
@@ -14,7 +15,8 @@
     <CardSwapFinalized v-if="swapState === 2" :on-wallet-connect="onWalletConnect" :swap-props="cardSwapProps" @swap="handleSwapConfirm" @back="handleSwapDeny" />
     <client-only>
       <ActionLogsModal :page="page" />
-      <ConnectWalletModal @connect="handleWalletConnect" />
+      <!-- <ConnectWalletModal @connect="handleWalletConnect" /> -->
+      <ConnectTwoWalletsModal @connect="handleWalletConnect" />
       <StatusModal :message="swapForm.message" :source-chain="swapForm.sourceChain" :destination-chain="swapForm.destinationChain" @close="onPopModal" />
       <SwapLoader ref="loader" :loader="loader" />
     </client-only>
@@ -23,16 +25,16 @@
 
 <script lang="ts">
 import _ from "lodash"
-import bs58 from "bs58"
 import Vue from "vue"
 import axios from "axios"
 import { Subscription } from "rxjs"
 import { PublicKey } from "@solana/web3.js"
-import { BN } from "bn.js"
 import Web3 from "web3"
 
 // MODAL
+import { formValidatorBuilder, SwapProps } from "./form"
 import ConnectWalletModal from "~/components/modal/ConnectWallet.vue"
+import ConnectTwoWalletsModal from "~/components/modal/ConnectTwoWallets.vue"
 // import WalletProviderModal from '~/components/modal/WalletProvider'
 import StatusModal from "~/components/modal/StatusModal.vue"
 
@@ -56,7 +58,8 @@ import { Token, AvailableTokens, getAvailableTokens, formLinkForChain, pickBridg
 import { IBPort } from "~/services/solana/instruction"
 import { MathWalletAdapter, PhantomWalletAdapter, WalletAdapter } from "~/services/wallet-adapters"
 
-const availableTokens = getAvailableTokens()
+// const availableTokens = getAvailableTokens()
+const availableTokens = [AvailableTokens.GTONMainnet]
 
 type DirectionChainsCfg = {
   origin: Chain[]
@@ -77,7 +80,8 @@ const SwapLoaderMessage = {
 export default Vue.extend({
   components: {
     // WalletProviderModal,
-    ConnectWalletModal,
+    // ConnectWalletModal,
+    ConnectTwoWalletsModal,
     CardSwapNoWallet,
     CardSwapFinalized,
     StatusModal,
@@ -108,6 +112,20 @@ export default Vue.extend({
     },
   }),
   computed: {
+    formValidatorProps(): SwapProps {
+      return {
+        amount: Number(this.swapForm.tokenAmount),
+        balance: this.swapForm.formattedBalance,
+      }
+    },
+    formValidate() {
+      const formValidate = formValidatorBuilder(this.formValidatorProps)
+      return formValidate
+    },
+    formErrors() {
+      // @ts-ignore
+      return this.formValidate(this.formValidatorProps)
+    },
     theme() {
       return this.$store.getters["theme/theme"]
     },
@@ -118,8 +136,14 @@ export default Vue.extend({
       return availableDestChains(this.swapForm.token.bridge)
     },
     cardSwapProps() {
+      const connectedWallets = this.$store.getters["wallet/connectedWallets"]
+      // @ts-ignore
+      const splittedWallets = this.splitWallets(connectedWallets)
+
       const { tokens, swapForm } = this
       return {
+        originWallet: splittedWallets?.originWallet,
+        destinationWallet: splittedWallets?.destinationWallet,
         transferIsBeingProcessed: this.transferIsBeingProcessed,
         chains: (swapForm.isDirect
           ? {
@@ -142,6 +166,27 @@ export default Vue.extend({
       const wallet = this.$store.getters["wallet/currentWallet"]
       return wallet
     },
+    connectedWallets() {
+      const connectedWallets = this.$store.getters["wallet/connectedWallets"]
+      return connectedWallets
+    },
+  },
+  watch: {
+    connectedWallets(connectedWallets) {
+      if (!connectedWallets || connectedWallets.length < 2) {
+        this.swapState = 0
+        return
+      }
+
+      this.updateAddressFields()
+    },
+    // wallet(newWallet) {
+    //   console.log({ newWallet, c: newWallet && !this.swapForm.sourceAddress, sa: this.swapForm.sourceAddress })
+
+    //   if (newWallet && !this.swapForm.sourceAddress && newWallet.value) {
+    //     this.swapForm.sourceAddress = newWallet.value
+    //   }
+    // },
   },
   mounted() {
     // this.showLoader(SwapLoaderMessage.Allowance)
@@ -150,8 +195,12 @@ export default Vue.extend({
 
     this.$store.subscribe((mutation, state) => {
       const currentWallet = this.$store.getters["wallet/currentWallet"]
+      const connectedWallets = this.$store.getters["wallet/connectedWallets"]
 
-      if (!currentWallet) {
+      if (!currentWallet || !connectedWallets) {
+        return
+      }
+      if (connectedWallets.length < 2) {
         return
       }
 
@@ -186,15 +235,41 @@ export default Vue.extend({
     // @ts-ignore
     this.cleanSubs()
   },
-  watch: {
-    wallet(newWallet) {
-      console.log({ newWallet, c: newWallet && !this.swapForm.sourceAddress, sa: this.swapForm.sourceAddress })
-      if (newWallet && !this.swapForm.sourceAddress && newWallet.value) {
-        this.swapForm.sourceAddress = newWallet.value
+  methods: {
+    updateAddressFields() {
+      const splittedWallets = this.splitWallets()!
+      if (!splittedWallets) {
+        return
+      }
+      const { originWallet, destinationWallet } = splittedWallets
+      // console.log({ originWallet, destinationWallet })
+
+      this.swapForm.sourceAddress = originWallet.value!
+      this.swapForm.destinationAddress = destinationWallet.value!
+    },
+    splitWallets(): {
+      originWallet: ExtensionWallet
+      destinationWallet: ExtensionWallet
+    } | null {
+      const connectedWallets = this.connectedWallets as ExtensionWallet[]
+      if (!connectedWallets || connectedWallets.length < 2) {
+        return null
+      }
+      const originWallet = connectedWallets.find((x) => x.provider === WalletProvider.Metamask)!
+      const destinationWallet = connectedWallets.find((x) => x.provider === WalletProvider.Phantom)!
+
+      if (!this.swapForm.isDirect) {
+        return {
+          originWallet: destinationWallet,
+          destinationWallet: originWallet,
+        }
+      }
+
+      return {
+        originWallet,
+        destinationWallet,
       }
     },
-  },
-  methods: {
     hideLoader() {
       // @ts-ignore
       this.$modal.pop("susy-loader")
@@ -490,9 +565,12 @@ export default Vue.extend({
       this.swapForm.sourceChain = { ...this.swapForm.destinationChain }
       this.swapForm.destinationChain = sourceChain
       this.swapForm.isDirect = !this.swapForm.isDirect
+
+      this.updateAddressFields()
     },
     onWalletConnect() {
-      this.$modal.push("accounts")
+      this.$modal.push("two-wallets-modal")
+      // this.$modal.push("accounts")
     },
     checkSwapDetails() {
       const { tokenAmount, destinationAddress } = this.swapForm

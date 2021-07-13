@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import navbarBlock from '~/components/Navbar'
-import footerBlock from '~/components/Footer'
+import navbarBlock from "~/components/Navbar"
+import footerBlock from "~/components/Footer"
 
 export default {
   components: {
@@ -19,25 +19,25 @@ export default {
   },
   computed: {
     isOpenNav() {
-      return this.$store.getters['app/isOpenNav']
+      return this.$store.getters["app/isOpenNav"]
     },
   },
   head() {
-    const themes = this.$store.getters['theme/themes']
-    const themeName = this.$store.getters['theme/theme']
+    const themes = this.$store.getters["theme/themes"]
+    const themeName = this.$store.getters["theme/theme"]
     const theme = themes[themeName]
-    let className = 'theme-' + themeName
+    let className = "theme-" + themeName
     if (this.isOpenNav) {
-      className += ' html-overflow-hidden'
+      className += " html-overflow-hidden"
     }
-    let title = 'Susy'
+    let title = "SuSy | Seamless Cross-Chain Swaps"
 
     switch (themeName) {
-      case 'susy':
-        title = 'Susy'
+      case "susy":
+        title = "SuSy | Seamless Cross-Chain Swaps"
         break
-      case 'gravity':
-        title = 'Gravity'
+      case "gravity":
+        title = "Gravity"
         break
     }
 

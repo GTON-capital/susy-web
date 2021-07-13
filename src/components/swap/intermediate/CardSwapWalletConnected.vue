@@ -32,26 +32,35 @@
 
     <form-group-between-shift1>
       <template v-slot:left>
-        <form-input :value="swapForm.sourceAddress" readonly :icon="wallet && wallet.wallet.icon">
+        <form-input :value="swapForm.sourceAddress" readonly :icon="swapProps.originWallet.wallet.icon">
           <template v-slot:label>
             From address
           </template>
         </form-input>
+        <btn class="btn-link link-invert btn-block" @click="$emit('change-wallet')">
+          Change wallet
+        </btn>
       </template>
       <template v-slot:right>
+        <form-input :value="swapForm.destinationAddress" readonly :icon="swapProps.destinationWallet.wallet.icon">
+          <template v-slot:label>
+            To Address
+          </template>
+        </form-input>
         <btn class="btn-link link-invert btn-block" @click="$emit('change-wallet')">
           Change wallet
         </btn>
       </template>
     </form-group-between-shift1>
 
-    <hr class="d-md-none" style="margin: 5px 0 14px 0;" />
+    <!-- <hr class="d-md-none" style="margin: 5px 0 14px 0;" /> -->
+    <hr />
 
-    <form-input v-model="swapForm.destinationAddress">
+    <!-- <form-input v-model="swapForm.destinationAddress">
       <template v-slot:label>
         To address
       </template>
-    </form-input>
+    </form-input> -->
 
     <simple-wrapper-slim-sm>
       <form-group-between-shift>
@@ -66,10 +75,13 @@
         <template v-slot:right>
           <form-input v-model="swapForm.tokenAmount" type="number">
             <template v-slot:label>
-              Receive
+              Amount
               <span class="text-secondary float-right font-weight-normal">
                 <!-- Gas: 100 Gwei -->
               </span>
+            </template>
+            <template v-slot:error v-if="formErrors">
+              {{ formErrors.message }}
             </template>
           </form-input>
         </template>
@@ -117,7 +129,7 @@ export default {
     exchangeIcon: () => import("assets/icons/exchange.svg?inline"),
   },
   // props: ['swapForm', 'chains', 'tokens', 'onWalletConnect', 'allowanceReceived'],
-  props: ["swapProps", "onWalletConnect", "allowanceReceived"],
+  props: ["swapProps", "onWalletConnect", "allowanceReceived", "formErrors"],
   data() {
     return {
       sourceChainLabel: "Select source chain",
@@ -150,3 +162,14 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.btn-link.link-invert.btn-block {
+  padding-left: 0;
+  text-align: left;
+}
+
+.form-group {
+  margin-bottom: 0;
+}
+</style>

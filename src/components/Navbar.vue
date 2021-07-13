@@ -8,7 +8,7 @@
         </nuxt-link>
         <div class="nav-header" :class="{ 'nav-header-mobile': isHideMobileTitle }">
           <template v-if="$route.name === 'intrachain'"> Seamless Intrachain <br />Swaps </template>
-          <template v-else> Seamless <br />Crosschain Swaps </template>
+          <template v-else> Seamless <br />Cross-Chain Swaps </template>
         </div>
         <div class="nav-menu-wrapper">
           <div class="nav-dropdown d-none d-lg-block">
