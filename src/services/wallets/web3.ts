@@ -54,7 +54,7 @@ export class Web3Invoker {
     return { balance }
   }
 
-  async invokeSendUnlockRequest(receiver: string | null, { value: amountValue, type: amountType }: { value: string; type: "bigint" | undefined }, smartContract: string) {
+  async invokeSendUnlockRequest(receiver: string | null, { value: amountValue, type: amountType }: { value: string; type: "bigint" | undefined }, smartContract: string): Promise<any> {
     const web3Obj = new Web3(window.ethereum)
     await window.ethereum.enable()
 
@@ -69,9 +69,12 @@ export class Web3Invoker {
       .createTransferUnwrapRequest(bnAmount.toString(), this.wavesToBytes32(receiver))
       // @ts-ignore
       .send({ from: await this.resolveCurrentAddress() })
+
+    console.log({ sendRequest })
+    return sendRequest
   }
 
-  async invokeLUPortLock(receiver: PublicKey, { value: amountValue }: { value: string; type: "bigint" | undefined }, smartContract: string) {
+  async invokeLUPortLock(receiver: PublicKey, { value: amountValue }: { value: string; type: "bigint" | undefined }, smartContract: string): Promise<any> {
     const web3Obj = new Web3(window.ethereum)
     await window.ethereum.enable()
 
@@ -82,10 +85,12 @@ export class Web3Invoker {
 
     // console.log({ bnAmount: bnAmount.toString(), bnAmountOrig: bnAmount, ctx: this, eth: window.web3.eth, accs: window.web3.eth.accounts })
 
-    await contract.methods
+    const response = await contract.methods
       .createTransferUnwrapRequest(bnAmount.toString(), receiver.toBytes())
       // @ts-ignore
       .send({ from: await this.resolveCurrentAddress() })
+    console.log({ response })
+    return response
   }
 
   async resolveCurrentAddress() {

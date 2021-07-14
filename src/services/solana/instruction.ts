@@ -1,7 +1,7 @@
 import BN from "bn.js"
 import bs58 from "bs58"
-import { AccountLayout, Token, TOKEN_PROGRAM_ID } from "@solana/spl-token"
-import { Keypair, Connection, PublicKey, Transaction, TransactionInstruction, Signer, Commitment, TransactionSignature, SystemProgram, Account } from "@solana/web3.js"
+import { AccountLayout, TOKEN_PROGRAM_ID } from "@solana/spl-token"
+import { Connection, PublicKey, Transaction, TransactionInstruction, Signer, Commitment, TransactionSignature, Account } from "@solana/web3.js"
 
 import { sendTransaction } from "./utils/connection"
 import { WalletAdapter } from "~/services/wallet-adapters/types"
@@ -12,7 +12,7 @@ export function randomUint8() {
 }
 
 export function float64ToUint8Array(floatValue: number): Uint8Array {
-  let fl = new Float64Array(1)
+  const fl = new Float64Array(1)
 
   fl[0] = floatValue
 

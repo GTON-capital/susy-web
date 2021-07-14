@@ -27,9 +27,7 @@
         <div class="table-log-header">ID</div>
         <div class="table-log-content text-primary">
           3P9...4x
-          <copy-clipboard
-            value="0xEA3ed91a668B6a56751729016EBafc214dFBeB65"
-          ></copy-clipboard>
+          <copy-clipboard value="0xEA3ed91a668B6a56751729016EBafc214dFBeB65"></copy-clipboard>
         </div>
         <div class="table-log-actions-md">
           <btn v-if="i === 1" class="btn-primary table-log-btn">Withdraw</btn>
@@ -52,12 +50,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import Btn from '~/components/Btn.vue'
-import CopyClipboard from '~/components/CopyClipboard.vue'
+import Vue from "vue"
+import Btn from "~/components/Btn.vue"
+import CopyClipboard from "~/components/CopyClipboard.vue"
 
 export default Vue.extend({
-  name: 'TableLog',
+  name: "TableLog",
   components: {
     Btn,
     CopyClipboard,
@@ -66,7 +64,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import '../assets/scss/import';
+@import "../assets/scss/import";
 
 .table-log {
   width: 100%;

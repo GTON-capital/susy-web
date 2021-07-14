@@ -5,7 +5,7 @@ type BridgeTokenCfg = {
   decimals: number
 }
 
-interface ChainBridgeConfig {
+export interface ChainBridgeConfig {
   meta?: Record<string, any>
   token: {
     origin: BridgeTokenCfg
@@ -18,8 +18,9 @@ interface ChainBridgeConfig {
 export type Token = {
   ticker: string
   label: string
+  labelWrapped?: string
   icon: string
-  iconWrapped: string
+  iconWrapped?: string
   bg: string
   // decimals: number
   // assetId: string
@@ -216,6 +217,7 @@ export const AvailableTokens: Record<string, Token> = {
   GTONMainnet: {
     ticker: "GTON",
     label: "GTON",
+    labelWrapped: "suGTON",
     bg: "black",
     icon: "/img/icons/tokens/GTON.svg",
     iconWrapped: "/img/icons/tokens/su_GTON.svg",
