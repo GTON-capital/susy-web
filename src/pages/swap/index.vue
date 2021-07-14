@@ -280,9 +280,16 @@ export default Vue.extend({
       const connectedWallets = this.$store.getters["wallet/connectedWallets"]
       return connectedWallets
     },
+    bothWalletsConnected() {
+      const connectedWallets = this.$store.getters["wallet/connectedWallets"]
+      return connectedWallets && connectedWallets.length >= 2
+    },
   },
   watch: {
     async formValidatorProps() {
+      if (!this.bothWalletsConnected) {
+        return
+      }
       this.formErrors = await this.formValidate()
     },
     connectedWallets(connectedWallets) {
@@ -464,6 +471,10 @@ export default Vue.extend({
       return pickBridgeGateway(this.swapForm.token.bridge!, originChain, destChain)
     },
     async propertyObserveMap() {
+      if (!this.bothWalletsConnected) {
+        return {}
+      }
+
       if (this.formErrors !== null && this.formErrors.message !== SwapError.InsufficientBalance.message) {
         return {}
       }

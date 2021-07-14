@@ -64,13 +64,13 @@
     </template>
 
     <template v-slot:footer>
-      <div style="display: flex; justify-content: center;">
+      <!-- <div style="display: flex; justify-content: center;">
         <form-group>
           <checkbox v-model="termsChecked" name="terms-of-service">
             <a href="https://explorer.gravity.tech/docs/pdf/Gravity_Terms_of_Use_15.07.2020.pdf" target="_blank">Terms of Service</a>
           </checkbox>
         </form-group>
-      </div>
+      </div> -->
       <btn class="btn-primary btn-block" :disabled="!termsChecked || swapProps.transferIsBeingProcessed" @click="$emit('swap')">
         Transfer
       </btn>
@@ -104,7 +104,7 @@ export default {
   props: ["swapProps", "heading", "tokens"],
   data() {
     return {
-      termsChecked: false,
+      termsChecked: true,
     }
   },
   computed: {
