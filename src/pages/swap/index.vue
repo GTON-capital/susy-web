@@ -975,12 +975,13 @@ export default Vue.extend({
           }
 
           this.processingTransferSubscription = subject.subscribe(observer.bind(this))
-          const evmAwaiter = new EVMDepositAwaiter(awaiterProps, subject)
-          evmAwaiter.watch()
 
           const createTransferUnwrapRequestTx = await invoker.createTransferUnwrapRequest(uiAmount, amount, evmReceiver, holderTokenAccount!.publicKey, holderTokenAccount!.publicKey, new PublicKey(IBPORT_PROGRAM_PDA))
 
           this.processingTransferTxs.inputTx = createTransferUnwrapRequestTx
+
+          const evmAwaiter = new EVMDepositAwaiter(awaiterProps, subject)
+          evmAwaiter.watch()
         } catch (err) {
           this.hideLoader(SwapLoaderType.Transactions)
 
