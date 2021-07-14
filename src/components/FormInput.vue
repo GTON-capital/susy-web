@@ -12,7 +12,7 @@
       <div v-if="icon" class="form-control-icon wrapper-icon-circle">
         <icon :image="icon"></icon>
       </div>
-      <input :id="id" :type="type" :value="value" :readonly="readonly" class="form-control" :class="inputClass" @input="$emit('input', $event.target.value)" />
+      <input :id="id" :type="type" :value="value" :readonly="readonly" class="form-control" :placeholder="placeholder" :class="inputClass" @input="$emit('input', $event.target.value)" />
     </div>
     <div v-if="$slots.text" class="form-text"><slot name="text"></slot></div>
   </div>
@@ -28,6 +28,11 @@ export default Vue.extend({
     Icon,
   },
   props: {
+    placeholder: {
+      type: String,
+      default: () => "",
+      required: false,
+    },
     type: {
       type: String,
       default: () => "text",

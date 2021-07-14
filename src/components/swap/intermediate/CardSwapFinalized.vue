@@ -45,32 +45,13 @@
           <search-select :value="wrappedToken" readonly>
             <template v-slot:label>
               You receive
-              <!-- <span class="text-secondary float-right font-weight-normal"> Balance: {{ swapForm.formattedBalance }} </span> -->
             </template>
           </search-select>
-          <!-- <form-input :value="swapForm.tokenAmount" type="number" readonly>
-            <template v-slot:label>
-              Receive
-              <span class="text-gwei text-secondary float-right font-weight-normal">
-                Gas: 100 Gwei
-              </span>
-            </template>
-            <template v-slot:append>
-              <span style="display: block; padding: 0 15px;">{{ swapForm.token.ticker }}</span>
-            </template>
-          </form-input> -->
         </template>
       </form-group-between-shift>
     </template>
 
     <template v-slot:footer>
-      <!-- <div style="display: flex; justify-content: center;">
-        <form-group>
-          <checkbox v-model="termsChecked" name="terms-of-service">
-            <a href="https://explorer.gravity.tech/docs/pdf/Gravity_Terms_of_Use_15.07.2020.pdf" target="_blank">Terms of Service</a>
-          </checkbox>
-        </form-group>
-      </div> -->
       <btn class="btn-primary btn-block" :disabled="!termsChecked || swapProps.transferIsBeingProcessed" @click="$emit('swap')">
         Transfer
       </btn>
@@ -109,7 +90,7 @@ export default {
   },
   computed: {
     wrappedToken() {
-      return Object.assign({}, this.swapForm.token, { icon: this.swapForm.token.iconWrapped })
+      return Object.assign({}, this.swapForm.token, { icon: this.swapForm.token.iconWrapped, label: this.swapForm.token.labelWrapped })
     },
     swapForm() {
       return this.swapProps.swapForm
