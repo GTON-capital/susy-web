@@ -9,11 +9,11 @@
             <CopyClipboard v-else class="copy" :value="transferProps.inputTx" />
             <span>{{ transferProps.inputLabel }}</span>
             <span>{{ transferProps.amount }}</span>
-            <img :src="transferProps.inputTokenLogo" />
-            <span>{{ transferProps.inputToken }}</span>
+            <img :src="transferProps.inputToken.logo" />
+            <span>{{ transferProps.inputToken.label }}</span>
             <img src="/img/icons/Arrow 17.svg" />
-            <img :src="transferProps.inputChainLogo" />
-            <span>{{ transferProps.inputChainLabel }}</span>
+            <img :src="transferProps.inputToken.chainLogo" />
+            <span>{{ transferProps.inputToken.chainLabel }}</span>
           </div>
         </div>
         <div class="chains-container bordered">
@@ -22,11 +22,11 @@
             <CopyClipboard v-else class="copy" :value="transferProps.outputTx" />
             <span>{{ transferProps.outputLabel }}</span>
             <span>{{ transferProps.amount }}</span>
-            <img :src="transferProps.outputTokenLogo" />
-            <span>{{ transferProps.token.labelWrapped }}</span>
+            <img :src="transferProps.outputToken.logo" />
+            <span>{{ transferProps.outputToken.label }}</span>
             <img src="/img/icons/Arrow 17.svg" />
-            <img :src="transferProps.outputChainLogo" />
-            <span>{{ transferProps.outputChainLabel }}</span>
+            <img :src="transferProps.outputToken.chainLogo" />
+            <span>{{ transferProps.outputToken.chainLabel }}</span>
           </div>
         </div>
       </div>

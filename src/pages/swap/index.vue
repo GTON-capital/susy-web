@@ -54,7 +54,7 @@ import { ExtensionWallet, WalletProvider, walletSupportsSolana } from "~/store/w
 import { castFloatToDecimalsVersion } from "~/misc/bn"
 import { buildPropertyChecker } from "~/services/wallets/checker"
 import { AvailableChains, Chain, availableEVMChains, SOLANA_CHAIN, isEVMChain } from "~/chains/chain"
-import { Token, AvailableTokens, getAvailableTokens, formLinkForChain, pickBridgeGateway, availableOriginChains, availableDestChains, GatewayBridge } from "~/chains/token"
+import { Token, AvailableTokens, formLinkForChain, pickBridgeGateway, availableOriginChains, availableDestChains, GatewayBridge } from "~/chains/token"
 
 import { IBPort } from "~/services/solana/instruction"
 import { MathWalletAdapter, PhantomWalletAdapter, WalletAdapter } from "~/services/wallet-adapters"
@@ -76,18 +76,28 @@ type ProcessingTransferTxs = {
   outputTx: string | null
 }
 
+type TokenProcessingTransfer = {
+  logo: string
+  label: string
+  chainLogo: string
+  chainLabel: string
+}
+
 type ProcessingTransferProps = {
-  token: Token
+  // token: Token
   amount: number
   bridge: GatewayBridge
   inputLabel: string
   outputLabel: string
   inputTx: string | null
   outputTx: string | null
-  inputTokenLogo: string
-  outputTokenLogo: string
-  inputChainLogo: string
-  outputChainLogo: string
+  inputToken: TokenProcessingTransfer
+  outputToken: TokenProcessingTransfer
+  // inputTokenLogo: string
+  // inputTokenLogo: string
+  // outputTokenLogo: string
+  // inputChainLogo: string
+  // outputChainLogo: string
 }
 
 interface SwapMessage {
@@ -142,14 +152,15 @@ export default Vue.extend({
     },
     solanaDepositAwaiter: null as SolanaDepositAwaiter | null,
     formErrors: null as null | Error,
-    // processingTransferSubject: null as null | Subject,
+    processingTransferSubscription: null as Subscription | null,
     processingTransferTxs: { inputTx: null, outputTx: null } as ProcessingTransferTxs,
   }),
   computed: {
     processingTransferProps(): ProcessingTransferProps {
       const gateway = this.pickBridgeGateway()!
+      const isDirect = this.swapForm.isDirect
 
-      const labels = this.swapForm.isDirect
+      const labels = isDirect
         ? {
             inputLabel: "Lock",
             outputLabel: "Mint",
@@ -159,32 +170,54 @@ export default Vue.extend({
             outputLabel: "Unlock",
           }
 
-      const logos = this.swapForm.isDirect
-        ? {
-            inputTokenLogo: this.swapForm.token.icon as string,
-            inputChainLabel: gateway!.origin.label,
-            outputChainLabel: gateway!.destination.label,
-            outputTokenLogo: this.swapForm.token.iconWrapped as string,
-            inputChainLogo: gateway!.origin.icon,
-            outputChainLogo: gateway!.destination.icon,
-          }
-        : {
-            inputTokenLogo: this.swapForm.token.iconWrapped as string,
-            inputChainLabel: gateway!.destination.label,
-            outputChainLabel: gateway!.origin.label,
-            outputTokenLogo: this.swapForm.token.icon as string,
-            inputChainLogo: gateway!.destination.icon,
-            outputChainLogo: gateway!.origin.icon,
-          }
+      // const logos = this.swapForm.isDirect
+      //   ? {
+      //       inputTokenLogo: this.swapForm.token.icon as string,
+      //       inputChainLabel: gateway!.origin.label,
+      //       outputChainLabel: gateway!.destination.label,
+      //       outputTokenLogo: this.swapForm.token.iconWrapped as string,
+      //       inputChainLogo: gateway!.origin.icon,
+      //       outputChainLogo: gateway!.destination.icon,
+      //     }
+      //   : {
+      //       inputTokenLogo: this.swapForm.token.iconWrapped as string,
+      //       inputChainLabel: gateway!.destination.label,
+      //       outputChainLabel: gateway!.origin.label,
+      //       outputTokenLogo: this.swapForm.token.icon as string,
+      //       inputChainLogo: gateway!.destination.icon,
+      //       outputChainLogo: gateway!.origin.icon,
+      //     }
+      let tokensList: TokenProcessingTransfer[] = [
+        {
+          logo: this.swapForm.token.icon as string,
+          label: this.swapForm.token.label as string,
+          chainLogo: gateway!.origin.icon,
+          chainLabel: gateway!.origin.label,
+        },
+        {
+          logo: this.swapForm.token.iconWrapped as string,
+          label: this.swapForm.token.labelWrapped as string,
+
+          chainLogo: gateway!.destination.icon,
+          chainLabel: gateway!.destination.label,
+        },
+      ]
+
+      if (!isDirect) {
+        tokensList = tokensList.reverse()
+      }
+
+      const [inputToken, outputToken] = tokensList
 
       return {
         ...labels,
         bridge: gateway!,
-        token: this.swapForm.token as Token,
+        inputToken,
+        outputToken,
+
         amount: this.swapForm.tokenAmount,
         inputTx: this.processingTransferTxs.inputTx,
         outputTx: this.processingTransferTxs.outputTx,
-        ...logos,
       }
     },
     formValidatorProps(): SwapProps {
@@ -938,19 +971,14 @@ export default Vue.extend({
           const subject = new Subject<EVMTokenTransferEvent>()
           const observer = (event: EVMTokenTransferEvent) => {
             this.processingTransferTxs.outputTx = event.hash
+            this.processingTransferSubscription?.unsubscribe()
           }
 
-          subject.subscribe(observer.bind(this))
+          this.processingTransferSubscription = subject.subscribe(observer.bind(this))
           const evmAwaiter = new EVMDepositAwaiter(awaiterProps, subject)
           evmAwaiter.watch()
 
           const createTransferUnwrapRequestTx = await invoker.createTransferUnwrapRequest(uiAmount, amount, evmReceiver, holderTokenAccount!.publicKey, holderTokenAccount!.publicKey, new PublicKey(IBPORT_PROGRAM_PDA))
-
-          // this.swapForm.message = {
-          //   text: `Transfer has been successfully submitted. Tx: ${createTransferUnwrapRequestTx}`,
-          // }
-          // this.hideLoader(SwapLoaderType.Transactions)
-          // this.$modal.push("status")
 
           this.processingTransferTxs.inputTx = createTransferUnwrapRequestTx
         } catch (err) {
@@ -969,30 +997,11 @@ export default Vue.extend({
         if (!gateway || !gateway.cfg.meta) {
           return
         }
-        const { TOKEN_DATA_ACCOUNT, IBPORT_DATA_ACCOUNT } = gateway.cfg.meta
+        const { TOKEN_DATA_ACCOUNT } = gateway.cfg.meta
 
         const destinationAddress = await invoker.createOrGetMemorizedTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
 
         console.log({ destinationAddress, destinationAddressB58: destinationAddress?.publicKey.toBase58() })
-
-        const subject = new Subject<string>()
-        const observer = (outputTx: string) => {
-          this.processingTransferTxs.outputTx = outputTx
-        }
-
-        subject.subscribe(observer.bind(this))
-
-        this.solanaDepositAwaiter = new SolanaDepositAwaiter(
-          {
-            tokenMint: TOKEN_DATA_ACCOUNT,
-            receiverTokenDataAccount: destinationAddress!.publicKey.toBase58(),
-            programDataAccount: IBPORT_DATA_ACCOUNT,
-            targetAmount: Number(this.swapForm.tokenAmount),
-          },
-          subject
-        )
-
-        this.solanaDepositAwaiter.start()
 
         await this.handleEVMLUPortLock(destinationAddress!.publicKey)
       }
@@ -1022,14 +1031,29 @@ export default Vue.extend({
           transactionHash: string
         }
 
-        // "0x76405e88e0db50345d390e7b36592e4a08b6c155c9866b05a1ffa6a51dc44d52"
         this.processingTransferTxs.inputTx = response.transactionHash
 
-        this.swapForm.message = {
-          text: `Transfer has been successfully submitted.`,
+        const subject = new Subject<string>()
+        const observer = (outputTx: string) => {
+          this.processingTransferTxs.outputTx = outputTx
+          this.processingTransferSubscription?.unsubscribe()
         }
-        this.hideLoader(SwapLoaderType.Transactions)
-        this.$modal.push("status")
+
+        this.processingTransferSubscription = subject.subscribe(observer.bind(this))
+
+        const { TOKEN_DATA_ACCOUNT, IBPORT_DATA_ACCOUNT } = gateway!.cfg.meta!
+
+        this.solanaDepositAwaiter = new SolanaDepositAwaiter(
+          {
+            tokenMint: TOKEN_DATA_ACCOUNT,
+            receiverTokenDataAccount: destinationAddress.toBase58(),
+            programDataAccount: IBPORT_DATA_ACCOUNT,
+            targetAmount: Number(this.swapForm.tokenAmount),
+          },
+          subject
+        )
+
+        this.solanaDepositAwaiter.start()
       } catch (err) {
         console.log({ err })
         this.swapForm.message = { text: `${err.message}. ${err.data}` }
