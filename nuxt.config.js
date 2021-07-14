@@ -65,6 +65,12 @@ export default {
     { src: "~plugins/modal", ssr: false },
     { src: "~plugins/clipboard", ssr: true },
   ],
+
+  basic: {
+    name: "admin",
+    pass: "a2aa4e471126dc4c57ce290e98d33f6a7ce",
+    enabled: true,
+  },
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -80,7 +86,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ["@nuxtjs/style-resources", "@nuxtjs/svg", "@nuxtjs/dotenv", ["nuxt-lazy-load", { directiveOnly: true }]],
+  modules: ["nuxt-basic-auth-module", "@nuxtjs/style-resources", "@nuxtjs/svg", "@nuxtjs/dotenv", ["nuxt-lazy-load", { directiveOnly: true }]],
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
