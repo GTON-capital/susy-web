@@ -1,4 +1,5 @@
 import { Subject } from "rxjs"
+import _ from "lodash"
 import axios from "axios"
 
 import { EVMTokenTransferEvent, ExplorerApiResponse } from "./types"
@@ -9,7 +10,7 @@ export const PolygonScanAPIKey = "1QUW98DRE3B9PJFVI9MKN58JKEDEW1DEAT"
 
 export type EVMDepositAwaitProps = {
   nodeURL: string
-  apiKey: string
+  apiKey?: string
   recipient: string
   tokenAddress: string
   amount: string
@@ -25,7 +26,7 @@ export class EVMDepositAwaiter {
   private lastBlock: number
 
   constructor(props: EVMDepositAwaitProps, targetObservable: Subject<EVMTokenTransferEvent>) {
-    this.props = Object.assign({}, props)
+    this.props = Object.assign({}, props, { apiKey: PolygonScanAPIKey })
     this.cachedTxs = []
     this.lastBlock = 0
 
@@ -53,17 +54,19 @@ export class EVMDepositAwaiter {
       params: {
         module: "block",
         action: "getblocknobytime",
-        timestamp: new Date().valueOf() / 1000,
+        timestamp: _.floor(new Date().valueOf() / 1000),
         closest: "before",
         apikey: this.props.apiKey,
       },
     })
     const blockNumber = resp.data as ExplorerApiResponse<string>
+    console.log({ blockNumber, resp })
     return Number(blockNumber)
   }
 
   private async updateCachedTxs(startBlock: number) {
     const response = await this.fetchTxs(startBlock)
+    console.log({ resp: response.result, response })
 
     this.cachedTxs = response.result
   }
@@ -102,6 +105,8 @@ export class EVMDepositAwaiter {
     this.interval = setInterval(watcher, this.props.timeout)
 
     this.lastBlock = await this.fetchLastBlock()
+
+    // await this.awaitForDeposit()
   }
 
   unwatch() {

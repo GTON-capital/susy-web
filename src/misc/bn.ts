@@ -1,18 +1,17 @@
-import BN from 'bn.js';
-
+import BN from "bn.js"
 
 function getDelimiters() {
-  return ['.', ',']
+  return [".", ","]
 }
 
 export function castFloatToDecimalsVersion(amnt: string, dec: number = 0): BN {
-  let amount = amnt, decimals = dec;
-  if (decimals <= 0) return new BN(amnt);
+  let amount = amnt,
+    decimals = dec
+  if (decimals <= 0) return new BN(amnt)
   const delimiters = getDelimiters()
 
-  if (typeof amount === 'string' && delimiters.some(del => amnt.includes(del))) {
-    const [delim] = delimiters
-      .filter(delim => amount.includes(delim))
+  if (typeof amount === "string" && delimiters.some((del) => amnt.includes(del))) {
+    const [delim] = delimiters.filter((delim) => amount.includes(delim))
 
     const intPart = amount.slice(0, amount.indexOf(delim))
     const precise = amount.slice(amount.indexOf(delim) + 1)
@@ -35,7 +34,6 @@ export function castFloatToDecimalsVersion(amnt: string, dec: number = 0): BN {
 
   return bnAmount
 }
-
 
 export function castToDecimalsVersion(amount: number, decimals: number): BN {
   let bnAmount = new BN(amount)

@@ -1,16 +1,9 @@
 <template>
   <div class="copy-clipboard">
-    <icon
-      v-clipboard="() => value"
-      v-clipboard:success="clipboardSuccessHandler"
-    >
+    <icon v-clipboard="() => value" v-clipboard:success="clipboardSuccessHandler">
       <copy-icon></copy-icon>
     </icon>
-    <div
-      role="tooltip"
-      class="tooltip fade bs-tooltip-top"
-      :class="{ show: isCopied }"
-    >
+    <div role="tooltip" class="tooltip fade bs-tooltip-top" :class="{ show: isCopied }">
       <div class="arrow"></div>
       <div class="tooltip-inner">
         Copied!
@@ -20,14 +13,14 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import Icon from '~/components/Icon.vue'
+import Vue from "vue"
+import Icon from "~/components/Icon.vue"
 
 export default Vue.extend({
-  name: 'CopyClipboard',
+  name: "CopyClipboard",
   components: {
     Icon,
-    copyIcon: () => import('assets/icons/copy.svg?inline'),
+    copyIcon: () => import("assets/icons/copy.svg?inline"),
   },
   props: {
     value: {
@@ -52,7 +45,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import '../assets/scss/import';
+@import "../assets/scss/import";
 
 .copy-clipboard {
   display: inline-block;

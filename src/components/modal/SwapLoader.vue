@@ -1,5 +1,5 @@
 <template>
-  <modal name="susy-loader">
+  <modal name="plain-loader">
     <div>
       <div class="text">{{ loader.text }}</div>
       <div ref="inner" class="loader" />
