@@ -138,7 +138,7 @@ export default Vue.extend({
       sourceAddress: "",
       destinationAddress: "",
       token: AvailableTokens.GTONMainnet as Token,
-      tokenAmount: 0,
+      tokenAmount: "",
       currentBalance: 0,
       formattedBalance: 0,
       message: {} as SwapMessage,

@@ -73,7 +73,7 @@
           </search-select>
         </template>
         <template v-slot:right>
-          <form-input v-model="swapForm.tokenAmount" type="number">
+          <form-input v-model="swapForm.tokenAmount" type="number" placeholder="0">
             <template v-slot:label>
               Amount
               <span class="text-secondary float-right font-weight-normal">

@@ -122,10 +122,13 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .message-block {
   margin-top: -18px;
   margin-bottom: 24px;
   color: rgba(115, 151, 156, 1);
+}
+.radio-account-content-value {
+  direction: rtl;
 }
 </style>
