@@ -30,6 +30,7 @@ import Vue from "vue"
 import axios from "axios"
 import { Subscription, Subject } from "rxjs"
 import { PublicKey } from "@solana/web3.js"
+import { isNil } from "lodash"
 import Web3 from "web3"
 
 // MODAL
@@ -309,6 +310,9 @@ export default Vue.extend({
     // },
   },
   mounted() {
+    if (isNil(window.localStorage.getItem("susy_authorized"))) {
+      this.$router.push("/login")
+    }
     // this.showLoader(SwapLoaderType.Transactions, SwapLoaderMessage.Processing)
 
     this.$store.commit("app/SET_IS_HIDE_MOBILE_TITLE", false)
