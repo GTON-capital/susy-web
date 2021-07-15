@@ -86,7 +86,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ["nuxt-basic-auth-module", "@nuxtjs/style-resources", "@nuxtjs/svg", "@nuxtjs/dotenv", ["nuxt-lazy-load", { directiveOnly: true }]],
+  modules: ["@nuxtjs/style-resources", "@nuxtjs/svg", "@nuxtjs/dotenv", ["nuxt-lazy-load", { directiveOnly: true }]],
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
