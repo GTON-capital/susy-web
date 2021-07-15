@@ -26,8 +26,8 @@ import { isNil } from "lodash"
 import FormInput from "~/components/FormInput.vue"
 import Btn from "~/components/Btn.vue"
 
-const VALID_LOGIN = "susy"
-const VALID_PASSWORD = "ZZ8eHZBDZj8MeoeaPBQi7h4YUcDKg7et4ngh88AcMSt1P"
+const VALID_LOGIN = "brave_explorer"
+const VALID_PASSWORD = "k18sh.-2kashbzzoWW"
 
 export default {
   components: {
