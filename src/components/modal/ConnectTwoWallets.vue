@@ -2,18 +2,23 @@
   <modal name="two-wallets-modal">
     <modal-content :show-footer="false">
       <template v-slot:head>Connect two wallets</template>
+      <button class="activity absolute-btn">Back</button>
+      <button class="activity">Continue</button>
       <template v-slot:body>
         <div class="text-center message-block">
           To transfer assets from Polygon to Solana and vice versa you should be connected to two corresponding wallets
           <!-- <btn class="btn-link text-secondary font-weight-normal" @click="handleLogoutAllWallets">Logout of all wallets</btn> -->
         </div>
-        <radio-provider-group style="margin-bottom: 24px;">
+        <radio-provider-group style="margin-bottom: 24px">
           <radio-account-revised name="account" :wallet-data="wallets.phantom" @change="handleChange" @connect="$emit('connect', $event)" @logout="handleLogout" />
           <radio-account-revised name="account" :wallet-data="wallets.metamask" @change="handleChange" @connect="$emit('connect', $event)" @logout="handleLogout" />
         </radio-provider-group>
-        <!-- <div class="text-center">
-          <btn class="btn-link" style="padding-left: 22px; padding-right: 22px;" @click="goBack">Back</btn>
-        </div> -->
+        <div class="text-center">
+          <btn class="btn-link" style="padding-left: 22px; padding-right: 22px" @click="">Continue</btn>
+        </div>
+        <div class="text-absolute">
+          <btn class="btn-link" @click="goBack"> <img src="/img/icons/arrow.svg" style="margin-right: 10px" />Back</btn>
+        </div>
       </template>
     </modal-content>
   </modal>
@@ -130,5 +135,16 @@ export default {
 }
 .radio-account-content-value {
   direction: rtl;
+}
+.activity {
+  font-size: 14px;
+  color: #ff0097;
+  font-weight: 600;
+  text-decoration: underline;
+  border: none;
+  background: none;
+  &:hover {
+    text-decoration: none;
+  }
 }
 </style>

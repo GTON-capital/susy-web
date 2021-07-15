@@ -2,27 +2,45 @@
 
 // Alignment
 
-.text-justify  { text-align: justify !important; }
-.text-wrap     { white-space: normal !important; }
-.text-nowrap   { white-space: nowrap !important; }
-.text-truncate { @include text-truncate(); }
+.text-justify {
+  text-align: justify !important;
+}
+.text-wrap {
+  white-space: normal !important;
+}
+.text-nowrap {
+  white-space: nowrap !important;
+}
+.text-truncate {
+  @include text-truncate();
+}
 
-.text-left   { text-align: left !important; }
-.text-right  { text-align: right !important; }
-.text-center { text-align: center !important; }
-
-.text-primary{
+.text-left {
+  text-align: left !important;
+}
+.text-right {
+  text-align: right !important;
+}
+.text-center {
+  text-align: center !important;
+}
+.text-absolute {
+  position: absolute;
+  top: 35px;
+  left: 37px;
+}
+.text-primary {
   color: $primary !important;
 }
-.text-secondary{
+.text-secondary {
   color: $secondary !important;
 }
-.float-right{
-  float: right!important;
+.float-right {
+  float: right !important;
 }
-.font-weight-normal{
-  font-weight: normal!important;
+.font-weight-normal {
+  font-weight: normal !important;
 }
-.text-body{
+.text-body {
   color: $body-color !important;
 }
