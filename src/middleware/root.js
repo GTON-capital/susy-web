@@ -1,3 +1,3 @@
-export default function ({ store, redirect }) {
-  return redirect("/swap")
+export default function ({ redirect }) {
+  return redirect("/login")
 }
