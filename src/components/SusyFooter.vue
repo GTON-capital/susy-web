@@ -36,9 +36,9 @@
           </a>
         </div>
         <div class="partners-block">
-          <div class="partner-item" v-click-outside="hide" @click="toggle">
+          <div class="partner-item" v-click-outside="hide" @click="isActive = !isActive">
             <span class="partner-text"> Partners </span>
-            <img src="img/icons/triangle.svg" :class="{ rotate: isActive }" />
+            <img src="/img/icons/triangle.svg" :class="{ rotate: isActive }" />
           </div>
           <div class="parners-info" v-show="isActive">
             <a class="partner-item purple-color" href="https://graviton.one/" target="_blank">Graviton</a>
@@ -267,6 +267,14 @@ export default Vue.extend({
   .footer-row {
     max-width: 1200px;
     margin: auto;
+    @media (max-width: 950px) {
+      min-height: 150px;
+      height: 100%;
+      display: flex;
+      flex-wrap: nowrap;
+      text-align: center;
+      flex-direction: column;
+    }
   }
   .footer-gravity {
   }
@@ -400,6 +408,10 @@ export default Vue.extend({
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    @media (max-width: 500px) {
+      text-align: start;
+      align-items: flex-start;
+    }
   }
   .partner-item {
     display: block;
