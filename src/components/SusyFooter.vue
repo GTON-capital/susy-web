@@ -176,11 +176,6 @@ export default Vue.extend({
         }, 500)
       }
     },
-    clickOutsideMode() {
-      if (window.innerWidth >= 576 && this.isOpenNavMode) {
-        this.isOpenNavMode = false
-      }
-    },
   },
 })
 </script>
