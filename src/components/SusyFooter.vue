@@ -23,11 +23,30 @@
         <div class="footer-link headings-font-family">
           <a href="/">Terms of Service</a>
         </div> -->
-        <p class="c-info">
-          Decentralised bridge for fast and simple borderless cross-chain transfers © susy.one 2021
-        </p>
+        <p class="c-info">Decentralised bridge for fast and simple borderless cross-chain transfers © susy.one 2021</p>
+        <div class="soc-block">
+          <a class="soc-item" href="https://twitter.com/OneSusy1" target="_blank">
+            <div class="soc-img twitter"></div>
+          </a>
+          <a class="soc-item" href="https://medium.com/@OneSusy" target="_blank">
+            <div class="soc-img medium"></div>
+          </a>
+          <a class="soc-item" href="https://github.com/SuSy-One" target="_blank">
+            <div class="soc-img github"></div>
+          </a>
+        </div>
+        <div class="partners-block">
+          <div class="partner-item" @click="isActive = !isActive">
+            <span class="partner-text"> Partners </span>
+            <img src="img/icons/triangle.svg" :class="{ rotate: isActive }" />
+          </div>
+          <div class="parners-info" v-if="isActive">
+            <a class="partner-item purple-color" href="https://graviton.one/" target="_blank">Graviton</a>
+            <a class="partner-item purple-color" href="/" target="_blank">TBC</a>
+          </div>
+        </div>
         <div class="footer-link headings-font-family">
-          <a class="text-primary" href="mailto:info@susy.one">info@susy.one</a>
+          <a class="text-primary" href="mailto:e.one">info@susy.one</a>
         </div>
       </div>
     </div>
@@ -35,12 +54,8 @@
       <div class="footer-cookies-wrapper" :style="getWrapperCookiesStyle">
         <div class="container">
           <div ref="cookiesBox" class="footer-cookies-box">
-            <div>
-              We use cookies on our website. By continuing to use the site, or by clicking “I&nbsp;agree”, you consent to the use of cookies. For more info click here.
-            </div>
-            <btn class="btn-primary footer-cookies-btn" @click="hideCookiesBox">
-              I agree
-            </btn>
+            <div>We use cookies on our website. By continuing to use the site, or by clicking “I&nbsp;agree”, you consent to the use of cookies. For more info click here.</div>
+            <btn class="btn-primary footer-cookies-btn" @click="hideCookiesBox"> I agree </btn>
           </div>
         </div>
       </div>
@@ -72,6 +87,7 @@ export default Vue.extend({
     },
   },
   data: () => ({
+    isActive: false,
     socials: [
       {
         icon: "twitter",
@@ -118,6 +134,9 @@ export default Vue.extend({
         this.bindHeightCookiesBox()
       }, 2000)
     }
+  },
+  hover() {
+    this.socList.img = this.socList.hover
   },
   beforeDestroy() {
     this.unbindHeightCookiesBox()
@@ -239,7 +258,7 @@ export default Vue.extend({
     @include make-col-auto();
   }
   .footer-row {
-    max-width: 600px;
+    max-width: 1200px;
     margin: auto;
   }
   .footer-gravity {
@@ -311,6 +330,81 @@ export default Vue.extend({
     }
   }
   .footer-link {
+  }
+  .soc-block {
+    max-width: 175px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .soc-img {
+    transition: 0.2s;
+    cursor: pointer;
+  }
+  .twitter {
+    background: url("/img/icons/socials/twitter-susy.svg") no-repeat;
+    background-size: contain;
+    width: 26px;
+    height: 21px;
+    &:hover {
+      background: url("/img/icons/socials/twitter-susy-hover.svg") no-repeat;
+      background-size: contain;
+    }
+  }
+  .medium {
+    background: url("/img/icons/socials/medium-susy.svg") no-repeat;
+    background-size: contain;
+    width: 41px;
+    height: 22px;
+    &:hover {
+      background: url("/img/icons/socials/medium-susy-hover.svg") no-repeat;
+      background-size: contain;
+    }
+  }
+  .github {
+    background: url("/img/icons/socials/github-susy.svg") no-repeat;
+    background-size: contain;
+    width: 23px;
+    height: 23px;
+    &:hover {
+      background: url("/img/icons/socials/github-susy-hover.svg") no-repeat;
+      background-size: contain;
+    }
+  }
+  .rotate {
+    transform: rotate(180deg);
+  }
+  .partners-block {
+    position: relative;
+    font-family: var(--headings-font-family);
+  }
+  .parners-info {
+    position: absolute;
+    bottom: 25px;
+    left: 0px;
+    width: 160px;
+    height: 67px;
+    border: 1px solid #ff1ea3;
+    background: #f5fafb;
+    border-radius: 9px;
+    padding: 8px 21px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .partner-item {
+    display: block;
+    font-size: 16px;
+    font-weight: 400;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .purple-color {
+    &:hover {
+      color: #ff1ea3;
+    }
   }
 }
 </style>
