@@ -42,7 +42,7 @@
           </div>
           <div class="parners-info" v-show="isActive">
             <a class="partner-item purple-color" href="https://graviton.one/" target="_blank">Graviton</a>
-            <a class="partner-item purple-color" href="/" target="_blank">TBC</a>
+            <a class="partner-item purple-color" href="https://gravity.tech/" target="_blank">Gravity</a>
           </div>
         </div>
         <div class="footer-link headings-font-family">
