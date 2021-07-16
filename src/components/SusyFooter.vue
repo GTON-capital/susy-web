@@ -36,11 +36,11 @@
           </a>
         </div>
         <div class="partners-block">
-          <div class="partner-item" @click="isActive = !isActive">
+          <div class="partner-item" v-click-outside="hide" @click="toggle">
             <span class="partner-text"> Partners </span>
             <img src="img/icons/triangle.svg" :class="{ rotate: isActive }" />
           </div>
-          <div class="parners-info" v-if="isActive">
+          <div class="parners-info" v-show="isActive">
             <a class="partner-item purple-color" href="https://graviton.one/" target="_blank">Graviton</a>
             <a class="partner-item purple-color" href="/" target="_blank">TBC</a>
           </div>
@@ -67,6 +67,7 @@
 import Vue from "vue"
 import Icon from "~/components/Icon.vue"
 import Btn from "~/components/Btn.vue"
+import clickOutside from "vue-click-outside"
 
 export default Vue.extend({
   name: "SusyFooter",
@@ -135,13 +136,19 @@ export default Vue.extend({
       }, 2000)
     }
   },
-  hover() {
-    this.socList.img = this.socList.hover
-  },
   beforeDestroy() {
     this.unbindHeightCookiesBox()
   },
+  directives: {
+    clickOutside,
+  },
   methods: {
+    toggle() {
+      this.isActive = true
+    },
+    hide() {
+      this.isActive = false
+    },
     hideCookiesBox() {
       this.isCookiesBox = false
       localStorage.setItem("IS_AGREE_COOKIES", "1")
@@ -167,6 +174,11 @@ export default Vue.extend({
             this.heightCookiesBox = this.$refs.cookiesBox.getBoundingClientRect().height
           }
         }, 500)
+      }
+    },
+    clickOutsideMode() {
+      if (window.innerWidth >= 576 && this.isOpenNavMode) {
+        this.isOpenNavMode = false
       }
     },
   },
