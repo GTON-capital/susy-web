@@ -101,7 +101,7 @@ export default Vue.extend({
   align-items: center;
   flex-wrap: wrap;
   @include media-breakpoint-up(md) {
-    height: 108px;
+    // height: 108px;
     margin-bottom: 30px;
   }
   hr {
