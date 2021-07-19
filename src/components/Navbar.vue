@@ -2,6 +2,9 @@
   <nav class="nav" :class="{ active: isOpenNav }">
     <div class="navbar-backdrop" @click="isOpenNavToggle"></div>
     <div class="container nav-container">
+      <div class="nav-warning">
+        <span>You're using the beta v1 version of SuSy bridge. Please note that transaction confirmation time may be longer than usual.</span>
+      </div>
       <div class="nav-content">
         <nuxt-link to="/" class="nav-logo responsive">
           <img class="responsive-item" src="/img/susy/susy-logo.svg" alt="Logo" />
@@ -72,6 +75,26 @@ export default Vue.extend({
   opacity: 1;
 }
 
+.nav-warning {
+  border-radius: 8px;
+  width: 100%;
+  border: 1px solid rgba(255, 30, 163, 1);
+  // font-family: Montserrat;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: 0px;
+  text-align: center;
+  margin-bottom: 25px;
+  margin-top: 12px;
+
+  & span {
+    padding: 5px 0;
+    color: rgba(255, 30, 163, 1);
+    display: block;
+  }
+}
 .nav {
   width: 100%;
   display: flex;

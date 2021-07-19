@@ -145,7 +145,7 @@ export default Vue.extend({
     },
     propertiesObs: null,
     subs: [],
-    allowanceReceived: true,
+    allowanceReceived: false,
     loader: {
       callCount: 0,
       text: SwapLoaderMessage.Processing,
