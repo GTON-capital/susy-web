@@ -61,7 +61,7 @@ export class EVMDepositAwaiter {
     })
     const blockNumber = resp.data as ExplorerApiResponse<string>
     console.log({ blockNumber, resp })
-    return Number(blockNumber)
+    return Number(blockNumber.result)
   }
 
   private async updateCachedTxs(startBlock: number) {
@@ -83,6 +83,9 @@ export class EVMDepositAwaiter {
 
     for (let i = 0; i < this.cachedTxs.length; i++) {
       const cachedTx = this.cachedTxs[i]
+
+      console.log({ cachedTx }, cachedTx.value, cachedTx.to)
+      console.log(this.props.amount, this.props.recipient)
 
       if (cachedTx.value !== this.props.amount) {
         continue
