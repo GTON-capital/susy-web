@@ -25,12 +25,11 @@
 </template>
 
 <script lang="ts">
-import _ from "lodash"
 import Vue from "vue"
 import axios from "axios"
 import { Subscription, Subject } from "rxjs"
 import { PublicKey } from "@solana/web3.js"
-import { isNil } from "lodash"
+
 import Web3 from "web3"
 
 // MODAL
@@ -146,7 +145,7 @@ export default Vue.extend({
     },
     propertiesObs: null,
     subs: [],
-    allowanceReceived: false,
+    allowanceReceived: true,
     loader: {
       callCount: 0,
       text: SwapLoaderMessage.Processing,
@@ -216,7 +215,7 @@ export default Vue.extend({
         inputToken,
         outputToken,
 
-        amount: this.swapForm.tokenAmount,
+        amount: Number(this.swapForm.tokenAmount),
         inputTx: this.processingTransferTxs.inputTx,
         outputTx: this.processingTransferTxs.outputTx,
       }
@@ -310,14 +309,14 @@ export default Vue.extend({
     // },
   },
   mounted() {
-    if (isNil(window.localStorage.getItem("susy_authorized"))) {
-      this.$router.push("/login")
-    }
+    // if (isNil(window.localStorage.getItem("susy_authorized"))) {
+    //   this.$router.push("/login")
+    // }
     // this.showLoader(SwapLoaderType.Transactions, SwapLoaderMessage.Processing)
 
     this.$store.commit("app/SET_IS_HIDE_MOBILE_TITLE", false)
 
-    this.$store.subscribe((mutation, state) => {
+    this.$store.subscribe(() => {
       const currentWallet = this.$store.getters["wallet/currentWallet"]
       const connectedWallets = this.$store.getters["wallet/connectedWallets"]
 
@@ -363,7 +362,7 @@ export default Vue.extend({
   },
   methods: {
     setMaxAmount() {
-      this.swapForm.tokenAmount = this.swapForm.formattedBalance
+      this.swapForm.tokenAmount = String(this.swapForm.formattedBalance)
     },
     updateAddressFields() {
       const splittedWallets = this.splitWallets()!

@@ -1,5 +1,5 @@
-import { FormValidationBuilder } from "~/services/misc/form"
 import { isNil } from "lodash"
+import { FormValidationBuilder } from "~/services/misc/form"
 
 export type SwapProps = {
   amount: number

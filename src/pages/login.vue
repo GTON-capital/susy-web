@@ -56,30 +56,31 @@ export default {
       // await this.$auth.setUser({ username: this.username })
 
       // this.$store.commit("")
-      if (this.password !== VALID_PASSWORD) {
-        return
-      }
-      if (this.username !== VALID_LOGIN) {
-        return
-      }
+      // if (this.password !== VALID_PASSWORD) {
+      //   return
+      // }
+      // if (this.username !== VALID_LOGIN) {
+      //   return
+      // }
 
-      this.$store.commit("auth/login", {
-        username: this.username,
-      })
+      // this.$store.commit("auth/login", {
+      //   username: this.username,
+      // })
 
-      window.localStorage.setItem("susy_authorized", 1)
+      // window.localStorage.setItem("susy_authorized", 1)
 
       this.$router.push("/swap")
     },
   },
   mounted() {
-    const isAuth = window.localStorage.getItem("susy_authorized")
+    // const isAuth = window.localStorage.getItem("susy_authorized")
 
-    if (!isNil(isAuth)) {
+    // if (!isNil(isAuth)) {
 
-      console.log({ router: this.$router })
-      this.$router.push("/swap")
-    }
+    //   console.log({ router: this.$router })
+    //   this.$router.push("/swap")
+    // }
+    this.$router.push("/swap")
   },
 }
 </script>

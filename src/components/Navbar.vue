@@ -4,7 +4,7 @@
     <div class="container nav-container">
       <div class="nav-content">
         <nuxt-link to="/" class="nav-logo responsive">
-          <img class="responsive-item" src="/img/susy/susy-logo-beta-v2.svg" alt="Logo" />
+          <img class="responsive-item" src="/img/susy/susy-logo.svg" alt="Logo" />
         </nuxt-link>
         <div class="nav-header" :class="{ 'nav-header-mobile': isHideMobileTitle }">
           <template v-if="$route.name === 'intrachain'"> Seamless Intrachain <br />Swaps </template>

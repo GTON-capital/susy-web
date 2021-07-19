@@ -34,7 +34,7 @@
       </form-input>
       <form-group-between-shift>
         <template v-slot:left>
-          <search-select :value="swapForm.token" readonly>
+          <search-select :value="processingTokens.origin" readonly>
             <template v-slot:label>
               Token
               <span class="text-secondary float-right font-weight-normal"> Balance: {{ swapForm.formattedBalance }} </span>
@@ -42,7 +42,7 @@
           </search-select>
         </template>
         <template v-slot:right>
-          <search-select :value="wrappedToken" readonly>
+          <search-select :value="processingTokens.destination" readonly>
             <template v-slot:label>
               You receive
             </template>
@@ -89,11 +89,30 @@ export default {
     }
   },
   computed: {
-    wrappedToken() {
-      return Object.assign({}, this.swapForm.token, { icon: this.swapForm.token.iconWrapped, label: this.swapForm.token.labelWrapped })
+    processingTokens() {
+      // return this.swapForm.isDirect ? this.getWrappedToken() : this.getOriginToken()
+      if (this.swapForm.isDirect) {
+        return {
+          origin: this.getOriginToken(),
+          destination: this.getWrappedToken(),
+        }
+      }
+
+      return {
+        origin: this.getWrappedToken(),
+        destination: this.getOriginToken(),
+      }
     },
     swapForm() {
       return this.swapProps.swapForm
+    },
+  },
+  methods: {
+    getWrappedToken() {
+      return Object.assign({}, this.swapForm.token, { icon: this.swapForm.token.iconWrapped, label: this.swapForm.token.labelWrapped })
+    },
+    getOriginToken() {
+      return this.swapForm.token
     },
   },
 }
