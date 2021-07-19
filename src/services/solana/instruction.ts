@@ -1,7 +1,7 @@
 import BN from "bn.js"
 import bs58 from "bs58"
 import { AccountLayout, TOKEN_PROGRAM_ID } from "@solana/spl-token"
-import { Connection, PublicKey, Transaction, TransactionInstruction, Signer, Commitment, TransactionSignature, Account } from "@solana/web3.js"
+import { Connection, PublicKey, Transaction, TransactionInstruction, Signer, Commitment, TransactionSignature, Account, AccountInfo } from "@solana/web3.js"
 
 import { sendTransaction } from "./utils/connection"
 import { WalletAdapter } from "~/services/wallet-adapters/types"
@@ -135,21 +135,55 @@ export namespace IBPort {
       return tx
     }
 
-    getMemorizedTokenAccount(tokenBinary: PublicKey): Account | null {
-      return LocalStorageSaver.getTokenAccount(tokenBinary.toBase58(), this.initializer.toBase58())
+    private async fetchAccountsOwnedByAddress(
+      owner: PublicKey,
+      mint: PublicKey
+    ): Promise<
+      {
+        pubkey: PublicKey
+        account: AccountInfo<Buffer>
+      }[]
+    > {
+      // const response = AccountsOwnedByAddressResponse
+      const response = await this.connection.getTokenAccountsByOwner(owner, { mint })
+      return response.value
     }
 
-    async createOrGetMemorizedTokenAccount(tokenBinary: PublicKey): Promise<Account | null> {
+    private async fetchFirstTokenAccountOwnedByAddress(
+      tokenBinary: PublicKey
+    ): Promise<{
+      pubkey: PublicKey
+      account: AccountInfo<Buffer>
+    } | null> {
       const tokenAcc = LocalStorageSaver.getTokenAccount(tokenBinary.toBase58(), this.initializer.toBase58())
-      console.log({ tokenAcc })
-
-      if (!tokenAcc) {
-        const tokenAcc = await this.createTokenAccount(tokenBinary)
-        LocalStorageSaver.saveTokenAccount(tokenBinary.toBase58(), this.initializer.toBase58(), tokenAcc!)
-        return tokenAcc
+      if (tokenAcc) {
+        return {
+          pubkey: tokenAcc.publicKey,
+          account: null,
+        }
       }
 
-      return tokenAcc
+      const tokenAccountsList = await this.fetchAccountsOwnedByAddress(this.initializer, tokenBinary)
+      if (tokenAccountsList.length === 0) {
+        return null
+      }
+
+      return tokenAccountsList[0]
+    }
+
+    async getExistingTokenAccount(tokenBinary: PublicKey): Promise<PublicKey | null> {
+      const tokenAccount = await this.fetchFirstTokenAccountOwnedByAddress(tokenBinary)
+      return tokenAccount?.pubkey ?? null
+    }
+
+    async createOrGetExistingTokenAccount(tokenBinary: PublicKey): Promise<PublicKey> {
+      const tokenAccount = await this.fetchFirstTokenAccountOwnedByAddress(tokenBinary)
+      if (tokenAccount === null) {
+        const tokenAcc = await this.createTokenAccount(tokenBinary)
+        return tokenAcc!.publicKey
+      }
+
+      return tokenAccount.pubkey
     }
 
     async createTokenAccount(tokenBinary: PublicKey): Promise<Account | null> {
