@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 <template>
   <div class="container">
     <CardSwapNoWallet v-if="swapState === 0" :swap-props="cardSwapProps" :form-errors="formErrors" :on-wallet-connect="onWalletConnect" @reverse-chains="onReverseChains" @select-token="handleTokenSelect" />
@@ -25,11 +26,11 @@
 </template>
 
 <script lang="ts">
-import _ from "lodash"
 import Vue from "vue"
 import axios from "axios"
 import { Subscription, Subject } from "rxjs"
 import { PublicKey } from "@solana/web3.js"
+
 import Web3 from "web3"
 
 // MODAL
@@ -215,7 +216,7 @@ export default Vue.extend({
         inputToken,
         outputToken,
 
-        amount: this.swapForm.tokenAmount,
+        amount: Number(this.swapForm.tokenAmount),
         inputTx: this.processingTransferTxs.inputTx,
         outputTx: this.processingTransferTxs.outputTx,
       }
@@ -309,11 +310,14 @@ export default Vue.extend({
     // },
   },
   mounted() {
+    // if (isNil(window.localStorage.getItem("susy_authorized"))) {
+    //   this.$router.push("/login")
+    // }
     // this.showLoader(SwapLoaderType.Transactions, SwapLoaderMessage.Processing)
 
     this.$store.commit("app/SET_IS_HIDE_MOBILE_TITLE", false)
 
-    this.$store.subscribe((mutation, state) => {
+    this.$store.subscribe(() => {
       const currentWallet = this.$store.getters["wallet/currentWallet"]
       const connectedWallets = this.$store.getters["wallet/connectedWallets"]
 
@@ -359,7 +363,7 @@ export default Vue.extend({
   },
   methods: {
     setMaxAmount() {
-      this.swapForm.tokenAmount = this.swapForm.formattedBalance
+      this.swapForm.tokenAmount = String(this.swapForm.formattedBalance)
     },
     updateAddressFields() {
       const splittedWallets = this.splitWallets()!
@@ -515,8 +519,7 @@ export default Vue.extend({
 
         const { TOKEN_DATA_ACCOUNT } = currentBridge.cfg.meta!
 
-        const memorizedAccount = invoker!.getMemorizedTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
-        // console.log({ inmemorizedAccountvokerPubkey: memorizedAccount?.publicKey.toBase58() })
+        const memorizedAccount = await invoker.getExistingTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
 
         if (!memorizedAccount) {
           return emptyResult
@@ -526,7 +529,7 @@ export default Vue.extend({
           jsonrpc: "2.0",
           id: 1,
           method: "getTokenAccountBalance",
-          params: [memorizedAccount.publicKey.toBase58()],
+          params: [memorizedAccount.toBase58()],
         })
 
         const result: {
@@ -876,7 +879,7 @@ export default Vue.extend({
         const result = await invoker.sendTransferRequest({
           dApp: sourcePort,
           receiver: form.destinationAddress,
-          swapAmount: form.tokenAmount,
+          swapAmount: Number(form.tokenAmount),
           swapAssetID: currentToken.assetId,
         })
         this.hideLoader()
@@ -953,7 +956,7 @@ export default Vue.extend({
         }
         const { TOKEN_DATA_ACCOUNT, IBPORT_PROGRAM_PDA } = gateway.cfg.meta
 
-        const holderTokenAccount = await invoker.getMemorizedTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
+        const holderTokenAccount = await invoker.getExistingTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
 
         if (!holderTokenAccount) {
           return
@@ -987,7 +990,7 @@ export default Vue.extend({
 
           this.processingTransferSubscription = subject.subscribe(observer.bind(this))
 
-          const createTransferUnwrapRequestTx = await invoker.createTransferUnwrapRequest(uiAmount, amount, evmReceiver, holderTokenAccount!.publicKey, holderTokenAccount!.publicKey, new PublicKey(IBPORT_PROGRAM_PDA))
+          const createTransferUnwrapRequestTx = await invoker.createTransferUnwrapRequest(uiAmount, amount, evmReceiver, holderTokenAccount, holderTokenAccount, new PublicKey(IBPORT_PROGRAM_PDA))
 
           this.processingTransferTxs.inputTx = createTransferUnwrapRequestTx
 
@@ -1011,11 +1014,11 @@ export default Vue.extend({
         }
         const { TOKEN_DATA_ACCOUNT } = gateway.cfg.meta
 
-        const destinationAddress = await invoker.createOrGetMemorizedTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
+        const destinationAddress = await invoker.createOrGetExistingTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
 
-        console.log({ destinationAddress, destinationAddressB58: destinationAddress?.publicKey.toBase58() })
+        console.log({ destinationAddress, destinationAddressB58: destinationAddress?.toBase58() })
 
-        await this.handleEVMLUPortLock(destinationAddress!.publicKey)
+        await this.handleEVMLUPortLock(destinationAddress)
       }
     },
     async handleEVMLUPortLock(destinationAddress: PublicKey) {

@@ -1,5 +1,45 @@
-import { TOKEN_PROGRAM_ID } from "@solana/spl-token"
+// import { TOKEN_PROGRAM_ID } from "@solana/spl-token"
 import { Subject } from "rxjs"
+
+// export interface AccountOwnedByAddress {
+//   account: {
+//     data: {
+//       parsed: {
+//         info: {
+//           isNative: boolean
+//           mint: string
+//           owner: string
+//           state: string
+//           tokenAmount: {
+//             amount: string
+//             decimals: number
+//             uiAmount: number
+//             uiAmountString: string
+//           }
+//         }
+//         type: string
+//       }
+//       program: string
+//       space: number
+//     }
+//     executable: boolean
+//     lamports: number
+//     owner: string
+//     rentEpoch: number
+//   }
+//   pubkey: string
+// }
+
+// export type GenericResponse<T> = {
+//   jsonrpc: string
+//   result: T
+//   id: number
+// }
+
+// export type AccountsOwnedByAddressResponse = GenericResponse<{
+//   context: Context
+//   value: AccountOwnedByAddress[]
+// }>
 
 export interface LogsNotificationRPCResponse {
   jsonrpc: string
