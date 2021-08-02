@@ -1,23 +1,21 @@
 <template>
   <modal name="two-wallets-modal">
     <modal-content :show-footer="false">
-      <template v-slot:head>Connect two wallets</template>
-      <button class="activity absolute-btn">Back</button>
+      <template v-slot:head>Connect wallet</template>
       <button class="activity">Continue</button>
       <template v-slot:body>
         <div class="text-center message-block">
-          To transfer assets from Polygon to Solana and vice versa you should be connected to two corresponding wallets
+          Connect to Phantom wallet to transfer assets from Solana to Polygon
           <!-- <btn class="btn-link text-secondary font-weight-normal" @click="handleLogoutAllWallets">Logout of all wallets</btn> -->
         </div>
-        <radio-provider-group style="margin-bottom: 24px">
+        <radio-provider-group style="margin-bottom: 24px;">
           <radio-account-revised name="account" :wallet-data="wallets.phantom" @change="handleChange" @connect="$emit('connect', $event)" @logout="handleLogout" />
-          <radio-account-revised name="account" :wallet-data="wallets.metamask" @change="handleChange" @connect="$emit('connect', $event)" @logout="handleLogout" />
         </radio-provider-group>
         <div class="text-center">
-          <btn class="btn-link" style="padding-left: 22px; padding-right: 22px" @click="">Continue</btn>
+          <btn class="btn-link" style="padding-left: 22px; padding-right: 22px;" @click="">Continue</btn>
         </div>
         <div class="text-absolute">
-          <btn class="btn-link" @click="goBack"> <img src="/img/icons/arrow.svg" style="margin-right: 10px" />Back</btn>
+          <btn class="btn-link absolute-btn" @click="goBack"> <img src="/img/icons/arrow.svg" style="margin-right: 10px;" />Back</btn>
         </div>
       </template>
     </modal-content>
@@ -129,8 +127,8 @@ export default {
 
 <style lang="scss">
 .message-block {
-  margin-top: -18px;
-  margin-bottom: 24px;
+  margin-top: -10px;
+  margin-bottom: 44px;
   color: rgba(115, 151, 156, 1);
 }
 .radio-account-content-value {
@@ -146,5 +144,10 @@ export default {
   &:hover {
     text-decoration: none;
   }
+}
+.absolute-btn{
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
 }
 </style>

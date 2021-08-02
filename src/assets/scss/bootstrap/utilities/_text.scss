@@ -28,6 +28,10 @@
   position: absolute;
   top: 35px;
   left: 37px;
+  @media (max-width: 750px) {
+    top: 10px;
+    left: 10px;
+  }
 }
 .text-primary {
   color: $primary !important;

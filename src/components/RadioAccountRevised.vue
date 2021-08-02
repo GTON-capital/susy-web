@@ -10,7 +10,7 @@
     </template> -->
     <div class="radio-account-wrap">
       <div class="radio-account-block">
-        <label class="title-account"> {{ wallet.label }} network wallet </label>
+        <label class="title-account"></label>
         <div class="radio-account-container">
           <div class="radio-icon">
             <icon class="radio-icon" :image="wallet.icon"></icon>
@@ -21,28 +21,27 @@
         </div>
       </div>
 
-      <div class="radio-account-block"  v-if="value">
+      <div class="radio-account-block" v-if="value">
         <label class="title-account"> Connected with </label>
-      <div class="radio-account-container">
-        <template>
-          <div class="radio-account---label">{{ label }}</div>
-          <label :for="id" class="radio-account-content-value">
-            {{ value.slice(0, 7) + '...' + value.slice(38) }}
-          </label>
-          <button class="change" @click="change()" >Change</button>
-          <btn class="btn-logout btn-secondary-gradient radio-account-logout" @click="$emit('logout', walletData)">
-            <icon>
-              <logout-icon></logout-icon>
-            </icon>
-          </btn>
-        </template>
+        <div class="radio-account-container">
+          <template>
+            <!-- <div class="radio-account---label">{{ label }}</div> -->
+            <label :for="id" class="radio-account-content-value">
+              {{ value.slice(0, 7) + "..." + value.slice(38) }}
+            </label>
+            <button class="change" @click="change()">Change</button>
+            <btn class="btn-logout btn-secondary-gradient radio-account-logout" @click="$emit('logout', walletData)">
+              <icon>
+                <logout-icon></logout-icon>
+              </icon>
+            </btn>
+          </template>
         </div>
-        </div>
-        <div class="connect-button" v-else>
+      </div>
+      <div class="connect-button" v-else>
         <template>
           <btn class="btn-primary btn-block" @click="$emit('connect', walletData)">Connect wallet</btn>
         </template>
-        </div>
       </div>
     </div>
   </div>
@@ -105,6 +104,9 @@ export default Vue.extend({
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  @media (max-width: 750px) {
+    flex-direction: column;
+  }
 }
 .radio-account {
   position: relative;
@@ -185,6 +187,11 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  @media(max-width: 750px) {
+    width: 100%;
+    margin: 0 auto 10px auto;
+    align-items: center;
+  }
 }
 .radio-account-container {
   box-sizing: border-box;
@@ -197,6 +204,9 @@ export default Vue.extend({
   align-items: center;
   height: 42px;
   padding: 7px 14px;
+    @media(max-width: 750px) {
+    justify-content: center;
+  }
 }
 
 .connect-button {
