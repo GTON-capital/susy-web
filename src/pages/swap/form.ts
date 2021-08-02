@@ -19,7 +19,7 @@ export const formValidatorBuilder: FormValidationBuilder<SwapProps> = (props) =>
   return async function () {
     if (props.metamaskChainIDGetter) {
       const chainID = await props.metamaskChainIDGetter()
-      if (chainID !== 137) {
+      if (chainID !== 1) {
         return SwapError.InvalidChainID
       }
     }

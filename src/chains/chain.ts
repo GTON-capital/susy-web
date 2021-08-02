@@ -18,7 +18,7 @@ export const SOLANA_CHAIN: string = "7"
 export const AvailableChains: AvailableChainsDict = {
   Ethereum: {
     id: "1",
-    label: "ETH Ropsten",
+    label: "ETH",
     icon: "/img/icons/ethereum.svg",
   },
   Waves: {

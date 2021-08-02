@@ -85,7 +85,6 @@ type TokenProcessingTransfer = {
 }
 
 type ProcessingTransferProps = {
-  // token: Token
   amount: number
   bridge: GatewayBridge
   inputLabel: string
@@ -94,11 +93,6 @@ type ProcessingTransferProps = {
   outputTx: string | null
   inputToken: TokenProcessingTransfer
   outputToken: TokenProcessingTransfer
-  // inputTokenLogo: string
-  // inputTokenLogo: string
-  // outputTokenLogo: string
-  // inputChainLogo: string
-  // outputChainLogo: string
 }
 
 interface SwapMessage {
@@ -134,7 +128,7 @@ export default Vue.extend({
     swapState: 0,
     swapForm: {
       isDirect: true,
-      sourceChain: AvailableChains.Polygon,
+      sourceChain: AvailableChains.Ethereum,
       destinationChain: AvailableChains.Solana,
       sourceAddress: "",
       destinationAddress: "",

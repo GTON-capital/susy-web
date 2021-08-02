@@ -223,33 +223,55 @@ export const AvailableTokens: Record<string, Token> = {
     iconWrapped: "/img/icons/tokens/su_GTON.svg",
     bridge: [
       new GatewayBridge({
-        origin: AvailableChains.Polygon,
+        origin: AvailableChains.Ethereum,
         destination: AvailableChains.Solana,
         cfg: {
           meta: {
-            // const IBPORT_PROGRAM_ID = "AH3QKaj942UUxDjaRaGh7hvdadsD8yfU9LRTa9KXfJkZ"
-            // const TOKEN_DATA_ACCOUNT = "nVZnRKdr3pmcgnJvYDE8iafgiMiBqxiffQMcyv5ETdA"
-            // const TOKEN_OWNER = "2ANEXknub11fKbmELve361E7rbPFCsu3qEey7oai2Et9",
             IBPORT_PROGRAM_ID: "AH3QKaj942UUxDjaRaGh7hvdadsD8yfU9LRTa9KXfJkZ",
             IBPORT_PROGRAM_PDA: "CYEnZhJdYaUjgFtGQ2FgXe4vp4zMiqY8RsdqwNFduxdm",
-            IBPORT_DATA_ACCOUNT: "B9mZLg1yk7eFPBJ7PSN15tHVzuWidKg5L68uzCiSAsSm",
-            TOKEN_DATA_ACCOUNT: "nVZnRKdr3pmcgnJvYDE8iafgiMiBqxiffQMcyv5ETdA",
+            IBPORT_DATA_ACCOUNT: "BxqxLqfdSXDhrTGdC23CtCmtDb4hyTUxzonqbaenY3up",
+            TOKEN_DATA_ACCOUNT: "C3epWMqKx8Bnr9zq93m3r8zy1kogmvHp7i97q9dVPgJh",
             TOKEN_OWNER: "2ANEXknub11fKbmELve361E7rbPFCsu3qEey7oai2Et9",
           },
           token: {
             origin: {
               decimals: 18,
-              assetId: "0xf480f38c366daac4305dc484b2ad7a496ff00cea",
+              assetId: "0x01e0e2e61f554ecaaec0cc933e739ad90f24a86d",
             },
             dest: {
               decimals: 8,
-              assetId: "nVZnRKdr3pmcgnJvYDE8iafgiMiBqxiffQMcyv5ETdA",
+              assetId: "C3epWMqKx8Bnr9zq93m3r8zy1kogmvHp7i97q9dVPgJh",
             },
           },
-          sourcePort: "0xD2C80231a5E1C7B621c2bb96819b20a00E1be7D2",
-          destinationPort: "B9mZLg1yk7eFPBJ7PSN15tHVzuWidKg5L68uzCiSAsSm",
+          sourcePort: "0x43874993ecbEf0b78d474471CB012C65247F0b3A",
+          destinationPort: "BxqxLqfdSXDhrTGdC23CtCmtDb4hyTUxzonqbaenY3up",
         },
       }),
+      // new GatewayBridge({
+      //   origin: AvailableChains.Polygon,
+      //   destination: AvailableChains.Solana,
+      //   cfg: {
+      //     meta: {
+      //       IBPORT_PROGRAM_ID: "AH3QKaj942UUxDjaRaGh7hvdadsD8yfU9LRTa9KXfJkZ",
+      //       IBPORT_PROGRAM_PDA: "CYEnZhJdYaUjgFtGQ2FgXe4vp4zMiqY8RsdqwNFduxdm",
+      //       IBPORT_DATA_ACCOUNT: "B9mZLg1yk7eFPBJ7PSN15tHVzuWidKg5L68uzCiSAsSm",
+      //       TOKEN_DATA_ACCOUNT: "nVZnRKdr3pmcgnJvYDE8iafgiMiBqxiffQMcyv5ETdA",
+      //       TOKEN_OWNER: "2ANEXknub11fKbmELve361E7rbPFCsu3qEey7oai2Et9",
+      //     },
+      //     token: {
+      //       origin: {
+      //         decimals: 18,
+      //         assetId: "0xf480f38c366daac4305dc484b2ad7a496ff00cea",
+      //       },
+      //       dest: {
+      //         decimals: 8,
+      //         assetId: "nVZnRKdr3pmcgnJvYDE8iafgiMiBqxiffQMcyv5ETdA",
+      //       },
+      //     },
+      //     sourcePort: "0xD2C80231a5E1C7B621c2bb96819b20a00E1be7D2",
+      //     destinationPort: "B9mZLg1yk7eFPBJ7PSN15tHVzuWidKg5L68uzCiSAsSm",
+      //   },
+      // }),
     ],
   },
   USDNMainnet: {
