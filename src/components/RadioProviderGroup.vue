@@ -3,15 +3,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from "vue"
 
 export default Vue.extend({
-  name: 'RadioProviderGroup',
+  name: "RadioProviderGroup",
 })
 </script>
 
 <style lang="scss">
-@import '../assets/scss/import';
+@import "../assets/scss/import";
 
 .radio-provider-group {
   display: flex;
@@ -19,7 +19,7 @@ export default Vue.extend({
   border-radius: 8px;
   @include media-breakpoint-up(sm) {
     background-color: $secondary-light;
-    padding: 32px 30px;
+    padding: 20px;
   }
 }
 </style>
