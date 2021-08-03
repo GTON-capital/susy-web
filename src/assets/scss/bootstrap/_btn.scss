@@ -1,4 +1,4 @@
-@import '../import';
+@import "../import";
 // stylelint-disable selector-no-qualifying-type
 
 //
@@ -21,13 +21,7 @@
   overflow: hidden;
   @include make-col-auto();
 
-  @include btn-size(
-      $btn-height,
-      $btn-line-height,
-      $btn-border-width,
-      $btn-font-size,
-      $btn-padding-x
-  );
+  @include btn-size($btn-height, $btn-line-height, $btn-border-width, $btn-font-size, $btn-padding-x);
   color: $btn-color;
   background-color: $btn-background-color;
   border-color: $btn-background-color;
@@ -60,10 +54,10 @@
     position: relative;
     font-weight: inherit;
   }
-  .icon{
+  .icon {
     margin-bottom: ($line-height-base * $font-size-base - 1rem) * -1;
   }
-  &.dropdown-toggle{
+  &.dropdown-toggle {
     text-decoration: none;
   }
 }
@@ -88,7 +82,7 @@ fieldset:disabled a.btn {
 
 .btn-secondary-gradient {
   color: white;
-  background: linear-gradient(0.64deg, #5D7C80 -97.93%, #FFFFFF 190.55%);
+  background: linear-gradient(0.64deg, #5d7c80 -97.93%, #ffffff 190.55%);
   border-width: 0;
 
   &:hover:not(:disabled) {
@@ -124,15 +118,15 @@ fieldset:disabled a.btn {
 }
 
 // Specificity overrides
-input[type='submit'],
-input[type='reset'],
-input[type='button'] {
+input[type="submit"],
+input[type="reset"],
+input[type="button"] {
   &.btn-block {
     width: 100%;
   }
 }
 
-.btn-link{
+.btn-link {
   white-space: normal;
   color: $btn-link-color;
   background-color: transparent;
@@ -146,18 +140,34 @@ input[type='button'] {
   }
 }
 
-.btn-circle{
+.btn-circle {
   padding: 0;
   min-width: $btn-height;
   width: $btn-height;
   height: $btn-height;
   border-radius: 50%;
-  .icon{
+  .icon {
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     width: 1em;
     height: 1em;
+  }
+}
+.btn-logout {
+  padding: 0;
+  min-width: 23px;
+  width: 23px;
+  height: 23px !important;
+  border-radius: 50%;
+  min-height: 23px;
+  .icon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
   }
 }

@@ -7,15 +7,15 @@
 </template>
 
 <script>
-import Vue from 'vue'
+import Vue from "vue"
 
 export default Vue.extend({
-  name: 'FormGroupBetween',
+  name: "FormGroupBetween",
 })
 </script>
 
 <style lang="scss">
-@import '../assets/scss/import';
+@import "../assets/scss/import";
 
 .form-group-between {
   display: flex;
@@ -31,10 +31,10 @@ export default Vue.extend({
       justify-content: center;
       .btn-circle {
         @include media-breakpoint-down(sm) {
-          width: 32px;
-          height: 32px;
-          min-width: 32px;
-          min-height: 32px;
+          width: 23px;
+          height: 23px;
+          min-width: 23px;
+          min-height: 23px;
           .icon {
             width: 12px;
             height: 12px;
