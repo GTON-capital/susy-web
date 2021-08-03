@@ -1,13 +1,13 @@
 <template>
   <div class="radio-account" :class="{ 'radio-account--without-value': !value }">
-    <template v-if="value">
+    <!-- <template v-if="value">
       <input :id="id" :type="type" :name="name" :checked="checked" :value="value" class="hide radio-account-input" @change="$emit('change', walletData)" />
       <label :for="id" class="radio-account-label" :aria-label="wallet.label"></label>
       <svg width="22" height="22" viewBox="0 0 22 22" fill="transparent" xmlns="http://www.w3.org/2000/svg" class="radio-account-dot">
         <circle cx="11" cy="11" r="10" fill="transparent" stroke="#00DD80" stroke-width="2" />
         <circle cx="11" cy="11" r="4" fill="#00DD80" />
       </svg>
-    </template>
+    </template> -->
     <label :for="id" class="radio-account-icon wrapper-icon-circle">
       <icon :image="wallet.icon"></icon>
     </label>
@@ -123,7 +123,7 @@ export default Vue.extend({
   }
 }
 .radio-account-icon {
-  position: absolute;
+  position: relative;
   top: 12px;
   left: 14px;
   width: 32px;
@@ -146,14 +146,16 @@ export default Vue.extend({
   z-index: 9;
 }
 .radio-account-content {
-  background: #ffffff;
+  background: #e7f2f1;
   border: 2px solid;
   border-color: $base-border-color;
   box-shadow: $base-box-shadow;
   border-radius: 8px;
-  padding: 50px 18px 15px 18px;
-  width: 100%;
-  margin-left: auto;
+  padding: 12px 42px 12px 30px;
+  display: flex;
+  align-items: center;
+  // width: 100%;
+  // margin-left: auto;
 }
 .radio-account-content-label {
   font-size: 13px;
@@ -169,9 +171,9 @@ export default Vue.extend({
   z-index: 8;
 }
 .radio-account-logout {
-  position: absolute;
-  top: 12px;
-  right: 14px;
+  position: relative;
+  // top: 12px;
+  // right: 14px;
   z-index: 6;
   .icon {
     left: calc(50% + 1px);
@@ -210,7 +212,7 @@ export default Vue.extend({
 @include media-breakpoint-up(md) {
   .radio-account-content {
     width: calc(100% - 112px);
-    padding: 22px 80px 22px 30px;
+    padding: 22px 30px;
   }
   .radio-account-content {
     border-width: 1px;
@@ -225,8 +227,8 @@ export default Vue.extend({
     transform: translateX(-50%);
   }
   .radio-account-logout {
-    right: 30px;
-    top: 22px;
+    // right: 30px;
+    // top: 22px;
   }
   .radio-account-dot {
     display: block;

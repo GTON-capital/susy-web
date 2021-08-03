@@ -2,12 +2,13 @@ $html-fz: 14px;
 $line-height-base: 1.3;
 $font-size-base: 1rem;
 $font-size-lg: $font-size-base * 1.25;
-$font-size-sm: $font-size-base * .875;
-$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+$font-size-sm: $font-size-base * 0.875;
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
+  sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 $font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 $font-family-base: var(--font-family-base);
-$font-family-cormorant: 'Cormorant', $font-family-sans-serif;
-$font-family-montserrat: 'Montserrat', $font-family-sans-serif;
+$font-family-cormorant: "Cormorant", $font-family-sans-serif;
+$font-family-montserrat: "Montserrat", $font-family-sans-serif;
 $font-weight-lighter: lighter;
 $font-weight-light: 300;
 $font-weight-normal: 400;
@@ -16,7 +17,6 @@ $font-weight-bolder: bolder;
 $font-weight-base: $font-weight-normal;
 $paragraph-margin-bottom: 1rem;
 $dt-font-weight: $font-weight-bold;
-
 
 // Options
 //
@@ -41,24 +41,18 @@ $grid-breakpoints: (
   sm: 576px,
   md: 768px,
   lg: 992px,
-  xl: 1290px
+  xl: 1290px,
 );
 
 $container-max-widths: (
   sm: 540px,
   md: 720px,
   lg: 960px,
-  xl: 1230px
+  xl: 1230px,
 );
 
 // Characters which are escaped by the escape-svg function
-$escaped-characters: (
-    ("<", "%3c"),
-    (">", "%3e"),
-    ("#", "%23"),
-    ("(", "%28"),
-    (")", "%29"),
-);
+$escaped-characters: (("<", "%3c"), (">", "%3e"), ("#", "%23"), ("(", "%28"), (")", "%29"));
 
 $green: var(--green);
 $white: #fff;
@@ -87,7 +81,6 @@ $headings-margin-bottom: 24px;
 $headings-font-weight: 400;
 $headings-line-height: 1.2;
 
-
 $h1-font-size: $font-size-base * 2.5;
 $h2-font-size: $font-size-base * 2;
 $h3-font-size: $font-size-base * 1.75;
@@ -95,12 +88,12 @@ $h4-font-size: $font-size-base * 1.5;
 $h5-font-size: $font-size-base * 1.25;
 $h6-font-size: $font-size-base;
 
-$border-radius: .25rem;
+$border-radius: 0.25rem;
 
 $border-width: 1px;
 $input-btn-border-radius: 8px;
-$input-btn-padding-y: .375rem;
-$input-btn-padding-x: .75rem;
+$input-btn-padding-y: 0.375rem;
+$input-btn-padding-x: 0.75rem;
 $input-btn-font-family: null;
 $input-btn-font-size: $font-size-base;
 $input-btn-line-height: $line-height-base;
@@ -115,12 +108,12 @@ $btn-line-height: $line-height-base;
 $btn-border-width: 1px;
 $btn-border-radius: $input-btn-border-radius;
 $btn-white-space: nowrap;
-$btn-transition: .2s;
+$btn-transition: 0.2s;
 $btn-disabled-opacity: var(--btn-disabled-opacity);
 $btn-color: var(--btn-color);
 $btn-background-color: var(--btn-background-color);
 $btn-background-color-hover: var(--btn-background-color-hover);
-$btn-block-spacing-y: .5rem;
+$btn-block-spacing-y: 0.5rem;
 $btn-link-color: var(--btn-link-color);
 
 $link-color: inherit;
@@ -145,7 +138,6 @@ $table-cell-padding: 10px;
 
 $text-muted: #878ea1;
 
-
 $input-height: 42px;
 $input-bg: var(--input-bg);
 $input-color: var(--input-color);
@@ -161,9 +153,9 @@ $input-font-family: $input-btn-font-family;
 $input-font-weight: $font-weight-base;
 $input-line-height: $input-btn-line-height;
 $input-border-width: $input-btn-border-width;
-$input-transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+$input-transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 
-$input-box-shadow: inset 0 1px 1px rgba($black, .075);
+$input-box-shadow: inset 0 1px 1px rgba($black, 0.075);
 $input-focus-bg: $input-bg;
 $input-focus-border-color: var(--primary);
 $input-focus-color: $input-color;
@@ -175,7 +167,6 @@ $label-margin-bottom: 11px;
 $form-group-margin-bottom: 24px;
 $form-group-margin-bottom-sm: 14px;
 $form-text-margin-top: 6px;
-
 
 $zindex-dropdown: 1000;
 $zindex-sticky: 1020;
@@ -192,13 +183,13 @@ $tooltip-max-width: 200px;
 $tooltip-color: $white;
 $tooltip-bg: $black;
 $tooltip-border-radius: $border-radius;
-$tooltip-opacity: .9;
-$tooltip-padding-y: .25rem;
-$tooltip-padding-x: .5rem;
+$tooltip-opacity: 0.9;
+$tooltip-padding-y: 0.25rem;
+$tooltip-padding-x: 0.5rem;
 $tooltip-margin: 0;
 
-$tooltip-arrow-width: .8rem;
-$tooltip-arrow-height: .4rem;
+$tooltip-arrow-width: 0.8rem;
+$tooltip-arrow-height: 0.4rem;
 $tooltip-arrow-color: $tooltip-bg;
 
 $modal-content-bg: var(--card-background-color);
@@ -265,10 +256,9 @@ $pagination-item-color: var(--pagination-item-color);
 $pagination-item-arrow-color: var(--pagination-item-arrow-color);
 $pagination-item-arrow-hover-color: var(--pagination-item-arrow-hover-color);
 
-
-$caret-width: .3em;
-$caret-vertical-align: $caret-width * .85;
-$caret-spacing: $caret-width * .85;
+$caret-width: 0.3em;
+$caret-vertical-align: $caret-width * 0.85;
+$caret-spacing: $caret-width * 0.85;
 $enable-deprecation-messages: false;
 $enable-gradients: false;
 $enable-caret: true;
@@ -283,7 +273,7 @@ $nav-divider-margin-y: $spacer / 2;
 
 $dropdown-min-width: 10rem;
 $dropdown-padding-y: 11px;
-$dropdown-spacer: .125rem;
+$dropdown-spacer: 0.125rem;
 $dropdown-font-size: $font-size-base;
 $dropdown-color: $body-color;
 $dropdown-bg: $body-bg;
@@ -310,7 +300,6 @@ $dropdown-item-padding-x: 27px;
 $dropdown-header-color: $gray-600;
 $dropdown-header-padding: $dropdown-padding-y $dropdown-item-padding-x;
 
-
 // Root
 
 $root: (
@@ -327,7 +316,7 @@ $root: (
   base-border-color: #eaf1f3,
   font-family-base: $font-family-montserrat,
   btn-font-weight: 700,
-  btn-disabled-opacity: .2,
+  btn-disabled-opacity: 0.2,
   btn-color: var(--body-color),
   btn-background-color: var(--body-bg),
   btn-background-color-hover: var(--primary-light),
@@ -357,7 +346,8 @@ $root: (
   btn-link-color: $primary,
   checkbox-label-color: $secondary,
   checkbox-label-border-color: $primary,
-  checkbox-label-image: url('data:image/svg+xml,%3csvg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg"%3e%3cpath d="M1.30664 4L5 8.56055L10.6777 0.654297" stroke="%23FF0097"/%3e%3c/svg%3e'),
+  checkbox-label-image:
+    url('data:image/svg+xml,%3csvg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg"%3e%3cpath d="M1.30664 4L5 8.56055L10.6777 0.654297" stroke="%23FF0097"/%3e%3c/svg%3e'),
   transactions-icons-arrow-color: $secondary,
   modal-backdrop-background: rgba(50, 80, 80, 0.31),
   modal-close-color: $secondary,
