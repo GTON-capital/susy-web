@@ -1,3 +1,4 @@
+import axios from "axios"
 import BN from "bn.js"
 import bs58 from "bs58"
 import { AccountLayout, TOKEN_PROGRAM_ID } from "@solana/spl-token"
@@ -18,6 +19,15 @@ export function float64ToUint8Array(floatValue: number): Uint8Array {
 
   const arr = new Uint8Array(fl.buffer)
   return arr
+}
+
+export interface AllocatorResponse {
+  // eslint-disable-next-line camelcase
+  public_key: string
+  // eslint-disable-next-line camelcase
+  token_mint: string
+  // eslint-disable-next-line camelcase
+  tx_signature: string
 }
 
 export namespace IBPort {
@@ -177,13 +187,21 @@ export namespace IBPort {
     }
 
     async createOrGetExistingTokenAccount(tokenBinary: PublicKey): Promise<PublicKey> {
-      const tokenAccount = await this.fetchFirstTokenAccountOwnedByAddress(tokenBinary)
-      if (tokenAccount === null) {
-        const tokenAcc = await this.createTokenAccount(tokenBinary)
-        return tokenAcc!.publicKey
-      }
-
-      return tokenAccount.pubkey
+      const owner = this.initializer
+      // const response = await axios.post<AllocatorResponse>("https://allocator.susy.one/api/associated-token-account/alloc", {
+      const response = await axios.post<AllocatorResponse>(
+        "https://allocator.susy.one/api/associated-token-account/alloc",
+        {
+          token_mint: tokenBinary.toBase58(),
+          owner: owner.toBase58(),
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      return new PublicKey(response.data.public_key)
     }
 
     async createTokenAccount(tokenBinary: PublicKey): Promise<Account | null> {

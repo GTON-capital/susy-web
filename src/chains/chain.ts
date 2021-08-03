@@ -1,6 +1,6 @@
 import _ from "lodash"
 
-export type Chain = { id: string; label: string; icon: string }
+export type Chain = { id: string; chainId?: number; label: string; icon: string }
 
 export type AvailableChainsDict = {
   Ethereum: Chain
@@ -18,6 +18,7 @@ export const SOLANA_CHAIN: string = "7"
 export const AvailableChains: AvailableChainsDict = {
   Ethereum: {
     id: "1",
+    chainId: 1,
     label: "ETH",
     icon: "/img/icons/ethereum.svg",
   },
@@ -28,6 +29,7 @@ export const AvailableChains: AvailableChainsDict = {
   },
   BSC: {
     id: "3",
+    chainId: 56,
     label: "BSC",
     icon: "https://cryptoai.trade/wp-content/uploads/2020/03/bnb-2.png",
   },

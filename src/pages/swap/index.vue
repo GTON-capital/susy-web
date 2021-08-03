@@ -140,7 +140,7 @@ export default Vue.extend({
     },
     propertiesObs: null,
     subs: [],
-    allowanceReceived: false,
+    allowanceReceived: true,
     loader: {
       callCount: 0,
       text: SwapLoaderMessage.Processing,
@@ -164,24 +164,6 @@ export default Vue.extend({
             inputLabel: "Burn",
             outputLabel: "Unlock",
           }
-
-      // const logos = this.swapForm.isDirect
-      //   ? {
-      //       inputTokenLogo: this.swapForm.token.icon as string,
-      //       inputChainLabel: gateway!.origin.label,
-      //       outputChainLabel: gateway!.destination.label,
-      //       outputTokenLogo: this.swapForm.token.iconWrapped as string,
-      //       inputChainLogo: gateway!.origin.icon,
-      //       outputChainLogo: gateway!.destination.icon,
-      //     }
-      //   : {
-      //       inputTokenLogo: this.swapForm.token.iconWrapped as string,
-      //       inputChainLabel: gateway!.destination.label,
-      //       outputChainLabel: gateway!.origin.label,
-      //       outputTokenLogo: this.swapForm.token.icon as string,
-      //       inputChainLogo: gateway!.destination.icon,
-      //       outputChainLogo: gateway!.origin.icon,
-      //     }
       let tokensList: TokenProcessingTransfer[] = [
         {
           logo: this.swapForm.token.icon as string,
@@ -192,7 +174,6 @@ export default Vue.extend({
         {
           logo: this.swapForm.token.iconWrapped as string,
           label: this.swapForm.token.labelWrapped as string,
-
           chainLogo: gateway!.destination.icon,
           chainLabel: gateway!.destination.label,
         },
@@ -216,7 +197,10 @@ export default Vue.extend({
       }
     },
     formValidatorProps(): SwapProps {
+      const gateway = this.pickBridgeGateway()!
+
       return {
+        desiredChainId: gateway.origin.chainId,
         amount: Number(this.swapForm.tokenAmount),
         balance: this.swapForm.formattedBalance,
         // @ts-ignore

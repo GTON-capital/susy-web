@@ -3,6 +3,7 @@ import { FormValidationBuilder } from "~/services/misc/form"
 
 export type SwapProps = {
   amount: number
+  desiredChainId?: number
   balance?: number
   metamaskChainIDGetter?: () => Promise<number>
   // address: string2
@@ -17,9 +18,10 @@ export const SwapError = {
 
 export const formValidatorBuilder: FormValidationBuilder<SwapProps> = (props) => {
   return async function () {
-    if (props.metamaskChainIDGetter) {
+    if (props.metamaskChainIDGetter && !isNil(props.desiredChainId)) {
       const chainID = await props.metamaskChainIDGetter()
-      if (chainID !== 1) {
+
+      if (chainID !== props.desiredChainId) {
         return SwapError.InvalidChainID
       }
     }
