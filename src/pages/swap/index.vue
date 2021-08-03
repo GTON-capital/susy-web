@@ -17,7 +17,8 @@
     <CardSwapFinalized v-if="swapState === 2" :on-wallet-connect="onWalletConnect" :swap-props="cardSwapProps" @swap="handleSwapConfirm" @back="handleSwapDeny" />
     <client-only>
       <ActionLogsModal :page="page" />
-      <ConnectTwoWalletsModal @connect="handleWalletConnect" />
+      <!-- <ConnectTwoWalletsModal @connect="handleWalletConnect" /> -->
+      <ConnectDistinctWallet @connect="handleWalletConnect" />
       <StatusModal :message="swapForm.message" :source-chain="swapForm.sourceChain" :destination-chain="swapForm.destinationChain" @close="onPopModal" />
       <SwapLoader ref="loader" :loader="loader" />
       <ProcessingTransferModal ref="txsloader" :loader="loader" :transfer-props="processingTransferProps" />
@@ -33,10 +34,10 @@ import { PublicKey } from "@solana/web3.js"
 
 import Web3 from "web3"
 
-// MODAL
 import { formValidatorBuilder, SwapProps, SwapError } from "./form"
+import { DirectionChainsCfg, ProcessingTransferTxs, TokenProcessingTransfer, ProcessingTransferProps, SwapMessage, SwapLoaderType, SwapLoaderMessage } from "./types"
 
-import ConnectTwoWalletsModal from "~/components/modal/ConnectTwoWallets.vue"
+import ConnectDistinctWallet from "~/src/components/modal/ConnectDistinctWallet.vue"
 import ProcessingTransferModal from "~/components/modal/ProcessingTransferModal.vue"
 import StatusModal from "~/components/modal/StatusModal.vue"
 
@@ -67,55 +68,12 @@ import { EVMTokenTransferEvent } from "~/src/services/wallets/web3-awaiter/types
 // const availableTokens = getAvailableTokens()
 const availableTokens = [AvailableTokens.GTONMainnet]
 
-type DirectionChainsCfg = {
-  origin: Chain[]
-  destination: Chain[]
-}
-
-type ProcessingTransferTxs = {
-  inputTx: string | null
-  outputTx: string | null
-}
-
-type TokenProcessingTransfer = {
-  logo: string
-  label: string
-  chainLogo: string
-  chainLabel: string
-}
-
-type ProcessingTransferProps = {
-  amount: number
-  bridge: GatewayBridge
-  inputLabel: string
-  outputLabel: string
-  inputTx: string | null
-  outputTx: string | null
-  inputToken: TokenProcessingTransfer
-  outputToken: TokenProcessingTransfer
-}
-
-interface SwapMessage {
-  text: string
-  linkA?: string
-  linkB?: string
-}
-
-const SwapLoaderType = {
-  Plain: "plain-loader",
-  Transactions: "susy-loader",
-}
-
-const SwapLoaderMessage = {
-  Processing: "Transfer is processing",
-  Allowance: "Waiting for allowance approval",
-}
-
 export default Vue.extend({
   components: {
     // WalletProviderModal,
     // ConnectWalletModal,
-    ConnectTwoWalletsModal,
+    // ConnectTwoWalletsModal,
+    ConnectDistinctWallet,
     CardSwapNoWallet,
     CardSwapFinalized,
     StatusModal,
@@ -151,6 +109,9 @@ export default Vue.extend({
     processingTransferTxs: { inputTx: null, outputTx: null } as ProcessingTransferTxs,
   }),
   computed: {
+    // connectDistinctWalletProps()  {
+
+    // },
     processingTransferProps(): ProcessingTransferProps {
       const gateway = this.pickBridgeGateway()!
       const isDirect = this.swapForm.isDirect
@@ -941,7 +902,6 @@ export default Vue.extend({
         }
 
         const web3 = new Web3()
-
         const evmReceiver = new Uint8Array(web3.utils.hexToBytes(String(this.swapForm.destinationAddress)))
 
         const uiAmount = Number(this.swapForm.tokenAmount)

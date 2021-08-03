@@ -5,7 +5,7 @@
       <button class="activity">Continue</button>
       <template v-slot:body>
         <div class="text-center message-block">
-          Connect to Phantom wallet to transfer assets from Solana to Polygon
+          <!-- Connect to Phantom wallet to transfer assets from Solana to Polygon -->
           <!-- <btn class="btn-link text-secondary font-weight-normal" @click="handleLogoutAllWallets">Logout of all wallets</btn> -->
         </div>
         <radio-provider-group style="margin-bottom: 24px;">
@@ -38,13 +38,13 @@ import { WalletState, ExtensionWallet, WalletProvider, walletSupportsSolana } fr
 // import { PhantomWalletAdapter, MathWalletAdapter } from "~/services/wallet-adapters"
 
 export default {
-  name: "ConnectTwoWallets",
+  name: "ConnectDistinctWallet",
   components: {
     ModalContent,
     RadioAccountRevised,
     RadioProviderGroup,
   },
-  props: [],
+  props: ['walletProps'],
   data() {
     return {}
   },

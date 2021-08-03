@@ -12,7 +12,7 @@ export const state = (): WalletState => {
       },
       provider: WalletProvider.Metamask,
       isConnected: false,
-      // label: "Connect with Metamask",
+      label: "Connect with Metamask",
     },
     [WalletProvider.WavesKeeper]: {
       wallet: {
