@@ -34,5 +34,6 @@ export enum WalletProvider {
 export type WalletState = Wallets
 
 export const walletSupportsSolana = (provider: WalletProvider): boolean => {
-  return [WalletProvider.MathWallet, WalletProvider.Phantom].includes(provider)
+  // return [WalletProvider.MathWallet, WalletProvider.Phantom].includes(provider)
+  return [WalletProvider.Phantom].includes(provider)
 }

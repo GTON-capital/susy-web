@@ -6,7 +6,7 @@
     <simple-wrapper-slim-sm>
       <form-group-between>
         <template v-slot:left>
-          <search-select v-model="swapForm.sourceChain" :data="chains.origin" disabled :placeholder="sourceChainLabel" :modal-heading="sourceChainLabel">
+          <search-select v-model="swapForm.sourceChain" :data="chains.origin" :placeholder="sourceChainLabel" :modal-heading="sourceChainLabel">
             <template v-slot:label>
               Origin
             </template>
