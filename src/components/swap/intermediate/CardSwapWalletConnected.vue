@@ -32,7 +32,7 @@
 
     <form-group-between-shift1>
       <template v-slot:left>
-        <form-input :value="swapForm.sourceAddress" readonly :icon="swapProps.originWallet.wallet.icon">
+        <form-input :value="swapForm.sourceAddress" readonly :icon="wallet.icon">
           <template v-slot:label>
             From address
           </template>
@@ -42,14 +42,14 @@
         </btn>
       </template>
       <template v-slot:right>
-        <form-input :value="swapForm.destinationAddress" readonly :icon="swapProps.destinationWallet.wallet.icon">
+        <form-input :value="swapForm.destinationAddress" :icon="swapProps.chains.destination.icon">
           <template v-slot:label>
             To Address
           </template>
         </form-input>
-        <btn class="btn-link link-invert btn-block" @click="$emit('change-wallet')">
+        <!-- <btn class="btn-link link-invert btn-block" @click="$emit('change-wallet')">
           Change wallet
-        </btn>
+        </btn> -->
       </template>
     </form-group-between-shift1>
 
@@ -155,7 +155,6 @@ export default {
     chainHasApproveMechanism() {
       const origin = this.swapForm.sourceChain
       const isEVM = isEVMChain(origin)
-
       return isEVM
     },
     wallet() {

@@ -227,9 +227,9 @@ export const AvailableTokens: Record<string, Token> = {
         destination: AvailableChains.BSC,
         cfg: {
           meta: {
-            LUPORT_PROGRAM_ID: "DSZqp3Q3ydt5HeFeX1PfZJWAK8Re7ZoitK3eoot2aRyY",
-            LUPORT_PROGRAM_PDA: "8drhoQ7iAYD9DLY5RBxtQ8BS9vWRMF4nkGG1bnsED9su",
-            LUPORT_DATA_ACCOUNT: "CAGB99utwtaC5XbfeECB1JE2VsTXvw3bYpu57jzYEN8S",
+            PORT_PROGRAM_ID: "DSZqp3Q3ydt5HeFeX1PfZJWAK8Re7ZoitK3eoot2aRyY",
+            PORT_PROGRAM_PDA: "8drhoQ7iAYD9DLY5RBxtQ8BS9vWRMF4nkGG1bnsED9su",
+            PORT_DATA_ACCOUNT: "CAGB99utwtaC5XbfeECB1JE2VsTXvw3bYpu57jzYEN8S",
             TOKEN_DATA_ACCOUNT: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
             TOKEN_OWNER: "7nJGERf1LZpjn4uTfcDZLJ6YRtvdSExAB9uK851zT6do",
           },
@@ -262,9 +262,9 @@ export const AvailableTokens: Record<string, Token> = {
         destination: AvailableChains.BSC,
         cfg: {
           meta: {
-            IBPORT_PROGRAM_ID: "AH3QKaj942UUxDjaRaGh7hvdadsD8yfU9LRTa9KXfJkZ",
-            IBPORT_PROGRAM_PDA: "CYEnZhJdYaUjgFtGQ2FgXe4vp4zMiqY8RsdqwNFduxdm",
-            IBPORT_DATA_ACCOUNT: "BxqxLqfdSXDhrTGdC23CtCmtDb4hyTUxzonqbaenY3up",
+            PORT_PROGRAM_ID: "AH3QKaj942UUxDjaRaGh7hvdadsD8yfU9LRTa9KXfJkZ",
+            PORT_PROGRAM_PDA: "CYEnZhJdYaUjgFtGQ2FgXe4vp4zMiqY8RsdqwNFduxdm",
+            PORT_DATA_ACCOUNT: "BxqxLqfdSXDhrTGdC23CtCmtDb4hyTUxzonqbaenY3up",
             TOKEN_DATA_ACCOUNT: "C3epWMqKx8Bnr9zq93m3r8zy1kogmvHp7i97q9dVPgJh",
             TOKEN_OWNER: "2ANEXknub11fKbmELve361E7rbPFCsu3qEey7oai2Et9",
           },

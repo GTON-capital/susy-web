@@ -6,7 +6,7 @@
       <template v-slot:body>
         <div class="text-center message-block"></div>
         <radio-provider-group style="margin-bottom: 24px;">
-          <radio-account-revised name="account" :wallet-data="wallets.phantom" @change="handleChange" @connect="$emit('connect', $event)" @logout="handleLogout" />
+          <radio-account-revised name="account" :wallet-data="walletPicked" @change="handleChange" @connect="$emit('connect', $event)" @logout="handleLogout" />
         </radio-provider-group>
         <div class="text-center">
           <btn class="btn-link" style="padding-left: 22px; padding-right: 22px;" @click="goBack">Continue</btn>
@@ -33,21 +33,25 @@ export default {
     RadioAccountRevised,
     RadioProviderGroup,
   },
-  props: ["walletProps"],
+  props: ["swapProps"],
   data() {
     return {}
   },
   computed: {
     wallets(): WalletState {
-      console.log({ state: this.$store })
+      // console.log({ state: this.$store })
       // @ts-ignore
       return this.$store.state.wallet
+    },
+    walletPicked(): ExtensionWallet {
+      // wallets.metamask
+      return this.wallets[this.swapProps.inputWallet]
     },
   },
   methods: {
     connectKeeper() {},
     handleChange(wallet: ExtensionWallet) {
-      console.log({ wallet })
+      // console.log({ wallet })
       this.$store.commit("wallet/updateWalletData", {
         provider: wallet.provider as WalletProvider,
         body: { checked: true },
@@ -61,7 +65,7 @@ export default {
       )
     },
     async handleLogout(wallet: ExtensionWallet) {
-      console.log({ wallet })
+      // console.log({ wallet })
       const existing = Object.keys(this.wallets)
       let walletToEnable: WalletProvider | undefined
 
@@ -77,15 +81,6 @@ export default {
         body: { checked: false, isConnected: false, value: "" },
       })
 
-      // console.log({ provider: wallet.provider })
-      // if (wallet.provider === WalletProvider.MathWallet) {
-      //   const wallet = new MathWalletAdapter()
-      //   await wallet.disconnect()
-      // }
-      // if (wallet.provider === WalletProvider.Phantom) {
-      //   const wallet = new PhantomWalletAdapter()
-      //   await wallet.disconnect()
-      // }
       if (walletSupportsSolana(wallet.provider as WalletProvider)) {
         const walletAdapter = wallet.walletAdapter
 

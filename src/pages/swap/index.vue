@@ -17,7 +17,7 @@
     <CardSwapFinalized v-if="swapState === 2" :on-wallet-connect="onWalletConnect" :swap-props="cardSwapProps" @swap="handleSwapConfirm" @back="handleSwapDeny" />
     <client-only>
       <ActionLogsModal :page="page" />
-      <ConnectDistinctWallet @connect="handleWalletConnect" />
+      <ConnectDistinctWallet @connect="handleWalletConnect" :swap-props="cardSwapProps" />
       <StatusModal :message="swapForm.message" :source-chain="swapForm.sourceChain" :destination-chain="swapForm.destinationChain" @close="onPopModal" />
       <SwapLoader ref="loader" :loader="loader" />
       <ProcessingTransferModal ref="txsloader" :loader="loader" :transfer-props="processingTransferProps" />
@@ -32,7 +32,6 @@ import _ from "lodash"
 import axios from "axios"
 import { Subscription, Subject } from "rxjs"
 import { PublicKey } from "@solana/web3.js"
-
 
 import { formValidatorBuilder, SwapProps, SwapError } from "./form"
 import { DirectionChainsCfg, ProcessingTransferTxs, TokenProcessingTransfer, ProcessingTransferProps, SwapMessage, SwapLoaderType, SwapLoaderMessage } from "./types"
@@ -50,13 +49,12 @@ import Keeper, { LUPortInvoker } from "~/services/wallets/keeper"
 import Web3WalletConnector, { Web3Invoker } from "~/services/wallets/web3"
 import { ExtensionWallet, WalletProvider, walletSupportsSolana } from "~/store/wallet/types"
 
-// import { processConfig } from '~/services/misc/config'
 import { castFloatToDecimalsVersion } from "~/misc/bn"
 import { buildPropertyChecker } from "~/services/wallets/checker"
 import { AvailableChains, Chain, availableEVMChains, SOLANA_CHAIN, isEVMChain } from "~/chains/chain"
-import { Token, AvailableTokens, formLinkForChain, pickBridgeGateway, availableOriginChains, availableDestChains, GatewayBridge } from "~/chains/token"
+import { Token, AvailableTokens, formLinkForChain, pickBridgeGateway, availableOriginChains, availableDestChains } from "~/chains/token"
 
-import { IBPort } from "~/services/solana/instruction"
+import { Ports } from "~/services/solana/instruction"
 import { MathWalletAdapter, PhantomWalletAdapter, WalletAdapter } from "~/services/wallet-adapters"
 
 import { SolanaDepositAwaiter } from "~/services/solana/awaiter"
@@ -170,36 +168,37 @@ export default Vue.extend({
     availableDestChains() {
       return availableDestChains(this.swapForm.token.bridge)
     },
+    wallet(): ExtensionWallet {
+      const wallet = this.$store.getters["wallet/currentWallet"]
+      return wallet
+    },
     cardSwapProps() {
       // const connectedWallets = this.$store.getters["wallet/connectedWallets"]
       // @ts-ignore
       // const splittedWallets = this.splitWallets()
 
       const { tokens, swapForm } = this
+      const chains = (swapForm.isDirect
+        ? {
+            // @ts-ignore
+            origin: this.availableOriginChains,
+            // @ts-ignore
+            destination: this.availableDestChains,
+          }
+        : {
+            // @ts-ignore
+            origin: this.availableDestChains,
+            // @ts-ignore
+            destination: this.availableOriginChains,
+          }) as DirectionChainsCfg
       return {
+        inputWallet: swapForm.sourceChain.walletProviders[0],
         // originWallet: splittedWallets?.originWallet,
-        // destinationWallet: splittedWallets?.destinationWallet,
         transferIsBeingProcessed: this.transferIsBeingProcessed,
-        chains: (swapForm.isDirect
-          ? {
-              // @ts-ignore
-              origin: this.availableOriginChains,
-              // @ts-ignore
-              destination: this.availableDestChains,
-            }
-          : {
-              // @ts-ignore
-              origin: this.availableDestChains,
-              // @ts-ignore
-              destination: this.availableOriginChains,
-            }) as DirectionChainsCfg,
+        chains,
         tokens,
         swapForm,
       }
-    },
-    wallet() {
-      const wallet = this.$store.getters["wallet/currentWallet"]
-      return wallet
     },
   },
   watch: {
@@ -353,6 +352,9 @@ export default Vue.extend({
 
       if (walletSupportsSolana(currentWallet.provider as WalletProvider)) {
         const address = currentWallet.value
+
+        console.log({ address })
+
         const emptyResult = {
           sourceAddress: address,
           currentBalance: 0,
@@ -364,16 +366,20 @@ export default Vue.extend({
 
         const invoker = this.getSolanaInvoker(walletAdapter)
         // console.log({ invoker })
+        console.log({ invoker })
 
         if (!invoker) {
           return emptyResult
         }
 
         const currentBridge = this.pickBridgeGateway()!
+        // console.log({ currentBridge })
 
         const { TOKEN_DATA_ACCOUNT } = currentBridge.cfg.meta!
+        console.log({ TOKEN_DATA_ACCOUNT })
 
         const memorizedAccount = await invoker.getExistingTokenAccount(new PublicKey(TOKEN_DATA_ACCOUNT))
+        console.log({ memorizedAccount })
 
         if (!memorizedAccount) {
           return emptyResult
@@ -401,6 +407,8 @@ export default Vue.extend({
           }
           id: number
         } = response.data
+
+        console.log({ resp: response.data })
 
         // console.log({ result })
         try {
@@ -753,22 +761,23 @@ export default Vue.extend({
         this.transferIsBeingProcessed = false
       }
     },
-    getSolanaInvoker(walletAdapter: WalletAdapter): IBPort.Invoker | null {
+    getSolanaInvoker(walletAdapter: WalletAdapter): Ports.Invoker | null {
       const currentBridge = this.pickBridgeGateway()!
 
       if (!currentBridge.cfg.meta) {
         return null
       }
 
-      const { IBPORT_PROGRAM_ID, TOKEN_DATA_ACCOUNT, TOKEN_OWNER, IBPORT_DATA_ACCOUNT } = currentBridge.cfg.meta!
+      // const { IBPORT_PROGRAM_ID, TOKEN_DATA_ACCOUNT, TOKEN_OWNER, IBPORT_DATA_ACCOUNT } = currentBridge.cfg.meta!
+      const { PORT_PROGRAM_ID, TOKEN_DATA_ACCOUNT, TOKEN_OWNER, PORT_DATA_ACCOUNT } = currentBridge.cfg.meta!
 
       // const
-      const invoker = new IBPort.Invoker(
+      const invoker = new Ports.Invoker(
         walletAdapter,
         {
           initializer: walletAdapter.publicKey,
-          ibportProgram: new PublicKey(IBPORT_PROGRAM_ID),
-          ibportDataAccount: new PublicKey(IBPORT_DATA_ACCOUNT),
+          portProgram: new PublicKey(PORT_PROGRAM_ID),
+          portDataAccount: new PublicKey(PORT_DATA_ACCOUNT),
           tokenProgramAccount: new PublicKey(TOKEN_DATA_ACCOUNT),
           tokenOwner: new PublicKey(TOKEN_OWNER),
         },

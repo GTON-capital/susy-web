@@ -1,4 +1,3 @@
-import _ from "lodash"
 import { WalletState, WalletProvider, ExtensionWallet } from "./types"
 // import { ActionContext } from "vuex"
 

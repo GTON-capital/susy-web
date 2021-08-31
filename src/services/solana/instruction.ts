@@ -30,7 +30,7 @@ export interface AllocatorResponse {
   tx_signature: string
 }
 
-export namespace IBPort {
+export namespace Ports {
   export class LocalStorageSaver {
     private static formKey(tokenBinary: string, holder: string) {
       return tokenBinary + "_" + holder
@@ -253,13 +253,13 @@ export namespace IBPort {
     }
   }
 
-  export type InstructionBuilderProps = { initializer: PublicKey; ibportProgram: PublicKey; ibportDataAccount: PublicKey; tokenProgramAccount: PublicKey; tokenOwner: PublicKey }
+  export type InstructionBuilderProps = { initializer: PublicKey; portProgram: PublicKey; portDataAccount: PublicKey; tokenProgramAccount: PublicKey; tokenOwner: PublicKey }
   export class InstructionBuilder {
     // initializer: Keypair
     initializer: PublicKey
 
-    ibportProgram: PublicKey
-    ibportDataAccount: PublicKey
+    portProgram: PublicKey
+    portDataAccount: PublicKey
     tokenProgramAccount: PublicKey
 
     tokenOwner: PublicKey
@@ -267,8 +267,8 @@ export namespace IBPort {
     constructor(props: InstructionBuilderProps) {
       this.initializer = props.initializer
 
-      this.ibportProgram = props.ibportProgram
-      this.ibportDataAccount = props.ibportDataAccount
+      this.portProgram = props.portProgram
+      this.portDataAccount = props.portDataAccount
       this.tokenProgramAccount = props.tokenProgramAccount
 
       this.tokenOwner = props.tokenOwner
@@ -278,8 +278,8 @@ export namespace IBPort {
       this.tokenOwner = tokenOwner
     }
 
-    async getIBPortPDA(): Promise<PublicKey> {
-      return await PublicKey.createProgramAddress([Buffer.from("ibport")], this.ibportProgram)
+    async getSuSyPDA(): Promise<PublicKey> {
+      return await PublicKey.createProgramAddress([Buffer.from("ibport")], this.portProgram)
     }
 
     async buildCreateTransferUnwrapRequest(raw: CreateTransferUnwrapRequest, spender: PublicKey): Promise<TransactionInstruction> {
@@ -303,7 +303,7 @@ export namespace IBPort {
       console.log(raw.receiver)
 
       const tx = new TransactionInstruction({
-        programId: this.ibportProgram,
+        programId: this.portProgram,
         keys: [
           {
             pubkey: this.initializer,
@@ -311,7 +311,7 @@ export namespace IBPort {
             isWritable: false,
           },
           {
-            pubkey: this.ibportDataAccount,
+            pubkey: this.portDataAccount,
             isSigner: false,
             isWritable: true,
           },
@@ -335,7 +335,7 @@ export namespace IBPort {
           },
           {
             // IB Port PDA
-            pubkey: await this.getIBPortPDA(),
+            pubkey: await this.getSuSyPDA(),
             isSigner: false,
             isWritable: false,
           },
