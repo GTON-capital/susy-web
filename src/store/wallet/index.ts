@@ -1,4 +1,3 @@
-import _ from "lodash"
 import { WalletState, WalletProvider, ExtensionWallet } from "./types"
 // import { ActionContext } from "vuex"
 
@@ -12,7 +11,7 @@ export const state = (): WalletState => {
       },
       provider: WalletProvider.Metamask,
       isConnected: false,
-      // label: "Connect with Metamask",
+      label: "Connect with Metamask",
     },
     [WalletProvider.WavesKeeper]: {
       wallet: {
@@ -74,14 +73,6 @@ export const mutations = {
 }
 
 export const getters = {
-  connectedWallets(state: WalletState): ExtensionWallet[] {
-    return _.toPairs(Object.assign({}, state))
-      .filter((pair) => {
-        const [provider, wallet] = pair
-        return wallet.isConnected
-      })
-      .map((x) => x[1])
-  },
   currentWallet: (state: WalletState): ExtensionWallet | undefined => {
     for (const wallet of Object.keys(state)) {
       if (state[wallet].checked) {

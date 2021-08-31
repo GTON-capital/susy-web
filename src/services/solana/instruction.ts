@@ -1,3 +1,4 @@
+import axios from "axios"
 import BN from "bn.js"
 import bs58 from "bs58"
 import { AccountLayout, TOKEN_PROGRAM_ID } from "@solana/spl-token"
@@ -20,7 +21,16 @@ export function float64ToUint8Array(floatValue: number): Uint8Array {
   return arr
 }
 
-export namespace IBPort {
+export interface AllocatorResponse {
+  // eslint-disable-next-line camelcase
+  public_key: string
+  // eslint-disable-next-line camelcase
+  token_mint: string
+  // eslint-disable-next-line camelcase
+  tx_signature: string
+}
+
+export namespace Ports {
   export class LocalStorageSaver {
     private static formKey(tokenBinary: string, holder: string) {
       return tokenBinary + "_" + holder
@@ -159,7 +169,8 @@ export namespace IBPort {
       if (tokenAcc) {
         return {
           pubkey: tokenAcc.publicKey,
-          account: null,
+          // @ts-ignore
+          account: null as AccountInfo<Buffer>,
         }
       }
 
@@ -177,13 +188,21 @@ export namespace IBPort {
     }
 
     async createOrGetExistingTokenAccount(tokenBinary: PublicKey): Promise<PublicKey> {
-      const tokenAccount = await this.fetchFirstTokenAccountOwnedByAddress(tokenBinary)
-      if (tokenAccount === null) {
-        const tokenAcc = await this.createTokenAccount(tokenBinary)
-        return tokenAcc!.publicKey
-      }
-
-      return tokenAccount.pubkey
+      const owner = this.initializer
+      // const response = await axios.post<AllocatorResponse>("https://allocator.susy.one/api/associated-token-account/alloc", {
+      const response = await axios.post<AllocatorResponse>(
+        "https://allocator.susy.one/api/associated-token-account/alloc",
+        {
+          token_mint: tokenBinary.toBase58(),
+          owner: owner.toBase58(),
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      return new PublicKey(response.data.public_key)
     }
 
     async createTokenAccount(tokenBinary: PublicKey): Promise<Account | null> {
@@ -210,6 +229,24 @@ export namespace IBPort {
     }
 
     // amount as float (non-decimal)
+    async createTransferWrapRequest(uiAmount: number, receiver: Uint8Array, spender: PublicKey, portTokenAccount: PublicKey) {
+      const instructions: TransactionInstruction[] = []
+      const cleanupInstructions: TransactionInstruction[] = []
+      const signers: Account[] = []
+
+      const connection = this.connection
+      const wallet = this.adapter
+
+      const floatBytes = float64ToUint8Array(uiAmount)
+      const createTransferWrapIX = await this.instructionBuilder.buildCreateTransferWrapRequest({ amount: floatBytes, receiver }, spender, portTokenAccount)
+
+      instructions.push(createTransferWrapIX)
+      const tx = await sendTransaction(connection, wallet, instructions.concat(cleanupInstructions), signers)
+
+      return tx
+    }
+
+    // amount as float (non-decimal)
     async createTransferUnwrapRequest(uiAmount: number, amount: number, receiver: Uint8Array, spender: PublicKey, tokenHolderDataAccount: PublicKey, portBinary: PublicKey) {
       const instructions: TransactionInstruction[] = []
       const cleanupInstructions: TransactionInstruction[] = []
@@ -226,22 +263,19 @@ export namespace IBPort {
       const createTransferUnwrapIX = await this.instructionBuilder.buildCreateTransferUnwrapRequest({ amount: floatBytes, receiver }, spender)
 
       instructions.push(createTransferUnwrapIX)
-      // console.log({ ix })
-      // const tx = await sendTransaction(this.connection, this.adapter, [ix], [])
-      // console.log({ tx })
       const tx = await sendTransaction(connection, wallet, instructions.concat(cleanupInstructions), signers)
 
       return tx
     }
   }
 
-  export type InstructionBuilderProps = { initializer: PublicKey; ibportProgram: PublicKey; ibportDataAccount: PublicKey; tokenProgramAccount: PublicKey; tokenOwner: PublicKey }
+  export type InstructionBuilderProps = { initializer: PublicKey; portProgram: PublicKey; portDataAccount: PublicKey; tokenProgramAccount: PublicKey; tokenOwner: PublicKey }
   export class InstructionBuilder {
     // initializer: Keypair
     initializer: PublicKey
 
-    ibportProgram: PublicKey
-    ibportDataAccount: PublicKey
+    portProgram: PublicKey
+    portDataAccount: PublicKey
     tokenProgramAccount: PublicKey
 
     tokenOwner: PublicKey
@@ -249,8 +283,8 @@ export namespace IBPort {
     constructor(props: InstructionBuilderProps) {
       this.initializer = props.initializer
 
-      this.ibportProgram = props.ibportProgram
-      this.ibportDataAccount = props.ibportDataAccount
+      this.portProgram = props.portProgram
+      this.portDataAccount = props.portDataAccount
       this.tokenProgramAccount = props.tokenProgramAccount
 
       this.tokenOwner = props.tokenOwner
@@ -260,8 +294,67 @@ export namespace IBPort {
       this.tokenOwner = tokenOwner
     }
 
-    async getIBPortPDA(): Promise<PublicKey> {
-      return await PublicKey.createProgramAddress([Buffer.from("ibport")], this.ibportProgram)
+    async getSuSyPDA(): Promise<PublicKey> {
+      return await PublicKey.createProgramAddress([Buffer.from("ibport")], this.portProgram)
+    }
+
+    buildCreateTransferWrapRequest(raw: CreateTransferUnwrapRequest, spender: PublicKey, portTokenAccount: PublicKey): TransactionInstruction {
+      // Instruction Index = u8
+      let rawData = Uint8Array.of(...new BN(1).toArray("le", 1))
+      // Token Amount = f64
+      // rawData = Uint8Array.of(...rawData, ...new BN(raw.amount).toArray("le", 8))
+      rawData = Uint8Array.of(...rawData, ...raw.amount)
+      // Receiver - 32 bytes
+      const receiverBytes = new Uint8Array(32)
+      receiverBytes.set(raw.receiver, 0)
+
+      rawData = Uint8Array.of(...rawData, ...receiverBytes)
+      // Swap ID - 16 bytes
+      rawData = Uint8Array.of(...rawData, ...new Uint8Array(16).map(() => randomUint8()))
+
+      const data = Buffer.from(rawData)
+
+      const tx = new TransactionInstruction({
+        programId: this.portProgram,
+        keys: [
+          {
+            pubkey: this.initializer,
+            isSigner: true,
+            isWritable: false,
+          },
+          {
+            pubkey: this.portDataAccount,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: TOKEN_PROGRAM_ID,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            // Token deployed and bind to TOKEN_PROGRAM_ID
+            // actually it's result of `spl-token create-token`
+            pubkey: this.tokenProgramAccount,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            // the man to transfer tokens from (caller)
+            pubkey: spender,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            // LU Port
+            pubkey: portTokenAccount,
+            isSigner: false,
+            isWritable: true,
+          },
+        ],
+        data,
+      })
+      return tx
     }
 
     async buildCreateTransferUnwrapRequest(raw: CreateTransferUnwrapRequest, spender: PublicKey): Promise<TransactionInstruction> {
@@ -280,12 +373,8 @@ export namespace IBPort {
 
       const data = Buffer.from(rawData)
 
-      console.log({ data, bufferLen: data.length, goal: 1 + 8 + 32 + 16 })
-      console.log(raw.amount)
-      console.log(raw.receiver)
-
       const tx = new TransactionInstruction({
-        programId: this.ibportProgram,
+        programId: this.portProgram,
         keys: [
           {
             pubkey: this.initializer,
@@ -293,7 +382,7 @@ export namespace IBPort {
             isWritable: false,
           },
           {
-            pubkey: this.ibportDataAccount,
+            pubkey: this.portDataAccount,
             isSigner: false,
             isWritable: true,
           },
@@ -317,7 +406,7 @@ export namespace IBPort {
           },
           {
             // IB Port PDA
-            pubkey: await this.getIBPortPDA(),
+            pubkey: await this.getSuSyPDA(),
             isSigner: false,
             isWritable: false,
           },

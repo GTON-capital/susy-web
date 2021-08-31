@@ -13,6 +13,10 @@
           <template v-if="$route.name === 'intrachain'"> Seamless Intrachain <br />Swaps </template>
           <template v-else> Seamless <br />Cross-Chain Swaps </template>
         </div>
+        <div class="nav-routes">
+          <nuxt-link class="route" to="/logs" :class="{ 'active-route': this.$route.name == 'logs' }">Logs</nuxt-link>
+          <nuxt-link class="route" to="/" :class="{ 'active-route': this.$route.name == 'swap' }">Transfer</nuxt-link>
+        </div>
         <hr />
       </div>
     </div>
@@ -35,6 +39,8 @@ export default Vue.extend({
   },
   data: () => ({
     isOpenNavMode: false,
+    isTransfer: false,
+    isLogs: false,
   }),
   computed: {
     theme() {
@@ -350,6 +356,31 @@ export default Vue.extend({
     br {
       display: block;
     }
+  }
+}
+.nav-routes {
+  max-width: 110px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.route {
+  cursor: pointer;
+  color: #001a34;
+  font-size: 16px;
+  font-weight: 400;
+  font-family: $font-family-cormorant;
+  text-decoration: none;
+  &:hover {
+    color: #ff0097;
+  }
+}
+
+.active-route {
+  color: #ff0097;
+  text-decoration: underline;
+    &:hover {
+    color: #001a34;
   }
 }
 </style>

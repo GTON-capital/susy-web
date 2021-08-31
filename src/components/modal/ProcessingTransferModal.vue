@@ -9,10 +9,10 @@
             <CopyClipboard v-else class="copy" :value="transferProps.inputTx" />
             <span>{{ transferProps.inputLabel }}</span>
             <span>{{ transferProps.amount }}</span>
-            <img :src="transferProps.inputToken.logo" />
+            <img :src="transferProps.inputToken.logo" class="ch-img" />
             <span>{{ transferProps.inputToken.label }}</span>
             <img src="/img/icons/Arrow 17.svg" />
-            <img :src="transferProps.inputToken.chainLogo" />
+            <img :src="transferProps.inputToken.chainLogo" class="ch-img" />
             <span>{{ transferProps.inputToken.chainLabel }}</span>
           </div>
         </div>
@@ -22,10 +22,10 @@
             <CopyClipboard v-else class="copy" :value="transferProps.outputTx" />
             <span>{{ transferProps.outputLabel }}</span>
             <span>{{ transferProps.amount }}</span>
-            <img :src="transferProps.outputToken.logo" />
+            <img :src="transferProps.outputToken.logo" class="ch-img" />
             <span>{{ transferProps.outputToken.label }}</span>
             <img src="/img/icons/Arrow 17.svg" />
-            <img :src="transferProps.outputToken.chainLogo" />
+            <img :src="transferProps.outputToken.chainLogo" class="ch-img" />
             <span>{{ transferProps.outputToken.chainLabel }}</span>
           </div>
         </div>
@@ -180,5 +180,10 @@ $bg-color: #f3f9f9;
 .copy {
   margin-left: 40px;
   cursor: pointer;
+}
+
+.ch-img {
+  max-width: 30px;
+  max-height: 30px;
 }
 </style>

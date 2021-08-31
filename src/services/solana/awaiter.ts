@@ -80,11 +80,14 @@ export class SolanaDepositAwaiter {
   subject: Subject<string>
   props: DepositAwaiterProps
 
+  interval: NodeJS.Timeout | null
+
   constructor(props: DepositAwaiterProps, subject: Subject<string>) {
     this.props = Object.assign({}, props)
 
     this.connection = new WebSocket("wss://api.mainnet-beta.solana.com/")
     this.subject = subject
+    this.interval = null
   }
 
   start() {
@@ -107,6 +110,11 @@ export class SolanaDepositAwaiter {
 
       return process(eventData.params.result, event.data)
     }
+
+    const keepAliveHandler = () => {
+      this.connection.send("ping")
+    }
+    this.interval = setInterval(keepAliveHandler.bind(this), 1000)
   }
 
   private processAccountNotification(notification: Result, rawBody: string) {
@@ -122,6 +130,8 @@ export class SolanaDepositAwaiter {
     if (!rawBody.includes("MintTo") || !rawBody.includes(String(this.props.targetAmount))) {
       return
     }
+
+    this.interval ?? clearInterval(this.interval!)
 
     this.subject.next(signature)
     // const info = notification.value.data.parsed.info

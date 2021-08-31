@@ -4,15 +4,12 @@
       <template v-slot:head>Connect wallet</template>
       <button class="activity">Continue</button>
       <template v-slot:body>
-        <div class="text-center message-block">
-          Connect to Phantom wallet to transfer assets from Solana to Polygon
-          <!-- <btn class="btn-link text-secondary font-weight-normal" @click="handleLogoutAllWallets">Logout of all wallets</btn> -->
-        </div>
+        <div class="text-center message-block"></div>
         <radio-provider-group style="margin-bottom: 24px;">
-          <radio-account-revised name="account" :wallet-data="wallets.phantom" @change="handleChange" @connect="$emit('connect', $event)" @logout="handleLogout" />
+          <radio-account-revised name="account" :wallet-data="walletPicked" @change="handleChange" @connect="$emit('connect', $event)" @logout="handleLogout" />
         </radio-provider-group>
         <div class="text-center">
-          <btn class="btn-link" style="padding-left: 22px; padding-right: 22px;" @click="">Continue</btn>
+          <btn class="btn-link" style="padding-left: 22px; padding-right: 22px;" @click="goBack">Continue</btn>
         </div>
         <div class="text-absolute">
           <btn class="btn-link absolute-btn" @click="goBack"> <img src="/img/icons/arrow.svg" style="margin-right: 10px;" />Back</btn>
@@ -23,42 +20,38 @@
 </template>
 
 <script lang="ts">
-// import Vue from 'vue'
-// import RadioProvider from "~/components/RadioProvider.vue"
-// import RadioAccount from "~/components/RadioAccount.vue"
 import RadioAccountRevised from "~/components/RadioAccountRevised.vue"
 import RadioProviderGroup from "~/components/RadioProviderGroup.vue"
 import ModalContent from "~/components/ModalContent.vue"
-// import Btn from "~/components/Btn.vue"
 
-// import Keeper from "~/services/wallets/keeper"
-// import Web3WalletConnector from "~/services/wallets/web3"
 import { WalletState, ExtensionWallet, WalletProvider, walletSupportsSolana } from "~/store/wallet/types"
-// import {  } from "~/services/wallet-adapters"
-// import { PhantomWalletAdapter, MathWalletAdapter } from "~/services/wallet-adapters"
 
 export default {
-  name: "ConnectTwoWallets",
+  name: "ConnectDistinctWallet",
   components: {
     ModalContent,
     RadioAccountRevised,
     RadioProviderGroup,
   },
-  props: [],
+  props: ["swapProps"],
   data() {
     return {}
   },
   computed: {
     wallets(): WalletState {
-      console.log({ state: this.$store })
+      // console.log({ state: this.$store })
       // @ts-ignore
       return this.$store.state.wallet
+    },
+    walletPicked(): ExtensionWallet {
+      // wallets.metamask
+      return this.wallets[this.swapProps.inputWallet]
     },
   },
   methods: {
     connectKeeper() {},
     handleChange(wallet: ExtensionWallet) {
-      console.log({ wallet })
+      // console.log({ wallet })
       this.$store.commit("wallet/updateWalletData", {
         provider: wallet.provider as WalletProvider,
         body: { checked: true },
@@ -72,7 +65,7 @@ export default {
       )
     },
     async handleLogout(wallet: ExtensionWallet) {
-      console.log({ wallet })
+      // console.log({ wallet })
       const existing = Object.keys(this.wallets)
       let walletToEnable: WalletProvider | undefined
 
@@ -88,15 +81,6 @@ export default {
         body: { checked: false, isConnected: false, value: "" },
       })
 
-      // console.log({ provider: wallet.provider })
-      // if (wallet.provider === WalletProvider.MathWallet) {
-      //   const wallet = new MathWalletAdapter()
-      //   await wallet.disconnect()
-      // }
-      // if (wallet.provider === WalletProvider.Phantom) {
-      //   const wallet = new PhantomWalletAdapter()
-      //   await wallet.disconnect()
-      // }
       if (walletSupportsSolana(wallet.provider as WalletProvider)) {
         const walletAdapter = wallet.walletAdapter
 
@@ -145,7 +129,7 @@ export default {
     text-decoration: none;
   }
 }
-.absolute-btn{
+.absolute-btn {
   font-size: 12px;
   font-weight: 700;
   text-decoration: none;

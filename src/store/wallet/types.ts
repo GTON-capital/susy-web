@@ -1,5 +1,5 @@
 import { WalletAdapter } from "~/services/wallet-adapters"
-import { IBPort } from "~/services/solana/instruction"
+import { Ports } from "~/services/solana/instruction"
 
 export interface ExtensionWallet {
   wallet: {
@@ -15,7 +15,7 @@ export interface ExtensionWallet {
   walletAdapter?: WalletAdapter
   checked?: boolean
   // instructionBuilder?: IBPort.InstructionBuilder
-  invoker?: IBPort.Invoker
+  invoker?: Ports.Invoker
 }
 
 export type Wallets = {
@@ -34,5 +34,6 @@ export enum WalletProvider {
 export type WalletState = Wallets
 
 export const walletSupportsSolana = (provider: WalletProvider): boolean => {
-  return [WalletProvider.MathWallet, WalletProvider.Phantom].includes(provider)
+  // return [WalletProvider.MathWallet, WalletProvider.Phantom].includes(provider)
+  return [WalletProvider.Phantom].includes(provider)
 }
