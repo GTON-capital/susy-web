@@ -42,7 +42,7 @@ export class Web3Invoker {
     await contract.methods.approve(spender, amount).send({ from: await this.resolveCurrentAddress() })
   }
 
-  async getBalanceAndAllowance(address: string, token: string, ibport: string) {
+  async getBalanceAndAllowance(address: string, token: string) {
     const web3Obj = new Web3(window.ethereum)
     await window.ethereum.enable()
 
@@ -54,19 +54,16 @@ export class Web3Invoker {
     return { balance }
   }
 
-  async invokeSendUnlockRequest(receiver: string | null, { value: amountValue, type: amountType }: { value: string; type: "bigint" | undefined }, smartContract: string): Promise<any> {
+  async invokeIBPortBurn(receiver: Uint8Array, { value: amountValue }: { value: string; type: "bigint" | undefined }, smartContract: string): Promise<any> {
     const web3Obj = new Web3(window.ethereum)
     await window.ethereum.enable()
 
     // @ts-ignore
     const contract = new web3Obj.eth.Contract(JSON.parse(this.contractsABI.IBPortABI), smartContract)
-
-    let bnAmount = castFloatToDecimalsVersion(amountValue, 18)
-
-    console.log({ bnAmount: bnAmount.toString(), bnAmountOrig: bnAmount, ctx: this, eth: window.web3.eth, accs: window.web3.eth.accounts })
+    const bnAmount = castFloatToDecimalsVersion(amountValue, 18)
 
     const sendRequest = await contract.methods
-      .createTransferUnwrapRequest(bnAmount.toString(), this.wavesToBytes32(receiver))
+      .createTransferUnwrapRequest(bnAmount.toString(), receiver)
       // @ts-ignore
       .send({ from: await this.resolveCurrentAddress() })
 
@@ -89,7 +86,7 @@ export class Web3Invoker {
       .createTransferUnwrapRequest(bnAmount.toString(), receiver.toBytes())
       // @ts-ignore
       .send({ from: await this.resolveCurrentAddress() })
-    console.log({ response })
+
     return response
   }
 

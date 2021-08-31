@@ -169,7 +169,8 @@ export namespace Ports {
       if (tokenAcc) {
         return {
           pubkey: tokenAcc.publicKey,
-          account: null,
+          // @ts-ignore
+          account: null as AccountInfo<Buffer>,
         }
       }
 
@@ -228,6 +229,24 @@ export namespace Ports {
     }
 
     // amount as float (non-decimal)
+    async createTransferWrapRequest(uiAmount: number, receiver: Uint8Array, spender: PublicKey, portTokenAccount: PublicKey) {
+      const instructions: TransactionInstruction[] = []
+      const cleanupInstructions: TransactionInstruction[] = []
+      const signers: Account[] = []
+
+      const connection = this.connection
+      const wallet = this.adapter
+
+      const floatBytes = float64ToUint8Array(uiAmount)
+      const createTransferWrapIX = await this.instructionBuilder.buildCreateTransferWrapRequest({ amount: floatBytes, receiver }, spender, portTokenAccount)
+
+      instructions.push(createTransferWrapIX)
+      const tx = await sendTransaction(connection, wallet, instructions.concat(cleanupInstructions), signers)
+
+      return tx
+    }
+
+    // amount as float (non-decimal)
     async createTransferUnwrapRequest(uiAmount: number, amount: number, receiver: Uint8Array, spender: PublicKey, tokenHolderDataAccount: PublicKey, portBinary: PublicKey) {
       const instructions: TransactionInstruction[] = []
       const cleanupInstructions: TransactionInstruction[] = []
@@ -244,9 +263,6 @@ export namespace Ports {
       const createTransferUnwrapIX = await this.instructionBuilder.buildCreateTransferUnwrapRequest({ amount: floatBytes, receiver }, spender)
 
       instructions.push(createTransferUnwrapIX)
-      // console.log({ ix })
-      // const tx = await sendTransaction(this.connection, this.adapter, [ix], [])
-      // console.log({ tx })
       const tx = await sendTransaction(connection, wallet, instructions.concat(cleanupInstructions), signers)
 
       return tx
@@ -282,7 +298,7 @@ export namespace Ports {
       return await PublicKey.createProgramAddress([Buffer.from("ibport")], this.portProgram)
     }
 
-    async buildCreateTransferUnwrapRequest(raw: CreateTransferUnwrapRequest, spender: PublicKey): Promise<TransactionInstruction> {
+    buildCreateTransferWrapRequest(raw: CreateTransferUnwrapRequest, spender: PublicKey, portTokenAccount: PublicKey): TransactionInstruction {
       // Instruction Index = u8
       let rawData = Uint8Array.of(...new BN(1).toArray("le", 1))
       // Token Amount = f64
@@ -298,9 +314,64 @@ export namespace Ports {
 
       const data = Buffer.from(rawData)
 
-      console.log({ data, bufferLen: data.length, goal: 1 + 8 + 32 + 16 })
-      console.log(raw.amount)
-      console.log(raw.receiver)
+      const tx = new TransactionInstruction({
+        programId: this.portProgram,
+        keys: [
+          {
+            pubkey: this.initializer,
+            isSigner: true,
+            isWritable: false,
+          },
+          {
+            pubkey: this.portDataAccount,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: TOKEN_PROGRAM_ID,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            // Token deployed and bind to TOKEN_PROGRAM_ID
+            // actually it's result of `spl-token create-token`
+            pubkey: this.tokenProgramAccount,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            // the man to transfer tokens from (caller)
+            pubkey: spender,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            // LU Port
+            pubkey: portTokenAccount,
+            isSigner: false,
+            isWritable: true,
+          },
+        ],
+        data,
+      })
+      return tx
+    }
+
+    async buildCreateTransferUnwrapRequest(raw: CreateTransferUnwrapRequest, spender: PublicKey): Promise<TransactionInstruction> {
+      // Instruction Index = u8
+      let rawData = Uint8Array.of(...new BN(1).toArray("le", 1))
+      // Token Amount = f64
+      // rawData = Uint8Array.of(...rawData, ...new BN(raw.amount).toArray("le", 8))
+      rawData = Uint8Array.of(...rawData, ...raw.amount)
+      // Receiver - 32 bytes
+      const receiverBytes = new Uint8Array(32)
+      receiverBytes.set(raw.receiver, 0)
+
+      rawData = Uint8Array.of(...rawData, ...receiverBytes)
+      // Swap ID - 16 bytes
+      rawData = Uint8Array.of(...rawData, ...new Uint8Array(16).map(() => randomUint8()))
+
+      const data = Buffer.from(rawData)
 
       const tx = new TransactionInstruction({
         programId: this.portProgram,

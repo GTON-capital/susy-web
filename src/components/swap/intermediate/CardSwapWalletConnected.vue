@@ -42,7 +42,7 @@
         </btn>
       </template>
       <template v-slot:right>
-        <form-input :value="swapForm.destinationAddress" :icon="swapProps.chains.destination.icon">
+        <form-input v-model="swapForm.destinationAddress" :icon="swapProps.chains.destination.icon">
           <template v-slot:label>
             To Address
           </template>

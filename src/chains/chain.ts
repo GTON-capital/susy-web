@@ -1,7 +1,7 @@
 import _ from "lodash"
 import { WalletProvider } from "../store/wallet/types"
 
-export type Chain = { id: string; chainId?: number; label: string; icon: string; walletProviders: WalletProvider[] }
+export type Chain = { id: string; chainId?: number; label: string; icon: string; walletProviders: WalletProvider[]; nodeURL?: string }
 
 export type AvailableChainsDict = {
   Ethereum: Chain
@@ -36,6 +36,7 @@ export const AvailableChains: AvailableChainsDict = {
     label: "BSC",
     icon: "https://cryptoai.trade/wp-content/uploads/2020/03/bnb-2.png",
     walletProviders: [WalletProvider.Metamask],
+    nodeURL: "https://bsc-dataseed3.binance.org",
   },
   Heco: {
     id: "4",

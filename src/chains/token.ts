@@ -230,6 +230,7 @@ export const AvailableTokens: Record<string, Token> = {
             PORT_PROGRAM_ID: "DSZqp3Q3ydt5HeFeX1PfZJWAK8Re7ZoitK3eoot2aRyY",
             PORT_PROGRAM_PDA: "8drhoQ7iAYD9DLY5RBxtQ8BS9vWRMF4nkGG1bnsED9su",
             PORT_DATA_ACCOUNT: "CAGB99utwtaC5XbfeECB1JE2VsTXvw3bYpu57jzYEN8S",
+            PORT_TOKEN_ACCOUNT: "GcnLCDRvDqWWq3CoERdTGSkwMU2cRonC6is4sxM7qbHq",
             TOKEN_DATA_ACCOUNT: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
             TOKEN_OWNER: "7nJGERf1LZpjn4uTfcDZLJ6YRtvdSExAB9uK851zT6do",
           },
