@@ -245,7 +245,7 @@ export const AvailableTokens: Record<string, Token> = {
             },
           },
           sourcePort: "CAGB99utwtaC5XbfeECB1JE2VsTXvw3bYpu57jzYEN8S",
-          destinationPort: "0xaf1d730987a2ef0892b4a2b54c80cf07505d7d7e",
+          destinationPort: "0xA3E9c5f57460c056dE97f14247517FA8e2A55F02",
         },
       }),
     ],
