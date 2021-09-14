@@ -72,7 +72,7 @@ export default Vue.extend({
   data: () => ({
     transferIsBeingProcessed: false,
     page: 10,
-    tokens: [AvailableTokens.RAYMainnet],
+    tokens: [AvailableTokens.RAYMainnet, AvailableTokens.GTONMainnet],
     swapState: 0,
     swapForm: {
       isDirect: true,
