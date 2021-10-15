@@ -6,7 +6,7 @@ import { EVMTokenTransferEvent, ExplorerApiResponse } from "./types"
 
 type EVMTokenTransferEventResponse = ExplorerApiResponse<EVMTokenTransferEvent[]>
 
-export const PolygonScanAPIKey = "1QUW98DRE3B9PJFVI9MKN58JKEDEW1DEAT"
+export const PolygonScanAPIKey = "44FHWAF4ETDKJ8KJTD268QWDDFDKJPXGJU"
 
 export type EVMDepositAwaitProps = {
   nodeURL: string
@@ -87,11 +87,13 @@ export class EVMDepositAwaiter {
       console.log({ cachedTx }, cachedTx.value, cachedTx.to)
       console.log(this.props.amount, this.props.recipient)
 
+      console.log(cachedTx.value !== this.props.amount, cachedTx.value, this.props.amount)
       if (cachedTx.value !== this.props.amount) {
         continue
       }
 
-      if (cachedTx.to !== this.props.recipient) {
+      console.log(cachedTx.to !== this.props.recipient, cachedTx.to, this.props.recipient)
+      if (cachedTx.to.toLowerCase() !== this.props.recipient.toLowerCase()) {
         continue
       }
 
@@ -108,7 +110,7 @@ export class EVMDepositAwaiter {
     this.interval = setInterval(watcher, this.props.timeout)
 
     this.lastBlock = await this.fetchLastBlock()
-
+    console.log({ block: this.lastBlock })
     // await this.awaitForDeposit()
   }
 

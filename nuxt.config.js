@@ -11,6 +11,7 @@ export default {
   server: {
     host: "0.0.0.0",
   },
+  ssr: false,
   /*
    ** Nuxt rendering mode
    ** See https://nuxtjs.org/api/configuration-mode

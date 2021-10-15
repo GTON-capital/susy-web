@@ -778,11 +778,14 @@ export default Vue.extend({
         try {
           this.showLoader(SwapLoaderType.Transactions, SwapLoaderMessage.Processing)
 
+          const castedAmount = castFloatToDecimalsVersion(String(this.swapForm.tokenAmount), gateway.cfg.token.dest.decimals).toString()
+          console.log({ castedAmount })
+
           const awaiterProps = {
-            nodeURL: this.swapForm.destinationChain.nodeURL!,
+            nodeURL: "https://api.bscscan.com",
             recipient: String(this.swapForm.destinationAddress),
             tokenAddress: gateway.cfg.token.dest.assetId,
-            amount: castFloatToDecimalsVersion(String(this.swapForm.tokenAmount), gateway.cfg.token.origin.decimals).toString(),
+            amount: castedAmount,
             timeout: 5000,
           }
 
@@ -874,13 +877,14 @@ export default Vue.extend({
 
         try {
           this.showLoader(SwapLoaderType.Transactions, SwapLoaderMessage.Processing)
-
+          const castedAmount = castFloatToDecimalsVersion(String(this.swapForm.tokenAmount), gateway.cfg.token.dest.decimals).toString()
+          console.log({ castedAmount })
           const awaiterProps = {
             // nodeURL: "https://rpc-mainnet.maticvigil.com/v1/2f581f46c671855c44af99074a017ccdb82ae83f",
-            nodeURL: this.swapForm.destinationChain.nodeURL!,
+            nodeURL: "https://api.bscscan.com",
             recipient: String(this.swapForm.destinationAddress),
             tokenAddress: gateway.cfg.token.origin.assetId,
-            amount: castFloatToDecimalsVersion(String(this.swapForm.tokenAmount), gateway.cfg.token.origin.decimals).toString(),
+            amount: castedAmount,
             timeout: 5000,
           }
 
@@ -961,15 +965,15 @@ export default Vue.extend({
 
         const { TOKEN_DATA_ACCOUNT, PORT_DATA_ACCOUNT } = gateway!.cfg.meta!
 
-        this.solanaDepositAwaiter = new SolanaDepositAwaiter(
-          {
-            tokenMint: TOKEN_DATA_ACCOUNT,
-            receiverTokenDataAccount: destinationAddress.toBase58(),
-            programDataAccount: PORT_DATA_ACCOUNT,
-            targetAmount: Number(this.swapForm.tokenAmount),
-          },
-          subject
-        )
+        const awaiterProps = {
+          tokenMint: TOKEN_DATA_ACCOUNT,
+          receiverTokenDataAccount: destinationAddress.toBase58(),
+          programDataAccount: PORT_DATA_ACCOUNT,
+          targetAmount: Number(this.swapForm.tokenAmount),
+        }
+        console.log({ awaiterProps })
+
+        this.solanaDepositAwaiter = new SolanaDepositAwaiter(awaiterProps, subject)
 
         this.solanaDepositAwaiter.start()
       } catch (err) {
@@ -1018,15 +1022,15 @@ export default Vue.extend({
 
         const { TOKEN_DATA_ACCOUNT, PORT_DATA_ACCOUNT } = gateway!.cfg.meta!
 
-        this.solanaDepositAwaiter = new SolanaDepositAwaiter(
-          {
-            tokenMint: TOKEN_DATA_ACCOUNT,
-            receiverTokenDataAccount: destinationAddress.toBase58(),
-            programDataAccount: PORT_DATA_ACCOUNT,
-            targetAmount: Number(this.swapForm.tokenAmount),
-          },
-          subject
-        )
+        const awaiterProps = {
+          tokenMint: TOKEN_DATA_ACCOUNT,
+          receiverTokenDataAccount: destinationAddress.toBase58(),
+          programDataAccount: PORT_DATA_ACCOUNT,
+          targetAmount: Number(this.swapForm.tokenAmount),
+        }
+        console.log({ awaiterProps })
+
+        this.solanaDepositAwaiter = new SolanaDepositAwaiter(awaiterProps, subject)
 
         this.solanaDepositAwaiter.start()
       } catch (err) {
