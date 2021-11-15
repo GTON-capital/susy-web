@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "ES6",
     "module": "esnext",
     // this enables stricter inference for data properties on `this`
     "jsx": "preserve",
@@ -9,7 +9,12 @@
     "lib": [
       "esnext",
       "esnext.asynciterable",
-      "dom"
+      "dom",
+      "DOM", 
+      "ES6", 
+      "DOM.Iterable", 
+      "ScriptHost", 
+      "ES2016.Array.Include"
     ],
     "allowJs": true,
     "sourceMap": true,
@@ -32,7 +37,6 @@
       "@types/node",
       "jest",
       "@nuxt/types",
-      "@vue/types"
     ]
   },
   "exclude": [
