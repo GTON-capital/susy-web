@@ -62,7 +62,9 @@ export default {
   plugins: [
     { src: "~plugins/dropdown", ssr: false },
     { src: "~plugins/click-outside", ssr: false },
-    { src: "~plugins/modal", ssr: false },
+    { src: "~plugins/modal", ssr: false },    
+    { src: '~/plugins/facebook.js', mode: 'client' },
+    { src: '~/plugins/gtag.ts', mode: 'client' },
     { src: "~plugins/clipboard", ssr: true },
   ],
   /*
