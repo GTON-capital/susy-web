@@ -80,7 +80,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ["@nuxtjs/style-resources", "@nuxtjs/svg", "@nuxtjs/dotenv", ["nuxt-lazy-load", { directiveOnly: true }]],
+  modules: ["@nuxtjs/gtm", "@nuxtjs/style-resources", "@nuxtjs/svg", "@nuxtjs/dotenv", ["nuxt-lazy-load", { directiveOnly: true }]],
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
@@ -92,4 +92,7 @@ export default {
   styleResources: {
     scss: ["~/assets/scss/_import.scss"],
   },
+  gtm: {
+    id: 'GTM-KF4GFM3'
+  }
 }
